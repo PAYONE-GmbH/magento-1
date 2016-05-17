@@ -1,0 +1,120 @@
+<?xml version="1.0"?><!--
+/**
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the GNU General Public License (GPL 3)
+ * that is bundled with this package in the file LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Payone_Core to newer
+ * versions in the future. If you wish to customize Payone_Core for your
+ * needs please refer to http://www.payone.de for more information.
+ *
+ * @category        Payone
+ * @package         design_adminhtml_default_default
+ * @subpackage      layout
+ * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
+ * @author          Matthias Walter <info@noovias.com>
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.noovias.com
+ */
+-->
+<layout>
+    <default>
+        <reference name="head">
+            <action method="addCss">
+                <name>payone/core/boxes.css</name>
+            </action>
+        </reference>
+    </default>
+
+    <payone_core_iframe>
+        <update handle="popup" />
+        <remove name="global_notices" />
+        <remove name="notifications" />
+        <remove name="breadcrumbs" />
+        <remove name="footer" />
+        <remove name="before_body_end" />
+        <reference name="root">
+            <action method="setTemplate">
+                <template>payone/core/iframe.phtml</template>
+            </action>
+        </reference>
+    </payone_core_iframe>
+
+    <adminhtml_payonecore_information_index>
+        <reference name="content">
+            <block type="payone_core/adminhtml_information"
+                   name="payone_core_information" />
+        </reference>
+    </adminhtml_payonecore_information_index>
+
+    <adminhtml_payonecore_sales_order_index>
+        <reference name="content">
+            <block type="payone_core/adminhtml_sales_order" name="payone_core_sales_order" />
+        </reference>
+    </adminhtml_payonecore_sales_order_index>
+
+    <!--
+    Sales Order View
+    -->
+    <adminhtml_sales_order_view>
+        <reference name="sales_order_tabs">
+            <block type="payone_core/adminhtml_sales_order_view_tab_transaction"
+                   name="payone_core_adminhtml_sales_order_view_tab_transaction"
+                   template="payone/core/sales/order/view/tab/transaction.phtml">
+            </block>
+            <action method="addTab">
+                <name>payone_core_adminhtml_sales_order_view_tab_transaction</name>
+                <block>payone_core_adminhtml_sales_order_view_tab_transaction</block>
+            </action>
+            <block type="payone_core/adminhtml_sales_order_view_tab_transactionStatus"
+                   name="payone_core_adminhtml_sales_order_view_tab_transactionStatus">
+            </block>
+            <action method="addTab">
+                <name>payone_core_adminhtml_sales_order_view_tab_transactionStatus</name>
+                <block>payone_core_adminhtml_sales_order_view_tab_transactionStatus</block>
+            </action>
+            <block type="payone_core/adminhtml_sales_order_view_tab_api"
+                   name="payone_core_adminhtml_sales_order_view_tab_api">
+            </block>
+            <action method="addTab">
+                <name>payone_core_adminhtml_sales_order_view_tab_api</name>
+                <block>payone_core_adminhtml_sales_order_view_tab_api</block>
+            </action>
+        </reference>
+    </adminhtml_sales_order_view>
+
+    <!--
+    Sales Order Create
+    -->
+    <adminhtml_sales_order_create_index>
+        <reference name="head">
+            <action method="addJs"><script>payone/core/client_api.js</script></action>
+            <action method="addJs"><script>payone/core/creditcard.js</script></action>
+            <action method="addJs"><script>payone/core/debitpayment.js</script></action>
+            <action method="addJs"><script>payone/core/sepa_input.js</script></action>
+            <action method="addJs"><script>payone/core/sepa_validation.js</script></action>
+        </reference>
+        <reference name="js">
+            <block type="adminhtml/template" name="payone_core_clientapi"
+                   template="payone/core/client_api.phtml" />
+            <block type="payone_core/adminhtml_sales_order_create_init" name="payone_core_init"
+                   template="payone/core/sales/order/create/init.phtml" />
+        </reference>
+    </adminhtml_sales_order_create_index>
+
+    <!--
+    Sales Order Invoice View
+    -->
+    <adminhtml_sales_order_invoice_view>
+        <reference name="sales_invoice_view">
+            <action method="addButton" ifconfig="payone_general/parameter_invoice/pdf_download_enabled">
+                <id>download_payone_invoice</id>
+                <button helper="payone_core/sales_button/getPayoneInvoicePdf" />
+            </action>
+        </reference>
+    </adminhtml_sales_order_invoice_view>
+</layout>

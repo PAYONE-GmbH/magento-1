@@ -1,0 +1,43 @@
+<?php
+/**
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the GNU General Public License (GPL 3)
+ * that is bundled with this package in the file LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Payone_Core to newer
+ * versions in the future. If you wish to customize Payone_Core for your
+ * needs please refer to http://www.payone.de for more information.
+ *
+ * @category        Payone
+ * @package         design_adminhtml_default_default
+ * @subpackage      template
+ * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
+ * @author          Matthias Walter <info@noovias.com>
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.noovias.com
+ */
+
+/** @var $this Payone_Core_Block_Payment_Method_Info_AdvancePayment */
+?>
+<?php
+echo $this->escapeHtml($this->getMethodTitle()) ?>
+<br/>
+<?php if ($this->getLastTransId() == ''): ?>
+	<?php echo $this->__('Payment has not been processed yet.') ?>
+<?php else: ?>
+<?php if($this->getPayoneClearingBankCode()): ?>
+    <?php echo $this->__('Please transfer the order amount to this bank account:') ?><br/>
+    <?php echo $this->__('Accountholder: %s', $this->escapeHtml($this->getPayoneClearingBankAccountholder())) ?><br/>
+    <?php echo $this->__('Accountnumber: %s', $this->escapeHtml($this->getPayoneClearingBankAccount())) ?><br/>
+    <?php echo $this->__('Bank code: %s', $this->escapeHtml($this->getPayoneClearingBankCode())) ?><br/>
+    <?php echo $this->__('IBAN: %s', $this->escapeHtml($this->getPayoneClearingBankIban())) ?><br/>
+    <?php echo $this->__('BIC: %s', $this->escapeHtml($this->getPayoneClearingBankBic())) ?><br/>
+    <?php echo $this->__('Bank: %s', $this->escapeHtml($this->getPayoneClearingBankName())) ?><br/>
+    <?php endif; ?>
+<?php echo $this->__('Payment reference: %s', $this->escapeHtml($this->getLastTransId())) ?><br/>
+<?php endif; ?>
+<br/>

@@ -1,0 +1,182 @@
+/**
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the GNU General Public License (GPL 3)
+ * that is bundled with this package in the file LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Payone_Core to newer
+ * versions in the future. If you wish to customize Payone_Core for your
+ * needs please refer to http://www.payone.de for more information.
+ *
+ * @category        Payone
+ * @package         skin_adminhtml_default_default
+ * @subpackage      payone_core
+ * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
+ * @author          Matthias Walter <info@noovias.com>
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.noovias.com
+ */
+
+/* menu */
+.menu-payone {
+    background: url(images/favicon.png) no-repeat scroll 0 5px;
+    height: 27px;
+    padding-left: 20px;
+}
+
+/* system config */
+li.tab-payone dl dt {
+    background: url(images/favicon.png) no-repeat scroll 1px 3px #D1DEDF;
+    padding-left: 21px;
+}
+
+h3.payone-config-header {
+    background: url(images/favicon.png) no-repeat scroll 0px 1px;
+    padding: 0px 25px;
+    color: #003b59;
+}
+
+.payone-config-info {
+    background: #FFF9E9;
+    border: 1px solid #EEE2BE;
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.payone-config-hint-container {
+    margin-left: 5px;
+}
+
+.payone-config-hint-container div {
+    display: block !important;
+}
+
+.payone-config-hint {
+    background: url(images/help.png) no-repeat 0;
+    text-decoration: none;
+    font-weight: bold;
+    line-height: 26px;
+    padding-left: 20px;
+    cursor: pointer;
+}
+
+.payone-config-hint-content {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.payone-config-hint-content ul {
+    list-style: disc;
+    padding-left: 30px;
+}
+
+.payone-config-hint-content .field-name {
+    width: 100%;
+    background-color: #003B59;
+    color: white;
+    padding: 5px;
+    font-weight: bold;
+}
+
+.payone-config-hint-content .field-description {
+    padding-top: 3px;
+    padding-left: 5px;
+}
+
+.payone-config-text-emphasis {
+    color: red;
+}
+
+.payone-config-panel {
+    border: 1px dashed;
+    margin: 0 1em 1em 1em;
+    background-color: #d3d3d3;
+    padding: 5px;
+}
+
+/* System config warnings */
+.payone-config-warning {
+    width: 100%;
+    padding-left: 0px !important;
+
+}
+.payone-config-warning ul {
+    width: 100%;
+    border: 0 !important;
+    list-style-type: none;
+    padding-left: 0px;
+}
+
+.payone-config-warning li {
+    min-height: 23px !important;
+    margin-bottom: 11px !important;
+    margin-right: -10px;
+    padding: 8px 13px 2px 37px !important;
+    font-size: .95em !important;
+    font-weight: bold !important;
+    list-style-type: none;
+}
+
+.payone-config-warning ul li {
+    margin: 0 0 3px 0 !important;
+    border: 0 !important;
+    padding: 0 !important;
+}
+
+.payone-config-warning-content {
+    border: 1px solid #f16048 !important;
+    color: #df280a !important;
+    background: #faebe7 url(images/error_msg_icon.gif) no-repeat 10px 10px !important;
+}
+/* system config hints */
+.payone-payment-hint {
+    border: 1px solid #CCC;
+    margin-bottom: 15px;
+    margin-top: -10px;
+    padding: 7px 10px 10px 200px;
+    background: url(images/logoclaim.gif) no-repeat scroll 5px 5px #fff;
+}
+
+.payone-payment-hint h4, .payone-payment-hint p {
+    margin: 0;
+}
+
+.payone-payment-hint a {
+    text-decoration: none;
+}
+
+.payone-group-hint {
+    border: 1px solid #CCC;
+    margin-bottom: 10px;
+    padding: 10px 20px 5px 20px;
+    background-color: #EAF0EE;
+}
+
+/* admin grids and forms */
+.payone-adminhtml-head {
+    background: url(images/favicon.png) no-repeat scroll 0px 1px;
+    padding: 0px 25px;
+    color: #003b59 !important;
+}
+
+.payone-widget-tab span .payone-tab {
+    background: url(images/favicon.png) no-repeat scroll 0px 0px !important;
+    padding: 0px 20px;
+    color: #003B59;
+}
+
+/* protocol tables */
+tr.payone-even {
+    background-color: #F6F6F6;
+}
+
+tr.payone-odd {
+    background-color: #FFFFFF;
+}
+
+button {
+    -webkit-border-fit: border !important;
+}

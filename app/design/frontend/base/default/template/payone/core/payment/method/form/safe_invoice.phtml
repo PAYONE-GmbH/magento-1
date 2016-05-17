@@ -1,0 +1,79 @@
+<?php
+/**
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the GNU General Public License (GPL 3)
+ * that is bundled with this package in the file LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Payone_Core to newer
+ * versions in the future. If you wish to customize Payone_Core for your
+ * needs please refer to http://www.payone.de for more information.
+ *
+ * @category        Payone
+ * @package         design_frontend_base_default
+ * @subpackage      template
+ * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
+ * @author          Matthias Walter <info@noovias.com>
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.noovias.com
+ */
+
+/** @var $this Payone_Core_Block_Payment_Method_Form_SafeInvoice */
+$code = $this->getMethodCode();
+$paymentConfigId = $this->getPaymentMethodConfigId();
+?>
+<fieldset class="form-list">
+    <ul id="payment_form_<?php echo $code ?>" style="display:none">
+        <li>
+            <div class="input-box">
+                <label for="<?php echo $code; ?>_sin_type">
+                    <?php echo $this->__('Safe Invoice Type'); ?>&nbsp;<span class="required">*</span>
+                </label><br class="clear"/>
+
+                <?php
+                $types = $this->getTypes();
+                if (count($types) > 1) : ?>
+                    <select id="<?php echo $code ?>_sin_type_select" name="<?php echo $code ?>_sin_type_select"
+                            onchange="payoneSwitchSafeInvoice(this);" class="no-submit required-entry">
+                        <option value=""><?php echo $this->__('--Please Select--') ?></option>
+                        <?php
+                        foreach ($types as $key => $type) :
+                            $isChosen = $type['config_id'] == $paymentConfigId ? true : false;
+                            $selected = $isChosen ? 'selected="selected"' : '';
+                            if (empty($paymentConfigId) or $isChosen) {
+                                $paymentConfigId = $type['config_id'];
+                                $paymentType = $type['code'];
+                            }
+                            ?>
+                            <option value="<?php echo $key ?>" <?php echo $selected; ?>>
+                                <?php echo $type['name'] ?><span><?php echo $type['fee']; ?></span>
+                            </option>
+                            <?php endforeach; ?>
+                    </select>
+                    <input type="hidden" id="<?php echo $code ?>_sin_type" name="payment[payone_safe_invoice_type]"
+                           value="<?php echo $paymentType;?>"/>
+                    <?php
+                else :
+                    $type = array_pop($types);
+                    $paymentConfigId = $type['config_id'];
+                    ?>
+                    <?php echo $type['name']; ?>&nbsp;<span><?php echo $type['fee']; ?></span>
+                    <input type="hidden" id="<?php echo $code ?>_sin_type" name="payment[payone_safe_invoice_type]"
+                           value="<?php echo $type['code']; ?>"/>
+                    <?php
+                endif;?>
+                <input type="hidden" name="payment[payone_config_payment_method_id]"
+                       id="<?php echo $code ?>_config_id" value="<?php echo $paymentConfigId; ?>"/>
+            </div>
+        </li>
+        <li>
+            <?php if ($this->showBlockHtmlKlarna()) :
+                echo $this->getBlockHtmlKlarna();
+                endif;
+            ?>
+        </li>
+    </ul>
+</fieldset>

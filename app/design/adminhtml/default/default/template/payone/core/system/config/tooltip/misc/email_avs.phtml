@@ -1,0 +1,70 @@
+<?php
+/**
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the GNU General Public License (GPL 3)
+ * that is bundled with this package in the file LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Payone_Core to newer
+ * versions in the future. If you wish to customize Payone_Core for your
+ * needs please refer to http://www.payone.de for more information.
+ *
+ * @category        Payone
+ * @package         design_adminhtml_default_default
+ * @subpackage      template
+ * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
+ * @author          Matthias Walter <info@noovias.com>
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.noovias.com
+ */
+?>
+<b><?php echo $this->__("Here you can configure E-Mail notifications for the use with AVS (Address Verification System). This feature is provided by American Express and checks, whether the numeric parts of a given address match the data in American Express' database. Depending on the result different values will be returned."); ?><br>
+	<br>
+	<?php echo $this->__('This feature is only usable with credit card payment via American Express and has to be purchased individually from PAYONE.'); ?>
+</b><br>
+<br>
+<div class="field-name"><?php echo $this->__('Activated'); ?></div>
+<div class="field-description">
+    <?php echo $this->__('Here you can activate AVS e-mail notifications'); ?><br>
+    <br>
+    <b><?php echo $this->__('Options'); ?>:</b><br>
+    <ul>
+        <li><?php echo $this->__('Yes'); ?></li>
+        <li><?php echo $this->__('No'); ?></li>
+    </ul>
+</div>
+<br>
+<div class="field-name"><?php echo $this->__('Send e-mail for the following AVS return values'); ?></div>
+<div class="field-description">
+    <b><?php echo $this->__('Options'); ?>:</b><br>
+    <ul>
+        <li><?php echo $this->__('House number is valid, zip code is not valid'); ?></li>
+        <li><?php echo $this->__('House number and zip code are valid'); ?></li>
+        <li><?php echo $this->__('Neither house number nor zip code are valid'); ?></li>
+        <li><?php echo $this->__('Request not supported'); ?></li>
+        <li><?php echo $this->__('House number is not valid, zip code is valid'); ?></li>
+    </ul>
+</div>
+<br><div class="field-name"><?php echo $this->__('Sender'); ?></div>
+<div class="field-description">
+    <?php echo $this->__('Here you can select the sender of the mail as defined in the general Magento e-mail settings.'); ?><br>
+</div>
+<br>
+<div class="field-name"><?php echo $this->__('Recipient'); ?></div>
+<div class="field-description">
+    <?php echo $this->__('Here you can select the recipient of the mail as defined in the general Magento e-mail settings.'); ?><br>
+</div>
+<br>
+<div class="field-name"><?php echo $this->__('Cc'); ?></div>
+<div class="field-description">
+    <?php echo $this->__('Here you can define additional recipients in a comma separated list.'); ?><br>
+</div>
+<br>
+<div class="field-name"><?php echo $this->__('Template'); ?></div>
+<div class="field-description">
+    <?php echo $this->__('Choose the template to use for the AVS notification e-mail.'); ?><br>
+</div>
+<br>

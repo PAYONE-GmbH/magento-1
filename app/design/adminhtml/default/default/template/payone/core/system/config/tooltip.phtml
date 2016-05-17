@@ -1,0 +1,44 @@
+<?php
+/**
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the GNU General Public License (GPL 3)
+ * that is bundled with this package in the file LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Payone_Core to newer
+ * versions in the future. If you wish to customize Payone_Core for your
+ * needs please refer to http://www.payone.de for more information.
+ *
+ * @category        Payone
+ * @package         design_adminhtml_default_default
+ * @subpackage      template
+ * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
+ * @author          Matthias Walter <info@noovias.com>
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.noovias.com
+ */
+
+/**
+ * @var $this Payone_Core_Block_Adminhtml_System_Config_Tooltip
+ */
+$hint = $this->getHintHtml();
+$hintText = $this->getHintText() == ''? '&nbsp;': $this->getHintText();
+$title = $this->getTitle();
+$id = md5('payone-config-hint-content' . $hint . $title);
+$idHint = "payone-config-hint-" . $id;
+$idContent = "payone-config-hint-content-" . $id;
+?>
+<div class="payone-config-hint-container">
+    <div id="<?php echo $idHint ?>" class="payone-config-hint"
+         onclick="payoneTooltipShow('<?php echo $idContent ?>', '<?php echo $title ?>');">
+        <?php echo $hintText ?>
+    </div>
+    <div style="display: none !important;">
+        <div id="<?php echo $idContent ?>" class="payone-config-hint-content">
+            <?php echo $hint ?>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,66 @@
+<?php
+/**
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the GNU General Public License (GPL 3)
+ * that is bundled with this package in the file LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Payone_Core to newer
+ * versions in the future. If you wish to customize Payone_Core for your
+ * needs please refer to http://www.payone.de for more information.
+ *
+ * @category        Payone
+ * @package         design_adminhtml_base_default
+ * @subpackage      template
+ * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
+ * @author          Matthias Walter <info@noovias.com>
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.noovias.com
+ */
+
+/** @var $this Payone_Core_Block_Payment_Method_Info_SafeInvoice */
+?>
+<?php
+$bankAccountholder = $this->getInfo()->getData('payone_clearing_bank_accountholder');
+$bankCountry = $this->getInfo()->getData('payone_clearing_bank_country');
+$bankAccount = $this->getInfo()->getData('payone_clearing_bank_account');
+$bankCode = $this->getInfo()->getData('payone_clearing_bank_code');
+$bankIban = $this->getInfo()->getData('payone_clearing_bank_iban');
+$bankBic = $this->getInfo()->getData('payone_clearing_bank_bic');
+$bankCity = $this->getInfo()->getData('payone_clearing_bank_city');
+$bankName = $this->getInfo()->getData('payone_clearing_bank_name');
+$legalnote = $this->getInfo()->getData('payone_clearing_legalnote');
+$duedate = $this->getInfo()->getData('payone_clearing_duedate');
+$reference = $this->getInfo()->getData('payone_clearing_reference');
+$instructionnote = $this->getInfo()->getData('payone_clearing_instructionnote');
+
+?>
+<?php echo $this->getMethodTitle() ?>
+{{pdf_row_separator}}
+<?php echo Mage::helper('payone_core')->__('Accountholder: %s', $bankAccountholder) ?>
+{{pdf_row_separator}}
+<?php echo Mage::helper('payone_core')->__('Country: %s', $bankCountry) ?>
+{{pdf_row_separator}}
+<?php echo Mage::helper('payone_core')->__('Account: %s', $bankAccount) ?>
+{{pdf_row_separator}}
+<?php echo Mage::helper('payone_core')->__('Code: %s', $bankCode) ?>
+{{pdf_row_separator}}
+<?php echo Mage::helper('payone_core')->__('IBAN: %s', $bankIban) ?>
+{{pdf_row_separator}}
+<?php echo Mage::helper('payone_core')->__('BIC: %s', $bankBic) ?>
+{{pdf_row_separator}}
+<?php echo Mage::helper('payone_core')->__('City: %s', $bankCity) ?>
+{{pdf_row_separator}}
+<?php echo Mage::helper('payone_core')->__('Name: %s', $bankName) ?>
+{{pdf_row_separator}}
+<?php echo Mage::helper('payone_core')->__('Legalnote: %s', $legalnote) ?>
+{{pdf_row_separator}}
+<?php echo Mage::helper('payone_core')->__('Duedate: %s', $duedate) ?>
+{{pdf_row_separator}}
+<?php echo Mage::helper('payone_core')->__('Reference: %s', $reference) ?>
+{{pdf_row_separator}}
+<?php echo Mage::helper('payone_core')->__('Instructionnote: %s', $instructionnote) ?>
+{{pdf_row_separator}}

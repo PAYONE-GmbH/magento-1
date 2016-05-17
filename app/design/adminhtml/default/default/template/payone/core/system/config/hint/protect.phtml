@@ -1,0 +1,41 @@
+<?php
+/**
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the GNU General Public License (GPL 3)
+ * that is bundled with this package in the file LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Payone_Core to newer
+ * versions in the future. If you wish to customize Payone_Core for your
+ * needs please refer to http://www.payone.de for more information.
+ *
+ * @category        Payone
+ * @package         design_adminhtml_default_default
+ * @subpackage      template
+ * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
+ * @author          Matthias Walter <info@noovias.com>
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.noovias.com
+ */
+?>
+<?php
+/**
+ * @var $this Payone_Core_Block_Adminhtml_System_Config_Hint
+ */
+?>
+<p>
+    <b><?php echo $this->__("Be advised that you can only use these options if you purchase Protect from PAYONE."); ?><br>
+       <?php echo $this->__("Usage of credit checks and address verification generates variable costs. The exact prices are noted in your PAYONE contract."); ?>
+    </b>
+</p>
+
+<p>
+    <?php echo $this->__("Please use caution when configuring credit checks."); ?><br>
+    <?php echo $this->__("Credit checks are carried out after your customer entered their personal data. It affects the payment methods available to your customer during checkout."); ?><br>
+    <?php echo $this->__("Credit checks should only be used with payment methods that have the risk of shortfall in payment or fraud, for instance invoice or direct debit."); ?><br>
+    <?php echo $this->__("You can configure this behaviour through the credit rating index setting in the configuration of the respective payment method."); ?><br>
+    <?php echo $this->__("You should advise your customers that you perform credit checks with the InfoScore Consumer Data GmbH."); ?>
+</p>

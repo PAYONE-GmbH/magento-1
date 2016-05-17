@@ -1,0 +1,147 @@
+<?xml version="1.0"?><!--
+/**
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the GNU General Public License (GPL 3)
+ * that is bundled with this package in the file LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Payone_Core to newer
+ * versions in the future. If you wish to customize Payone_Core for your
+ * needs please refer to http://www.payone.de for more information.
+ *
+ * @category        Payone
+ * @package         design_frontend_base_default
+ * @subpackage      layout
+ * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
+ * @author          Matthias Walter <info@noovias.com>
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.noovias.com
+ */
+-->
+<layout>
+    <payone_core_pexpress_review translate="label">
+        <label>Payone PayPal Express Order Review Form</label>
+        <remove name="right"/>
+        <remove name="left"/>
+
+        <reference name="root">
+            <action method="setTemplate"><template>page/1column.phtml</template></action>
+        </reference>
+        <reference name="content">
+            <block type="payone_core/paypal_express_review" name="paypal.express.review" template="paypal/express/review.phtml">
+                <block type="payone_core/paypal_express_review_billing" name="express.review.billing" as="billing" template="paypal/express/review/address.phtml"/>
+                <block type="payone_core/paypal_express_review_shipping" name="express.review.shipping" as="shipping" template="paypal/express/review/address.phtml"/>
+                <block type="payone_core/paypal_express_review" name="express.review.shipping.method" as="shipping_method" template="paypal/express/review/shipping/method.phtml"/>
+                <block type="payone_core/paypal_express_review_details" name="paypal.express.review.details" as="details" template="paypal/express/review/details.phtml">
+                    <action method="addItemRender"><type>default</type><block>checkout/cart_item_renderer</block><template>checkout/onepage/review/item.phtml</template></action>
+                    <action method="addItemRender"><type>grouped</type><block>checkout/cart_item_renderer_grouped</block><template>checkout/onepage/review/item.phtml</template></action>
+                    <action method="addItemRender"><type>configurable</type><block>checkout/cart_item_renderer_configurable</block><template>checkout/onepage/review/item.phtml</template></action>
+                    <block type="checkout/cart_totals" name="paypal.express.review.details.totals" as="totals" template="checkout/onepage/review/totals.phtml"/>
+                </block>
+                <block type="checkout/agreements" name="paypal.express.review.details.agreements" as="agreements" template="checkout/onepage/agreements.phtml"/>
+            </block>
+        </reference>
+        <reference name="head">
+            <action method="addItem"><type>skin_js</type><name>js/checkout/review.js</name></action>
+        </reference>
+        <block type="core/text_list" name="additional.product.info" />
+    </payone_core_pexpress_review>
+
+    <checkout_cart_index>
+        <reference name="checkout.cart.top_methods">
+            <block type="payone_core/paypal_express_shortcut" name="payone.checkout.cart.methods.paypal_express.top" before="-" template="payone/core/paypal/express/shortcut.phtml">
+                <action method="setIsQuoteAllowed"><value>1</value></action>
+                <action method="setShowOrPosition"><value>after</value></action>
+            </block>
+        </reference>
+
+        <reference name="checkout.cart.methods">
+            <block type="payone_core/paypal_express_shortcut" name="payone.checkout.cart.methods.paypal_express.bottom" before="-" template="payone/core/paypal/express/shortcut.phtml">
+                <action method="setIsQuoteAllowed"><value>1</value></action>
+                <action method="setShowOrPosition"><value>after</value></action>
+            </block>
+        </reference>
+
+        <!--<update handle="SHORTCUT_popup" />-->
+    </checkout_cart_index>
+
+    <default>
+        <reference name="topCart.extra_actions">
+            <block type="payone_core/paypal_express_shortcut" name="payone.paypal.partner.top_cart.shortcut" template="payone/core/paypal/express/shortcut.phtml"/>
+        </reference>
+        <reference name="cart_sidebar.extra_actions">
+            <block type="payone_core/paypal_express_shortcut" name="payone.paypal.partner.cart_sidebar.shortcut" template="payone/core/paypal/express/shortcut.phtml"/>
+        </reference>
+    </default>
+
+    <checkout_onepage_index>
+        <reference name="head">
+            <action method="addJs"><script>payone/core/client_api.js</script></action>
+            <action method="addJs"><script>payone/core/creditcard.js</script></action>
+            <action method="addJs"><script>payone/core/financing.js</script></action>
+            <action method="addJs"><script>payone/core/onlinebanktransfer.js</script></action>
+            <action method="addJs"><script>payone/core/safe_invoice.js</script></action>
+            <action method="addJs"><script>payone/core/wallet.js</script></action>
+            <action method="addJs"><script>payone/core/debitpayment.js</script></action>
+            <action method="addJs"><script>payone/core/sepa_input.js</script></action>
+            <action method="addJs"><script>payone/core/sepa_validation.js</script></action>
+            <action method="addJs"><script>payone/core/klarna.js</script></action>
+            <action method="addJs"><script>payone/core/ratepay.js</script></action>
+            <action method="addJs" ifconfig="payone_protect/general/enabled">
+                <script>payone/core/addresscheck.js</script>
+            </action>
+            <action method="addCss"><name>payone/core/mandate.css</name></action>
+        </reference>
+
+        <reference name="head">
+            <block type="core/template" name="payone_core_clientapi" template="payone/core/client_api.phtml" />
+            <block type="core/template" name="payone_core_protect" template="payone/core/checkout/protect.phtml" />
+            <block type="core/template" name="payone_core_payment" template="payone/core/checkout/onepage/init.phtml" />
+            <!-- add Klarna external JS: -->
+            <block type="core/template" name="payone_core_klarna_scripts"
+                   template="payone/core/payment/method/form/safe_invoice/klarna/scripts.phtml" />
+        </reference>
+
+        <reference name="checkout.onepage.payment.methods_additional">
+            <block type="payone_core/checkout_onepage_payment_additional"
+                   name="payone_core_payment_additional"
+                   template="payone/core/checkout/onepage/payment/additional.phtml" />
+        </reference>
+    </checkout_onepage_index>
+
+    <checkout_onepage_review>
+        <reference name="checkout.onepage.review.info.items.after">
+            <block type="payone_core/checkout_onepage_review_sepaMandate"
+                   template="payone/core/checkout/onepage/review/sepamandate.phtml"
+                   name="payone_core_checkout_onepage_review_sepamandate" />
+        </reference>
+    </checkout_onepage_review>
+
+    <checkout_onepage_success>
+        <reference name="content">
+            <block type="payone_core/checkout_onepage_success_sepaMandatePdfLink"
+                   template="payone/core/checkout/onepage/success/sepamandatepdflink.phtml"
+                   after="checkout.success" />
+        </reference>
+        <reference name="content">
+            <block type="payone_core/checkout_onepage_success_barzahlen"
+                   template="payone/core/checkout/onepage/success/barzahlen.phtml"
+                   after="checkout.success" />
+        </reference>
+    </checkout_onepage_success>
+
+    <payone_core_iframe_show translate="label">
+        <label>Payment with Yapital</label>
+        <reference name="content">
+            <block type="payone_core/checkout_onepage_payment_iframe" name="payone.core.checkout.iframe" template="payone/core/checkout/iframe.phtml" />
+        </reference>
+
+        <reference name="root">
+            <action method="setTemplate"><template>page/1column.phtml</template></action>
+        </reference>
+    </payone_core_iframe_show>
+
+</layout>

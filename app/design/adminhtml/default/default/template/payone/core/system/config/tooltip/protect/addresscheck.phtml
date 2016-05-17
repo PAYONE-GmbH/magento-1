@@ -1,0 +1,140 @@
+<?php
+/**
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the GNU General Public License (GPL 3)
+ * that is bundled with this package in the file LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Payone_Core to newer
+ * versions in the future. If you wish to customize Payone_Core for your
+ * needs please refer to http://www.payone.de for more information.
+ *
+ * @category        Payone
+ * @package         design_adminhtml_default_default
+ * @subpackage      template
+ * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
+ * @author          Matthias Walter <info@noovias.com>
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.noovias.com
+ */
+?>
+<div class="field-name"><?php echo $this->__('Activated'); ?></div>
+<div class="field-description">
+    <?php echo $this->__('Here you can activate address validation with the following configuration options.'); ?><br>
+    <br>
+    <b><?php echo $this->__('Options'); ?>:</b><br>
+    <ul>
+        <li><?php echo $this->__('Yes'); ?></li>
+        <li><?php echo $this->__('No'); ?></li>
+    </ul>
+</div>
+<br>
+<div class="field-name"><?php echo $this->__('Check billing address'); ?></div>
+<div class="field-description">
+	<?php echo $this->__('Here you can configure how the billing address is validated.'); ?><br>
+    <br>
+    <b><?php echo $this->__('Options'); ?>:</b><br>
+    <ul>
+        <li><?php echo $this->__('none'); ?></li>
+        <li><?php echo $this->__('Basic'); ?></li>
+        <li><?php echo $this->__('Person'); ?></li>
+    </ul>
+    <br>
+
+    <div class="payone-group-hint">
+        <h6><?php echo $this->__('Basic'); ?></h6>
+		<?php echo $this->__('Check if the address is existent, has a typo or is otherwise slightly malformed. This is possible for addresses from Germany, Austria, Switzerland, The Netherlands, Belgium, Luxemburg, France, Italy, Spain, Portugal, Denmark, Sweden, Finland, Norway, Poland, Slovakia, Czech Republic, Hungary, The United States, and Canada.'); ?><br>
+        <h6><?php echo $this->__('Person'); ?></h6>
+		<?php echo $this->__('Check if the given person is known at the given address, check if the address is existent, has a typo or is otherwise slightly malformed. This is only available for German addresses.'); ?><br>
+        <br>
+    </div>
+</div>
+<br>
+<div class="field-name"><?php echo $this->__('Check shipping address'); ?></div>
+<div class="field-description">
+    <?php echo $this->__('Here you can configure how the shipping address is validated.'); ?><br>
+    <br>
+    <b><?php echo $this->__('Options'); ?>:</b><br>
+    <ul>
+        <li><?php echo $this->__('none'); ?></li>
+        <li><?php echo $this->__('Basic'); ?></li>
+        <li><?php echo $this->__('Person'); ?></li>
+    </ul>
+</div>
+<br>
+<div class="field-name"><?php echo $this->__('Mode'); ?></div>
+<div class="field-description">
+	<?php echo $this->__('Define in which mode requests will be sent to the PAYONE Platform.'); ?><br>
+    <br>
+    <b><?php echo $this->__('Options'); ?>:</b><br>
+    <ul>
+        <li><?php echo $this->__('Test'); ?></li>
+        <li><?php echo $this->__('Live'); ?></li>
+    </ul>
+</div>
+<br>
+<div class="field-name"><?php echo $this->__('Minimal cart value'); ?></div>
+<div class="field-description">
+	<?php echo $this->__('Define a minimal cart value for address checks. Is the cart value below this, the address check will not be executed.'); ?><br>
+</div>
+<br>
+<div class="field-name"><?php echo $this->__('Maximal cart value'); ?></div>
+<div class="field-description">
+    <?php echo $this->__('Define a maximal cart value for address checks. Is the cart value above this, the address check will not be executed.'); ?><br>
+</div>
+<br>
+<div class="field-name">
+    <span style="font-style:italic;"><?php echo $this->__('Mapping of person status'); ?></span>
+</div>
+<div class="field-description">
+	<?php echo $this->__('If the address is validated with a person check, the return values can be mapped to traffic light scores. Traffic light scores control which payment methods are available to the customer. In the "Creditrating" area, you can configure which payment methods are available for the individual traffic light scores. ("Allowed methods for traffic light store YELLOW" and "Allowed methods for traffic light score RED"). Even with credit checks disabled this traffic score values will be taken into account when determining which payment methods are available to the customer during checkout.'); ?><br>
+    <br>
+    <b><?php echo $this->__('Options'); ?>:</b><br>
+    <ul>
+        <li><?php echo $this->__('Person status'); ?>
+            <ul>
+                <li><?php echo $this->__('First and last name known'); ?></li>
+                <li><?php echo $this->__('Last name known'); ?></li>
+                <li><?php echo $this->__('First and last name unknown'); ?></li>
+                <li><?php echo $this->__('Not deliverable'); ?></li>
+                <li><?php echo $this->__('Name ambiguous at this address'); ?></li>
+                <li><?php echo $this->__('Person deceased'); ?></li>
+                <li><?php echo $this->__('Address postally wrong'); ?></li>
+            </ul>
+        </li>
+        <li><?php echo $this->__('Score'); ?>
+            <ul>
+                <li><?php echo $this->__('Green'); ?></li>
+                <li><?php echo $this->__('Yellow'); ?></li>
+                <li><?php echo $this->__('Red'); ?></li>
+            </ul>
+        </li>
+    </ul>
+</div>
+<br>
+<div class="field-name"><?php echo $this->__('Error handling'); ?></div>
+<div class="field-description">
+	<?php echo $this->__('Here you can configure how errors during address checks or the unavailability of the address check systems should be handled.'); ?>
+    <br>
+	<?php echo $this->__('This applies to all PAYONE Platform responses with result <span style="color:red; font-style:italic;">ERROR</span>'); ?>
+    <br>
+    <br>
+    <b><?php echo $this->__('Options'); ?>:</b><br>
+    <ul>
+        <li><?php echo $this->__('Continue checkout'); ?></li>
+        <li><?php echo $this->__('Cancel checkout'); ?></li>
+    </ul>
+</div>
+<br>
+<div class="field-name"><?php echo $this->__('Validity period'); ?></div>
+<div class="field-description">
+	<?php echo $this->__('You can configure here for which time frame an address check result is valid. During this period, no new address check request will be sent for this user. This requires the customer to be registered with your shop, or that they registered during the checkout process.'); ?><br>
+    <br>
+    <?php echo $this->__('<b>Caution</b> This setting does not apply to guest buyers.'); ?>
+</div>
+<br>
+<br>
+<br>

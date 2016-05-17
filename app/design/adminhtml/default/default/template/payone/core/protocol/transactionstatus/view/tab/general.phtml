@@ -1,0 +1,124 @@
+<?php
+/**
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the GNU General Public License (GPL 3)
+ * that is bundled with this package in the file LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Payone_Core to newer
+ * versions in the future. If you wish to customize Payone_Core for your
+ * needs please refer to http://www.payone.de for more information.
+ *
+ * @category        Payone
+ * @package         design_adminhtml_default_default
+ * @subpackage      template
+ * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
+ * @author          Matthias Walter <info@noovias.com>
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.noovias.com
+ */
+
+/**
+ * @var $data Payone_Core_Model_Domain_Protocol_TransactionStatus
+ * @var $this Payone_Core_Block_Adminhtml_Protocol_TransactionStatus_View_Tab_General
+ */
+$data = $this->getTransactionStatus();
+?>
+<div class="box-left">
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-account"><?php echo $this->helper('payone_core')->__('Raw Request') ?></h4>
+        </div>
+        <div class="fieldset">
+            <div class="hor-scroll">
+                <table cellspacing="0" class="form-list" style="width: 100%;">
+                    <?php $i = 0;
+                    foreach ($data->getRawRequest() as $key => $value) {
+                        ?>
+                        <tr class="<?php echo (++$i % 2) ? 'payone-even' : 'payone-odd' ?>">
+                            <td class="label">
+                                <label><?php echo $key ?></label>
+                            </td>
+                            <td class="label">
+                                <strong><?php echo $value ?></strong>
+                            </td>
+                        </tr>
+                        <?php } ?>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="box-right">
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-account"><?php echo Mage::helper('payone_core')
+                ->__('General Parameter') ?></h4>
+        </div>
+        <div class="fieldset">
+            <div class="hor-scroll">
+                <table cellspacing="0" class="form-list">
+                    <tr>
+                        <td class="label">
+                            <label><?php echo $this->helper('payone_core')->__('ID') ?></label>
+                        </td>
+                        <td class="label">
+                            <strong><?php echo $data->getId() ?></strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">
+                            <label><?php echo $this->helper('payone_core')->__('Order-ID') ?></label>
+                        </td>
+                        <td class="label">
+                            <strong><?php echo $data->getOrderId() ?></strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">
+                            <label><?php echo $this->helper('payone_core')->__('Failed Reason') ?></label>
+                        </td>
+                        <td class="label">
+                            <strong><?php echo $data->getFailedcause() ?></strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">
+                            <label><?php echo $this->helper('payone_core')->__('Created At') ?></label>
+                        </td>
+                        <td class="label">
+                            <strong><?php echo $this->getLocaleDatetime($data->getCreatedAt()) ?></strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">
+                            <label><?php echo $this->helper('payone_core')->__('Updated At') ?></label>
+                        </td>
+                        <td class="label">
+                            <strong><?php echo $this->getLocaleDatetime($data->getUpdatedAt()) ?></strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">
+                            <label><?php echo $this->helper('payone_core')->__('Processing Status') ?></label>
+                        </td>
+                        <td class="label">
+                            <strong><?php echo $data->getProcessingStatus() ?></strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">
+                            <label><?php echo $this->helper('payone_core')->__('Processed At') ?></label>
+                        </td>
+                        <td class="label">
+                            <strong><?php echo $this->getLocaleDatetime($data->getProcessedAt()) ?></strong>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

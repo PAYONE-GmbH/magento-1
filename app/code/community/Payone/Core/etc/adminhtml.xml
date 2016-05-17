@@ -1,0 +1,241 @@
+<?xml version="1.0"?><!--
+/**
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the GNU General Public License (GPL 3)
+ * that is bundled with this package in the file LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Payone_Core to newer
+ * versions in the future. If you wish to customize Payone_Core for your
+ * needs please refer to http://www.payone.de for more information.
+ *
+ * @category        Payone
+ * @package         Payone_Core
+ * @subpackage      etc
+ * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
+ * @author          Matthias Walter <info@noovias.com>
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.noovias.com
+ */
+-->
+<config>
+    <menu>
+        <payone module="payone_core">
+            <title>PAYONE</title>
+            <sort_order>100</sort_order>
+            <children>
+                <sales_order module="payone_core">
+                    <title>Orders</title>
+                    <sort_order>10</sort_order>
+                    <action>adminhtml/payonecore_sales_order</action>
+                </sales_order>
+                <transaction module="payone_core">
+                    <title>Transactions</title>
+                    <sort_order>20</sort_order>
+                    <action>adminhtml/payonecore_transaction</action>
+                </transaction>
+                <protocol module="payone_core">
+                    <title>Logs</title>
+                    <sort_order>30</sort_order>
+                    <children>
+                        <transactionStatus module="payone_core">
+                            <title>Transactionstatus</title>
+                            <sort_order>10</sort_order>
+                            <action>adminhtml/payonecore_protocol_transactionStatus</action>
+                        </transactionStatus>
+                        <api module="payone_core">
+                            <title>API</title>
+                            <sort_order>20</sort_order>
+                            <action>adminhtml/payonecore_protocol_api</action>
+                        </api>
+                    </children>
+                </protocol>
+                <configuration module="payone_core">
+                    <title>Configuration</title>
+                    <sort_order>40</sort_order>
+                    <children>
+                        <general module="payone_core">
+                            <title>General</title>
+                            <sort_order>10</sort_order>
+                            <action>adminhtml/system_config/edit/section/payone_general/</action>
+                        </general>
+                        <payment module="payone_core">
+                            <title>Payment-Methods</title>
+                            <sort_order>20</sort_order>
+                            <action>adminhtml/system_config/edit/section/payone_payment/</action>
+                        </payment>
+                        <protect module="payone_core">
+                            <title>PROTECT</title>
+                            <sort_order>30</sort_order>
+                            <action>adminhtml/system_config/edit/section/payone_protect/</action>
+                        </protect>
+                        <misc module="payone_core">
+                            <title>Misc</title>
+                            <sort_order>40</sort_order>
+                            <action>adminhtml/system_config/edit/section/payone_misc/</action>
+                        </misc>
+                        <configuration_export module="payone_core">
+                            <title>Export Configuration</title>
+                            <sort_order>50</sort_order>
+                            <action>adminhtml/payonecore_system_configuration/export</action>
+                        </configuration_export>
+                    </children>
+                </configuration>
+                <configuration_wizard module="payone_core">
+                    <title>Configuration-Wizard</title>
+                    <sort_order>50</sort_order>
+                    <action>adminhtml/payonecore_configuration_wizard</action>
+                </configuration_wizard>
+                <information module="payone_core">
+                    <title>Information</title>
+                    <sort_order>60</sort_order>
+                    <action>adminhtml/payonecore_information/</action>
+                </information>
+            </children>
+        </payone>
+    </menu>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <payone_general>
+                                        <title>General</title>
+                                        <sort_order>10</sort_order>
+                                    </payone_general>
+                                    <payone_protect>
+                                        <title>PROTECT</title>
+                                        <sort_order>20</sort_order>
+                                    </payone_protect>
+                                    <payone_payment>
+                                        <title>Payment</title>
+                                        <sort_order>30</sort_order>
+                                    </payone_payment>
+                                    <payone_misc>
+                                        <title>Misc</title>
+                                        <sort_order>40</sort_order>
+                                    </payone_misc>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                    <payone>
+                        <title>PAYONE</title>
+                        <sort_order>100</sort_order>
+                        <children>
+                            <sales_order>
+                                <title>Order</title>
+                                <sort_order>10</sort_order>
+                            </sales_order>
+                            <transaction>
+                                <title>Transaction</title>
+                                <sort_order>20</sort_order>
+                                <children>
+                                    <view>
+                                        <title>View</title>
+                                        <sort_order>10</sort_order>
+                                    </view>
+                                </children>
+                            </transaction>
+                            <protocol>
+                                <title>Logs</title>
+                                <sort_order>30</sort_order>
+                                <children>
+                                    <transactionStatus>
+                                        <title>Transactionstatus</title>
+                                        <sort_order>10</sort_order>
+                                        <children>
+                                            <view>
+                                                <title>View</title>
+                                                <sort_order>10</sort_order>
+                                            </view>
+                                            <export>
+                                                <title>Export</title>
+                                                <sort_order>20</sort_order>
+                                            </export>
+                                        </children>
+                                    </transactionStatus>
+                                    <api>
+                                        <title>Api</title>
+                                        <sort_order>20</sort_order>
+                                        <children>
+                                            <view>
+                                                <title>View</title>
+                                                <sort_order>10</sort_order>
+                                            </view>
+                                            <export>
+                                                <title>Export</title>
+                                                <sort_order>20</sort_order>
+                                            </export>
+                                        </children>
+                                    </api>
+                                </children>
+                            </protocol>
+                            <configuration>
+                                <title>Configuration</title>
+                                <sort_order>40</sort_order>
+                                <children>
+                                    <general>
+                                        <title>General</title>
+                                        <sort_order>10</sort_order>
+                                    </general>
+                                    <payment>
+                                        <title>Payment-Methods</title>
+                                        <sort_order>20</sort_order>
+                                    </payment>
+                                    <protect>
+                                        <title>PROTECT</title>
+                                        <sort_order>30</sort_order>
+                                    </protect>
+                                    <misc>
+                                        <title>Misc</title>
+                                        <sort_order>40</sort_order>
+                                    </misc>
+                                    <configuration_export>
+                                        <title>Export Configuration</title>
+                                        <sort_order>50</sort_order>
+                                    </configuration_export>
+                                </children>
+                            </configuration>
+                            <configuration_wizard>
+                                <title>Configuration-Wizard</title>
+                                <sort_order>50</sort_order>
+                            </configuration_wizard>
+                            <information>
+                                <title>Information</title>
+                                <sort_order>60</sort_order>
+                            </information>
+                        </children>
+                    </payone>
+                    <sales>
+                        <children>
+                            <order>
+                                <children>
+                                    <actions>
+                                        <children>
+                                            <invoice>
+                                                <children>
+                                                    <download_payone_invoice translate="title">
+                                                        <title>Download Payone-Invoice</title>
+                                                    </download_payone_invoice>
+                                                </children>
+
+                                            </invoice>
+                                        </children>
+                                    </actions>
+                                </children>
+                            </order>
+                        </children>
+                    </sales>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+
+</config>

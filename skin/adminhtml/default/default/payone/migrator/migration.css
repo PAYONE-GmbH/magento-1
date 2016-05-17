@@ -1,0 +1,60 @@
+/**
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the GNU General Public License (GPL 3)
+ * that is bundled with this package in the file LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Payone_Core to newer
+ * versions in the future. If you wish to customize Payone_Core for your
+ * needs please refer to http://www.payone.de for more information.
+ *
+ * @category        Payone
+ * @package         skin_adminhtml_default_default
+ * @subpackage      payone_core
+ * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
+ * @author          Matthias Walter <info@noovias.com>
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.noovias.com
+ */
+
+#payone_wizard_form_buttons {
+    display: none;
+}
+
+/* system config */
+.payone_migration_wrapper {
+    height: 200px;
+    background-color: white;
+    border: solid 1px black;
+    padding: 20px;
+    margin-bottom: 20px;
+    font: normal 12px Lucida Console, Courier New, serif;
+    font-weight: bold;
+    line-height: 1.5em;
+}
+
+.payone_migration_wrapper div {
+    height: 15px;
+    width: 500px;
+    padding-left: 25px;
+    margin-bottom: 15px;
+}
+
+.payone_migration_wrapper .hidden {
+    display: none;
+}
+
+.payone_migration_loading {
+    background: url(images/ajax-loader.gif) no-repeat;
+}
+
+.payone_migration_success {
+    background: url(images/success.gif) no-repeat;
+}
+
+.payone_migration_failure {
+    background: url(images/failure.gif) no-repeat;
+}

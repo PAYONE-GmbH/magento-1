@@ -1,0 +1,69 @@
+<?php
+/**
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the GNU General Public License (GPL 3)
+ * that is bundled with this package in the file LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Payone_Core to newer
+ * versions in the future. If you wish to customize Payone_Core for your
+ * needs please refer to http://www.payone.de for more information.
+ *
+ * @category        Payone
+ * @package         design_adminhtml_default_default
+ * @subpackage
+ * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
+ * @author          Edward Mateja <edward.mateja@votum.de>
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.votum.de
+ */
+?>
+<?php if ($this->canShow()): ?>
+    <script type="text/javascript">
+        //<![CDATA[
+        var messagePopupClosed = false;
+        function openMessagePopup() {
+            var height = $('html-body').getHeight();
+            $('message-popup-window-mask').setStyle({'height':height+'px'});
+            toggleSelectsUnderBlock($('message-popup-window-mask'), false);
+            Element.show('message-popup-window-mask');
+            $('message-popup-window').addClassName('show');
+        }
+
+        function closeMessagePopup() {
+            toggleSelectsUnderBlock($('message-popup-window-mask'), true);
+            Element.hide('message-popup-window-mask');
+            $('message-popup-window').removeClassName('show');
+            messagePopupClosed = true;
+        }
+
+        Event.observe(window, 'load', openMessagePopup);
+        Event.observe(window, 'keyup', function(evt) {
+            if(messagePopupClosed) return;
+            var code;
+            if (evt.keyCode) code = evt.keyCode;
+            else if (evt.which) code = evt.which;
+            if (code == Event.KEY_ESC) {
+                closeMessagePopup();
+            }
+        });
+        //]]>
+    </script>
+    <div id="message-popup-window-mask" style="display:none;"></div>
+    <div id="message-popup-window" class="message-popup">
+        <div class="message-popup-head">
+            <a href="#" onclick="closeMessagePopup(); return false;" title="<?php echo $this->getCloseText(); ?>"><span><?php echo $this->getCloseText(); ?></span></a>
+            <h2><?php echo $this->getHeaderText(); ?></h2>
+        </div>
+        <div class="message-popup-content">
+            <div class="message">
+                <span class="message-icon message-<?php echo $this->getSeverityText();?>" style="background-image:url(<?php echo $this->getSeverityIconsUrl() ?>);"><?php echo $this->getSeverityText();?></span>
+                <p class="message-text"><?php echo $this->getNoticeMessageText(); ?></p>
+            </div>
+            <p class="read-more"><a href="<?php echo $this->getNoticeMessageUrl(); ?>"><?php echo $this->getReadDetailsText(); ?></a></p>
+        </div>
+    </div>
+<?php endif; ?>

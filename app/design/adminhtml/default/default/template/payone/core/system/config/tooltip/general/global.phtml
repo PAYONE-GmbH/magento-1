@@ -1,0 +1,68 @@
+<?php
+/**
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the GNU General Public License (GPL 3)
+ * that is bundled with this package in the file LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Payone_Core to newer
+ * versions in the future. If you wish to customize Payone_Core for your
+ * needs please refer to http://www.payone.de for more information.
+ *
+ * @category        Payone
+ * @package         design_adminhtml_default_default
+ * @subpackage      template
+ * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
+ * @author          Matthias Walter <info@noovias.com>
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.noovias.com
+ */
+?>
+<b><?php echo $this->__('Enter the data from the PAYONE Merchant Interface shown below in this form to ensure communication with the PAYONE Platform.'); ?></b><br>
+    <br>
+    <img src="<?php echo $this->getSkinUrl('payone/core/images/magento_general_global.png'); ?>" alt="magento_general_global.png" /><br>
+<br>
+<div class="field-name"><?php echo $this->__('Merchant-ID'); ?></div>
+<div class="field-description">
+    <?php echo $this->__('The merchant ID you received from PAYONE.'); ?><br>
+</div>
+<br>
+<div class="field-name"><?php echo $this->__('Portal-ID'); ?></div>
+<div class="field-description">
+	<?php echo $this->__('The ID number of the payment portal for processing of the all transactions of your shop.'); ?><br>
+</div>
+<br>
+<div class="field-name"><?php echo $this->__('Sub-Account-ID'); ?></div>
+<div class="field-description">
+    <?php echo $this->__('The ID number of the Sub-Account through which all your payments are going to be processed.'); ?><br>
+</div>
+<br>
+<div class="field-name"><?php echo $this->__('Security Key'); ?></div>
+<div class="field-description">
+    <?php echo $this->__('The key that you defined in the PMI to encrypt the queries sent to the PAYONE Platform.'); ?><br>
+</div>
+<br>
+<div class="field-name"><?php echo $this->__('Payment from allowed countries'); ?></div>
+<div class="field-description">
+	<?php echo $this->__('Define the countries to which this settings should apply. This setting follows the Magento country standard.'); ?>
+</div>
+<br>
+<div class="field-name"><?php echo $this->__('Authorization method'); ?></div>
+<div class="field-description">
+    <?php echo $this->__('Chose here which method to apply for your payments'); ?><br>
+    <?php echo $this->__('Note: For the online transfer methods giropay, SOFORT Banking, eps, PostFinance and iDEAL the payment is carried out fully and completely even if you have selected "Pre-authorisation". Despite this, you would still have to post the receivable via a separate capture, in this case.'); ?><br>
+    <br>
+    <b><?php echo $this->__('Options'); ?>:</b><br>
+    <ul>
+        <li><?php echo $this->__('Pre-authorization'); ?><br>
+			<?php echo $this->__('When selecting "Pre-authorisation" the amount to be paid is reserved during the ordering process. In this case, the actual capture of the amount must be initiated in a second step upon delivery of the goods. The receivable will only be posted after the amount has been captured.'); ?>
+        </li>
+        <li><?php echo $this->__('Authorization'); ?><br>
+            <?php echo $this->__('When selecting "Authorisation" the amount to be paid is debited directly in the course of the ordering process. The receivable is posted immediately.'); ?>
+        </li>
+    </ul>
+</div>
+<br>

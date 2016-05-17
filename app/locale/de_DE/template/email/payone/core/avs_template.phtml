@@ -1,0 +1,11 @@
+<!--@subject PAYONE Core | Error: {{var error_name}} @-->
+<!--@vars
+{"var response.getTxid()":"Transaction-ID",
+ "var response.getUserid()":"User-ID",
+ "var response.getProtectResultAvs()":"Result-Avs",
+ "var response.getStatus()":"Responsestatus"}
+ @-->
+<b>Txid:</b> {{var response.getTxid()}}<br><br>
+<b>UserId:</b> {{var response.getUserid()}}<br><br>
+<b>Protect Result AVS:</b> {{var response.getProtectResultAvs()}}<br><br>
+<b>Status:</b> {{var response.getStatus()}}<br><br>

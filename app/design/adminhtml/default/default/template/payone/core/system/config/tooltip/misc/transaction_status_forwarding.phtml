@@ -1,0 +1,35 @@
+<?php
+/**
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the GNU General Public License (GPL 3)
+ * that is bundled with this package in the file LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Payone_Core to newer
+ * versions in the future. If you wish to customize Payone_Core for your
+ * needs please refer to http://www.payone.de for more information.
+ *
+ * @category        Payone
+ * @package         design_adminhtml_default_default
+ * @subpackage      template
+ * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
+ * @author          Matthias Walter <info@noovias.com>
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.noovias.com
+ */
+
+$timeout = Payone_Core_Model_Service_TransactionStatus_Forward::DEFAULT_TIMEOUT;
+?>
+<?php echo $this->__('Firstly, choose the transaction status messages you wish to be forwarded.'); ?><br>
+<br>
+<?php echo $this->__('Then, choose the URL they should be forwarded to.'); ?><br>
+<br>
+<?php echo $this->__('The status messages will be forwarded exactly as Magento receives them from PAYONE.'); ?><br>
+<br>
+<?php echo $this->__('You can specify an individual time out, should this be necessary (default timeout: %ds )', $timeout); ?><br>
+<ul class="payone-config-warning">
+    <li class="payone-config-warning-content"><span><?php echo $this->__('Please make sure that cron jobs are configured and working correctly in order to use this feature.'); ?><span></li>
+</ul>

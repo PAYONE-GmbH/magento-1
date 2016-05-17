@@ -1,0 +1,52 @@
+<?xml version="1.0"?><!--
+/**
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the GNU General Public License (GPL 3)
+ * that is bundled with this package in the file LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Payone_Migrator to newer
+ * versions in the future. If you wish to customize Payone_Migrator for your
+ * needs please refer to http://www.payone.de for more information.
+ *
+ * @category        Payone
+ * @package         design_adminhtml_default_default
+ * @subpackage      layout
+ * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
+ * @author          Matthias Walter <info@noovias.com>
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.noovias.com
+ */
+-->
+<layout>
+
+    <!-- Wizard -->
+    <adminhtml_payonemigrator_migration_index>
+        <reference name="head">
+            <action method="addJs"><script>payone/migrator/migration.js</script></action>
+            <action method="addCss"><name>payone/migrator/migration.css</name></action>
+        </reference>
+        <reference name="content">
+            <block type="adminhtml/template" name="payone.migration.index"
+                   template="payone/migrator/migration/index.phtml" />
+        </reference>
+    </adminhtml_payonemigrator_migration_index>
+
+    <adminhtml_payonemigrator_migration_wizard_page_migrator>
+        <update handle="adminhtml_payonecore_configuration_wizard_page_view" />
+        <reference name="head">
+            <action method="addJs"><script>payone/migrator/migration.js</script></action>
+            <action method="addCss"><name>payone/migrator/migration.css</name></action>
+        </reference>
+        <reference name="payone.config.wizard.page.view">
+            <action method="removeButton"><name>back</name></action>
+            <action method="removeButton"><name>cancel</name></action>
+            <block type="adminhtml/template" name="payone.migration.index"
+                   template="payone/migrator/migration/index.phtml" />
+        </reference>
+    </adminhtml_payonemigrator_migration_wizard_page_migrator>
+
+</layout>
