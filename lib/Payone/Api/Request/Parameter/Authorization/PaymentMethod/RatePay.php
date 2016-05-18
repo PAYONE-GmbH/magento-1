@@ -35,6 +35,8 @@ class Payone_Api_Request_Parameter_Authorization_PaymentMethod_RatePay
     
     protected $birthday = NULL;
     
+    protected $telephonenumber = NULL;
+    
     /**
      * @var string
      */
@@ -100,6 +102,22 @@ class Payone_Api_Request_Parameter_Authorization_PaymentMethod_RatePay
     public function getBirthday()
     {
         return $this->birthday;
+    }
+    
+    /**
+     * @param string $telephonenumber
+     */
+    public function setTelephonenumber($telephonenumber)
+    {
+        $this->telephonenumber = $telephonenumber;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTelephonenumber()
+    {
+        return $this->telephonenumber;
     }
     
 }
