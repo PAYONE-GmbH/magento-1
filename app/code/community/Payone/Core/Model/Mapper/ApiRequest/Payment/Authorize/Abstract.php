@@ -592,6 +592,12 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
                 $birthdayDate = $this->getOrder()->getCustomerDob();
             }
             $payment->setBirthday($this->formatBirthday($birthdayDate));
+            
+            $telephone = $info->getPayoneCustomerTelephone();
+            if (empty($telephone)) {
+                $telephone = $this->getOrder()->getBillingAddress()->getTelephone();
+            }
+            $payment->setTelephonenumber($telephone);
         }
 
         if ($isRedirect === true) {
