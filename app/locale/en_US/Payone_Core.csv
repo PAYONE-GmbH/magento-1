@@ -32,3 +32,5 @@
 "FCPO_CC_ROW_CC_CVC","CVC security code"
 "FCPO_CC_ROW_CC_Month","Validity-month"
 "FCPO_CC_ROW_CC_Year","Validity-year"
+
+"PAYONE_TOOLTIP_CUSTOMERMESSAGE","Yes - display the error-message given by RatePay<br>No - show a generic error-message"

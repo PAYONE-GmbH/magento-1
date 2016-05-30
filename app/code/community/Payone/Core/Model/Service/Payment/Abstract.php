@@ -71,11 +71,13 @@ abstract class Payone_Core_Model_Service_Payment_Abstract
         $this->getHandler()->setRequest($request);
         $this->getHandler()->handle($response);
 
+        $oMethodInstance = $payment->getMethodInstance();
+        
         // Trigger Event
         $params = array(
             'request' => $request,
             'response' => $response,
-            'payment_method' => $payment->getMethodInstance(),
+            'payment_method' => $oMethodInstance,
             'payment' => $payment,
             'order' => $payment->getOrder()
         );
@@ -85,7 +87,7 @@ abstract class Payone_Core_Model_Service_Payment_Abstract
 
         if ($response instanceof Payone_Api_Response_Error) {
             /** @var $response Payone_Api_Response_Error */
-            $this->throwMageException($this->helper()->__('There has been an error processing your payment'));
+            $this->throwMageException($this->helper()->__($oMethodInstance->getApiResponseErrorMessage($response)));
         }
 
         return $response;

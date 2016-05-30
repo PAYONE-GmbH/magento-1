@@ -55,6 +55,8 @@ abstract class Payone_Core_Model_Payment_Method_Abstract
     protected $methodType = '';
     protected $redirectUrl = '';
 
+    protected $_defaultApiResponseErrorMessage = 'There has been an error processing your payment';
+    
     /**
      * @var Payone_Core_Model_Config_Interface
      */
@@ -535,6 +537,11 @@ abstract class Payone_Core_Model_Payment_Method_Abstract
     public function getMethodType()
     {
         return $this->methodType;
+    }
+    
+    public function getApiResponseErrorMessage($response)
+    {
+        return $this->_defaultApiResponseErrorMessage;
     }
 
 }
