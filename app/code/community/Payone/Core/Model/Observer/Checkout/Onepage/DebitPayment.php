@@ -52,7 +52,9 @@ class Payone_Core_Model_Observer_Checkout_Onepage_DebitPayment extends Payone_Co
         $paymentData = $controllerAction->getRequest()->getPost('payment', array());
         $selectedMethod = $paymentData['method'];
 
-        if ($selectedMethod != Payone_Core_Model_System_Config_PaymentMethodCode::DEBITPAYMENT) {
+        if ($selectedMethod != Payone_Core_Model_System_Config_PaymentMethodCode::DEBITPAYMENT #&& 
+            #$selectedMethod != Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTION
+            ) {
             return; // only active for payone_debit_payment
         }
 
@@ -70,6 +72,16 @@ class Payone_Core_Model_Observer_Checkout_Onepage_DebitPayment extends Payone_Co
 
         $this->init($observer);
 
+        if ($selectedMethod == Payone_Core_Model_System_Config_PaymentMethodCode::DEBITPAYMENT) {
+            $controllerAction = $this->_performDebitChecks($controllerAction);
+        } elseif($selectedMethod == Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTION) {
+            $controllerAction = $this->_performPayolutionChecks($controllerAction);
+        }
+        return $controllerAction;
+    }
+    
+    protected function _performDebitChecks($controllerAction)
+    {
         $paymentConfig = $this->getPaymentConfig();
         $sepaMandateEnabled = $paymentConfig->isSepaMandateEnabled();
         $checkBankaccountEnabled = $paymentConfig->isBankAccountCheckEnabled();
@@ -89,6 +101,24 @@ class Payone_Core_Model_Observer_Checkout_Onepage_DebitPayment extends Payone_Co
                 return $controllerAction->getResponse()->setBody(Mage::helper('core')->jsonEncode($jsonResponse));
             }
         }
+    }
+    
+    protected function _performPayolutionChecks($controllerAction)
+    {
+        /* pre_check did not work on the Payone Server API and could not be implemented completely yet
+        $oQuote = $this->getQuote();
+        
+        $oService = $this->getFactory()->getServicePaymentGenericpayment($this->getPaymentConfig());
+        $oMapper = $oService->getMapper();
+        $oRequest = $oMapper->addPayolutionPreCheckParameters($oQuote, $this->getPaymentData());
+        $oResponse = $this->getFactory()->getServiceApiPaymentGenericpayment()->request($oRequest);
+        
+        if($oResponse instanceof Payone_Api_Response_Error) {
+            $controllerAction->setFlag('', Mage_Core_Controller_Varien_Action::FLAG_NO_DISPATCH, true);
+            $jsonResponse = array('error' => Mage::helper('payone_core')->__($oResponse->getErrormessage()));
+            return $controllerAction->getResponse()->setBody(Mage::helper('core')->jsonEncode($jsonResponse));
+        }
+         */
     }
 
     /**

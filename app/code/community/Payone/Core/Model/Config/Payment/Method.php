@@ -211,6 +211,16 @@ class Payone_Core_Model_Config_Payment_Method
      * @var bool
      */
     protected $show_customermessage = false;
+    
+    /**
+     * @var string
+     */
+    protected $company_name = '';
+    
+    /**
+     * @var bool
+     */
+    protected $b2b_mode = false;
 
     /**
      * Check if Method can be used in Country
@@ -1029,6 +1039,38 @@ class Payone_Core_Model_Config_Payment_Method
     public function getShowCustomermessage()
     {
         return $this->show_customermessage;
+    }
+    
+    /**
+     * @param string $company_name
+     */
+    public function setCompanyName($company_name)
+    {
+        $this->company_name = $company_name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCompanyName()
+    {
+        return $this->company_name;
+    }
+    
+    /**
+     * @param bool $b2b_mode
+     */
+    public function setB2bMode($b2b_mode)
+    {
+        $this->b2b_mode = $b2b_mode;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getB2bMode()
+    {
+        return $this->b2b_mode;
     }
     
 }

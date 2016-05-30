@@ -62,6 +62,9 @@
 "New RatePay","RatePay"
 "Add RatePay","RatePay hinzufügen"
 "Edit RatePay","RatePay bearbeiten"
+"New Payolution","Payolution"
+"Add Payolution","Payolution hinzufügen"
+"Edit Payolution","Payolution bearbeiten"
 "New Debit Payment","Lastschrift"
 "Add Debit Payment","Lastschrift hinzufügen"
 "Edit Debit Payment","Lastschrift bearbeiten"
@@ -992,3 +995,18 @@
 
 "Show detailed error-messages","Detaillierte Fehlermeldungen anzeigen"
 "PAYONE_TOOLTIP_CUSTOMERMESSAGE","Ja - die von RatePay gesendete Fehlermeldung anzeigen<br>Nein - eine allgemeine Fehlermeldung anzeigen"
+
+"PYV","Rechnungskauf"
+"PYM","Monatliche Rechnung"
+"PYS","Ratenzahlung"
+"PYD","Lastschrift"
+
+"PAYOLUTION_ACCEPTANCE_1","Mit der &Uuml;bermittlung der f&uuml;r die Abwicklung des Rechnungskaufes und einer Identit&auml;tspr&uuml;fung und Bonit&auml;tspr&uuml;fung erforderlicher Daten an payolution bin ich einverstanden."
+"PAYOLUTION_ACCEPTANCE_2","Meine"
+"PAYOLUTION_ACCEPTANCE_3","kann ich jederzeit mit Wirkung f&uuml;r die Zukunft widerrufen."
+"acceptance","Einwilligung"
+
+"Hereby I grant the","Hiermit erteile ich das"
+"SEPA-Mandate","SEPA-Lastschriftmandat"
+"Close window","Fenster schliessen"
+"Company trade registry number","Handelsregisternummer"

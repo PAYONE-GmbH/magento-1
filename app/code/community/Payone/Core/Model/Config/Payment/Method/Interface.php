@@ -479,4 +479,24 @@ interface Payone_Core_Model_Config_Payment_Method_Interface
      */
     public function getShowCustomermessage();
     
+    /**
+     * @param string $company_name
+     */
+    public function setCompanyName($company_name);
+
+    /**
+     * @return string
+     */
+    public function getCompanyName();
+    
+    /**
+     * @param bool $b2b_mode
+     */
+    public function setB2bMode($b2b_mode);
+
+    /**
+     * @return bool
+     */
+    public function getB2bMode();
+    
 }

@@ -89,6 +89,14 @@ class Payone_Api_Request_Genericpayment extends Payone_Api_Request_Abstract {
      */
     protected $paydata = NULL;
     
+    protected $company = null;
+    protected $firstname = null;
+    protected $lastname = null;
+    protected $street = null;
+    protected $zip = null;
+    protected $city = null;
+    protected $country = null;
+    
     
     /**
      * @param array $data
@@ -243,6 +251,62 @@ class Payone_Api_Request_Genericpayment extends Payone_Api_Request_Abstract {
      */
     public function getPaydata() {
         return $this->paydata;
+    }
+    
+    public function setCompany($company) {
+        $this->company = $company;
+    }
+    
+    public function getCompany() {
+        return $this->company;
+    }
+    
+    public function setFirstname($firstname) {
+        $this->firstname = $firstname;
+    }
+    
+    public function getFirstname() {
+        return $this->firstname;
+    }
+    
+    public function setLastname($lastname) {
+        $this->lastname = $lastname;
+    }
+    
+    public function getLastname() {
+        return $this->lastname;
+    }
+    
+    public function setStreet($street) {
+        $this->street = $street;
+    }
+    
+    public function getStreet() {
+        return $this->street;
+    }
+    
+    public function setZip($zip) {
+        $this->zip = $zip;
+    }
+    
+    public function getZip() {
+        return $this->zip;
+    }
+    
+    public function setCity($city) {
+        $this->city = $city;
+    }
+    
+    public function getCity() {
+        return $this->city;
+    }
+    
+    public function setCountry($country) {
+        $this->country = $country;
+    }
+    
+    public function getCountry() {
+        return $this->country;
     }
 
 }

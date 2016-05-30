@@ -90,10 +90,12 @@
             <action method="addJs"><script>payone/core/sepa_validation.js</script></action>
             <action method="addJs"><script>payone/core/klarna.js</script></action>
             <action method="addJs"><script>payone/core/ratepay.js</script></action>
+            <action method="addJs"><script>payone/core/payolution.js</script></action>
             <action method="addJs" ifconfig="payone_protect/general/enabled">
                 <script>payone/core/addresscheck.js</script>
             </action>
             <action method="addCss"><name>payone/core/mandate.css</name></action>
+            <action method="addCss"><name>payone/core/payolution.css</name></action>
         </reference>
 
         <reference name="head">

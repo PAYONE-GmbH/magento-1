@@ -135,6 +135,11 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
         if ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Barzahlen) {
             $requestType = Payone_Api_Enum_RequestType::PREAUTHORIZATION;
         }
+        
+        // Always use PREAUTHORIZATION for Payolution
+        if ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Payolution) {
+            $requestType = Payone_Api_Enum_RequestType::PREAUTHORIZATION;
+        }
 
         $request->setRequest($requestType);
         $request->setAid($this->configPayment->getAid());
@@ -598,6 +603,31 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
                 $telephone = $this->getOrder()->getBillingAddress()->getTelephone();
             }
             $payment->setTelephonenumber($telephone);
+        } elseif($paymentMethod instanceof Payone_Core_Model_Payment_Method_Payolution) {
+            $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_Payolution();
+            $payment->setApiVersion();
+            $payment->setFinancingtype($info->getPayonePayolutionType());
+            $payment->setWorkorderid($info->getPayoneWorkorderid());
+            $payment->setIban(strtoupper($info->getPayoneSepaIban()));
+            $payment->setBic(strtoupper($info->getPayoneSepaBic()));
+            if((bool)$info->getPayoneIsb2b() === true) {
+                $payData = new Payone_Api_Request_Parameter_Paydata_Paydata();
+                $payData->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
+                    array('key' => 'b2b', 'data' => 'yes')
+                ));
+                $payData->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
+                    array('key' => 'company_trade_registry_number', 'data' => $info->getPayoneTradeRegistryNumber()) 
+                ));
+                $payment->setPaydata($payData);
+            } else {
+                $birthdayDate = $info->getPayoneCustomerDob();
+                if (empty($birthdayDate)) {
+                    $birthdayDate = $this->getOrder()->getCustomerDob();
+                }
+                if($birthdayDate) {
+                    $payment->setBirthday($this->formatBirthday($birthdayDate));
+                }
+            }
         }
 
         if ($isRedirect === true) {
@@ -668,6 +698,9 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
         }
         elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Ratepay) {
             $clearingType = Payone_Enum_ClearingType::RATEPAY;
+        }
+        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Payolution) {
+            $clearingType = Payone_Enum_ClearingType::PAYOLUTION;
         }
 
         return $clearingType;

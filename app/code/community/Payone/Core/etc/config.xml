@@ -24,7 +24,7 @@
 <config>
     <modules>
         <Payone_Core>
-            <version>3.5.3</version>
+            <version>3.5.4</version>
         </Payone_Core>
     </modules>
 
@@ -231,6 +231,18 @@
                     <!-- RatePay: Shop (config) ID -->
                     <to_order_payment>*</to_order_payment>
                 </payone_ratepay_shop_id>
+                <payone_payolution_type>
+                    <!-- Payolution type -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_payolution_type>
+                <payone_isb2b>
+                    <!-- B2B mode ? -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_isb2b>
+                <payone_trade_registry_number>
+                    <!-- Trade registry number -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_trade_registry_number>
             </sales_convert_quote_payment>
             <sales_convert_quote_address>
                 <payone_addresscheck_score>
@@ -553,6 +565,11 @@
                 <model>payone_core/payment_method_ratepay</model>
                 <group>payone</group>
             </payone_ratepay>
+            <payone_payolution translate="title" module="payone_core">
+                <title>PAYONE - Payolution</title>
+                <model>payone_core/payment_method_payolution</model>
+                <group>payone</group>
+            </payone_payolution>
             <payone_cash_on_delivery translate="title" module="payone_core">
                 <title>PAYONE - Cash on Delivery</title>
                 <model>payone_core/payment_method_cashOnDelivery</model>
@@ -637,6 +654,9 @@
             <template_ratepay>
                 <use_global>1</use_global>
             </template_ratepay>
+            <template_payolution>
+                <use_global>1</use_global>
+            </template_payolution>
         </payone_payment>
         <payone_general>
             <global>
