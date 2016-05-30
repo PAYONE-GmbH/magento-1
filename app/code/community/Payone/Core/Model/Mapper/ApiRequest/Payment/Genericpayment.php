@@ -119,6 +119,44 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment
         $request->setFinancingType(Payone_Api_Enum_RatepayType::RPV);
         return $request;
     }
+    
+    public function addPayolutionPreCheckParameters($oQuote, $aRequestParams) {
+        $request = $this->getRequest();
+        $this->mapDefaultParameters($request);
+
+        $oAddress = $oQuote->getBillingAddress();
+        if ($oAddress->getCompany()) {
+            $request->setCompany($oAddress->getCompany());
+        }
+        $request->setFirstname($oAddress->getFirstname());
+        $request->setLastname($oAddress->getLastname());
+        $request->setStreet($this->helper()->normalizeStreet($oAddress->getStreet()));
+        $request->setZip($oAddress->getPostcode());
+        $request->setCity($oAddress->getCity());
+        $request->setCountry($oAddress->getCountry());
+        
+        $paydata = new Payone_Api_Request_Parameter_Paydata_Paydata();
+        $paydata->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
+            array('key' => 'action', 'data' => Payone_Api_Enum_GenericpaymentAction::PAYOLUTION_PRE_CHECK)
+        ));
+        $paydata->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
+            array('key' => 'payment_type', 'data' => Payone_Api_Enum_PayolutionType::getLongType($aRequestParams['payone_payolution_type']))
+        ));
+        if(isset($aRequestParams['payone_trade_registry_number'])) {
+            $paydata->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
+                array('key' => 'b2b', 'data' => 'yes')
+            ));
+            $paydata->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
+                array('key' => 'company_trade_registry_number', 'data' => $aRequestParams['payone_trade_registry_number'])
+            ));
+        }
+        $request->setPaydata($paydata);
+        $request->setAid($this->getConfigPayment()->getAid());
+        $request->setCurrency($oQuote->getQuoteCurrencyCode());
+        $request->setClearingtype(Payone_Enum_ClearingType::FINANCING);
+        $request->setFinancingType($aRequestParams['payone_payolution_type']);
+        return $request;
+    }
 
     /**
      * @return string

@@ -28,9 +28,18 @@
 "RPD","Debit"
 "RPP","Prepayment"
 
+"PYV","Invoicing"
+"PYM","Monthly invoicing"
+"PYS","Installment"
+"PYD","Debit"
+
 "FCPO_CC_ROW_CC_Number","Creditcardnumber"
 "FCPO_CC_ROW_CC_CVC","CVC security code"
 "FCPO_CC_ROW_CC_Month","Validity-month"
 "FCPO_CC_ROW_CC_Year","Validity-year"
 
 "PAYONE_TOOLTIP_CUSTOMERMESSAGE","Yes - display the error-message given by RatePay<br>No - show a generic error-message"
+
+"PAYOLUTION_ACCEPTANCE_1","I agree with the transmission of the necessary data to payolution which is needed for processing the purchase, the identity-check and the credit rating."
+"PAYOLUTION_ACCEPTANCE_2","My"
+"PAYOLUTION_ACCEPTANCE_3"," can be revoked for the future any time."

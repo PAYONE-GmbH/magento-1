@@ -46,6 +46,7 @@ class Payone_Core_Model_System_Config_PaymentMethodCode extends Payone_Core_Mode
     const WALLET = 'payone_wallet';
     const BARZAHLEN = 'payone_barzahlen';
     const RATEPAY = 'payone_ratepay';
+    const PAYOLUTION = 'payone_payolution';
 
     /**
      * @return array
@@ -64,7 +65,8 @@ class Payone_Core_Model_System_Config_PaymentMethodCode extends Payone_Core_Mode
             self::ONLINEBANKTRANSFER => 'Online Bank Transfer',
             self::WALLET => 'Wallet',
             self::BARZAHLEN => 'Barzahlen',
-            self::RATEPAY => 'RatePay'
+            self::RATEPAY => 'RatePay',
+            self::PAYOLUTION => 'Payolution',
         );
     }
 }

@@ -13,7 +13,7 @@
  * needs please refer to http://www.payone.de for more information.
  *
  * @category        Payone
- * @package         Payone_Core_Block
+ * @package         Payone_Core_Model
  * @subpackage      Payment
  * @copyright       Copyright (c) 2015 <kontakt@fatchip.de> - www.fatchip.com
  * @author          Robert Müller <robert.mueller@fatchip.de>
@@ -21,19 +21,15 @@
  * @link            http://www.fatchip.com
  */
 
-class Payone_Core_Block_Payment_Method_Info_Ratepay extends Payone_Core_Block_Payment_Method_Info_Abstract {
-    
-    protected function _construct() {
-        parent::_construct();
-        $this->setTemplate('payone/core/payment/method/info/ratepay.phtml');
-    }
+class Payone_Core_Model_Payment_Method_Payolution extends Payone_Core_Model_Payment_Method_Abstract
+{
+    protected $_canUseForMultishipping = true;
 
-    /**
-     * @return string
-     */
-    public function getPayoneClearingReference()
-    {
-        return $this->getInfo()->getPayoneClearingReference();
-    }
-    
+    protected $methodType = Payone_Core_Model_System_Config_PaymentMethodType::PAYOLUTION;
+
+    protected $_code = Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTION;
+
+    protected $_formBlockType = 'payone_core/payment_method_form_payolution';
+    protected $_infoBlockType = 'payone_core/payment_method_info_payolution';
+
 }
