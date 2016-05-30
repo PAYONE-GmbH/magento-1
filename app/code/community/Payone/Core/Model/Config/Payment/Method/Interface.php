@@ -469,4 +469,14 @@ interface Payone_Core_Model_Config_Payment_Method_Interface
      */
     public function getRatepayConfig();
     
+    /**
+     * @param bool $show_customermessage
+     */
+    public function setShowCustomermessage($show_customermessage);
+
+    /**
+     * @return bool
+     */
+    public function getShowCustomermessage();
+    
 }

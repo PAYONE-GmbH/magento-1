@@ -989,3 +989,6 @@
 "RPS","Ratenzahlung"
 "RPD","Lastschrift"
 "RPP","Vorkasse"
+
+"Show detailed error-messages","Detaillierte Fehlermeldungen anzeigen"
+"PAYONE_TOOLTIP_CUSTOMERMESSAGE","Ja - die von RatePay gesendete Fehlermeldung anzeigen<br>Nein - eine allgemeine Fehlermeldung anzeigen"

@@ -236,5 +236,13 @@ class Payone_Core_Model_Payment_Method_Ratepay extends Payone_Core_Model_Payment
         }
         return $blParentReturn;
     }
+    
+    public function getApiResponseErrorMessage($response)
+    {
+        if((bool)$this->getConfig()->getShowCustomermessage() === true) {
+            return $response->getCustomermessage();
+        }
+        return parent::getApiResponseErrorMessage($response);
+    }
 
 }

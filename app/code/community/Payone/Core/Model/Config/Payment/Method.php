@@ -206,6 +206,11 @@ class Payone_Core_Model_Config_Payment_Method
      * @var array
      */
     protected $ratepay_config = array();
+    
+    /**
+     * @var bool
+     */
+    protected $show_customermessage = false;
 
     /**
      * Check if Method can be used in Country
@@ -1008,6 +1013,22 @@ class Payone_Core_Model_Config_Payment_Method
     public function getRatepayConfig()
     {
         return $this->ratepay_config;
+    }
+    
+    /**
+     * @param bool $show_customermessage
+     */
+    public function setShowCustomermessage($show_customermessage)
+    {
+        $this->show_customermessage = (bool)$show_customermessage;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getShowCustomermessage()
+    {
+        return $this->show_customermessage;
     }
     
 }
