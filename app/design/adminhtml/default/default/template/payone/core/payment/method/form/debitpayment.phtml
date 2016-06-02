@@ -29,92 +29,90 @@ $owner = $this->escapeHtml($this->getInfoData('payone_account_owner') ? $this->g
 
 $configShowBankData = $this->getPaymentConfig()->getSepaDeShowBankData();
 ?>
-<fieldset class="form-list">
-    <ul id="payment_form_<?php echo $code ?>" style="display:none">
-        <li>
-            <div class="input-box">
-                <label for="<?php echo $code ?>_bank_country">
-                    <?php echo $this->__('Bank country') ?>&nbsp;<span class="required">*</span>
-                </label>
-                <br/>
-                <select id="<?php echo $code ?>_bank_country" name="payment[payone_bank_country]"
-                    class="no-submit required-entry" onchange="showBankData('<?php echo $code ?>', <?php echo $configShowBankData; ?>);">
-                <option value=""><?php echo $this->__('--Please Select--') ?></option>
-                <?php
-                foreach ($this->getSelectedSepaCountries() as $key => $country):
-                    $selected = $this->getCountry() == $key ? 'selected="selected"' : '';
-                    ?>
-                    <option value="<?php echo $key ?>"<?php echo $selected; ?>>
-                        <?php echo $this->__($country) ?>
-                    </option>
-                    <?php endforeach; ?>
-            </select>
-            </div>
-        </li>
-        <li id="input_box_payone_sepa_iban">
-            <div class="input-box">
-                <label for="<?php echo $code ?>_sepa_iban">
-                    <?php echo $this->__('IBAN') ?>
-                </label>
-                <br/>
-                <input type="text" id="<?php echo $code ?>_sepa_iban" name="payment[payone_sepa_iban]"
-                       title="<?php echo $this->__('IBAN') ?>"
-                       class="validate-sepa-iban required-entry input-text" value=""
-                       autocomplete="off" maxlength="34"
-                       onchange="inputToUpperCase(this); blockPaymentMethodInputs('<?php echo $code ?>', <?php echo $configShowBankData; ?>); checkIbanCountryCode('<?php echo $code ?>');"
-                       oninput="inputToUpperCase(this); blockPaymentMethodInputs('<?php echo $code ?>', <?php echo $configShowBankData; ?>); checkIbanCountryCode('<?php echo $code ?>');"/>
-            </div>
-        </li>
-        <li id="input_box_payone_sepa_bic">
-            <div class="input-box">
-                <label for="<?php echo $code ?>_sepa_bic">
-                    <?php echo $this->__('BIC') ?>
-                </label>
-                <br/>
-                <input type="text" id="<?php echo $code ?>_sepa_bic" name="payment[payone_sepa_bic]"
-                       title="<?php echo $this->__('BIC') ?>"
-                       class="validate-sepa-bic required-entry input-text" value=""
-                       autocomplete="off" maxlength="11"
-                       onchange="inputToUpperCase(this); blockPaymentMethodInputs('<?php echo $code ?>', <?php echo $configShowBankData; ?>);"
-                       oninput="inputToUpperCase(this); blockPaymentMethodInputs('<?php echo $code ?>', <?php echo $configShowBankData; ?>);"/>
-            </div>
-        </li>
-        <?php if ($configShowBankData): ?>
-        <li id="input_box_payone_account_number">
-            <?php echo $this->__('or enter your bank account data (only for German accounts):'); ?>
-            <div class="input-box">
-                <label for="<?php echo $code ?>_account_number">
-                    <?php echo $this->__('Account number') ?>
-                </label>
-                <br class="clear"/>
-                <input type="text" id="<?php echo $code ?>_account_number" name="payment[payone_account_number]"
-                       title="<?php echo $this->__('Account number') ?>"
-                       class="validate-digits input-text" value=""
-                       autocomplete="off" maxlength="10"
-                       onchange="blockPaymentMethodInputs('<?php echo $code ?>', <?php echo $configShowBankData; ?>);"
-                       oninput="blockPaymentMethodInputs('<?php echo $code ?>', <?php echo $configShowBankData; ?>);"/>
-            </div>
-        </li>
-        <li id="input_box_payone_bank_code">
-            <div class="input-box">
-                <label for="<?php echo $code ?>_bank_code">
-                    <?php echo $this->__('Bank code') ?>
-                </label>
-                <br class="clear"/>
-                <input type="text" id="<?php echo $code ?>_bank_code" name="payment[payone_bank_code]"
-                       title="<?php echo $this->__('Bank code') ?>" class="validate-bank-code validate-digits input-text"
-                       value="" maxlength="8"
-                       onchange="blockPaymentMethodInputs('<?php echo $code ?>', <?php echo $configShowBankData; ?>);"
-                       oninput="blockPaymentMethodInputs('<?php echo $code ?>', <?php echo $configShowBankData; ?>);"/>
-            </div>
-        </li>
-        <?php endif; ?>
-        <li>
-            <input type="hidden" name="payment[payone_config_payment_method_id]"
-                   value="<?php echo $paymentConfigId; ?>"/>
-        </li>
-    </ul>
-</fieldset>
+<ul id="payment_form_<?php echo $code ?>" style="display:none">
+    <li>
+        <div class="input-box">
+            <label for="<?php echo $code ?>_bank_country">
+                <?php echo $this->__('Bank country') ?>&nbsp;<span class="required">*</span>
+            </label>
+            <br/>
+            <select id="<?php echo $code ?>_bank_country" name="payment[payone_bank_country]"
+                class="no-submit required-entry" onchange="showBankData('<?php echo $code ?>', <?php echo $configShowBankData; ?>);">
+            <option value=""><?php echo $this->__('--Please Select--') ?></option>
+            <?php
+            foreach ($this->getSelectedSepaCountries() as $key => $country):
+                $selected = $this->getCountry() == $key ? 'selected="selected"' : '';
+                ?>
+                <option value="<?php echo $key ?>"<?php echo $selected; ?>>
+                    <?php echo $this->__($country) ?>
+                </option>
+                <?php endforeach; ?>
+        </select>
+        </div>
+    </li>
+    <li id="input_box_payone_sepa_iban">
+        <div class="input-box">
+            <label for="<?php echo $code ?>_sepa_iban">
+                <?php echo $this->__('IBAN') ?>
+            </label>
+            <br/>
+            <input type="text" id="<?php echo $code ?>_sepa_iban" name="payment[payone_sepa_iban]"
+                   title="<?php echo $this->__('IBAN') ?>"
+                   class="validate-sepa-iban required-entry input-text" value=""
+                   autocomplete="off" maxlength="34"
+                   onchange="inputToUpperCase(this); blockPaymentMethodInputs('<?php echo $code ?>', <?php echo $configShowBankData; ?>); checkIbanCountryCode('<?php echo $code ?>');"
+                   oninput="inputToUpperCase(this); blockPaymentMethodInputs('<?php echo $code ?>', <?php echo $configShowBankData; ?>); checkIbanCountryCode('<?php echo $code ?>');"/>
+        </div>
+    </li>
+    <li id="input_box_payone_sepa_bic">
+        <div class="input-box">
+            <label for="<?php echo $code ?>_sepa_bic">
+                <?php echo $this->__('BIC') ?>
+            </label>
+            <br/>
+            <input type="text" id="<?php echo $code ?>_sepa_bic" name="payment[payone_sepa_bic]"
+                   title="<?php echo $this->__('BIC') ?>"
+                   class="validate-sepa-bic required-entry input-text" value=""
+                   autocomplete="off" maxlength="11"
+                   onchange="inputToUpperCase(this); blockPaymentMethodInputs('<?php echo $code ?>', <?php echo $configShowBankData; ?>);"
+                   oninput="inputToUpperCase(this); blockPaymentMethodInputs('<?php echo $code ?>', <?php echo $configShowBankData; ?>);"/>
+        </div>
+    </li>
+    <?php if ($configShowBankData): ?>
+    <li id="input_box_payone_account_number">
+        <?php echo $this->__('or enter your bank account data (only for German accounts):'); ?>
+        <div class="input-box">
+            <label for="<?php echo $code ?>_account_number">
+                <?php echo $this->__('Account number') ?>
+            </label>
+            <br class="clear"/>
+            <input type="text" id="<?php echo $code ?>_account_number" name="payment[payone_account_number]"
+                   title="<?php echo $this->__('Account number') ?>"
+                   class="validate-digits input-text" value=""
+                   autocomplete="off" maxlength="10"
+                   onchange="blockPaymentMethodInputs('<?php echo $code ?>', <?php echo $configShowBankData; ?>);"
+                   oninput="blockPaymentMethodInputs('<?php echo $code ?>', <?php echo $configShowBankData; ?>);"/>
+        </div>
+    </li>
+    <li id="input_box_payone_bank_code">
+        <div class="input-box">
+            <label for="<?php echo $code ?>_bank_code">
+                <?php echo $this->__('Bank code') ?>
+            </label>
+            <br class="clear"/>
+            <input type="text" id="<?php echo $code ?>_bank_code" name="payment[payone_bank_code]"
+                   title="<?php echo $this->__('Bank code') ?>" class="validate-bank-code validate-digits input-text"
+                   value="" maxlength="8"
+                   onchange="blockPaymentMethodInputs('<?php echo $code ?>', <?php echo $configShowBankData; ?>);"
+                   oninput="blockPaymentMethodInputs('<?php echo $code ?>', <?php echo $configShowBankData; ?>);"/>
+        </div>
+    </li>
+    <?php endif; ?>
+    <li>
+        <input type="hidden" name="payment[payone_config_payment_method_id]"
+               value="<?php echo $paymentConfigId; ?>"/>
+    </li>
+</ul>
 
 <script type="text/javascript">
     //    Add validation messages translation

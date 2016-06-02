@@ -307,7 +307,7 @@ class Payone_Core_Model_Factory
     /**
      * @return bool
      */
-    protected function getIsAdmin()
+    public function getIsAdmin()
     {
         return Mage::app()->getStore()->isAdmin();
     }
@@ -1551,6 +1551,14 @@ class Payone_Core_Model_Factory
     public function getModelSystemConfigOnlinebanktransferType()
     {
         return Mage::getSingleton('payone_core/system_config_onlinebanktransferType');
+    }
+    
+    /**
+     * @return Payone_Core_Model_System_Config_PayolutionType
+     */
+    public function getModelSystemConfigPayolutionType()
+    {
+        return Mage::getSingleton('payone_core/system_config_payolutionType');
     }
 
     /**

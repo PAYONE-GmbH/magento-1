@@ -1,0 +1,109 @@
+<?php
+/**
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the GNU General Public License (GPL 3)
+ * that is bundled with this package in the file LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Payone_Core to newer
+ * versions in the future. If you wish to customize Payone_Core for your
+ * needs please refer to http://www.payone.de for more information.
+ *
+ * @category        Payone
+ * @package         design_frontend_base_default
+ * @subpackage      template
+ * @copyright       Copyright (c) 2015 <kontakt@fatchip.de> - www.fatchip.com
+ * @author          Robert Müller <robert.mueller@fatchip.de>
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.fatchip.com
+ */
+
+/** @var $this Payone_Core_Block_Payment_Method_Form_RatePay */
+$code = $this->getMethodCode();
+$configId = $this->getPaymentConfig()->getId();
+
+?>
+<ul id="payment_form_<?php echo $code ?>" style="display:none">
+    <?php if ($this->isDobRequired()): ?>
+        <li>
+            <div class="field">
+                <label for="<?php echo $code ?>_additional_fields_customer_dob_month">
+                    <em>*</em><?php echo $this->__('Date of birth (DD MM YYYY)') ?>
+                </label>
+                <br class="clear"/>
+                <select id="<?php echo $code ?>_additional_fields_customer_dob_day" class="required-entry"
+                        style="width: 60px;" onchange="payoneRatepayCustomerDobInput('<?php echo $code ?>')">
+                    <option value="">--</option>
+                    <?php for ($x = 1; $x <= 31; $x++): ?>
+                        <option value="<?php echo sprintf('%02d', $x); ?>">
+                            <?php echo sprintf('%02d', $x); ?>
+                        </option>
+                    <?php endfor; ?>
+                </select>
+                <select id="<?php echo $code ?>_additional_fields_customer_dob_month" class="required-entry"
+                        style="width: 60px;" onchange="payoneRatepayCustomerDobInput('<?php echo $code ?>')">
+                    <option value="">--</option>
+                    <?php for ($x = 1; $x <= 12; $x++) : ?>
+                        <option value="<?php echo sprintf('%02d', $x); ?>">
+                            <?php echo sprintf('%02d', $x); ?>
+                        </option>
+                    <?php endfor; ?>
+                </select>
+                <select id="<?php echo $code ?>_additional_fields_customer_dob_year" class="required-entry"
+                        style="width: 60px;" onchange="payoneRatepayCustomerDobInput('<?php echo $code ?>')">
+                    <option value="">----</option>
+                    <?php for ($x = date('Y'); $x > (date('Y') - 100); $x--) : ?>
+                        <option value="<?php echo $x; ?>">
+                            <?php echo $x; ?>
+                        </option>
+                    <?php endfor; ?>
+                </select>
+
+                <input type="hidden" id="<?php echo $code ?>_additional_fields_customer_dob_full"
+                        name="payment[payone_customer_dob]" class="validate-18-years">
+            </div>
+        </li>
+    <?php endif;?>
+    <?php if ($this->isTelephoneRequired()) : ?>
+        <li>
+            <div class="field">
+                <label for="<?php echo $code ?>_additional_fields_customer_telephone" class="required">
+                    <em>*</em><?php echo $this->__('Telephone') ?>
+                </label>
+                <br class="clear"/>
+                <input type="text" name="payment[payone_customer_telephone]"
+                       id="<?php echo $code ?>_additional_fields_customer_telephone"
+                       class="input-text required-entry"/>
+            </div>
+        </li>
+    <?php endif;?>
+    <li style="display:none;">
+        <input type="hidden" name="payment[payone_config_payment_method_id]" value="<?php echo $configId; ?>"/>
+        <input type="hidden" name="payment[payone_ratepay_shop_id]" value="<?php echo $this->getMatchingRatePayShopId(); ?>"/>
+
+        <?php 
+            $sDeviceIdentToken = $this->getRatePayDeviceFingerprint();
+            $sDeviceIdentId = $this->getRatePayDeviceFingerprintSnippetId();
+        ?>
+        <script language="JavaScript">
+            var di = {t:'<?php echo $sDeviceIdentToken; ?>',v:'<?php echo $sDeviceIdentId; ?>',l:'Checkout'};
+        </script>
+        <script type="text/javascript" src="//d.ratepay.com/<?php echo $sDeviceIdentId; ?>/di.js"></script>
+        <noscript>
+            <link rel="stylesheet" type="text/css" href="//d.ratepay.com/di.css?t=<?php echo $sDeviceIdentToken; ?>&v=<?php echo $sDeviceIdentId; ?>&l=Checkout">
+        </noscript>
+        <object  type="application/x-shockwave-flash" data="//d.ratepay.com/<?php echo $sDeviceIdentId; ?>/c.swf" width="0" height="0">
+            <param name="movie" value="//d.ratepay.com/<?php echo $sDeviceIdentId; ?>/c.swf" />
+            <param name="flashvars" value="t=<?php echo $sDeviceIdentToken; ?>&v=<?php echo $sDeviceIdentId; ?>"/>
+            <param name="AllowScriptAccess" value="always"/>
+        </object>
+    </li>
+</ul>
+
+<script type="text/javascript">
+    //    Add validation messages translation
+    Translator.add('You have to be at least 18 years old to use this payment type!', '<?php echo $this->__('You have to be at least 18 years old to use this payment type!'); ?>');
+</script>

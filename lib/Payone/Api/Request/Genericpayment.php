@@ -96,7 +96,12 @@ class Payone_Api_Request_Genericpayment extends Payone_Api_Request_Abstract {
     protected $zip = null;
     protected $city = null;
     protected $country = null;
-    
+
+    protected $api_version = null;
+    protected $birthday = null;
+    protected $email = null;
+    protected $ip = null;
+    protected $language = null;
     
     /**
      * @param array $data
@@ -307,6 +312,56 @@ class Payone_Api_Request_Genericpayment extends Payone_Api_Request_Abstract {
     
     public function getCountry() {
         return $this->country;
+    }
+    
+    public function setApiVersion($api_version)
+    {
+        $this->api_version = $api_version;
+    }
+    
+    public function getApiVersion()
+    {
+        return $this->api_version;
+    }
+    
+    public function setBirthday($birthday)
+    {
+        $this->birthday = $birthday;
+    }
+    
+    public function getBirthday()
+    {
+        return $this->birthday;
+    }
+    
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
+    
+    public function getEmail()
+    {
+        return $this->email;
+    }
+    
+    public function setIp($ip)
+    {
+        $this->ip = $ip;
+    }
+    
+    public function getIp()
+    {
+        return $this->ip;
+    }
+    
+    public function setLanguage($language)
+    {
+        $this->language = $language;
+    }
+    
+    public function getLanguage()
+    {
+        return $this->language;
     }
 
 }

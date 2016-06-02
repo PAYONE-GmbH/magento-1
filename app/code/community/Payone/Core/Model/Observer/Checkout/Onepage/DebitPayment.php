@@ -52,8 +52,8 @@ class Payone_Core_Model_Observer_Checkout_Onepage_DebitPayment extends Payone_Co
         $paymentData = $controllerAction->getRequest()->getPost('payment', array());
         $selectedMethod = $paymentData['method'];
 
-        if ($selectedMethod != Payone_Core_Model_System_Config_PaymentMethodCode::DEBITPAYMENT #&& 
-            #$selectedMethod != Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTION
+        if ($selectedMethod != Payone_Core_Model_System_Config_PaymentMethodCode::DEBITPAYMENT && 
+            $selectedMethod != Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTION
             ) {
             return; // only active for payone_debit_payment
         }
@@ -105,7 +105,6 @@ class Payone_Core_Model_Observer_Checkout_Onepage_DebitPayment extends Payone_Co
     
     protected function _performPayolutionChecks($controllerAction)
     {
-        /* pre_check did not work on the Payone Server API and could not be implemented completely yet
         $oQuote = $this->getQuote();
         
         $oService = $this->getFactory()->getServicePaymentGenericpayment($this->getPaymentConfig());
@@ -117,8 +116,10 @@ class Payone_Core_Model_Observer_Checkout_Onepage_DebitPayment extends Payone_Co
             $controllerAction->setFlag('', Mage_Core_Controller_Varien_Action::FLAG_NO_DISPATCH, true);
             $jsonResponse = array('error' => Mage::helper('payone_core')->__($oResponse->getErrormessage()));
             return $controllerAction->getResponse()->setBody(Mage::helper('core')->jsonEncode($jsonResponse));
+        } elseif($oResponse instanceof Payone_Api_Response_Genericpayment_Ok) {
+            $checkoutSession = $this->getFactory()->getSingletonCheckoutSession();
+            $checkoutSession->setPayoneWorkorderId($oResponse->getWorkorderId());
         }
-         */
     }
 
     /**

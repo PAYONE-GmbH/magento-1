@@ -180,9 +180,16 @@ class Payone_Core_Model_Payment_Method_Ratepay extends Payone_Core_Model_Payment
     protected function _getQuote() {
         /** @var $session Mage_Checkout_Model_Session */
         $oSession = Mage::getSingleton('checkout/session');
+        if($this->getFactory()->getIsAdmin() === true) {
+            $oSession = Mage::getSingleton('adminhtml/session_quote');
+        }
         $oQuote = $oSession->getQuote();
-        if (!$oQuote instanceof Mage_Sales_Model_Quote or !$oQuote->getId()) {
-            $oQuote = $this->getInfoInstance()->getQuote();
+        try {
+            if (!$oQuote instanceof Mage_Sales_Model_Quote or !$oQuote->getId()) {
+                $oQuote = $this->getInfoInstance()->getQuote();
+            }            
+        } catch (Exception $ex) {
+            $oQuote = false;
         }
         return $oQuote;
     }
@@ -192,29 +199,30 @@ class Payone_Core_Model_Payment_Method_Ratepay extends Payone_Core_Model_Payment
             $this->_aRatePayShopConfig = false;
             
             $oQuote = $this->_getQuote();
+            if($oQuote) {
+                $oResource = Mage::getSingleton('core/resource');
+                $oRead = $oResource->getConnection('core_read');
 
-            $oResource = Mage::getSingleton('core/resource');
-            $oRead = $oResource->getConnection('core_read');
+                $sTable = $oResource->getTableName($this->_sTableName);
+                $blAddressesAreEqual = $this->helper()->addressesAreEqual($oQuote->getBillingAddress(), $oQuote->getShippingAddress());
 
-            $sTable = $oResource->getTableName($this->_sTableName);
-            $blAddressesAreEqual = $this->helper()->addressesAreEqual($oQuote->getBillingAddress(), $oQuote->getShippingAddress());
-
-            $sQuery = " SELECT
-                            shop_id
-                        FROM
-                            {$sTable}
-                        WHERE 
-                            {$oQuote->getGrandTotal()} BETWEEN tx_limit_invoice_min AND tx_limit_invoice_max AND
-                            currency = {$oRead->quote($oQuote->getQuoteCurrencyCode())} AND
-                            country_code_billing = {$oRead->quote($oQuote->getBillingAddress()->getCountryId())}";
-            if($blAddressesAreEqual === false) {
-                $sQuery .= " AND delivery_address_invoice = 1 ";
-                $sQuery .= " AND country_code_delivery = {$oRead->quote($oQuote->getShippingAddress()->getCountryId())} ";
-            }
-            $sQuery .= " LIMIT 1";
-            $sShopId = $oRead->fetchOne($sQuery);
-            if($sShopId) {
-                $this->_aRatePayShopConfig = $this->getRatePayConfigById($sShopId);
+                $sQuery = " SELECT
+                                shop_id
+                            FROM
+                                {$sTable}
+                            WHERE 
+                                {$oQuote->getGrandTotal()} BETWEEN tx_limit_invoice_min AND tx_limit_invoice_max AND
+                                currency = {$oRead->quote($oQuote->getQuoteCurrencyCode())} AND
+                                country_code_billing = {$oRead->quote($oQuote->getBillingAddress()->getCountryId())}";
+                if($blAddressesAreEqual === false) {
+                    $sQuery .= " AND delivery_address_invoice = 1 ";
+                    $sQuery .= " AND country_code_delivery = {$oRead->quote($oQuote->getShippingAddress()->getCountryId())} ";
+                }
+                $sQuery .= " LIMIT 1";
+                $sShopId = $oRead->fetchOne($sQuery);
+                if($sShopId) {
+                    $this->_aRatePayShopConfig = $this->getRatePayConfigById($sShopId);
+                }
             }
         }
         return $this->_aRatePayShopConfig;
