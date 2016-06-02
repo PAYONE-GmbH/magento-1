@@ -92,6 +92,14 @@ else {
             'COMMENT' => 'trade registry number',
             'DEFAULT' => '')
     );
+    $connection->addColumn($tableOrderPayment, 'payone_workorder_id',
+        array(
+            'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
+            'LENGTH' => 64,
+            'NULLABLE' => false,
+            'COMMENT' => 'workorder id',
+            'DEFAULT' => '')
+    );
 
     /* Changes to sales_flat_quote_payment */
     
@@ -116,6 +124,14 @@ else {
             'LENGTH' => 64,
             'NULLABLE' => false,
             'COMMENT' => 'trade registry number',
+            'DEFAULT' => '')
+    );
+    $connection->addColumn($tableQuotePayment, 'payone_workorder_id',
+        array(
+            'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
+            'LENGTH' => 64,
+            'NULLABLE' => false,
+            'COMMENT' => 'workorder id',
             'DEFAULT' => '')
     );
     

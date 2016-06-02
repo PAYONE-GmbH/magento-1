@@ -28,7 +28,7 @@ class Payone_Api_Enum_PayolutionType
     const PYS = 'PYS'; // Payolution-Installment
     const PYD = 'PYD'; // Payolution-Debit
     
-    const PYV_FULL = 'Payolution-Invoice';
+    const PYV_FULL = 'Payolution-Invoicing';
     const PYM_FULL = 'Payolution-Monthly';
     const PYS_FULL = 'Payolution-Installment';
     const PYD_FULL = 'Payolution-Debit';

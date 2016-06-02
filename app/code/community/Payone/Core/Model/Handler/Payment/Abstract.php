@@ -226,9 +226,12 @@ abstract class Payone_Core_Model_Handler_Payment_Abstract
                 $payment->setPayoneClearingLegalnote($response->getClearingLegalnote());
                 $payment->setPayoneClearingDuedate($response->getClearingDuedate());
             }
-        } elseif($response instanceof Payone_Api_Response_Authorization_Abstract && $paymentMethod instanceof Payone_Core_Model_Payment_Method_Ratepay) {
+        } elseif($paymentMethod instanceof Payone_Core_Model_Payment_Method_Ratepay) {
             $oSession = Mage::getSingleton('checkout/session');
             $oSession->unsRatePayFingerprint();
+        }
+        
+        if($response instanceof Payone_Api_Response_Authorization_Abstract) {
             if($response->getAddPaydataClearingReference()) {
                 $payment->setPayoneClearingReference($response->getAddPaydataClearingReference());
             } elseif($response->getClearingReference()) {

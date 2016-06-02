@@ -120,6 +120,18 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment
         return $request;
     }
     
+    /**
+     * @param $date
+     * @return string
+     */
+    public function formatBirthday($date)
+    {
+        if (strlen($date) > 0) {
+            $date = substr($date, 0, 4) . substr($date, 5, 2) . substr($date, 8, 2);
+        }
+        return $date;
+    }
+    
     public function addPayolutionPreCheckParameters($oQuote, $aRequestParams) {
         $request = $this->getRequest();
         $this->mapDefaultParameters($request);
@@ -134,6 +146,17 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment
         $request->setZip($oAddress->getPostcode());
         $request->setCity($oAddress->getCity());
         $request->setCountry($oAddress->getCountry());
+
+        $request->setAmount($oQuote->getGrandTotal());
+        $request->setApiVersion('3.10');
+        if(isset($aRequestParams['payone_customer_dob'])) {
+            $request->setBirthday($this->formatBirthday($aRequestParams['payone_customer_dob']));
+        } elseif($oQuote->getCustomerDob()) {
+            $request->setBirthday($this->formatBirthday($oQuote->getCustomerDob()));
+        }
+        $request->setEmail($oQuote->getCustomerEmail());
+        $request->setIp(Mage::helper('core/http')->getRemoteAddr());
+        $request->setLanguage($this->helper()->getDefaultLanguage());
         
         $paydata = new Payone_Api_Request_Parameter_Paydata_Paydata();
         $paydata->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(

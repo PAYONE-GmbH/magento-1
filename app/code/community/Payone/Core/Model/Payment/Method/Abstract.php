@@ -66,6 +66,8 @@ abstract class Payone_Core_Model_Payment_Method_Abstract
      */
     protected $config = null;
 
+    protected $_blIpMandatory = false;
+    
     /**
      * override parent method to get the user-configured title, not the one from config.xml
      *
@@ -542,6 +544,11 @@ abstract class Payone_Core_Model_Payment_Method_Abstract
     public function getApiResponseErrorMessage($response)
     {
         return $this->_defaultApiResponseErrorMessage;
+    }
+    
+    public function getIsIpMandatory()
+    {
+        return $this->_blIpMandatory;
     }
 
 }

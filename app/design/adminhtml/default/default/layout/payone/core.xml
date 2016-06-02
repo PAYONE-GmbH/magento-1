@@ -97,6 +97,8 @@
             <action method="addJs"><script>payone/core/debitpayment.js</script></action>
             <action method="addJs"><script>payone/core/sepa_input.js</script></action>
             <action method="addJs"><script>payone/core/sepa_validation.js</script></action>
+            <action method="addJs"><script>payone/core/ratepay.js</script></action>
+            <action method="addJs"><script>payone/core/payolution.js</script></action>
         </reference>
         <reference name="js">
             <block type="adminhtml/template" name="payone_core_clientapi"

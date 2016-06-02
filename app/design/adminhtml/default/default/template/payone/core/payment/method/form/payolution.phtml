@@ -1,0 +1,159 @@
+<?php
+/**
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the GNU General Public License (GPL 3)
+ * that is bundled with this package in the file LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Payone_Core to newer
+ * versions in the future. If you wish to customize Payone_Core for your
+ * needs please refer to http://www.payone.de for more information.
+ *
+ * @category        Payone
+ * @package         design_frontend_base_default
+ * @subpackage      template
+ * @copyright       Copyright (c) 2015 <kontakt@fatchip.de> - www.fatchip.com
+ * @author          Robert Müller <robert.mueller@fatchip.de>
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.fatchip.com
+ */
+
+/** @var $this Payone_Core_Block_Payment_Method_Form_RatePay */
+$code = $this->getMethodCode();
+$configId = $this->getPaymentConfig()->getId();
+$sType = $this->getPayolutionType();
+$aTypes = $this->getPayolutionTypes();
+
+?>
+<ul id="payment_form_<?php echo $code ?>" style="display:none">
+    <li>
+        <div class="field">
+            <?php if(count($aTypes) == 1) { ?>
+                    <input type="hidden" id="<?php echo $code ?>_type_select" name="payment[payone_payolution_type]" 
+                        value="<?php echo $aTypes[0]; ?>">
+            <?php } else { ?>
+                <label for="<?php echo $code; ?>_type_select">
+                    <?php echo $this->__('Payment type'); ?>&nbsp;<span class="required">*</span>
+                </label><br class="clear"/>
+                <select id="<?php echo $code ?>_type_select" name="payment[payone_payolution_type]"
+                        class="required-entry" onchange="payoneSwitchPayolution(this, '<?php echo $code; ?>');">
+                    <option value=""><?php echo $this->__('--Please Select--') ?></option>
+                    <?php foreach ($aTypes as $type): ?>
+                        <option value="<?php echo $type ?>">
+                            <?php echo $this->__($type); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            <?php } ?>
+        </div>
+        <div id="<?php echo $code ?>_main_block" style="display:none;">
+            <div class="field">
+                <?php if ($this->isB2BMode()) { ?> 
+                    <div class="input-box">
+                        <label for="<?php echo $code ?>_trade_registry_number"><?php echo $this->__('Company trade registry number') ?>
+                            <span class="required">*</span>
+                        </label>
+                        <br class="clear"/>
+                        <input type="text" id="<?php echo $code ?>_trade_registry_number" name="payment[payone_trade_registry_number]"
+                               value="" title="" class="required-entry input-text no-submit"/>
+                        <input type="hidden" id="<?php echo $code ?>_isb2b" name="payment[payone_isb2b]" value="1"/>
+                    </div>
+                <?php } else { ?>
+                    <input type="hidden" id="<?php echo $code ?>_isb2b" name="payment[payone_isb2b]" value="0"/>
+                <?php } ?>
+                <?php if ($this->showBirthdayFields()){ ?>
+                    <label for="<?php echo $code ?>_additional_fields_customer_dob_month">
+                        <em>*</em><?php echo $this->__('Date of birth (DD MM YYYY)') ?>
+                    </label>
+                    <br class="clear"/>
+                    <select id="<?php echo $code ?>_additional_fields_customer_dob_day" class="required-entry"
+                            style="width: 60px;" onchange="payoneRatepayCustomerDobInput('<?php echo $code ?>')">
+                        <option value="">--</option>
+                        <?php for ($x = 1; $x <= 31; $x++): ?>
+                            <option value="<?php echo sprintf('%02d', $x); ?>">
+                                <?php echo sprintf('%02d', $x); ?>
+                            </option>
+                        <?php endfor; ?>
+                    </select>
+                    <select id="<?php echo $code ?>_additional_fields_customer_dob_month" class="required-entry"
+                            style="width: 60px;" onchange="payoneRatepayCustomerDobInput('<?php echo $code ?>')">
+                        <option value="">--</option>
+                        <?php for ($x = 1; $x <= 12; $x++) : ?>
+                            <option value="<?php echo sprintf('%02d', $x); ?>">
+                                <?php echo sprintf('%02d', $x); ?>
+                            </option>
+                        <?php endfor; ?>
+                    </select>
+                    <select id="<?php echo $code ?>_additional_fields_customer_dob_year" class="required-entry"
+                            style="width: 60px;" onchange="payoneRatepayCustomerDobInput('<?php echo $code ?>')">
+                        <option value="">----</option>
+                        <?php for ($x = date('Y'); $x > (date('Y') - 100); $x--) : ?>
+                            <option value="<?php echo $x; ?>">
+                                <?php echo $x; ?>
+                            </option>
+                        <?php endfor; ?>
+                    </select>
+
+                    <input type="hidden" id="<?php echo $code ?>_additional_fields_customer_dob_full"
+                            name="payment[payone_customer_dob]" class="validate-18-years">
+                <?php } ?>
+                <div id="<?php echo $code; ?>_debit_wrap" style="display:none;">
+                    <div class="input-box">
+                        <label for="<?php echo $code ?>_payolution_iban">
+                            <?php echo $this->__('IBAN') ?><span class="required">*</span>
+                        </label>
+                        <br class="clear"/>
+                        <input type="text" id="<?php echo $code ?>_sepa_iban_xxx"
+                               title="<?php echo $this->__('IBAN') ?>"
+                               class="input-text"
+                               value="<?php echo $this->strToXXX($this->getSavedCustomerData('payone_sepa_iban'));?>"
+                               autocomplete="off" maxlength="34"
+                               onchange="inputToUppaerCaseAndNumbers(this); copyDebitPaymentSepaIban('<?php echo $code ?>');"
+                               oninput="inputToUppaerCaseAndNumbers(this); copyDebitPaymentSepaIban('<?php echo $code ?>');"/>
+                        <input type="hidden" id="<?php echo $code ?>_sepa_iban" name="payment[payone_sepa_iban]"
+                               value="<?php echo $this->getSavedCustomerData('payone_sepa_iban');?>">
+                    </div>
+                    <div class="input-box">
+                        <label for="<?php echo $code ?>_payolution_bic">
+                            <?php echo $this->__('BIC') ?><span class="required">*</span>
+                        </label>
+                        <br class="clear"/>
+                        <input type="text" id="<?php echo $code ?>_payolution_bic" name="payment[payone_sepa_bic]"
+                               title="<?php echo $this->__('BIC') ?>"
+                               class="input-text"
+                               value="<?php echo $this->getSavedCustomerData('payone_sepa_bic');?>"
+                               autocomplete="off" maxlength="11"
+                               onchange="inputToUppaerCaseAndNumbers(this);"
+                               oninput="inputToUppaerCaseAndNumbers(this);"/>
+                    </div>
+                </div>
+            </div>
+            <div class="field" style="position:relative;">
+                <input type="hidden" name="payment[payone_config_payment_method_id]" value="<?php echo $configId; ?>"/>
+                <input type="hidden" name="payment[payone_payolution_type]" value="<?php echo $sType; ?>"/>
+                <div id="payolution_overlay" style="display:none;">
+                    <a href="#" onclick="removeOverlay();return false;" style="float:right;font-weight:bold;"><?php echo $this->__('Close window'); ?></a><br><br>
+                    <?php echo $this->getPayolutionAcceptanceText(); ?>
+                </div>
+            </div>
+        </div>
+    </li>
+</ul>
+
+<script type="text/javascript">
+    var code = '<?php echo $code ?>';
+    payoneSwitchPayolution($(code + '_type_select'), code);
+
+    Event.observe(document, "dom:loaded", function () {
+        payoneSwitchPayolution($(code + '_type_select'), code);
+    });
+    Event.observe(document, "dom:ready", function () {
+        payoneSwitchPayolution($(code + '_type_select'), code);
+    });
+    
+    //    Add validation messages translation
+    Translator.add('You have to be at least 18 years old to use this payment type!', '<?php echo $this->__('You have to be at least 18 years old to use this payment type!'); ?>');
+</script>

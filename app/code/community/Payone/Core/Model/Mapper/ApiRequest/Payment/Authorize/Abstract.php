@@ -210,7 +210,9 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
         // Send Ip when enabled
         if ($global->getTransmitIp()) {
             $ip = $this->getCustomerIp();
-
+            if(!$ip && $paymentMethod->getIsIpMandatory() === true) {
+                $ip = Mage::helper('core/http')->getRemoteAddr();
+            }
             $personalData->setIp($ip);
         }
 
@@ -610,6 +612,11 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
             $payment->setWorkorderid($info->getPayoneWorkorderid());
             $payment->setIban(strtoupper($info->getPayoneSepaIban()));
             $payment->setBic(strtoupper($info->getPayoneSepaBic()));
+            
+            $checkoutSession = $this->getFactory()->getSingletonCheckoutSession();
+            $payment->setWorkorderid($checkoutSession->getPayoneWorkorderId());
+            $info->setPayoneWorkorderId($checkoutSession->getPayoneWorkorderId());
+            
             if((bool)$info->getPayoneIsb2b() === true) {
                 $payData = new Payone_Api_Request_Parameter_Paydata_Paydata();
                 $payData->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(

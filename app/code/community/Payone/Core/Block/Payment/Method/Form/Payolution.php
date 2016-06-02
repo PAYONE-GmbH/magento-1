@@ -25,6 +25,8 @@ class Payone_Core_Block_Payment_Method_Form_Payolution extends Payone_Core_Block
     
     protected $_sAcceptanceBaseUrl = 'https://payment.payolution.com/payolution-payment/infoport/dataprivacydeclaration?mId=';
 
+    protected $hasTypes = true;
+    
     protected $_sFallback = "<header>
   <strong>Zusätzliche Hinweise für die Datenschutzerklärung für Kauf auf Rechnung, Ratenzahlung und Zahlung mittels SEPA-Basis-Lastschrift von **company** (im Folgenden: „wir“)</strong></br>
   <span><i>(Stand: 17.03.2016)</i></span>
@@ -77,6 +79,10 @@ class Payone_Core_Block_Payment_Method_Form_Payolution extends Payone_Core_Block
         return $this->_sType;
     }
     
+    public function getPayolutionTypes() {
+        return $this->getMethod()->getConfig()->getTypes();
+    }
+    
     /**
      * @return bool
      */
@@ -116,9 +122,7 @@ class Payone_Core_Block_Payment_Method_Form_Payolution extends Payone_Core_Block
     }
     
     public function showBirthdayFields() {
-        if( $this->getPayolutionType() == Payone_Api_Enum_PayolutionType::PYV &&
-            $this->isB2BMode() === false &&
-            $this->isDobRequired() === true) {
+        if($this->isB2BMode() === false) {
             return true;
         }
         return false;
@@ -168,7 +172,14 @@ class Payone_Core_Block_Payment_Method_Form_Payolution extends Payone_Core_Block
             $sPage = utf8_encode($sPage);
         }
         return $sPage;
-        
+    }
+    
+    /**
+     * @return array
+     */
+    protected function getSystemConfigMethodTypes()
+    {
+        return $this->getFactory()->getModelSystemConfigPayolutionType()->toSelectArray();
     }
     
 }
