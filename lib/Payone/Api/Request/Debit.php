@@ -76,6 +76,16 @@ class Payone_Api_Request_Debit extends Payone_Api_Request_Abstract
      * @var string
      */
     protected $narrative_text = null;
+    
+    /**
+     * @var Payone_Api_Request_Parameter_Paydata_Paydata 
+     */
+    protected $paydata = NULL;
+    
+    /**
+     * @var string
+     */
+    protected $api_version = NULL;
 
     /**
      * @param int $amount
@@ -236,4 +246,33 @@ class Payone_Api_Request_Debit extends Payone_Api_Request_Abstract
     {
         $this->narrative_text = $narrative_text;
     }
+    
+    /**
+     * @param Payone_Api_Request_Parameter_Paydata_Paydata $paydata
+     */
+    public function setPaydata($paydata) {
+        $this->paydata = $paydata;
+    }
+
+    /**
+     * 
+     * @return Payone_Api_Request_Parameter_Paydata_Paydata
+     */
+    public function getPaydata() {
+        return $this->paydata;
+    }
+
+    public function setApiVersion($sApiVersion)
+    {
+        $this->api_version = $sApiVersion;
+    }
+
+    /**
+     * @return string
+     */
+    public function getApiVersion()
+    {
+        return $this->api_version;
+    }
+    
 }

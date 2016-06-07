@@ -37,7 +37,7 @@ class Payone_Api_Adapter_Http_Curl extends Payone_Api_Adapter_Http_Abstract
      * @throws Payone_Api_Exception_InvalidResponse
      */
     protected function doRequest()
-    {        
+    {   
         $response = array();
         $urlArray = $this->generateUrlArray();
 
