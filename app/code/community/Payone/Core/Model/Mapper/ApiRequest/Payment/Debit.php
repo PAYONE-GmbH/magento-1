@@ -69,6 +69,16 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Debit
             $request->setInvoicing($invoicing);
         }
 
+        $paymentMethod = $this->getPaymentMethod();
+        if ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Ratepay) {
+            $payData = new Payone_Api_Request_Parameter_Paydata_Paydata();
+            $payData->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
+                array('key' => 'shop_id', 'data' => $paymentMethod->getInfoInstance()->getPayoneRatepayShopId())
+            ));
+            $request->setPaydata($payData);
+            $request->setApiVersion('3.10');
+        }
+        
         $this->dispatchEvent($this->getEventName(), array('request' => $request, 'creditmemo' => $this->getCreditmemo()));
         $this->dispatchEvent($this->getEventPrefix() . '_all', array('request' => $request));
         return $request;
