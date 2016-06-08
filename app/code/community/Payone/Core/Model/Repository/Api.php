@@ -61,7 +61,7 @@ class Payone_Core_Model_Repository_Api
         $domainObject = $this->getFactory()->getModelApi();
         $domainObject->setData($request->toArray());
         $domainObject->setRawRequest($request->__toString());
-        $domainObject->setRawResponse($response->__toString());
+        $domainObject->setRawResponse($response->getRawResponseToString());
         $domainObject->setResponse($response->getStatus());
         $domainObject->save();
     }

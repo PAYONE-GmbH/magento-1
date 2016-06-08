@@ -46,6 +46,7 @@ abstract class Payone_Api_Response_Abstract implements Payone_Api_Response_Inter
      */
     function __construct(array $params = array())
     {
+        $this->setRawResponse($params);
         if (count($params) > 0) {
             $this->init($params);
         }
@@ -88,15 +89,25 @@ abstract class Payone_Api_Response_Abstract implements Payone_Api_Response_Inter
      */
     public function __toString()
     {
+        return $this->_toString($this->toArray());
+    }
+    
+    public function getRawResponseToString()
+    {
+        return $this->_toString($this->getRawResponse());
+    }
+    
+    protected function _toString($aValue)
+    {
         if($this->applyFilters) {
-            $result = $this->applyFilters->apply($this->toArray());
+            $result = $this->applyFilters->apply($aValue);
         } else {
             $protocolFactory     = new Payone_Protocol_Factory();
             $defaultApplyFilters = $protocolFactory->buildServiceApplyFilters();
-            $result = $defaultApplyFilters->apply($this->toArray());
+            $result = $defaultApplyFilters->apply($aValue);
         }
 
-        return $result;
+        return $result;        
     }
 
 
