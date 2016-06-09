@@ -64,7 +64,9 @@ Fax +49 431 25968-1400
 magento@payone.de
 www.payone.de/magento
 
+##License
 
+See our License Agreement at: https://www.payone.de/fileadmin/downloads/sonstiges/PAYONE_Haftungs_und_Lizenzvereinbarung_Extensions.pdf
 
 ##About PAYONE
 
