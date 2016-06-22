@@ -77,9 +77,6 @@
 "New Wallet","Wallet"
 "Add Wallet","Wallet hinzufügen"
 "Edit Wallet","Wallet bearbeiten"
-"New Financing","Finanzierung"
-"Add Financing","Finanzierung hinzufügen"
-"Edit Financing","Finanzierung bearbeiten"
 "New Safe Invoice","Sicherer Rechnungskauf"
 "Add Safe Invoice","Sicheren Rechnungskauf hinzufügen"
 "Edit Safe Invoice","Sicheren Rechnungskauf bearbeiten"
@@ -89,6 +86,7 @@
 "Required when using Klarna","Pflicht bei Verwendung von Klarna"
 "Klarna Campaign Code","Klarna Kampagnen-Code"
 "Save payment data for logged in customer","Zahlungsdaten für angemeldete Benutzer speichern"
+"Sofort-Ueberweisung: Display IBAN/BIC inputs","Sofort-Ueberweisung: IBAN/BIC Felder anzeigen"
 "Scope","Geltungsbereich"
 "Countries","Länder"
 "Fee","Gebühr"
@@ -97,6 +95,7 @@
 "Check Card Validation Code","Prüfe Kartenprüfnummer"
 "Validate bank code","Prüfe Bankverbindung"
 "List of supported SEPA countries","Liste der unterstützten Kontoländer"
+"Request BIC","BIC abfragen"
 "Show additional account number/bank code number","Zusätzlich Kontonummer/Bankleitzahl anzeigen"
 "Only for German accounts","Nur bei Deutschen Konten"
 "Mandate enabled","Mandatserteilung aktivieren"
@@ -113,14 +112,12 @@
 "PaymentMethod Config was successfully deleted.","Zahlart-Konfiguration erfolgreich gelöscht."
 "Wallet-Type","Walletart"
 "Wallet Type","Walletart"
-"Financing Type", "Finanzierungs-Art"
 "Safe Invoice Type", "Sicherer Rechnungskauf: Typ"
 
 "Creditcard","Kreditkarte"
 "Invoice","Rechnung"
 "Safe Invoice","Sicherer Rechnungskauf"
 "Debit Payment","Lastschrift"
-"Financing","Finanzierung"
 "Advance Payment","Vorkasse"
 "Online Bank Transfer","Onlineüberweisung"
 "Cash on Delivery","Nachnahme"
@@ -178,11 +175,6 @@
 "Action in case Addresscheck responds with ERROR","Aktion für Addresscheck-Ergebnis 'ERROR'"
 "Placeholder: {{payone_customermessage}} (Message from Payone-Addresscheck","Platzhalter: {{payone_customermessage}} (Nachricht aus Payone-Addressprüfung) "
 "Action in case Creditrating check responds with ERROR","Aktion für Bonitätsprüfungs-Ergebnis 'ERROR'"
-
-"Please note that for Commerz Finanz only the mode ""preauthorization"" is available. Even if ""authorization"" is configured, a preauthorization is used in background. Afterwards payments must be captured. (CAPTURE)", "Beachten Sie, dass bei Commerz Finanz nur eine Vorautorisierung möglich ist. Auch wenn Autorisierung ausgewählt ist, wird im Hintergrund eine Vorautorisierung durchführt. Im Anschluss müssen die Zahlungen für Commerz Finanz eingezogen werden (CAPTURE)"
-"Please note that for Commerz Finanz only the mode ""preauthorization"" is available. Afterwards payments must be captured. (CAPTURE)", "Beachten Sie, dass bei Commerz Finanz nur eine Vorautorisierung möglich ist. Im Anschluss müssen die Zahlungen für Commerz Finanz eingezogen werden (CAPTURE)"
-"Please note that for Commerz Finanz the minimum transaction amount is EUR100.00.","Beachten Sie, dass bei der maximale Transaktionsbetrag bei Commerz Finanz 5000,00 Euro beträgt."
-"Please note that for Commerz Finanz the maximum transaction amount is EUR5000.00.","Beachten Sie, dass bei der minimale Transaktionsbetrag bei Commerz Finanz 100,00 Euro beträgt."
 
 "Stop Checkout", "Bestellprozess abbrechen"
 "Continue Checkout", "Bestellprozess fortführen"
@@ -439,7 +431,6 @@
 "DISCOVER","Discover"
 "CARTE_BLEUE","Carte Bleue"
 
-"CFR","Commerz Finanz"
 "BSV","BillSAFE"
 "KLV","Klarna"
 "KLS","Klarna"
@@ -732,12 +723,6 @@
 "Check bank account data","Prüfe Bankverbindung"
 "Here you can configure whether an additional check of the bank account data should be performed. Additionally, you can check the bank account data against the point-of-sale blacklist. This blacklist contains bank accounts with outstanding debts from retailers and information from the credit agency KUNO (https://www.kuno-sperrdienst.de).","Hier können Sie definieren ob eine zusätzliche Prüfung der Bankverbindungsdaten vorgenommen werden soll. Ebenfalls besteht die Möglichkeit, dass Sie die Kontoverbindung mit einer POS-Sperrliste abgleichen können. Diese enthält Kontoverbindungsdaten mit offene Forderungen aus dem stationären Einzelhandel und Daten aus der Auskunftei KUNO (https://www.kuno-sperrdienst.de)."
 "Check against POS blacklist","Prüfung gegen POS-Sperrliste"
-
-
-"TEMPLATE","/app/design/adminhtml/default/default/template/payone/core/system/config/tooltip/payment/financing.phtml"
-"Financing","Finanzierungssart"
-"Here you can define which financing methods you want to make available during checkout","Hier können Sie definieren welche Finanzierungsarten sie im Checkout anbieten wollen."
-"Currently these financing methods are available","Folge Arten werden aktuell unterstützt"
 
 
 "TEMPLATE","/app/design/adminhtml/default/default/template/payone/core/system/config/tooltip/payment/method.phtml"

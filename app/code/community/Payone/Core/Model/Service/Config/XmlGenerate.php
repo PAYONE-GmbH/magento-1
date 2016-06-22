@@ -239,31 +239,6 @@ class Payone_Core_Model_Service_Config_XmlGenerate
 
             }
 
-            if ($paymentMethodConfig instanceof Payone_Settings_Data_ConfigFile_PaymentMethod_Financing) {
-                /** @var Payone_Settings_Data_ConfigFile_PaymentMethod_Financing $paymentMethodConfig */
-                $klarnaConfigs = $paymentMethod->getKlarnaConfig();
-                $klarnaConfigArray = array();
-                if (is_array($klarnaConfigs)) {
-                    foreach ($klarnaConfigs as $klarnaConfig) {
-                        $attributeCountry = '';
-                        if (is_array($klarnaConfig)) {
-                            if (array_key_exists('countries', $klarnaConfig)) {
-                                $attributeCountry = implode(',', $klarnaConfig['countries']);
-                            }
-                        }
-                        $attributeArray = array(
-                            'countries' => $attributeCountry
-                        );
-                        $configArray = array(
-                            'value' => array_key_exists('klarna_store_id', $klarnaConfig) ? $klarnaConfig['klarna_store_id'] : '',
-                            'attribute' => $attributeArray
-                        );
-                        array_push($klarnaConfigArray, $configArray);
-                    }
-                }
-                $paymentMethodConfig->setKlarnaConfig($klarnaConfigArray);
-            }
-
             $feeConfigs = $paymentMethod->getFeeConfig();
             $feeConfigArray = array();
             if (is_array($feeConfigs)) {

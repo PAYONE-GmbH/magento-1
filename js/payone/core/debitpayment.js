@@ -104,10 +104,7 @@ function blockPaymentMethodInputs(code, configShowBankData) {
     var input_account_number_el = $(code + '_account_number');
     var input_bank_code_el = $(code + '_bank_code');
 
-    if (input_sepa_iban_el.value != ''
-        && Validation.get('validate-sepa-iban').test(input_sepa_iban_el.value) == true
-        && input_sepa_bic_el.value != ''
-        && Validation.get('validate-sepa-bic').test(input_sepa_bic_el.value) == true) {
+    if (input_sepa_iban_el.value != '' && Validation.get('validate-sepa-iban').test(input_sepa_iban_el.value) == true) {
         disableElement(input_account_number_el);
         var inputboxpayoneaccountnumber = $('input_box_payone_account_number');
         if (inputboxpayoneaccountnumber != undefined) {
@@ -132,13 +129,17 @@ function blockPaymentMethodInputs(code, configShowBankData) {
         && Validation.get('validate-digits').test(input_bank_code_el.value) == true) {
         disableElement(input_sepa_iban_el);
         $('input_box_payone_sepa_iban').hide();
-        disableElement(input_sepa_bic_el);
-        $('input_box_payone_sepa_bic').hide();
+        if(input_sepa_bic_el) {
+            disableElement(input_sepa_bic_el);
+            $('input_box_payone_sepa_bic').hide();
+        }
     } else {
         enableElement(input_sepa_iban_el);
         $('input_box_payone_sepa_iban').show();
-        enableElement(input_sepa_bic_el);
-        $('input_box_payone_sepa_bic').show();
+        if(input_sepa_bic_el) {
+            enableElement(input_sepa_bic_el);
+            $('input_box_payone_sepa_bic').show();
+        }
     }
 }
 

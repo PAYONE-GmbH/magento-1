@@ -23,8 +23,7 @@ class Payone_Licensemanager_Block_Adminhtml_Notification_Toolbar extends Mage_Ad
 
     public function getNoticeMessageUrl()
     {
-
-        return Mage::getUrl('payonelicensemanager/active');
+        return $this->getUrl('adminhtml/payonelicensemanager_active');
     }
 
     public function getReadDetailsText()

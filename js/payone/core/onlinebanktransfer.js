@@ -51,6 +51,7 @@ function payoneSwitchOnlineBankTransfer(element, country, currency) {
     var sepaBicInput = $('payone_online_bank_transfer_sepa_bic');
     var bankGroupSelectAt = $('payone_online_bank_transfer_bank_group_at');
     var bankGroupSelectNl = $('payone_online_bank_transfer_bank_group_nl');
+    var sofortueberweisungShowIban = $('payone_online_bank_transfer_pnt_show_iban');
 
     if (ElementValue == '' || typeCode == 'PFF' || typeCode == 'PFC' || typeCode == 'P24') {
         disableAll();
@@ -60,8 +61,12 @@ function payoneSwitchOnlineBankTransfer(element, country, currency) {
             enableAccountNumber();
             enableBankCode();
         } else {
-            enableSepaIban();
-            enableSepaBic();
+            if (sofortueberweisungShowIban.value == 1) {
+                enableSepaIban();
+                enableSepaBic();
+            } else {
+                disableAll();
+            }
         }
     } else if (typeCode == 'GPY') {
         disableAll();

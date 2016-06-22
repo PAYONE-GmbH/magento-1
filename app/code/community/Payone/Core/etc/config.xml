@@ -24,7 +24,7 @@
 <config>
     <modules>
         <Payone_Core>
-            <version>3.5.4</version>
+            <version>3.5.7</version>
         </Payone_Core>
     </modules>
 
@@ -155,10 +155,6 @@
                 <payone_config_payment_method_id>
                     <to_order_payment>*</to_order_payment>
                 </payone_config_payment_method_id>
-                <payone_financing_type>
-                    <!-- Financing: Type -->
-                    <to_order_payment>*</to_order_payment>
-                </payone_financing_type>
                 <payone_safe_invoice_type>
                     <!-- Financing: Type -->
                     <to_order_payment>*</to_order_payment>
@@ -235,6 +231,14 @@
                     <!-- Payolution type -->
                     <to_order_payment>*</to_order_payment>
                 </payone_payolution_type>
+                <payone_payolution_iban>
+                    <!-- Payolution iban -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_payolution_iban>
+                <payone_payolution_bic>
+                    <!-- Payolution bic -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_payolution_bic>
                 <payone_isb2b>
                     <!-- B2B mode ? -->
                     <to_order_payment>*</to_order_payment>
@@ -580,11 +584,6 @@
                 <model>payone_core/payment_method_debitPayment</model>
                 <group>payone</group>
             </payone_debit_payment>
-            <payone_financing translate="title" module="payone_core">
-                <title>PAYONE - Financing</title>
-                <model>payone_core/payment_method_financing</model>
-                <group>payone</group>
-            </payone_financing>
             <payone_safe_invoice translate="title" module="payone_core">
                 <title>PAYONE - Safe Invoice</title>
                 <model>payone_core/payment_method_safeInvoice</model>
@@ -618,17 +617,15 @@
             <template_debit_payment>
                 <use_global>1</use_global>
                 <check_bankaccount>0</check_bankaccount>
+                <sepa_request_bic>0</sepa_request_bic>
                 <sepa_de_show_bank_data>0</sepa_de_show_bank_data>
                 <sepa_mandate_enabled>1</sepa_mandate_enabled>
                 <sepa_mandate_download_enabled>1</sepa_mandate_download_enabled>
             </template_debit_payment>
             <template_online_bank_transfer>
                 <use_global>1</use_global>
+                <sofortueberweisung_show_iban>0</sofortueberweisung_show_iban>
             </template_online_bank_transfer>
-            <template_financing>
-                <types>CFR</types>
-                <use_global>1</use_global>
-            </template_financing>
             <template_safe_invoice>
                 <types>BSV</types>
                 <use_global>1</use_global>
@@ -673,7 +670,6 @@
                 <creditcard>a:1:{s:18:"_1343137391927_927";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</creditcard>
                 <invoice>a:1:{s:18:"_1338893611948_948";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</invoice>
                 <debit_payment>a:1:{s:18:"_1338893616379_379";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</debit_payment>
-                <financing>a:1:{s:23:"_payone_status_mapping2";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</financing>
                 <safe_invoice>a:1:{s:23:"_payone_status_mapping3";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</safe_invoice>
                 <advance_payment>a:2:{s:18:"_1338893618715_715";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:11:"new|pending";}}s:18:"_1355483828815_815";a:2:{s:8:"txaction";a:1:{i:0;s:4:"paid";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</advance_payment>
                 <online_bank_transfer>a:1:{s:18:"_1343118466182_182";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</online_bank_transfer>

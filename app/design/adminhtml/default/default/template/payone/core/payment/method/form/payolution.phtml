@@ -102,29 +102,29 @@ $aTypes = $this->getPayolutionTypes();
                 <?php } ?>
                 <div id="<?php echo $code; ?>_debit_wrap" style="display:none;">
                     <div class="input-box">
-                        <label for="<?php echo $code ?>_payolution_iban">
+                        <label for="<?php echo $code ?>_sepa_iban_xxx">
                             <?php echo $this->__('IBAN') ?><span class="required">*</span>
                         </label>
                         <br class="clear"/>
                         <input type="text" id="<?php echo $code ?>_sepa_iban_xxx"
                                title="<?php echo $this->__('IBAN') ?>"
                                class="input-text"
-                               value="<?php echo $this->strToXXX($this->getSavedCustomerData('payone_sepa_iban'));?>"
+                               value=""
                                autocomplete="off" maxlength="34"
                                onchange="inputToUppaerCaseAndNumbers(this); copyDebitPaymentSepaIban('<?php echo $code ?>');"
                                oninput="inputToUppaerCaseAndNumbers(this); copyDebitPaymentSepaIban('<?php echo $code ?>');"/>
-                        <input type="hidden" id="<?php echo $code ?>_sepa_iban" name="payment[payone_sepa_iban]"
-                               value="<?php echo $this->getSavedCustomerData('payone_sepa_iban');?>">
+                        <input type="hidden" id="<?php echo $code ?>_sepa_iban" name="payment[payone_payolution_iban]"
+                               value="">
                     </div>
                     <div class="input-box">
                         <label for="<?php echo $code ?>_payolution_bic">
                             <?php echo $this->__('BIC') ?><span class="required">*</span>
                         </label>
                         <br class="clear"/>
-                        <input type="text" id="<?php echo $code ?>_payolution_bic" name="payment[payone_sepa_bic]"
+                        <input type="text" id="<?php echo $code ?>_payolution_bic" name="payment[payone_payolution_bic]"
                                title="<?php echo $this->__('BIC') ?>"
                                class="input-text"
-                               value="<?php echo $this->getSavedCustomerData('payone_sepa_bic');?>"
+                               value=""
                                autocomplete="off" maxlength="11"
                                onchange="inputToUppaerCaseAndNumbers(this);"
                                oninput="inputToUppaerCaseAndNumbers(this);"/>

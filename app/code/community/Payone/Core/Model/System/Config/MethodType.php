@@ -41,14 +41,12 @@ class Payone_Core_Model_System_Config_MethodType
         $settingsCreditcard = new Payone_Settings_Configuration_PaymentMethod_CreditCard();
         $settingsOnlineBankTransfer = new Payone_Settings_Configuration_PaymentMethod_OnlineBankTransfer();
         $settingsWallet = new Payone_Settings_Configuration_PaymentMethod_Wallet();
-        $settingsFinancing = new Payone_Settings_Configuration_PaymentMethod_Financing();
         $settingsSafeInvoice = new Payone_Settings_Configuration_PaymentMethod_Financing();
 
         $return = array_merge(
             $settingsCreditcard->getTypes(),
             $settingsOnlineBankTransfer->getTypes(),
             $settingsWallet->getTypes(),
-            $settingsFinancing->getTypes(),
             $settingsSafeInvoice->getTypes()
         );
 
@@ -63,14 +61,12 @@ class Payone_Core_Model_System_Config_MethodType
         $settingsCreditcard = new Payone_Settings_Configuration_PaymentMethod_CreditCard();
         $settingsOnlineBankTransfer = new Payone_Settings_Configuration_PaymentMethod_OnlineBankTransfer();
         $settingsWallet = new Payone_Settings_Configuration_PaymentMethod_Wallet();
-        $settingsFinancing = new Payone_Core_Model_System_Config_FinancingType();
         $settingsSafeInvoice = new Payone_Core_Model_System_Config_SafeInvoiceType();
 
         $return = array(
             'Creditcard' => $settingsCreditcard->getTypes(),
             'Online Bank Transfer' => $settingsOnlineBankTransfer->getTypes(),
             'Wallet' => $settingsWallet->getTypes(),
-            'Financing' => $settingsFinancing->toArray(),
             'Safe Invoice' => $settingsSafeInvoice->toArray(),
         );
 

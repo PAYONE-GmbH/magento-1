@@ -88,4 +88,15 @@ class Payone_Core_Block_Payment_Method_Form_DebitPayment
 
         return $resultArr;
     }
+    
+    /**
+     * Return if bic input has to be shown
+     * 
+     * @return bool
+     */
+    public function getSepaRequestBic()
+    {
+        return $this->getMethod()->getConfig()->getSepaRequestBic();
+    }
+    
 }

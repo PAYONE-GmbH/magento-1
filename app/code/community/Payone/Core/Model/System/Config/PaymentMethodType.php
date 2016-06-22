@@ -37,7 +37,6 @@ class Payone_Core_Model_System_Config_PaymentMethodType extends Payone_Core_Mode
     const CREDITCARD = 'creditcard';
     const CREDITCARD_IFRAME = 'creditcard_iframe';
     const DEBITPAYMENT = 'debit_payment';
-    const FINANCING = 'financing';
     const SAFEINVOICE = 'safe_invoice';
     const INVOICE = 'invoice';
     const ONLINEBANKTRANSFER = 'online_bank_transfer';
@@ -57,7 +56,6 @@ class Payone_Core_Model_System_Config_PaymentMethodType extends Payone_Core_Mode
             self::CREDITCARD => 'Creditcard',
             self::CREDITCARD_IFRAME => 'Creditcard Channel Frontend',
             self::DEBITPAYMENT => 'Debit Payment',
-            self::FINANCING => 'Financing',
             self::SAFEINVOICE => 'Safe Invoice',
             self::INVOICE => 'Invoice',
             self::ONLINEBANKTRANSFER => 'Online Bank Transfer',

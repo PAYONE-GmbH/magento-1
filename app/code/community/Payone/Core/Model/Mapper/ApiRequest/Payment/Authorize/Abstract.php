@@ -117,13 +117,6 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
         $paymentMethod = $this->getPaymentMethod();
 
         $requestType = $this->configPayment->getRequestType();
-        // Always use PREAUTHORIZATION for Financing of type "Commerz Finanz"
-        if ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Financing) {
-            $financingType = $paymentMethod->getInfoInstance()->getPayoneFinancingType();
-            if ($financingType == Payone_Api_Enum_FinancingType::CFR) {
-                $requestType = Payone_Api_Enum_RequestType::PREAUTHORIZATION;
-            }
-        }
         // Always use PREAUTHORIZATION for Safe Invoice of type "Klarna"
         if ($paymentMethod instanceof Payone_Core_Model_Payment_Method_SafeInvoice) {
             $safeInvoiceType = $paymentMethod->getInfoInstance()->getPayoneSafeInvoiceType();
@@ -232,14 +225,6 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
         ) {
             $personalData = $this->mapPersonalParametersSafeInvoiceKlarna($personalData);
         }
-
-        // Financing "Klarna" specific personal parameters mapping
-        if ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Financing
-            and $paymentMethod->getInfoInstance()->getPayoneFinancingType() == Payone_Api_Enum_FinancingType::KLS
-        ) {
-            $personalData = $this->mapPersonalParametersSafeInvoiceKlarna($personalData);
-        }
-
         return $personalData;
     }
 
@@ -478,6 +463,8 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
             $payoneOnlinebanktransferType = $info->getPayoneOnlinebanktransferType();
             $iban = $info->getPayoneSepaIban();
             $bic = $info->getPayoneSepaBic();
+            $bankaccount = $info->getPayoneAccountNumber();
+            $bankcode = $info->getPayoneBankCode();
 
             $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_OnlineBankTransfer();
             $payment->setBankcountry($country);
@@ -486,13 +473,12 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
             switch ($payoneOnlinebanktransferType) {
                 case Payone_Api_Enum_OnlinebanktransferType::INSTANT_MONEY_TRANSFER:
                 case Payone_Api_Enum_OnlinebanktransferType::GIROPAY:
-                    if (!empty($iban) and !empty($bic)) {
+                    if (!empty($iban) && !empty($bic)) {
                         $payment->setIban(strtoupper($iban));
                         $payment->setBic(strtoupper($bic)); // ensure bic and iban are sent uppercase
-                    }
-                    else {
-                        $payment->setBankaccount($info->getPayoneAccountNumber());
-                        $payment->setBankcode($info->getPayoneBankCode());
+                    } elseif (!empty($bankaccount) && !empty($bankcode)) {
+                        $payment->setBankaccount($bankaccount);
+                        $payment->setBankcode($bankcode);
                     }
                     break;
                 case Payone_Api_Enum_OnlinebanktransferType::IDEAL:
@@ -507,26 +493,6 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
 
             $isRedirect = true;
         }
-        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Financing) {
-
-            $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_Financing();
-            $payment->setFinancingtype($info->getPayoneFinancingType());
-
-            if($info->getPayoneFinancingType() == Payone_Api_Enum_FinancingType::KLS) {
-                $configPaymentMethodId = $info->getPayoneConfigPaymentMethodId();
-                $paymentConfig = $paymentMethod->getConfigPayment();
-
-
-                $payData = new Payone_Api_Request_Parameter_Paydata_Paydata();
-                $payData->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
-                    array('key' => 'klsid', 'data' => $info->getPayoneKlarnaCampaignCode())
-                ));
-                $payment->setPaydata($payData);
-            }
-
-            $isRedirect = true;
-        }
-
         elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_SafeInvoice) {
 
             $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_Financing();
@@ -547,11 +513,13 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
             $payment->setBankcountry($info->getPayoneBankCountry());
             $iban = $info->getPayoneSepaIban();
             $bic = $info->getPayoneSepaBic();
-            if (!empty($iban) and !empty($bic)) {
+
+            if (!empty($iban)) {
                 $payment->setIban(strtoupper($iban));
-                $payment->setBic(strtoupper($bic)); // ensure bic and iban are sent uppercase
-            }
-            else {
+                if(!empty($bic)) {
+                    $payment->setBic(strtoupper($bic)); // ensure bic and iban are sent uppercase
+                }
+            } else {
                 $payment->setBankaccount($info->getPayoneAccountNumber());
                 $payment->setBankcode($info->getPayoneBankCode());
             }
@@ -610,9 +578,9 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
             $payment->setApiVersion();
             $payment->setFinancingtype($info->getPayonePayolutionType());
             $payment->setWorkorderid($info->getPayoneWorkorderid());
-            $payment->setIban(strtoupper($info->getPayoneSepaIban()));
-            $payment->setBic(strtoupper($info->getPayoneSepaBic()));
-            
+            $payment->setIban(strtoupper($info->getPayonePayolutionIban()));
+            $payment->setBic(strtoupper($info->getPayonePayolutionBic()));
+
             $checkoutSession = $this->getFactory()->getSingletonCheckoutSession();
             $payment->setWorkorderid($checkoutSession->getPayoneWorkorderId());
             $info->setPayoneWorkorderId($checkoutSession->getPayoneWorkorderId());
@@ -693,9 +661,6 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
         }
         elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_DebitPayment) {
             $clearingType = Payone_Enum_ClearingType::DEBITPAYMENT;
-        }
-        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Financing) {
-            $clearingType = Payone_Enum_ClearingType::FINANCING;
         }
         elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_SafeInvoice) {
             $clearingType = Payone_Enum_ClearingType::FINANCING;

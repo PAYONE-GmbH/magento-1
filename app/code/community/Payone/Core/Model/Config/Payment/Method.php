@@ -221,7 +221,17 @@ class Payone_Core_Model_Config_Payment_Method
      * @var bool
      */
     protected $b2b_mode = false;
+    
+    /**
+     * @var bool
+     */
+    protected $sofortueberweisung_show_iban = false;
 
+    /**
+     * @var bool
+     */
+    protected $sepa_request_bic = false;
+    
     /**
      * Check if Method can be used in Country
      *
@@ -1071,6 +1081,38 @@ class Payone_Core_Model_Config_Payment_Method
     public function getB2bMode()
     {
         return $this->b2b_mode;
+    }
+    
+    /**
+     * @param bool $show_iban
+     */
+    public function setSofortueberweisungShowIban($show_iban)
+    {
+        $this->sofortueberweisung_show_iban = (bool)$show_iban;
+    }
+    
+    /**
+     * @return bool
+     */
+    public function getSofortueberweisungShowIban()
+    {
+        return (bool)$this->sofortueberweisung_show_iban;
+    }
+    
+    /**
+     * @param bool $show_iban
+     */
+    public function setSepaRequestBic($request_bic)
+    {
+        $this->sepa_request_bic = (bool)$request_bic;
+    }
+    
+    /**
+     * @return bool
+     */
+    public function getSepaRequestBic()
+    {
+        return (bool)$this->sepa_request_bic;
     }
     
 }

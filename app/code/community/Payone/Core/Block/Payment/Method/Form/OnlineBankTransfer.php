@@ -103,4 +103,14 @@ class Payone_Core_Block_Payment_Method_Form_OnlineBankTransfer
             return 0;
         }
     }
+    
+    /**
+     * Return if iban+bic have to be shown for SofortÜberweisung
+     * 
+     * @return bool
+     */
+    public function showSofortUeberweisungBankDataFields()
+    {
+        return $this->getMethod()->getConfig()->getSofortueberweisungShowIban();
+    }
 }

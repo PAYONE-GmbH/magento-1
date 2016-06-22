@@ -60,6 +60,8 @@ $paymentType = $this->getInfoData('payone_onlinebanktransfer_type');
                        value="<?php echo $paymentType; ?>" class=""/>
                 <input type="hidden" name="payment[payone_config_payment_method_id]"
                        id="<?php echo $code ?>_config_id" value="<?php echo $paymentConfigId; ?>"/>
+                <input type="hidden" id="<?php echo $code ?>_pnt_show_iban" 
+                       value="<?php echo $this->showSofortUeberweisungBankDataFields(); ?>"/>
             </div>
         </li>
         <li id="sepa_iban_wrap" style="display:none;">

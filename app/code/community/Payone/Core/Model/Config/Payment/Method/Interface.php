@@ -499,4 +499,24 @@ interface Payone_Core_Model_Config_Payment_Method_Interface
      */
     public function getB2bMode();
     
+    /**
+     * @param bool $show_iban
+     */
+    public function setSofortueberweisungShowIban($show_iban);
+    
+    /**
+     * @return bool
+     */
+    public function getSofortueberweisungShowIban();
+    
+    /**
+     * @param bool $request_bic
+     */
+    public function setSepaRequestBic($request_bic);
+    
+    /**
+     * @return bool
+     */
+    public function getSepaRequestBic();
+    
 }

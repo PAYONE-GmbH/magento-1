@@ -68,21 +68,23 @@ $configShowBankData = $this->getPaymentConfig()->getSepaDeShowBankData();
                        value="<?php echo $this->getSavedCustomerData('payone_sepa_iban');?>">
             </div>
         </li>
-        <li id="input_box_payone_sepa_bic">
-            <div class="input-box">
-                <label for="<?php echo $code ?>_sepa_bic">
-                    <?php echo $this->__('BIC') ?>
-                </label>
-                <br class="clear"/>
-                <input type="text" id="<?php echo $code ?>_sepa_bic" name="payment[payone_sepa_bic]"
-                       title="<?php echo $this->__('BIC') ?>"
-                       class="validate-sepa-bic required-entry input-text"
-                       value="<?php echo $this->getSavedCustomerData('payone_sepa_bic');?>"
-                       autocomplete="off" maxlength="11"
-                       onchange="inputToUppaerCaseAndNumbers(this); blockPaymentMethodInputs('<?php echo $code ?>', <?php echo $configShowBankData; ?>);"
-                       oninput="inputToUppaerCaseAndNumbers(this); blockPaymentMethodInputs('<?php echo $code ?>', <?php echo $configShowBankData; ?>);"/>
-            </div>
-        </li>
+        <?php if ($this->getSepaRequestBic() === true): ?>
+            <li id="input_box_payone_sepa_bic">
+                <div class="input-box">
+                    <label for="<?php echo $code ?>_sepa_bic">
+                        <?php echo $this->__('BIC') ?>
+                    </label>
+                    <br class="clear"/>
+                    <input type="text" id="<?php echo $code ?>_sepa_bic" name="payment[payone_sepa_bic]"
+                           title="<?php echo $this->__('BIC') ?>"
+                           class="validate-sepa-bic required-entry input-text"
+                           value="<?php echo $this->getSavedCustomerData('payone_sepa_bic');?>"
+                           autocomplete="off" maxlength="11"
+                           onchange="inputToUppaerCaseAndNumbers(this); blockPaymentMethodInputs('<?php echo $code ?>', <?php echo $configShowBankData; ?>);"
+                           oninput="inputToUppaerCaseAndNumbers(this); blockPaymentMethodInputs('<?php echo $code ?>', <?php echo $configShowBankData; ?>);"/>
+                </div>
+            </li>
+        <?php endif; ?>
         <?php if ($configShowBankData): ?>
         <li id="input_box_payone_account_number">
             <?php echo $this->__('or enter your bank account data (only for German accounts):'); ?>

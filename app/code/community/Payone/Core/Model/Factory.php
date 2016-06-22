@@ -1570,15 +1570,6 @@ class Payone_Core_Model_Factory
     }
 
     /**
-     * @return Payone_Core_Model_System_Config_FinancingType
-     */
-    public function getModelSystemConfigFinancingType()
-    {
-        return Mage::getSingleton('payone_core/system_config_financingType');
-    }
-
-
-    /**
      * @return Payone_Core_Model_System_Config_SafeInvoiceType
      */
     public function getModelSystemConfigSafeInvoiceType()
