@@ -20,7 +20,7 @@
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
  * @link            http://www.fatchip.com
  */
-class Payone_Settings_Data_ConfigFile_PaymentMethod_RatePay
+class Payone_Settings_Data_ConfigFile_PaymentMethod_Ratepay
     extends Payone_Settings_Data_ConfigFile_PaymentMethod_Abstract
     implements Payone_Settings_Data_ConfigFile_Interface
 {
