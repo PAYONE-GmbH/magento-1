@@ -378,8 +378,7 @@ class Payone_Core_Model_Service_Config_XmlGenerate
     {
         $key = strtoupper(uc_words($key, ''));
         $clearingTypes = $this->getFactory()->getModelSystemConfigClearingType();
-        $keyArray = $clearingTypes->toArray();
-        $keyArray = array_flip($keyArray);
+        $keyArray = $clearingTypes->toArrayNoFlip();
         if (array_key_exists($key, $keyArray)) {
             return $keyArray[$key];
         }

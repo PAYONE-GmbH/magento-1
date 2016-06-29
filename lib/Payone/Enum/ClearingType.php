@@ -22,15 +22,15 @@
 class Payone_Enum_ClearingType
 {
     const DEBITPAYMENT = 'elv';
-    const CREDITCARD = 'cc';
     const CREDITCARD_IFRAME = 'cc';
+    const CREDITCARD = 'cc';
     const ADVANCEPAYMENT = 'vor';
     const INVOICE = 'rec';
     const ONLINEBANKTRANSFER = 'sb';
     const CASHONDELIVERY = 'cod';
     const WALLET = 'wlt';
-    const FINANCING = 'fnc';
     const BARZAHLEN = 'csh';
     const RATEPAY = 'fnc';
     const PAYOLUTION = 'fnc';
+    const FINANCING = 'fnc';
 }

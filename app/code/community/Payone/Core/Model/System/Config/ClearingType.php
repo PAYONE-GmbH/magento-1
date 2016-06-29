@@ -41,5 +41,14 @@ class Payone_Core_Model_System_Config_ClearingType extends Payone_Core_Model_Sys
         $settings = new Payone_Settings_Configuration_PaymentMethod();
         return $settings->getTypes();
     }
+    
+    /**
+     * @return array
+     */
+    public function toArrayNoFlip()
+    {
+        $settings = new Payone_Settings_Configuration_PaymentMethod();
+        return $settings->getTypes(false);
+    }
 
 }

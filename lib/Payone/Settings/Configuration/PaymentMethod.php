@@ -36,12 +36,13 @@ class Payone_Settings_Configuration_PaymentMethod
     /**
      * @return array
      */
-    public function getTypes()
+    public function getTypes($blFlipArray = true)
     {
         $constants = $this->getClassConstants('Payone_Enum_ClearingType');
-
-        $constants = array_flip($constants);
-
+        
+        if($blFlipArray === true) {
+            $constants = array_flip($constants);
+        }
         return $constants;
     }
 

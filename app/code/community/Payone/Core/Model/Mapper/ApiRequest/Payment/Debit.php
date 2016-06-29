@@ -196,8 +196,8 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Debit
 
             // Add Discount as a position
             $discountAmount = $creditmemo->getDiscountAmount();
-            if ($discountAmount > 0) {
-                $invoicing->addItem($this->mapDiscountAsItem(-1 * $discountAmount));
+            if ($discountAmount) {
+                $invoicing->addItem($this->mapDiscountAsItem($discountAmount));
             }
         }
         return $invoicing;
