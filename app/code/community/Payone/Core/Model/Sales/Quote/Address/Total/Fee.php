@@ -92,14 +92,16 @@ class Payone_Core_Model_Sales_Quote_Address_Total_Fee
         return parent::collect($address);
     }
     
-    protected function _setNewPayonePaymentAmount($oQuote, $oAddess, $dPaymentFee) {
-        $dOldShippingAmount = $oAddess->getBaseShippingAmount();
+    protected function _setNewPayonePaymentAmount($oQuote, $oAddress, $dPaymentFee) {
+        $dOldShippingAmount = $oAddress->getBaseShippingAmount();
         $dNewShippingAmount = $dOldShippingAmount + $dPaymentFee;
 
-        $oAddess->setBaseShippingAmount($dNewShippingAmount);
-        $oAddess->setShippingAmount(
+        $oAddress->setData('payone_payment_fee', $dPaymentFee);
+        
+        $oAddress->setBaseShippingAmount($dNewShippingAmount);
+        $oAddress->setShippingAmount(
             $oQuote->getStore()->convertPrice($dNewShippingAmount, false)
-        );        
+        );
     }
 
     /**
