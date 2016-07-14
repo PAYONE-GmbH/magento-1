@@ -100,6 +100,8 @@ class Payone_Migrator_Helper_Data
                 4 => array('eq' => 'payone_sb'),
                 5 => array('eq' => 'payone_cod'),
                 6 => array('eq' => 'payone_wlt'),
+                7 => array('eq' => 'payone_csh'),
+                8 => array('eq' => 'payone_fnc'),
             )
         );
         $paymentCollection->getSelect()->group(array('method', 'order.store_id'));

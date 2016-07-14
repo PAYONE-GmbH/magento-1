@@ -338,7 +338,7 @@
                             <show_in_store>1</show_in_store>
                         </payolution>
                         <ratepay translate="label">
-                            <label>Ratepay</label>
+                            <label>RatePay</label>
                             <frontend_model>payone_core/adminhtml_system_config_form_field_statusMapping</frontend_model>
                             <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
                             <sort_order>100</sort_order>
@@ -346,6 +346,15 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </ratepay>
+                        <financing translate="label">
+                            <label>Finanzierung</label>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_statusMapping</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </financing>
                     </fields>
                 </status_mapping>
                 <payment_creditcard>

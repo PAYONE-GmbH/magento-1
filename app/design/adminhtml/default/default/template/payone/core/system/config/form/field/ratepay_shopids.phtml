@@ -45,9 +45,9 @@ $_colspan = $_colspan > 1 ? 'colspan="' . $_colspan . '"' : '';
                 <?php $aRow = $_row->getData(); ?>
                 <tr id="<?php echo $aRow['_id']; ?>">
                     <td>
-                        <input type="text" style="min-width:120px;" class="input-text" value="<?php echo $aRow['ratepay_shopid']; ?>" name="groups[template_ratepay][fields][ratepay_config][value][<?php echo $aRow['_id']; ?>][ratepay_shopid]">
+                        <input type="text" style="width:60px;" class="input-text" value="<?php echo $aRow['ratepay_shopid']; ?>" name="groups[template_ratepay][fields][ratepay_config][value][<?php echo $aRow['_id']; ?>][ratepay_shopid]">
                         <br>
-                        <?php $aShopConfig = $this->getRatePayShopConfig($aRow['ratepay_shopid']); ?>
+                        <?php $aShopConfig = $this->getRatePayShopConfig($aRow['ratepay_shopid'], $aRow['ratepay_currency']); ?>
                         <?php if ($aShopConfig): ?>
                             <div style="padding-top: 4px;">
                                 <table>
@@ -74,8 +74,11 @@ $_colspan = $_colspan > 1 ? 'colspan="' . $_colspan . '"' : '';
                                 </table>
                             </div>
                         <?php else: ?>
-                            <?php echo Mage::helper('payone_core')->__('The RatePay Shop-Config for this ID could not be requested.'); ?>
+                            <?php echo Mage::helper('payone_core')->__('The RatePay Shop-Config for this ID and currency could not be requested.'); ?>
                         <?php endif;?>
+                    </td>
+                    <td>
+                        <input type="text" style="width:60px;" class="input-text" value="<?php echo $aRow['ratepay_currency']; ?>" name="groups[template_ratepay][fields][ratepay_config][value][<?php echo $aRow['_id']; ?>][ratepay_currency]">
                     </td>
                     <td>
                         <button type="button" class="scalable delete" onclick="arrayRow<?php echo $_htmlId ?>.del('<?php echo $aRow['_id']; ?>')"><span><span><span>Delete</span></span></span></button>
@@ -99,6 +102,7 @@ $_colspan = $_colspan > 1 ? 'colspan="' . $_colspan . '"' : '';
         <span><span><span><?php echo $this->_addButtonLabel ?></span></span></span>
     </button>
 </div>
+<?php echo Mage::helper('payone_core')->__('Enter currency in ISO 4217 form - i.e. EUR or USD'); ?>
 
 <script type="text/javascript">
     //<![CDATA[

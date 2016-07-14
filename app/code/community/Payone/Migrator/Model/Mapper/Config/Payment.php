@@ -40,6 +40,8 @@ class Payone_Migrator_Model_Mapper_Config_Payment extends Payone_Migrator_Model_
         'payone_sb' => 'online_bank_transfer',
         'payone_wlt' => 'wallet',
         'payone_cod' => 'cash_on_delivery',
+        'payone_fnc' => 'financing',
+        'payone_csh' => 'barzahlen',
     );
 
     protected $mappingMethodToMethodCode = array(
@@ -50,6 +52,8 @@ class Payone_Migrator_Model_Mapper_Config_Payment extends Payone_Migrator_Model_
         'payone_sb' => 'payone_online_bank_transfer',
         'payone_wlt' => 'payone_wallet',
         'payone_cod' => 'payone_cash_on_delivery',
+        'payone_fnc' => 'payone_financing',
+        'payone_csh' => 'payone_barzahlen',
     );
 
     protected $mappingCreditcardTypes = array(

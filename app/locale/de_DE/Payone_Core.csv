@@ -980,6 +980,7 @@
 
 "Show detailed error-messages","Detaillierte Fehlermeldungen anzeigen"
 "PAYONE_TOOLTIP_CUSTOMERMESSAGE","Ja - die von RatePay gesendete Fehlermeldung anzeigen<br>Nein - eine allgemeine Fehlermeldung anzeigen"
+"Enter currency in ISO 4217 form - i.e. EUR or USD","Waehrung bitte in ISO 4217 Form eingeben - z.B. EUR oder USD"
 
 "PYV","Rechnungskauf"
 "PYM","Monatliche Rechnung"

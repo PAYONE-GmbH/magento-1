@@ -68,6 +68,9 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
      * @var null
      */
     protected $wallet = null;
+    
+    protected $ratepay = null;
+    protected $payolution = null;
 
     public function init(array $data)
     {
@@ -260,6 +263,22 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
         }
         $this->wallet = $wallet;
     }
+    
+    public function setRatepay($ratepay)
+    {
+        if (is_string($ratepay)) {
+            $ratepay = $this->initValue($ratepay);
+        }
+        $this->ratepay = $ratepay;
+    }
+    
+    public function setPayolution($payolution)
+    {
+        if (is_string($payolution)) {
+            $payolution = $this->initValue($payolution);
+        }
+        $this->payolution = $payolution;
+    }
 
     /**
      * @return null
@@ -267,6 +286,16 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
     public function getWallet()
     {
         return $this->wallet;
+    }
+    
+    public function getRatepay()
+    {
+        return $this->ratepay;
+    }
+    
+    public function getPayolution()
+    {
+        return $this->payolution;
     }
 
     /**

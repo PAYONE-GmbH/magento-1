@@ -37,7 +37,11 @@ class Payone_Core_Block_Adminhtml_System_Config_Form_Field_RatePayStoreIds
     {
         $this->addColumn('ratepay_shopid', array(
             'label' => Mage::helper('payone_core')->__('Shop-ID'),
-            'style' => 'min-width:120px;',
+            'style' => 'width:60px;',
+        ));
+        $this->addColumn('ratepay_currency', array(
+            'label' => Mage::helper('payone_core')->__('Currency'),
+            'style' => 'width:60px;',
         ));
         $this->_addAfter = false;
         $this->_addButtonLabel = Mage::helper('payone_core')->__('Add Shop-ID');
@@ -51,13 +55,13 @@ class Payone_Core_Block_Adminhtml_System_Config_Form_Field_RatePayStoreIds
         return $this->_oRatePay;
     }
     
-    protected function _requestRatePayConfigFromApi($sRatePayShopId) {
+    protected function _requestRatePayConfigFromApi($sRatePayShopId, $sCurrency) {
         $sMethodId = $this->getRequest()->get('id');
         $oConfigHelper = $this->getFactory()->helperConfig();
         $oConfig = $oConfigHelper->getConfigPaymentMethodById($sMethodId);
         $oService = $this->getFactory()->getServicePaymentGenericpayment($oConfig);
         $oMapper = $oService->getMapper();
-        $oRequest = $oMapper->addRatePayParameters($sRatePayShopId);
+        $oRequest = $oMapper->addRatePayParameters($sRatePayShopId, $sCurrency);
         $oResponse = $this->getFactory()->getServiceApiPaymentGenericpayment()->request($oRequest);
 
         if($oResponse instanceof Payone_Api_Response_Genericpayment_Ok) {
@@ -71,12 +75,12 @@ class Payone_Core_Block_Adminhtml_System_Config_Form_Field_RatePayStoreIds
         return false;
     }
     
-    public function getRatePayShopConfig($sRatePayShopId) {
+    public function getRatePayShopConfig($sRatePayShopId, $sCurrency) {
         $sRatePayShopId = trim($sRatePayShopId);
         $oRatePay = $this->_getRatePayObject();
         $aRatePayConfig = $oRatePay->getRatePayConfigById($sRatePayShopId);
         if(!$aRatePayConfig) {
-            $aRatePayConfig = $this->_requestRatePayConfigFromApi($sRatePayShopId);
+            $aRatePayConfig = $this->_requestRatePayConfigFromApi($sRatePayShopId, $sCurrency);
         }
         return $aRatePayConfig;
     }

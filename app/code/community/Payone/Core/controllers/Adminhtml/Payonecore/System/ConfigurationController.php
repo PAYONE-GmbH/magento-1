@@ -65,6 +65,7 @@ class Payone_Core_Adminhtml_Payonecore_System_ConfigurationController
         $configPaymentWlt = Mage::getStoreConfig('payment/payone_wlt', $storeId);
         $configPaymentFnc = Mage::getStoreConfig('payment/payone_fnc', $storeId);
         $configPaymentSin = Mage::getStoreConfig('payment/payone_sin', $storeId);
+        $configPaymentCsh = Mage::getStoreConfig('payment/payone_csh', $storeId);
 
         $configCreditrating = Mage::getStoreConfig('payonecreditrating', $storeId);
 
@@ -77,6 +78,7 @@ class Payone_Core_Adminhtml_Payonecore_System_ConfigurationController
             'payone_sb' => $configPaymentSb,
             'payone_wlt' => $configPaymentWlt,
             'payone_fnc' => $configPaymentFnc,
+            'payone_csh' => $configPaymentCsh,
             'payone_sin' => $configPaymentSin
         );
 

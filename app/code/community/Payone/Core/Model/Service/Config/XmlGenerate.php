@@ -163,8 +163,8 @@ class Payone_Core_Model_Service_Config_XmlGenerate
         /** @var $globalConfig Payone_Settings_Data_ConfigFile_Shop_Global */
         $globalConfig = $this->generateSettingsBySection('shop_global', $global);
         $statusMappingConfig = new Payone_Settings_Data_ConfigFile_Global_StatusMapping();
-        foreach ($statusMapping->toArray() as $keyClearingType => $mapping) {
-            $keyClearingType = $this->getPayoneShortKey($keyClearingType);
+        foreach ($statusMapping->toArray() as $paymentMethod => $mapping) {
+            $keyClearingType = $this->getPayoneShortKey($paymentMethod);
             if ($keyClearingType !== NULL) {
                 $data = array();
 
@@ -177,6 +177,7 @@ class Payone_Core_Model_Service_Config_XmlGenerate
                         $mapTo = implode('|', $value);
                     }
                     $singleMap['to'] = $mapTo;
+                    $singleMap['method'] = $paymentMethod;
 
                     array_push($data, $singleMap);
                 }

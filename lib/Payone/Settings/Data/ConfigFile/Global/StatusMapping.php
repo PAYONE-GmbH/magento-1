@@ -48,11 +48,15 @@ class Payone_Settings_Data_ConfigFile_Global_StatusMapping
     }
 
     /**
-     * @param $value
+     * @param $aData
      */
-    public function addStatusMapping($key,$value)
+    public function addStatusMapping($sClearingType, $aData)
     {
-        $this->status_mapping[$key] = $value;
+        if (array_key_exists($sClearingType, $this->status_mapping) !== false && count($this->status_mapping[$sClearingType]) > 0) {
+            $this->status_mapping[$sClearingType] = array_merge($this->status_mapping[$sClearingType], $aData);
+        } else {
+            $this->status_mapping[$sClearingType] = $aData;
+        }
     }
 
     /**
