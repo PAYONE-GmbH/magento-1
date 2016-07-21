@@ -47,7 +47,7 @@ class Payone_Core_Model_Observer_Sales_Order
 
         $resource->addVirtualGridColumn(
             'payone_payment_method',
-            'order_payment',
+            'sales/order_payment',
             array('entity_id' => 'parent_id'),
             'method'
         );
