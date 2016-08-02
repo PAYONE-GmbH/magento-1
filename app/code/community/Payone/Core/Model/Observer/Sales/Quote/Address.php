@@ -66,7 +66,7 @@ class Payone_Core_Model_Observer_Sales_Quote_Address
                 // Config says we must perform an addresscheck:
                 $service = $this->getFactory()->getServiceVerificationAddressCheck($config);
 
-                $service->execute($quoteAddress, $errors);
+                $service->execute($quoteAddress, $errors, $quote);
             }
         }
     }
