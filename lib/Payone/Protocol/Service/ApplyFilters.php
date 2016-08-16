@@ -87,7 +87,13 @@ class Payone_Protocol_Service_ApplyFilters
                 }
             }
 
-            $stringArray[] = $key . '=' . $value;
+            if(is_array($value)) {
+                foreach ($value as $sArrayKey => $sArrayValue) {
+                    $stringArray[] = $key.'_'.$sArrayKey.'='.$sArrayValue;
+                }
+            } else {
+                $stringArray[] = $key . '=' . $value;
+            }
         }
 
         return implode('|', $stringArray);
