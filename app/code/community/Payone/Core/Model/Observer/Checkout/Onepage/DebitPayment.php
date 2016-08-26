@@ -114,7 +114,7 @@ class Payone_Core_Model_Observer_Checkout_Onepage_DebitPayment extends Payone_Co
         
         if($oResponse instanceof Payone_Api_Response_Error) {
             $controllerAction->setFlag('', Mage_Core_Controller_Varien_Action::FLAG_NO_DISPATCH, true);
-            $jsonResponse = array('error' => Mage::helper('payone_core')->__($oResponse->getErrormessage()));
+            $jsonResponse = array('error' => Mage::helper('payone_core')->__('PAYONE_PAYOLUTION_API_ERRORMESSAGE'));
             return $controllerAction->getResponse()->setBody(Mage::helper('core')->jsonEncode($jsonResponse));
         } elseif($oResponse instanceof Payone_Api_Response_Genericpayment_Ok) {
             $checkoutSession = $this->getFactory()->getSingletonCheckoutSession();
