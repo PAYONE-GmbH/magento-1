@@ -33,5 +33,10 @@ class Payone_Core_Model_Payment_Method_Payolution extends Payone_Core_Model_Paym
     protected $_infoBlockType = 'payone_core/payment_method_info_payolution';
     
     protected $_blIpMandatory = true;
+    
+    public function getApiResponseErrorMessage($response)
+    {
+        return $this->helper()->__('PAYONE_PAYOLUTION_API_ERRORMESSAGE');
+    }
 
 }

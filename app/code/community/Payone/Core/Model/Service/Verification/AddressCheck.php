@@ -50,14 +50,19 @@ class Payone_Core_Model_Service_Verification_AddressCheck
     /**
      * @param Mage_Customer_Model_Address_Abstract $address
      * @param Varien_Object $errors
+     * @param Mage_Sales_Model_Quote $quote
      *
      * @return Payone_Api_Response_AddressCheck_Invalid|Payone_Api_Response_AddressCheck_Valid|Payone_Api_Response_Error
      */
-    public function execute(Mage_Customer_Model_Address_Abstract $address, Varien_Object $errors)
+    public function execute(Mage_Customer_Model_Address_Abstract $address, Varien_Object $errors, Mage_Sales_Model_Quote $quote)
     {
         $handler = $this->getHandler();
         $handler->setAddress($address);
         $handler->setErrors($errors);
+
+        if ($quote && $this->isRequiredForQuote($quote) === false) {
+            return true;
+        }
 
         if ($this->getSavedScore($address, $this->getConfig()->getResultLifetimeInSeconds())) {
             // Valid, saved score exists, we can skip the API request.

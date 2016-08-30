@@ -991,6 +991,7 @@
 "PAYOLUTION_ACCEPTANCE_2","Meine"
 "PAYOLUTION_ACCEPTANCE_3","kann ich jederzeit mit Wirkung f&uuml;r die Zukunft widerrufen."
 "acceptance","Einwilligung"
+"PAYONE_PAYOLUTION_API_ERRORMESSAGE","Diese Zahlung konnte nicht durchgefuehrt werden. Dies kann unterschiedliche Gruende haben, wie etwa fehlerhafte Eingabedaten, eine unbekannte Adresse, oder ein voruebergehendes technisches Problem. Bitte ueberpruefen Sie die angegebenen Daten, oder waehlen Sie ein anderes Zahlungsmittel."
 
 "Hereby I grant the","Hiermit erteile ich das"
 "SEPA-Mandate","SEPA-Lastschriftmandat"
