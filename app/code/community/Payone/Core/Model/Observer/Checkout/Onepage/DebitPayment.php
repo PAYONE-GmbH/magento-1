@@ -90,7 +90,13 @@ class Payone_Core_Model_Observer_Checkout_Onepage_DebitPayment extends Payone_Co
         if ((!$sepaMandateEnabled and $checkBankaccountEnabled)
                 or ($sepaMandateEnabled and $checkBankaccountEnabled and $bankaccountcheckType == Payone_Api_Enum_BankaccountCheckType::POS_BLACKLIST)
         ) {
-            $this->performBankaccountCheck();
+            try {
+                $this->performBankaccountCheck();
+            } catch(Exception $oEx) {
+                $controllerAction->setFlag('', Mage_Core_Controller_Varien_Action::FLAG_NO_DISPATCH, true);
+                $jsonResponse = array('error' => Mage::helper('payone_core')->__($oEx->getMessage()));
+                return $controllerAction->getResponse()->setBody(Mage::helper('core')->jsonEncode($jsonResponse));
+            }
         }
 
         if ($sepaMandateEnabled) {
