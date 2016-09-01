@@ -156,4 +156,29 @@ class Payone_Core_Block_Adminhtml_System_Config_Form_Field_Abstract
         return $this->factory;
     }
 
+    protected function _getFormattedLanguageTitle($sTitle)
+    {
+        $iPos = strpos($sTitle, "(");
+        if($iPos) {
+            $sTitle = substr($sTitle, 0, $iPos);
+        }
+        return trim($sTitle);
+    }
+    
+    protected function _getFormattedLanguageOptions($aOptions)
+    {
+        $aReturn = array();
+        $aAddedLanguages = array();
+        foreach ($aOptions as $aOption) {
+            $sLang = substr($aOption['value'], 0, 2);
+            if(array_search($sLang, $aAddedLanguages) === false) {
+                $aOption['value'] = $sLang;
+                $aOption['label'] = $this->_getFormattedLanguageTitle($aOption['label']);
+                $aReturn[] = $aOption;
+                $aAddedLanguages[] = $sLang;
+            }
+        }
+        return $aReturn;
+    }
+    
 }

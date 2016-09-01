@@ -36,6 +36,7 @@ class Payone_Core_Block_Payment_Method_Form_Creditcard
     
     protected $_aHostedParams = null;
     protected $hasTypes = true;
+    protected $_aTranslations = null;
 
     protected function _construct()
     {
@@ -152,6 +153,52 @@ class Payone_Core_Block_Payment_Method_Form_Creditcard
     public function getCreditCardCid()
     {
         return '';
+    }
+    
+    public function getDisplayCvcConfig()
+    {
+        $sShowCvc = '';
+        foreach ($this->getTypes() as $key => $type) {
+            $sShowCvc = $type['check_cvc'];
+        }
+        return $sShowCvc;
+    }
+    
+    public function showCvcInput()
+    {
+        $sDisplayCvc = $this->getDisplayCvcConfig();
+        if($sDisplayCvc == 'always' || ($sDisplayCvc == 'only_first' && $this->getPayoneCreditCardCheckValidation() == '1')) {
+            return true;
+        }
+        return false;
+    }
+    
+    public function _getShopLanguage()
+    {
+        $sLangCode = Mage::app()->getLocale()->getLocaleCode();
+        return substr($sLangCode, 0, 2);
+    }
+    
+    public function getTranslations()
+    {
+        if($this->_aTranslations === null) {
+            $this->_aTranslations = array();
+            $sLang = $this->_getShopLanguage();
+            $aTranslations = $this->getConfigGeneral()->getCcHostedTranslations()->getAllCcTranslations();
+            if(isset($aTranslations[$sLang])) {
+                $this->_aTranslations = $aTranslations[$sLang];
+            }
+        }
+        return $this->_aTranslations;
+    }
+    
+    public function getTranslationLanguage()
+    {
+        $aTranslations = $this->getTranslations();
+        if(count($aTranslations) > 0) {
+            return $this->_getShopLanguage();
+        }
+        return false;
     }
     
     /**

@@ -63,6 +63,8 @@ class Payone_Core_Block_Adminhtml_System_Config_Form_Field_CreditcardTemplate
         'Standard_selection' => 'width:100px;',
     );
     
+    protected $_aTranslations = null;
+    
     /**
      *
      */
@@ -152,6 +154,43 @@ class Payone_Core_Block_Adminhtml_System_Config_Form_Field_CreditcardTemplate
             return $this->_aFcpoDefaultStringConf[$sIdent];
         }
         return '';
+    }
+    
+    public function _getShopLanguage()
+    {
+        $sLangCode = Mage::app()->getLocale()->getLocaleCode();
+        return substr($sLangCode, 0, 2);
+    }
+    
+    /**
+     * @return Payone_Core_Model_Config_General
+     */
+    public function getConfigGeneral()
+    {
+        $storeId = Mage::app()->getDefaultStoreView()->getStoreId();
+        return $this->getFactory()->helperConfig()->getConfigGeneral($storeId);
+    }
+    
+    public function getTranslations()
+    {
+        if($this->_aTranslations === null) {
+            $this->_aTranslations = array();
+            $sLang = $this->_getShopLanguage();
+            $aTranslations = $this->getConfigGeneral()->getCcHostedTranslations()->getAllCcTranslations();
+            if(isset($aTranslations[$sLang])) {
+                $this->_aTranslations = $aTranslations[$sLang];
+            }
+        }
+        return $this->_aTranslations;
+    }
+    
+    public function getTranslationLanguage()
+    {
+        $aTranslations = $this->getTranslations();
+        if(count($aTranslations) > 0) {
+            return $this->_getShopLanguage();
+        }
+        return false;
     }
     
 }

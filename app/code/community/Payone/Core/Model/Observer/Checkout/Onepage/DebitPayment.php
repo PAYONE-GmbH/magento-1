@@ -53,9 +53,10 @@ class Payone_Core_Model_Observer_Checkout_Onepage_DebitPayment extends Payone_Co
         $selectedMethod = $paymentData['method'];
 
         if ($selectedMethod != Payone_Core_Model_System_Config_PaymentMethodCode::DEBITPAYMENT && 
-            $selectedMethod != Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTION
+            $selectedMethod != Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTION &&
+            $selectedMethod != Payone_Core_Model_System_Config_PaymentMethodCode::CREDITCARD
             ) {
-            return; // only active for payone_debit_payment
+            return;
         }
 
         if (!$controllerAction instanceof Payone_Core_Checkout_OnepageController) {
@@ -76,6 +77,8 @@ class Payone_Core_Model_Observer_Checkout_Onepage_DebitPayment extends Payone_Co
             $controllerAction = $this->_performDebitChecks($controllerAction);
         } elseif($selectedMethod == Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTION) {
             $controllerAction = $this->_performPayolutionChecks($controllerAction);
+        } elseif($selectedMethod == Payone_Core_Model_System_Config_PaymentMethodCode::CREDITCARD) {
+            $controllerAction = $this->_performHostedCreditcardChecks($controllerAction);
         }
         return $controllerAction;
     }
@@ -125,6 +128,38 @@ class Payone_Core_Model_Observer_Checkout_Onepage_DebitPayment extends Payone_Co
         } elseif($oResponse instanceof Payone_Api_Response_Genericpayment_Ok) {
             $checkoutSession = $this->getFactory()->getSingletonCheckoutSession();
             $checkoutSession->setPayoneWorkorderId($oResponse->getWorkorderId());
+        }
+    }
+    
+    protected function _getCreditcardConfig()
+    {
+        $storeId = $this->getQuote()->getStoreId();
+        $oConfig = $this->helperConfig()->getConfigGeneral($storeId);        
+        return $oConfig->getPaymentCreditcard();
+    }
+    
+    protected function _performHostedCreditcardChecks($controllerAction)
+    {
+        if ($this->_getCreditcardConfig()->getCcRequestType() == 'hosted-Iframe') {
+            $aPaymentData = $this->getPaymentData();
+            $iExpireDate = $aPaymentData['payone_cardexpiredate'];
+            
+            $iDays = $this->_getCreditcardConfig()->getMinValidityPeriod();
+            if (empty($iDays)) {
+                $iDays = 0;
+            }
+
+            $iTimestamp = time();
+            if ($iDays > 0) {
+                 $iTimestamp += (60 * 60 * 24 * $iDays);
+            }
+            
+            $iCheckNumber = date('ym', $iTimestamp);
+            if($iCheckNumber > $iExpireDate) {
+                $controllerAction->setFlag('', Mage_Core_Controller_Varien_Action::FLAG_NO_DISPATCH, true);
+                $jsonResponse = array('error' => Mage::helper('payone_core')->__('PAYONE_CREDITCARD_VALIDITY_TOO_LOW'));
+                return $controllerAction->getResponse()->setBody(Mage::helper('core')->jsonEncode($jsonResponse));
+            }
         }
     }
 

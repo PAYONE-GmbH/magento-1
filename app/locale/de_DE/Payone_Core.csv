@@ -992,6 +992,7 @@
 "PAYOLUTION_ACCEPTANCE_3","kann ich jederzeit mit Wirkung f&uuml;r die Zukunft widerrufen."
 "acceptance","Einwilligung"
 "PAYONE_PAYOLUTION_API_ERRORMESSAGE","Diese Zahlung konnte nicht durchgefuehrt werden. Dies kann unterschiedliche Gruende haben, wie etwa fehlerhafte Eingabedaten, eine unbekannte Adresse, oder ein voruebergehendes technisches Problem. Bitte ueberpruefen Sie die angegebenen Daten, oder waehlen Sie ein anderes Zahlungsmittel."
+"PAYONE_CREDITCARD_VALIDITY_TOO_LOW","Die Zahlung konnte nicht durchgefuehrt werden. Bitte waehlen Sie eine andere Zahlungsart"
 
 "Hereby I grant the","Hiermit erteile ich das"
 "SEPA-Mandate","SEPA-Lastschriftmandat"
@@ -999,3 +1000,18 @@
 "Company trade registry number","Handelsregisternummer"
 
 "Payment type","Zahlart"
+"January","Januar"
+"Febuary","Februar"
+"March","M&auml;rz"
+"April","April"
+"May","Mai"
+"June","Juni"
+"July","Juli"
+"August","August"
+"September","September"
+"October","Oktober"
+"November","November"
+"December","Dezember"
+
+"Only used when you activated the error-output in the hosted-Iframe configuration.","Wird nur verwendet, wenn die Fehlerausgabe in der hosted-Iframe Konfiguration aktiviert ist."
+"These will be used to replace the default values from PAYONE.","Diese Werte werden verwendet, um die Standard-Werte von PAYONE zu ueberschreiben."

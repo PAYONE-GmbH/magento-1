@@ -108,6 +108,22 @@ class Payone_Core_Model_Config_General extends Payone_Core_Model_Config_AreaAbst
     }
 
     /**
+     * @param Payone_Core_Model_Config_General_CcHostedTranslations $cc_hosted_translations
+     */
+    public function setCcHostedTranslations(Payone_Core_Model_Config_General_CcHostedTranslations $cc_hosted_translations)
+    {
+        $this->cc_hosted_translations = $cc_hosted_translations;
+    }
+
+    /**
+     * @return Payone_Core_Model_Config_General_CcHostedTranslations
+     */
+    public function getCcHostedTranslations()
+    {
+        return $this->cc_hosted_translations;
+    }
+    
+    /**
      * @param Payone_Core_Model_Config_General_PaymentPaypalExpressCheckout $payment_paypal_express_checkout
      */
     public function setPaymentPaypalExpressCheckout(Payone_Core_Model_Config_General_PaymentPaypalExpressCheckout $payment_paypal_express_checkout)

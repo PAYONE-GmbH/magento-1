@@ -302,6 +302,11 @@
 
                     <?php if($this->fcpoGetValue('Errors_active') == "true") { ?>
                         error: "errorOutput", // area to display error-messages (optional)
+                    <?php } ?>
+                        
+                    <?php if($this->getTranslationLanguage()) { ?> 
+                        language: Payone.ClientApi.Language.<?php echo $this->getTranslationLanguage(); ?> 
+                    <?php } else { ?>
                         <?php if($this->fcpoGetValue('Errors_lang') == "de") { ?>
                             language: Payone.ClientApi.Language.de // Language to display error-messages
                         <?php } else { ?>
@@ -309,6 +314,13 @@
                         <?php } ?>
                     <?php } ?>
                 };
+                
+                <?php 
+                $aTranslations = $this->getTranslations();
+                foreach ($aTranslations as $sVarname => $sValue) {
+                    echo $sVarname." = '".$sValue."';";
+                }
+                ?>
                 var iframes = new Payone.ClientApi.HostedIFrames(config, request);
             </script>
         </div>

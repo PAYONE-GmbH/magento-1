@@ -112,6 +112,9 @@ $code = $this->getMethodCode();
     <ul id="payment_form_<?php echo $code ?>" style="display:none">
         <li>
             <div class="input-box">
+                <div style="display:none" id="payone_creditcard_hosted_error" class="validation-advice">
+                    <?php echo $this->__('Please fill in all required fields'); ?>.
+                </div>
                 <label for="<?php echo $code; ?>_cc_type"><?php echo $this->__('Credit Card Type'); ?>
                     <span class="required">*</span>
                 </label><br class="clear"/>
@@ -165,6 +168,7 @@ $code = $this->getMethodCode();
             <input type="hidden" id="<?php echo $code; ?>_cc_number" value=""/>
             <input type="hidden" id="<?php echo $code ?>_cc_owner" name="payment[cc_owner]" value="" />
             <input type="hidden" id="payone_pseudocardpan" name="payment[payone_pseudocardpan]" value="<?php echo $this->getPayonePseudocardpan();?>"/>
+            <input type="hidden" id="payone_cardexpiredate" name="payment[payone_cardexpiredate]" value=""/>
             <input type="hidden" id="payone_truncatedcardpan" name="payment[cc_number_enc]" value="<?php echo $this->getCreditCardNumberEnc();?>"/>
             <input type="hidden" id="<?php echo $code ?>_config_id" name="payment[payone_config_payment_method_id]"
                    value="<?php echo $this->getPayoneConfigPaymentMethodId();?>"/>
@@ -215,6 +219,10 @@ $code = $this->getMethodCode();
 
             <?php if($this->getHostedParam('Errors_active') == "true") { ?>
                 error: "errorOutput", // area to display error-messages (optional)
+            <?php } ?>
+            <?php if($this->getTranslationLanguage()) { ?> 
+                language: Payone.ClientApi.Language.<?php echo $this->getTranslationLanguage(); ?> 
+            <?php } else { ?>
                 <?php if($this->getHostedParam('Errors_lang') == "de") { ?>
                     language: Payone.ClientApi.Language.de // Language to display error-messages
                 <?php } else { ?>
@@ -224,6 +232,12 @@ $code = $this->getMethodCode();
         };
         var sTypeIdSelector = '<?php echo $code ?>_cc_type_select'
         if(typeof iframes == 'undefined') {
+            <?php 
+            $aTranslations = $this->getTranslations();
+            foreach ($aTranslations as $sVarname => $sValue) {
+                echo $sVarname." = '".$sValue."';";
+            }
+            ?>
             var iframes = payone.initHosted(fieldconfig, sTypeIdSelector);
         }
         

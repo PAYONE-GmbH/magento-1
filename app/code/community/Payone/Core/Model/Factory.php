@@ -1431,6 +1431,30 @@ class Payone_Core_Model_Factory
     {
         return Mage::getSingleton('payone_core/system_config_statusTransaction');
     }
+    
+    /**
+     * @return Payone_Core_Model_System_Config_TranslationMonths
+     */
+    public function getModelSystemConfigTranslationMonths()
+    {
+        return Mage::getSingleton('payone_core/system_config_translationMonths');
+    }
+    
+    /**
+     * @return Payone_Core_Model_System_Config_TranslationErrors
+     */
+    public function getModelSystemConfigTranslationErrors()
+    {
+        return Mage::getSingleton('payone_core/system_config_translationErrors');
+    }
+    
+    /**
+     * @return Payone_Core_Model_System_Config_TranslationPlaceholders
+     */
+    public function getModelSystemConfigTranslationPlaceholders()
+    {
+        return Mage::getSingleton('payone_core/system_config_translationPlaceholders');
+    }
 
     /**
      * @return Payone_Core_Model_System_Config_ResponseType
@@ -1465,6 +1489,15 @@ class Payone_Core_Model_Factory
         return Mage::getSingleton('payone_core/system_config_creditScore');
     }
 
+    /**
+     * @return Mage_Adminhtml_Model_System_Config_Source_Locale
+     */
+    public function getModelSystemConfigLocale()
+    {
+        return Mage::getSingleton('adminhtml/system_config_source_locale');
+    }
+
+    
     /**
      * @return Mage_Adminhtml_Model_System_Config_Source_Order_Status
      */
