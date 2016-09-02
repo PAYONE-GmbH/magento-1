@@ -71,7 +71,9 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment
     }
 
     /**
-     * @param Mage_Sales_Model_Quote $quote
+     * @param $quote
+     * @param null $workOrderId
+     * @return Payone_Api_Request_Genericpayment
      */
     public function mapExpressCheckoutParameters($quote, $workOrderId = null)
     {
@@ -101,10 +103,111 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment
         )));
         return $request;
     }
-    
+
+    /**
+     * @param $amount
+     * @param $sRatePayShopId
+     * @param $sCurrency
+     * @param $rate
+     * @param null $month
+     * @param $configParams
+     * @param string $calculationType
+     * @return Payone_Api_Response_Error|Payone_Api_Response_Genericpayment_Approved|Payone_Api_Response_Genericpayment_Redirect
+     * @throws Exception
+     */
+    public function ratePayCalculationRequest($amount, $sRatePayShopId, $sCurrency, $rate, $month = NULL, $configParams, $calculationType = 'calculation-by-rate')
+    {
+        /* @var $helper Payone_Core_Model_Mapper_Abstract */
+        $helper = $this->helper();
+        /* @var $request Payone_Api_Request_Genericpayment */
+        $request = $this->getRequest();
+        /**
+         * set default
+         */
+        $request->setApiVersion('3.10');
+        $solutionName = 'fatchip';
+        $solutionVersion = $helper->getPayoneVersion();
+        $integratorName = 'magento';
+        $integratorVersion = $helper->getMagentoVersion();
+
+        $request->setEncoding('UTF-8');
+
+        $request->setMid($configParams[0]->getMid());
+        $request->setPortalid($configParams[0]->getPortalId());
+        $request->setMode($configParams[0]->getMode());
+        $request->setKey($configParams[0]->getKey());
+        $request->setIntegratorName($integratorName);
+        $request->setIntegratorVersion($integratorVersion);
+        $request->setSolutionName($solutionName);
+        $request->setSolutionVersion($solutionVersion);
+
+        $types = $configParams[0]->getTypes();
+        /**
+         * set ratePay spefific parameters
+         */
+        $payData = new Payone_Api_Request_Parameter_Paydata_Paydata();
+        $payData->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
+            array('key' => 'action', 'data' => Payone_Api_Enum_GenericpaymentAction::RATEPAY_PROFILE)
+        ));
+        $payData->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
+            array('key' => 'action', 'data' => Payone_Api_Enum_GenericpaymentAction::RATEPAY_REQUEST_TYPE_CALCULATION)
+        ));
+
+        $payData->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
+            array('key' => 'shop_id', 'data' => $sRatePayShopId)
+        ));
+
+        $payData->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
+            array('key' => 'calculation_type', 'data' => $calculationType)
+        ));
+
+        $payData->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
+            array('key' => 'customer_allow_credit_inquiry', 'data' => 'yes')
+        ));
+
+        if($calculationType == 'calculation-by-rate'){
+            $payData->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
+                array('key' => 'rate', 'data' => $rate)
+            ));
+        }
+        if($calculationType == 'calculation-by-time'){
+            $payData->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
+                array('key' => 'month', 'data' => $month)
+            ));
+        }
+        $request->setPaydata($payData);
+
+        $request->setClearingtype(Payone_Enum_ClearingType::RATEPAY);
+        $request->setCurrency($sCurrency);
+        $request->setAmount($amount);
+        if(is_array($types) && count($types) > 0){
+            foreach($types as $type){
+                if($type == 'RPS'){
+                    $request->setFinancingType(Payone_Api_Enum_RatepayType::RPS);
+                } else if($type == 'RPV') {
+                    $request->setFinancingType(Payone_Api_Enum_RatepayType::RPV);
+                }
+            }
+        } else {
+            $request->setFinancingType(Payone_Api_Enum_RatepayType::RPS);
+        }
+
+        $request->setAid($configParams[0]->getAid());
+
+        $response = $this->getFactory()->getServiceApiPaymentGenericpayment()->request($request);
+        return $response;
+    }
+
+
+    /**
+     * @param $sRatePayShopId
+     * @param $sCurrency
+     * @return Payone_Api_Request_Genericpayment
+     */
     public function addRatePayParameters($sRatePayShopId, $sCurrency) {
         $request = $this->getRequest();
         $this->mapDefaultParameters($request);
+
         $paydata = new Payone_Api_Request_Parameter_Paydata_Paydata();
         $paydata->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
             array('key' => 'action', 'data' => Payone_Api_Enum_GenericpaymentAction::RATEPAY_PROFILE)
@@ -112,11 +215,13 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment
         $paydata->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
             array('key' => 'shop_id', 'data' => $sRatePayShopId)
         ));
+
         $request->setPaydata($paydata);
         $request->setAid($this->getConfigPayment()->getAid());
         $request->setClearingtype(Payone_Enum_ClearingType::FINANCING);
         $request->setCurrency($sCurrency);
         $request->setFinancingType(Payone_Api_Enum_RatepayType::RPV);
+
         return $request;
     }
     
