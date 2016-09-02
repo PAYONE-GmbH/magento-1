@@ -15,26 +15,23 @@
  * @category        Payone
  * @package         Payone_Core_Model
  * @subpackage      System
- * @copyright       Copyright (c) 2016 <kontakt@fatchip.de> - www.fatchip.com
- * @author          Robert Müller <robert.mueller@fatchip.de>
+ * @copyright       Copyright (c) 2016 <kontakt@fatchip.de> - www.fatchip.com, support@e3n.de - https://e3n.de/
+ * @author          Robert MÃ¼ller <robert.mueller@fatchip.de>,  updated by Tim Rein <tim.rein@e3n.de>
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
- * @link            http://www.fatchip.com
+ * @link            http://www.fatchip.com, https://e3n.de/
  */
 
+/**
+ * Class Payone_Core_Model_System_Config_RatepayType
+ */
 class Payone_Core_Model_System_Config_RatepayType extends Payone_Core_Model_System_Config_Abstract
 {
-    /**
+     /**
      * @return array
      */
     public function toArray()
     {
-        $types = array(
-            Payone_Api_Enum_RatepayType::RPV => Payone_Api_Enum_RatepayType::RPV,
-            #Payone_Api_Enum_RatepayType::RPS => Payone_Api_Enum_RatepayType::RPS,
-            #Payone_Api_Enum_RatepayType::RPD => Payone_Api_Enum_RatepayType::RPD,
-            #Payone_Api_Enum_RatepayType::RPP => Payone_Api_Enum_RatepayType::RPP,
-        );
-
-        return $types;
+        $settings = new Payone_Settings_Configuration_PaymentMethod_RatePay();
+        return $settings->getTypes();
     }
 }

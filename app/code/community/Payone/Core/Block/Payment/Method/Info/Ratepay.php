@@ -21,6 +21,9 @@
  * @link            http://www.fatchip.com
  */
 
+/**
+ * Class Payone_Core_Block_Payment_Method_Info_Ratepay
+ */
 class Payone_Core_Block_Payment_Method_Info_Ratepay extends Payone_Core_Block_Payment_Method_Info_Abstract {
     
     protected function _construct() {
