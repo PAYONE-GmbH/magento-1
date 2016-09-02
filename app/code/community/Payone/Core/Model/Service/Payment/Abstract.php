@@ -72,7 +72,7 @@ abstract class Payone_Core_Model_Service_Payment_Abstract
         $this->getHandler()->handle($response);
 
         $oMethodInstance = $payment->getMethodInstance();
-        
+
         // Trigger Event
         $params = array(
             'request' => $request,

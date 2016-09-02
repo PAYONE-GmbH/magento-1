@@ -1,0 +1,490 @@
+.sp-methods select.ratepayday {
+    width:154px ; margin-right: 7px;
+}
+
+.sp-methods select.ratepaymonth {
+    width: 154px ; margin-right: 7px;
+}
+
+.sp-methods select.ratepayyear {
+    width: 154px ;
+}
+
+.sp-methods input.ratepayphone {
+    width: 147px;
+}
+
+.sp-methods div.ratepaybirthdate {
+    width: 476px;
+}
+#ratepay-main-cont h1,#ratepay-main-cont h2,#ratepay-main-cont td,#ratepay-main-cont th{
+    color: black!important;
+}
+/* reset */
+#ratepay-main-cont, #ratepay-main-cont div, #ratepay-main-cont span, #ratepay-main-cont p, #ratepay-main-cont input, #ratepay-main-cont select, #ratepay-main-cont h2, #ratepay-main-cont table, #ratepay-main-cont td {
+    font-size: 13px;
+    line-height: 17px;
+    text-align: left;
+}
+
+/* RatePAY Calculator */
+.ratepay-ClearFix {
+    clear: both;
+    line-height: 1px;
+    height: 1px;
+}
+
+#ratepay-main-cont {
+    color: black!important;
+    width: 472px !important;
+    vertical-align: middle;
+}
+
+#ratepay-main-cont input.ratepay-Input-button {
+    color:#000;
+    background-color:#3399CC;
+    border:2px solid #3399CC;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    font-weight:bold;
+    cursor:pointer;
+    position:relative;
+    text-align: center;
+    float: right;
+    right:5px;
+    margin-left: 5px;
+}
+#ratepay-main-cont input.ratepay-Input-button2 {
+    width:173px;
+    color:#000;
+    background:#3399CC;
+    border:2px solid #3399CC;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    font-weight:bold;
+    cursor:pointer;
+    position:relative;
+    text-align: center;
+    float: right;
+    top: 4px;
+    right:5px;
+}
+#ratepay-main-cont input.ratepay-Input-button:hover {
+    background-color:#3399CC;
+    border:2px solid #3399CC;
+}
+#ratepay-main-cont input.ratepay-Input-button2:hover {
+    background-color:#3399CC;
+    border:2px solid #3399CC;
+}
+#runtime{
+    margin: 0 0 0 15px;
+}
+
+#ratepay-Header {
+    height: auto;
+    width: 100%;
+}
+
+#ratepay-Header img {
+    float: left;
+    margin-bottom: 3px;
+}
+
+#ratepay-Header span {
+    font-size: 16px;
+}
+
+#ratepay-main-cont p.ratepay-Text {
+    width: 400px;
+}
+
+#ratepay-main-cont p.ratepay-Top-Text {
+    margin: 20px 15px 0;
+}
+
+div#ratepay-ContentSwitch {
+    margin: 0px 0 0;
+    padding: 5px;
+    background-color: #eee;
+}
+
+.ratepay-ContentSwitchDiv {
+    width: 190px;
+    padding: 2px 0 0 15px;
+    color: #263551;
+    display: none;
+}
+
+#ratepay-main-cont #ratepay-DueDate{
+}
+
+#ratepay-main-cont #debitSelect{
+    float: right;
+    font-size: 100%;
+    margin: 0 3px 0 0;
+    text-align: left;
+    width: 167px;
+    height:60px;
+}
+#ratepay-main-cont .ratepay-DueText{
+    float: left;
+    margin-top: 10px;
+    width: auto;
+}
+
+#ratepay-ContentSwitch div.ratepay-Active {
+    color: #B69767;
+}
+
+#ratepay-ContentSwitchInput {
+    display: block;
+    margin-top: 5px;
+}
+
+#ratepay-SwitchToTerm {
+    float: left;
+}
+
+#ratepay-SwitchToRuntime {
+    float: right;
+    left: 40px;
+    position: relative;
+}
+
+#ratepay-main-cont .ratepay-Content p {
+    margin-bottom: 25px;
+}
+
+#ratepay-ContentTerm {
+    display:none;
+}
+
+#ratepay-ContentRuntime {
+    display:none;
+}
+
+#ratepay-main-cont .ratepay-Content select, #ratepay-main-cont .ratepay-Content input.ratepay-Input-amount {
+    border: 1px solid #D1DFE0;
+    text-align: right;
+    position: relative;
+    top: -7px;
+}
+
+#ratepay-main-cont .ratepay-Content select {
+    padding: 2px;
+    text-align: left;
+    width: 95px;
+}
+
+#ratepay-main-cont .ratepay-Content input.ratepay-Input-amount {
+    padding: 2px;
+    width: 45px;
+}
+
+#ratepay-main-cont .ratepay-Content span.ratepay-Currency {
+    padding-top: 3px;
+    vertical-align: middle;
+}
+
+/* RatePAY Calculator Result */
+#ratepay-main-cont #ratepay-Result {
+    background: none repeat scroll 0 0 #fefefe;
+    color: black;
+    margin-top: 10px;
+}
+/* RatePAY Calculator Result */
+#ratepay-main-cont #ratepay-Result2 {
+    background: none repeat scroll 0 0 #fefefe;
+    color: black;
+    margin-top: 10px;
+}
+
+#ratepay-main-cont #ratepay-Notfication {
+    background: none repeat scroll 0 0 #FFFFE0;
+    border: 1px solid #E6DB55;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px 5px 5px 5px;
+    color: #263551;
+    margin: 10px 0 11px 0px;
+    padding: 10px 5px;
+}
+
+#ratepay-main-cont .ratepay-error {
+    background: none repeat scroll 0 0 #FFEBE8;
+    border: 1px solid #CC0000;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px 5px 5px 5px;
+    color: #263551;
+    padding: 10px;
+    margin: 10px 0 11px 0px;
+}
+
+#ratepay-main-cont h2.ratepay-mid-heading {
+    color: black;
+    font-size: 12px;
+    margin: 5px 0;
+    padding-left: 5px;
+}
+
+#ratepay-Result table{
+    border: none;
+}
+#ratepay-Result2 table{
+    border: none;
+}
+#ratepay-InstallmentTerms table,#ratepay-InstallmentTerms td,#ratepay-InstallmentTerms th {
+    border: none;
+    padding: 0px;
+}
+#ratepay-InstallmentTerms th {
+    padding-left:10px;
+    text-align: left;
+    width: 240px;
+    border: none;
+    vertical-align: middle;
+}
+
+#ratepay-InstallmentTerms td {
+    text-align: right;
+    color: black;
+    border: none;
+    vertical-align: middle;
+}
+
+#ratepay-InstallmentTerms label {
+    border: 1px solid #DDDDDD;
+    display: inline-block;
+    margin-top: 4px;
+    padding-bottom: 5px;
+}
+
+#ratepay-InstallmentTerms tr.ratepay-Highlight th {
+    padding-left: 0;
+    color: black;
+    border: none;
+}
+
+#ratepay-InstallmentTerms tr.ratepay-Highlight th, #ratepay-InstallmentTerms tr.ratepay-Highlight td {
+    color: black;
+    border: none;
+}
+
+#ratepay-InstallmentTerms th, #ratepay-InstallmentTerms td {
+    color: black;
+    border: none;
+}
+
+#ratepay-InstallmentTerms tr.ratepay-TableHr th, #ratepay-InstallmentTerms tr.ratepay-TableHr td {
+    color: black;
+    border: none;
+}
+
+#ratepay-InstallmentTerms tr.ratepay-TableHr {
+    color: black;
+    border: none;
+}
+
+#ratepay-InstallmentTerms tr.ratepay-PriceSectionHead td, #ratepay-InstallmentTerms tr.ratepay-PriceSectionHead th {
+    color: black;
+    border: none;
+}
+
+table#ratepay-InstallmentTerms {
+    color: black;
+    margin: 0 auto;
+    padding: 5px 3px;
+    width: 415px !important;
+}
+
+#ratepay-main-cont .ratepay-H2{
+    color: black;
+    float: left;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 20px 0 0 10px;
+}
+
+#ratepay-main-cont .ratepay-LogoText{
+    float: right;
+    font-size: 10px;
+    padding-right: 5px;
+    margin-top: -3px;
+}
+.ratepay-FullWidth{
+    width: 100%;
+    height: 20px;
+}
+
+#ratepay-main-cont .ratepay-ChooseRuntime{
+    border: 1px solid;
+    font-size: 95%;
+    padding: 10px;
+}
+.ratepay-FloatLeft{
+    float: left;
+}
+
+.ratepay-NintyPercentWidth{
+    padding-top: 13px;
+    width: 90%;
+}
+
+#ratepay-main-cont .ratepay-ChooseInput{
+    background: url("") no-repeat scroll 0 0 transparent;
+    float: left;
+    height: 40px;
+    padding-left: 13px;
+}
+
+
+#ratepay-main-cont .ratepay-ChooseInput Input{
+    margin-top: 13px;
+}
+
+#debitSelect{
+    padding: 2px;
+    width:123px;
+    margin: 0px;
+}
+.ratepay-MouseoverInfo{
+    background-color: #263552;
+    color: white;
+    border: 1px solid black;
+    bottom: 0;
+    display: none;
+    float: left;
+    font-size: 8px;
+    height: auto;
+    left: 20px;
+    position: absolute;
+    max-width: 350px;
+    padding: 5px;
+}
+.ratepay-InfoImg{
+    width: 12px;
+    height: 12px;
+}
+.ratepay-InfoImgDiv{
+    float: left;
+    height: 16px;
+    padding: 2px 3px;
+    width: 16px;
+}
+
+#ratepay-main-cont .ratepay-CalculationText{
+    font-size: 85%;
+    padding-top: 15px;
+}
+.ratepay-RelativePosition{
+    position: relative;
+}
+
+
+.ratepay-result{
+    background-color:#3399CC;
+
+}
+
+#ratepay-InstallmentTerms td.ratepay-PercentWidth{
+    width: 250px;
+}
+.ratepay-MarginTop{
+    margin-top: 10px;
+
+}
+
+#ratepay-InstallmentTerms .ratepay-PaddingBottom{
+    padding-bottom: 10px;
+}
+#ratepay-InstallmentTerms .ratepay-PaddingRight{
+    padding-right: 10px;
+}
+
+#ratepay-InstallmentTerms .ratepay-PaddingLeft{
+    padding-left: 10px;
+}
+
+#ratepay-InstallmentTerms .ratepay-PaddingTop{
+    padding-top: 10px;
+}
+
+#ratepay-ContentRuntime option{
+    border-right: 1px solid #ccc;
+    padding-left: 8px;
+    padding-top: 2px;
+    font-size: 100%;
+    text-align: left;
+}
+
+#ratepay-main-cont .ratepay-VertAlignMiddle{
+    vertical-align: middle;
+}
+
+#ratepay-InstallmentTerms .ratepay-PercentWith{
+    float: left;
+    text-align: right;
+    width: 50px;
+}
+#ratepay-InstallmentTerms .ratepay-TextAlignLeft{
+    text-align: left;
+}
+#ratepay-InstallmentTerms #ratepay-InstallmentThirdTd{
+    width: 10px;
+}
+
+#ratepay-main-cont .ratepay-Content .ratepay-DueDateSelect{
+    float: right;
+    width: 167px;
+    height:60px;
+}
+#ratepay-main-cont .ratepay-Content .ratepay-DueDateSelect option{
+    border-right: 0px solid;
+}
+
+#ajaxLoaderId{
+    display: none;
+    left: 31%;
+    margin: auto 0;
+    position: relative;
+    top: 55%;
+}
+
+#cover{
+    position:fixed;
+    top:0; left:0;
+    background:rgba(0,0,0,0.6);
+    z-index:5; width:100%;
+    height:100%;
+    display:none;
+}
+
+#debitSelectRuntime option {
+    padding: 0px;
+}
+
+.ratepay-MarginBottom {
+    margin-bottom: 5px;
+}
+
+.ratepay-sandbox-notification {
+    border: 2px dashed #000000;
+    background-color: #ffff00;
+    font-weight: bold;
+    font-color: #000000;
+    text-align: center;
+}
+
+.ratepay-InfoDiv:hover #ratepayMouseoverInfoPaymentPrice { display: block; }
+.ratepay-InfoDiv:hover #ratepayMouseoverInfoServiceCharge { display: block; }
+.ratepay-InfoDiv:hover #ratepayMouseoverInfoEffectiveRate { display: block; }
+.ratepay-InfoDiv:hover #ratepayMouseoverInfoDebitRate { display: block; }
+.ratepay-InfoDiv:hover #ratepayMouseoverInfoInterestAmount { display: block; }
+.ratepay-InfoDiv:hover #ratepayMouseoverInfoTotalAmount { display: block; }
+.ratepay-InfoDiv:hover #ratepayMouseoverInfoDurationTime { display: block; }
+.ratepay-InfoDiv:hover #ratepayMouseoverInfoDurationMonth { display: block; }
+.ratepay-InfoDiv:hover #ratepayMouseoverInfoLastRate { display: block; }

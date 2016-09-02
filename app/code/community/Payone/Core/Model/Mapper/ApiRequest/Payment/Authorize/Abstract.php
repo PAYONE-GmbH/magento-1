@@ -543,14 +543,26 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
             $payment->setApiVersion();
             $payment->setCashtype();
         } elseif($paymentMethod instanceof Payone_Core_Model_Payment_Method_Ratepay) {
-            $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_RatePay();
-            $payment->setFinancingtype();
-            $payment->setApiVersion();
-            
-            $checkoutSession = $this->getFactory()->getSingletonCheckoutSession();
-            $mandateStatus = $checkoutSession->getRatePayFingerprint();
 
-            $payData = new Payone_Api_Request_Parameter_Paydata_Paydata();
+            $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_RatePay();
+            $payment->setFinancingtype($this->_getRatePayType());
+            $payment->setApiVersion();
+
+            $checkoutSession = $this->getFactory()->getSingletonCheckoutSession();
+
+            $mandateStatus = $checkoutSession->getRatePayFingerprint();
+            /**
+             * if RatePay Type is Installment map Installmentplan Data
+             * from payone session
+             */
+            if($this->_getRatePayType() == 'RPV'){
+                $payData = new Payone_Api_Request_Parameter_Paydata_Paydata();
+            } else {
+                $ratePayInstallmentData = $this->_getResult($paymentMethod->getCode());
+                /*@var $payData Payone_Api_Request_Parameter_Paydata_Paydata*/
+                $payData = $this->mapRatePayInstallmentParameters($ratePayInstallmentData);
+            }
+
             $payData->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
                 array('key' => 'customer_allow_credit_inquiry', 'data' => 'yes') // hardcoded by concept
             ));
@@ -560,6 +572,7 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
             $payData->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
                 array('key' => 'shop_id', 'data' => $info->getPayoneRatepayShopId())
             ));
+
             $payment->setPaydata($payData);
 
             $birthdayDate = $info->getPayoneCustomerDob();
@@ -573,6 +586,17 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
                 $telephone = $this->getOrder()->getBillingAddress()->getTelephone();
             }
             $payment->setTelephonenumber($telephone);
+
+            if ($isRedirect === true) {
+                $successurl = $this->helperUrl()->getSuccessUrl();
+                $errorurl = $this->helperUrl()->getErrorUrl();
+                $backurl = $this->helperUrl()->getBackUrl();
+
+                $payment->setSuccessurl($successurl);
+                $payment->setErrorurl($errorurl);
+                $payment->setBackurl($backurl);
+            }
+
         } elseif($paymentMethod instanceof Payone_Core_Model_Payment_Method_Payolution) {
             $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_Payolution();
             $payment->setApiVersion();
@@ -622,10 +646,27 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
         $sType = false;
 
         $aPostPayment = Mage::app()->getRequest()->getPost('payment');
+
         if($aPostPayment && array_key_exists('payone_wallet_type', $aPostPayment)) {
             $sType = $aPostPayment['payone_wallet_type'];
         } else {
             $sType = Payone_Api_Enum_WalletType::PAYPAL_EXPRESS;
+        }
+        return $sType;
+    }
+
+    /**
+     * @return bool|string
+     */
+    protected function _getRatePayType() {
+        $sType = false;
+
+        $aPostPayment = Mage::app()->getRequest()->getPost('payment');
+
+        if($aPostPayment && array_key_exists('payone_ratepay_type', $aPostPayment)) {
+            $sType = $aPostPayment['payone_ratepay_type'];
+        } else {
+            $sType = Payone_Api_Enum_RatepayType::RPV;
         }
         return $sType;
     }
@@ -718,5 +759,60 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
         $narrativeText = str_replace(array_keys($substitutionArray), array_values($substitutionArray), $narrativeText);
 
         return $narrativeText;
+    }
+
+    /**
+     * @param $installmentData
+     * @return Payone_Api_Request_Parameter_Paydata_Paydata
+     */
+    private function mapRatePayInstallmentParameters($installmentData)
+    {
+        $payData = new Payone_Api_Request_Parameter_Paydata_Paydata();
+        $payData->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
+            array('key' => 'action', 'data' => Payone_Api_Enum_GenericpaymentAction::RATEPAY_PROFILE)
+        ));
+
+        $payData->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
+            array('key' => 'debit_paytype', 'data' => Payone_Api_Enum_GenericpaymentAction::RATEPAY_DEBIT_TYPE_BANK_TRANSER)
+        ));
+
+        $payData->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
+            array('key' => 'installment_amount', 'data' => $installmentData['payone_ratepay_rate'])
+        ));
+        $payData->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
+            array('key' => 'last_installment_amount', 'data' => $installmentData['payone_ratepay_last-rate'])
+        ));
+        $payData->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
+            array('key' => 'installment_number', 'data' => $installmentData['payone_ratepay_number-of-rates'])
+        ));
+        $payData->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
+            array('key' => 'amount', 'data' => $installmentData['payone_ratepay_total-amount'])
+        ));
+        $payData->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
+            array('key' => 'interest_rate', 'data' => $installmentData['payone_ratepay_interest-rate']*100)
+        ));
+        $payData->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
+            array('key' => 'payment_firstday', 'data' => $installmentData['payone_ratepay_payment-firstday'])
+        ));
+
+        return $payData;
+    }
+
+    /**
+     * Returns the session saved installment plan
+     * @return array
+     */
+    private function _getResult($paymentMethod) {
+        $data = array();
+        foreach (Mage::getSingleton('payone_core/session')->getData() as $key => $value) {
+            if (!is_array($value)) {
+                $sessionNameBeginning = substr($key, 0, strlen($paymentMethod)); // session variable name prefix = payment method
+                if ($sessionNameBeginning == $paymentMethod && $key[strlen($paymentMethod)] == "_") { // if session variable belongs to current payment method
+                    $shortKey = lcfirst($key); // use postfix as array key
+                    $data[$shortKey] = $value;
+                }
+            }
+        }
+        return $data;
     }
 }

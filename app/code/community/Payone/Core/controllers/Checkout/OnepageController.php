@@ -94,6 +94,7 @@ class Payone_Core_Checkout_OnepageController extends Mage_Checkout_OnepageContro
 
                 // register Allowed methods
                 $allowedMethods = $settings->getData('allowed_methods');
+
                 Mage::register('payment_methods_allowed_methods', $allowedMethods, true);
 
                 $result['goto_section'] = 'payment';
