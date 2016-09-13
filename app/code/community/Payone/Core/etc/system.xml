@@ -405,6 +405,45 @@
                         </cc_template>
                     </fields>
                 </payment_creditcard>
+                <cc_hosted_translations>
+                    <label>Creditcard - hosted-Iframe translations</label>
+                    <comment>These will be used to replace the default values from PAYONE.</comment>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>105</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <cc_translation_months translate="label">
+                            <label>Translation months</label>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_ccTranslationMonths</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </cc_translation_months>
+                        <cc_translation_errors translate="label,comment">
+                            <label>Translation errors</label>
+                            <comment>Only used when you activated the error-output in the hosted-Iframe configuration.</comment>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_ccTranslationErrors</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </cc_translation_errors>
+                        <cc_translation_placeholders translate="label">
+                            <label>Translation placeholders</label>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_ccTranslationPlaceholders</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </cc_translation_placeholders>
+                    </fields>
+                </cc_hosted_translations>
                 <payment_paypal_express_checkout>
                     <label>Payment Paypal Express Checkout</label>
                     <frontend_type>text</frontend_type>

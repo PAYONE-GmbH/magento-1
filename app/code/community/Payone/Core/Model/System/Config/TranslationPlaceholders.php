@@ -15,23 +15,22 @@
  * @category        Payone
  * @package         Payone_Core_Model
  * @subpackage      System
- * @copyright       Copyright (c) 2016 <kontakt@fatchip.de> - www.fatchip.com, support@e3n.de - https://e3n.de/
- * @author          Robert MÃ¼ller <robert.mueller@fatchip.de>,  updated by Tim Rein <tim.rein@e3n.de>
+ * @copyright       Copyright (c) 2015 <kontakt@fatchip.de> - www.fatchip.com
+ * @author          Robert Müller <robert.mueller@fatchip.de>
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
- * @link            http://www.fatchip.com, https://e3n.de/
+ * @link            http://www.fatchip.com
  */
-
-/**
- * Class Payone_Core_Model_System_Config_RatepayType
- */
-class Payone_Core_Model_System_Config_RatepayType extends Payone_Core_Model_System_Config_Abstract
+class Payone_Core_Model_System_Config_TranslationPlaceholders extends Payone_Core_Model_System_Config_Abstract
 {
-     /**
+
+    /**
      * @return array
      */
     public function toArray()
     {
-        $settings = new Payone_Settings_Configuration_PaymentMethod_RatePay();
-        return $settings->getTypes();
+        return array(
+            'cardpan' => Mage::helper('payone_core')->__('FCPO_CC_ROW_CC_Number'),
+            'cvc' => Mage::helper('payone_core')->__('FCPO_CC_ROW_CC_CVC')
+        );
     }
 }

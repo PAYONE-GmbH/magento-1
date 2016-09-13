@@ -81,6 +81,11 @@ class Payone_Api_Request_Genericpayment extends Payone_Api_Request_Abstract {
     protected $wallet = null;
 
     /**
+     * @var Payone_Api_Request_Parameter_Authorization_PaymentMethod_RatePay
+     */
+    protected $ratePay = null;
+
+    /**
      * Mandatory for PayPal ECS:
      * 1. action=setexpresscheckout
      * 2. action=getexpresscheckoutdetails
@@ -225,6 +230,20 @@ class Payone_Api_Request_Genericpayment extends Payone_Api_Request_Abstract {
      */
     function setWorkorderId($workorderid) {
         $this->workorderid = $workorderid;
+    }
+
+    /**
+     * @return Payone_Api_Request_Parameter_Authorization_PaymentMethod_RatePay
+     */
+    function getRatePay(){
+       return $this->ratePay;
+    }
+
+    /**
+     * @param Payone_Api_Request_Parameter_Authorization_PaymentMethod_RatePay $ratePay
+     */
+    function setRatePay(Payone_Api_Request_Parameter_Authorization_PaymentMethod_RatePay $ratePay){
+        $this->ratePay = $ratePay;
     }
 
     /**

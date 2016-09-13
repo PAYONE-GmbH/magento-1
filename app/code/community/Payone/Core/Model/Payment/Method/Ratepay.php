@@ -163,6 +163,24 @@ class Payone_Core_Model_Payment_Method_Ratepay extends Payone_Core_Model_Payment
         }
         return $sValue;
     }
+
+    /**
+     * @api
+     *
+     * To be used in Form_Block, which has to display all ratePay types
+     *
+     * @param Mage_Sales_Model_Quote $quote
+     * @return Payone_Core_Model_Config_Payment_Method_Interface
+     */
+    public function getAllConfigsByQuote(Mage_Sales_Model_Quote $quote)
+    {
+        if (empty($this->matchingConfigs)) {
+            $configStore = $this->getConfigStore($quote->getStoreId());
+
+            $this->matchingConfigs = $configStore->getPayment()->getMethodsForQuote($this->methodType ,$quote);
+        }
+        return $this->matchingConfigs;
+    }
     
     public function getRatePayConfigById($sRatePayShopId) {
         $oResource = Mage::getSingleton('core/resource');

@@ -23,7 +23,7 @@
 
 /** @var $this Payone_Core_Block_Payment_Method_Form_Creditcard */
 $code = $this->getMethodCode();
-$displayCvc = null;
+$iCheckValidation = (int)$this->showCvcInput();
 ?>
 <fieldset class="form-list">
     <?php if($this->getCCRequestType() == 'AJAX') { ?>
@@ -56,9 +56,6 @@ $displayCvc = null;
                             $selected = '';
                             if($this->getPayoneCreditCardCheckValidation() == '0' && $this->getCreditCardType() == $type['code']) {
                                 $selected =  'selected="selected"';
-                            }
-                            if ($displayCvc === null) {
-                                $displayCvc = $type['check_cvc'];
                             }
                             ?>
                             <option value="<?php echo $key ?>" <?php echo $selected; ?>>
@@ -114,12 +111,6 @@ $displayCvc = null;
                     </div>
                 </div>
             </li>
-            <?php
-                $iCheckValidation = 0;
-                if($displayCvc == 'always' || ($displayCvc == 'only_first' && $this->getPayoneCreditCardCheckValidation() == '1')) {
-                    $iCheckValidation = 1;
-                }
-            ?>
             <!-- Credit card cvc : -->
             <li style="clear:both;">
                 <div class="input-box" id="<?php echo $code ?>_cc_cid_div"
@@ -180,13 +171,15 @@ $displayCvc = null;
                     <span class="inputIframe" id="cardpan"></span>
                 </div>
             </li>
-            <li>
-                <div class="input-box">
-                    <label for="cvcInput"><?php echo $this->__('Card Verification Number') ?>&nbsp;<span class="required">*</span></label><br class="clear"/>
-                    <span id="cardcvc2" class="inputIframe"></span>
-                    <a href="#" class="cvv-what-is-this"><?php echo $this->__('What is this?') ?></a>
-                </div>
-            </li>
+            <?php if($iCheckValidation == '1') { ?>
+                <li>
+                    <div class="input-box">
+                        <label for="cvcInput"><?php echo $this->__('Card Verification Number') ?>&nbsp;<span class="required">*</span></label><br class="clear"/>
+                        <span id="cardcvc2" class="inputIframe"></span>
+                        <a href="#" class="cvv-what-is-this"><?php echo $this->__('What is this?') ?></a>
+                    </div>
+                </li>
+            <?php } ?>
             <li>
                 <div class="input-box">
                     <label for="expireInput"><?php echo $this->__('Expiration Date') ?>&nbsp;<span class="required">*</span></label>
@@ -216,6 +209,7 @@ $displayCvc = null;
                 <input type="hidden" id="<?php echo $code; ?>_cc_number" value=""/>
                 <input type="hidden" id="<?php echo $code ?>_cc_owner" name="payment[cc_owner]" value="" />
                 <input type="hidden" id="payone_pseudocardpan" name="payment[payone_pseudocardpan]" value=""/>
+                <input type="hidden" id="payone_cardexpiredate" name="payment[payone_cardexpiredate]" value=""/>
                 <input type="hidden" id="payone_truncatedcardpan" name="payment[cc_number_enc]" value=""/>
                 <input type="hidden" id="<?php echo $code ?>_config_id" name="payment[payone_config_payment_method_id]"
                        value="<?php echo $this->getPayoneConfigPaymentMethodId();?>"/>
@@ -245,21 +239,23 @@ $displayCvc = null;
                             }
                         <?php } ?>
                     },
-                    cardcvc2: {
-                        selector: "cardcvc2", // put name of your div-container here
-                        type: "<?php echo $this->getHostedParam('CVC_type'); ?>", // text (default), password, tel
-                        size: "<?php echo $this->getHostedParam('CVC_count'); ?>",
-                        maxlength: "<?php echo $this->getHostedParam('CVC_max'); ?>",
-                        <?php if($this->getHostedParam('CVC_style') == "custom") { ?>
-                            style: "<?php echo $this->getHostedParam('CVC_css'); ?>",
-                        <?php } ?>
-                        <?php if($this->getHostedParam('CVC_iframe') == "custom") { ?>
-                            iframe: {
-                                width: "<?php echo $this->getHostedParam('CVC_width'); ?>",
-                                height: "<?php echo $this->getHostedParam('CVC_height'); ?>"
-                            }
-                        <?php } ?>
-                    },
+                    <?php if($iCheckValidation == '1') { ?>
+                        cardcvc2: {
+                            selector: "cardcvc2", // put name of your div-container here
+                            type: "<?php echo $this->getHostedParam('CVC_type'); ?>", // text (default), password, tel
+                            size: "<?php echo $this->getHostedParam('CVC_count'); ?>",
+                            maxlength: "<?php echo $this->getHostedParam('CVC_max'); ?>",
+                            <?php if($this->getHostedParam('CVC_style') == "custom") { ?>
+                                style: "<?php echo $this->getHostedParam('CVC_css'); ?>",
+                            <?php } ?>
+                            <?php if($this->getHostedParam('CVC_iframe') == "custom") { ?>
+                                iframe: {
+                                    width: "<?php echo $this->getHostedParam('CVC_width'); ?>",
+                                    height: "<?php echo $this->getHostedParam('CVC_height'); ?>"
+                                }
+                            <?php } ?>
+                        },
+                    <?php } ?>
                     cardexpiremonth: {
                         selector: "cardexpiremonth", // put name of your div-container here
                         type: "<?php echo $this->getHostedParam('Month_type'); ?>",
@@ -302,6 +298,10 @@ $displayCvc = null;
 
                 <?php if($this->getHostedParam('Errors_active') == "true") { ?>
                     error: "errorOutput", // area to display error-messages (optional)
+                <?php } ?>
+                <?php if($this->getTranslationLanguage()) { ?> 
+                    language: Payone.ClientApi.Language.<?php echo $this->getTranslationLanguage(); ?> 
+                <?php } else { ?>
                     <?php if($this->getHostedParam('Errors_lang') == "de") { ?>
                         language: Payone.ClientApi.Language.de // Language to display error-messages
                     <?php } else { ?>
@@ -309,7 +309,14 @@ $displayCvc = null;
                     <?php } ?>
                 <?php } ?>
             };
-            
+
+            <?php 
+            $aTranslations = $this->getTranslations();
+            foreach ($aTranslations as $sVarname => $sValue) {
+                echo $sVarname." = '".$sValue."';";
+            }
+            ?>
+                
             var iframes = payone.initHosted(fieldconfig, '<?php echo $code ?>_cc_type_select');
         </script>
     <?php } ?>

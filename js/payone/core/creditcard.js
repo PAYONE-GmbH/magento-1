@@ -145,7 +145,7 @@ PAYONE.Service.CreditCardCheck = function (handler, form, config) {
         var payoneGateway = new PAYONE.Gateway(
             configGateway,
             function (response) {
-                return window.payone.handleResponseCreditcardCheck(response);
+                return window.payone.handleResponseCreditcardCheck(response, false);
             }
         );
         payoneGateway.call(data);
@@ -193,8 +193,8 @@ PAYONE.Service.CreditCardCheck = function (handler, form, config) {
      * @param response
      * @return {Boolean}
      */
-    this.handleResponseCreditcardCheck = function (response) {
-        return this.handler.handleResponse(response);
+    this.handleResponseCreditcardCheck = function (response, blIsHostedIframe) {
+        return this.handler.handleResponse(response, blIsHostedIframe);
     };
 
     /**
@@ -232,7 +232,7 @@ PAYONE.Handler.CreditCardCheck.OnepageCheckout = function () {
         return 0;
     };
 
-    this.handleResponse = function (response) {
+    this.handleResponse = function (response, blIsHostedIframe) {
         if (response.status != 'VALID') {
             // Failure
             if(typeof response.customermessage != 'undefined') {
@@ -247,6 +247,11 @@ PAYONE.Handler.CreditCardCheck.OnepageCheckout = function () {
         // Success!
         var pseudocardpan = response.pseudocardpan;
         var truncatedcardpan = response.truncatedcardpan;
+        
+        if(blIsHostedIframe) {
+            var cardexpiredate = response.cardexpiredate;
+            $('payone_cardexpiredate').setValue(cardexpiredate);
+        }
 
         $('payone_pseudocardpan').setValue(pseudocardpan);
         $('payone_truncatedcardpan').setValue(truncatedcardpan);
@@ -290,7 +295,7 @@ PAYONE.Handler.CreditCardCheck.Admin = function () {
         return 0;
     };
 
-    this.handleResponse = function (response) {
+    this.handleResponse = function (response, blIsHostedIframe) {
         if (response.status != 'VALID') {
             // Failure
             // Failure
@@ -305,6 +310,11 @@ PAYONE.Handler.CreditCardCheck.Admin = function () {
         // Success!
         var pseudocardpan = response.pseudocardpan;
         var truncatedcardpan = response.truncatedcardpan;
+
+        if(blIsHostedIframe) {
+            var cardexpiredate = response.cardexpiredate;
+            $('payone_cardexpiredate').setValue(cardexpiredate);
+        }
 
         $('payone_pseudocardpan').setValue(pseudocardpan);
         $('payone_truncatedcardpan').setValue(truncatedcardpan);
@@ -437,5 +447,5 @@ function payoneChangedCreditCardInfo() {
 }
 
 function processPayoneResponseCCHosted(response) {
-    payone.handleResponseCreditcardCheck(response);
+    payone.handleResponseCreditcardCheck(response, true);
 }
