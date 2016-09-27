@@ -1,3 +1,35 @@
 language: php
-install: true
+php:
+#  - 5.3
+#  - 5.4
+  - 5.5
+  - 5.6
+#  - hhvm
+matrix:
+  allow_failures:
+  - php: 5.6
+#  - php: hhvm
+env:
+#  global:
+#    - MAGENTO_DB_ALLOWSAME=1
+#    - SKIP_CLEANUP=1
+  - MAGENTO_VERSION=magento-ce-1.9.2.4
+  - MAGENTO_VERSION=magento-ce-1.8.1.0
+#  - MAGENTO_VERSION=magento-ce-1.8.0.0
+#  - MAGENTO_VERSION=magento-ce-1.7.0.2
+script:
+  - curl -sSL https://raw.githubusercontent.com/AOEpeople/MageTestStand/master/setup.sh | bash
+#before_deploy:
+#- export PACKAGE=$(ls *.zip)
+#- echo "Deploying $PACKAGE"
+#deploy:
+#  provider: releases
+#  api_key:
+#    secure: APIF9F9Id8DqG0APwdFK3gG4Cn+TXhEaDpfTGFbQ/aEaRkZ39OnJVNGhTtS9QK+7lc1HMbZnMOT4YYTCL/Hk8dkqeGJ5aiZaxGrmD9lJTKNaeGHRe8oJM/lGhR07xX5IUfUPlGW1O2Mj4VFR+lfbJk8cyPSov21TANZUSYdBlHsDGPTPaJRdcca6VBM4kD9dBGq4kwUA6/IGi4c/hPIsK9KXP7kdY65ht0mdQsolqQtGOGWlCN4iOZB3KqeBxJ7pJ+QECKouk0jhDl5agl+PWqBEqHj+sdSUO61jXsF3GfaQDb3CILN4FL2ZXwMMGMWgWfuAl12+KFRL2TUDB0pcO7bbTyTOAxlWLUjb7AU3R0HTqCzzD5b29GOdcp4/0OeiT+GD3qeAJkCnWX7ZgwrXVXrq7FNj2K92WtzK4vKsg9TLPRDzBgWWiwIZxEFaE6e7TnnK27hpzcoQZecL4oS4aamA7Yj4A0M3OKUFo6xz0J0FeMZNMXBZZa4YX31WKtcKhdlaGn+RgGzcnvbQRXcTB8dVihoaHUAhRhpzJvYU3CHMaVOPhreEAew/f2vs2Q641yyNNBgJq3M98XAKCzT5KzCYLhnfVkd3Xwx3BgnAM3P2wYesLcsQxrh3g4nHRyuY+D8yYh1/scQLmc2talxnTv3rv7HSnljwDqH5bFYbIXc=
+#  file:
+#  - "${PACKAGE}"
+#  on:
+#    repo: fjbender/magento-1
+#    all_branches: true
+#    tags: true
 
