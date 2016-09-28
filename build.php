@@ -1,7 +1,11 @@
 <?php
 /**
- * This is a build description file for astrom/MagentoTarToConnect
+ * @author    Florian Bender <florian.bender@payone.de>
+ * @version   1.0
+ * @copyright 2014-2016 PAYONE GmbH
+ * @desc      Build description file for astorm/MagentoTarToConnect
  */
+
 return array(
 'base_dir'               => '/home/travis/build/fjbender/magento-1',
 'archive_files'          => 'package.tar',
