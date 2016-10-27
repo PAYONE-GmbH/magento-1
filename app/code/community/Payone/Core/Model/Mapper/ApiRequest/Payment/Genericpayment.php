@@ -285,6 +285,28 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment
         $request->setFinancingType($aRequestParams['payone_payolution_type']);
         return $request;
     }
+    
+    public function addPayolutionCalculationParameters($oQuote) {
+        $request = $this->getRequest();
+        $this->mapDefaultParameters($request);
+
+        $oAddress = $oQuote->getBillingAddress();
+        $request->setCountry($oAddress->getCountry());
+        $request->setLastname($oAddress->getLastname());
+        $request->setAmount($oQuote->getGrandTotal());
+        $request->setApiVersion('3.10');
+        
+        $paydata = new Payone_Api_Request_Parameter_Paydata_Paydata();
+        $paydata->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
+            array('key' => 'action', 'data' => Payone_Api_Enum_GenericpaymentAction::PAYOLUTION_CALCULATION)
+        ));
+        $request->setPaydata($paydata);
+        $request->setAid($this->getConfigPayment()->getAid());
+        $request->setCurrency($oQuote->getQuoteCurrencyCode());
+        $request->setClearingtype(Payone_Enum_ClearingType::FINANCING);
+        $request->setFinancingType(Payone_Api_Enum_PayolutionType::PYS);
+        return $request;
+    }
 
     /**
      * @return string

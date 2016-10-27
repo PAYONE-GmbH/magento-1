@@ -77,6 +77,15 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Debit
             ));
             $request->setPaydata($payData);
             $request->setApiVersion('3.10');
+        } elseif($paymentMethod instanceof Payone_Core_Model_Payment_Method_Payolution) {
+            $info = $paymentMethod->getInfoInstance();
+            if($info->getPayoneIsb2b() == '1') {
+                $payData = new Payone_Api_Request_Parameter_Paydata_Paydata();
+                $payData->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
+                    array('key' => 'b2b', 'data' => 'yes')
+                ));
+                $request->setPaydata($payData);
+            }
         }
         
         $this->dispatchEvent($this->getEventName(), array('request' => $request, 'creditmemo' => $this->getCreditmemo()));

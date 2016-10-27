@@ -39,3 +39,16 @@
 #payolution_overlay ul {
     list-style: circle outside none;
 }
+
+.payolution_installment_overview TABLE TR TD.value {
+    text-align: right;
+    padding-left: 60px;
+}
+
+.payolution_installment_overview TABLE TR.final TD {
+    font-weight: bold;
+}
+
+.payolution_installment_overview TABLE TR.final TD.value {
+    color: red;
+}

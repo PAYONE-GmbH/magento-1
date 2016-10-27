@@ -97,6 +97,29 @@ class Payone_Api_Response_Genericpayment_Approved extends Payone_Api_Response_Ge
         ksort($aPayData);
         return $aPayData;
     }
+    
+    public function getInstallmentData()
+    {
+        $aInstallmentData = array();
+        
+        $aPayData = $this->getPayDataArray();
+        foreach ($aPayData as $sKey => $sValue) {
+            $aSplit = explode('_', $sKey);
+            for($i = count($aSplit); $i > 0; $i--) {
+                if($i == count($aSplit)) {
+                    $aTmp = array($aSplit[$i-1] => $sValue);
+                } else {
+                    $aTmp = array($aSplit[$i-1] => $aTmp);
+                }
+            }
+            $aInstallmentData = array_replace_recursive($aInstallmentData, $aTmp);
+        }
+        
+        if(isset($aInstallmentData['paymentdetails']) && count($aInstallmentData['paymentdetails']) > 0) {
+            return $aInstallmentData['paymentdetails'];
+        }
+        return false;
+    }
 
 
 }

@@ -1068,6 +1068,38 @@ class Payone_Core_Model_Config_Payment_Method
     }
     
     /**
+     * @param string $installment_draft_user
+     */
+    public function setInstallmentDraftUser($installment_draft_user)
+    {
+        $this->installment_draft_user = $installment_draft_user;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInstallmentDraftUser()
+    {
+        return $this->installment_draft_user;
+    }
+    
+    /**
+     * @param string $installment_draft_password
+     */
+    public function setInstallmentDraftPassword($installment_draft_password)
+    {
+        $this->installment_draft_password = $installment_draft_password;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInstallmentDraftPassword()
+    {
+        return $this->installment_draft_password;
+    }
+    
+    /**
      * @param bool $b2b_mode
      */
     public function setB2bMode($b2b_mode)

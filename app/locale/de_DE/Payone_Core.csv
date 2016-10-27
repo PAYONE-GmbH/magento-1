@@ -1067,5 +1067,46 @@
 "November","November"
 "December","Dezember"
 
+"Creditcard - hosted-Iframe translations","Kreditkarte - hosted-Iframe &Uuml;bersetzungen"
+"Translation months","&Uuml;bersetzung der Monate"
+"Translation errors","&Uuml;bersetzung der Fehlermeldungen"
+"Translation placeholders","&Uuml;bersetzung der Platzhalter"
+
+"Language","Sprache"
+"Translation","&Uuml;bersetzung"
+
+"Accountholder","Kontoinhaber"
+"Check installment availability","Ratenkauf Verf&uuml;gbarkeit pr&uuml;fen"
+"Please select your desired number of installments","Bitte w&auml;hlen Sie Ihre gew&uuml;nschte Anzahl von Raten"
+"Overview","&Uuml;bersicht"
+"No. of installments:","Anzahl von Raten:"
+"Financingamount:","Finanzierungsbetrag:"
+"Total:","Gesamt:"
+"Interest rate:","Zinssatz:"
+"Effective interest rate:","Effektivzinssatz:"
+"Monthly installment:","Monatliche Rate:"
+"Download Installment-Contract-Draft","Ratenkauf Mustervertrag herunterladen"
+"per month","pro Monat"
+"installments","Raten"
+"Installment","Rate"
+"due","f&auml;llig"
+
+"Installment Draft Username","Ratenkauf Muster Benutzername"
+"Installment Draft Password","Ratenkauf Muster Passwort"
+
+"This is needed if you use Payolution installment payments, to offer the download of the Installment-Contract-Draft.","Dies wird ben&ouml;tigt, wenn sie Payolution Ratenkauf benutzen, um dem Kunden den Download des Ratenkauf-Vertragsentwurfs zu erm&ouml;glichen."
+
+"Invalid cardpan","Ung&uuml;ltige Kreditkartennummer"
+"Invalid CVC","Ung&uuml;ltige Kartenpr&uuml;fziffer"
+"Invalid cardpan for the cardtype","Ung&uuml;ltige Kreditkartennummer f&uuml;r den Kartentyp"
+"Invalid cardtype","Ung&uuml;ltiger Kartentyp"
+"Invalid expire date","Ung&uuml;ltiges Verfallsdatum"
+"Invalid issue number","Ung&uuml;ltige Ausstellungsnummer"
+"Transaction rejected","Transaktion abgelehnt"
+
+"terms-of-payment","zahlungskonditionen"
+"Installments are not yet supported for backend orders.","Ratenkauf wird f&uuml;r Backend Bestellungen noch nicht unterst&uuml;tzt."
+"The installment calculation failed. Please choose another payment type.","Die Ratenberechnung ist fehlgeschlagen. Bitte waehlen Sie eine andere Zahlart."
+
 "Only used when you activated the error-output in the hosted-Iframe configuration.","Wird nur verwendet, wenn die Fehlerausgabe in der hosted-Iframe Konfiguration aktiviert ist."
 "These will be used to replace the default values from PAYONE.","Diese Werte werden verwendet, um die Standard-Werte von PAYONE zu ueberschreiben."
