@@ -543,7 +543,6 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
             $payment->setApiVersion();
             $payment->setCashtype();
         } elseif($paymentMethod instanceof Payone_Core_Model_Payment_Method_Ratepay) {
-
             $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_RatePay();
             $payment->setFinancingtype($this->_getRatePayType());
             $payment->setApiVersion();
@@ -586,17 +585,6 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
                 $telephone = $this->getOrder()->getBillingAddress()->getTelephone();
             }
             $payment->setTelephonenumber($telephone);
-
-            if ($isRedirect === true) {
-                $successurl = $this->helperUrl()->getSuccessUrl();
-                $errorurl = $this->helperUrl()->getErrorUrl();
-                $backurl = $this->helperUrl()->getBackUrl();
-
-                $payment->setSuccessurl($successurl);
-                $payment->setErrorurl($errorurl);
-                $payment->setBackurl($backurl);
-            }
-
         } elseif($paymentMethod instanceof Payone_Core_Model_Payment_Method_Payolution) {
             $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_Payolution();
             $payment->setApiVersion();
@@ -609,15 +597,21 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
             $payment->setWorkorderid($checkoutSession->getPayoneWorkorderId());
             $info->setPayoneWorkorderId($checkoutSession->getPayoneWorkorderId());
             
+            $payData = new Payone_Api_Request_Parameter_Paydata_Paydata();
+            
+            if ($info->getPayonePayolutionType() == Payone_Api_Enum_PayolutionType::PYS) {
+                $checkoutSession->unsInstallmentDraftLinks();// unset previously set draft links
+                $payData->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
+                    array('key' => 'installment_duration', 'data' => $info->getPayonePayolutionInstallmentDuration())
+                ));
+            }
             if((bool)$info->getPayoneIsb2b() === true) {
-                $payData = new Payone_Api_Request_Parameter_Paydata_Paydata();
                 $payData->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
                     array('key' => 'b2b', 'data' => 'yes')
                 ));
                 $payData->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
                     array('key' => 'company_trade_registry_number', 'data' => $info->getPayoneTradeRegistryNumber()) 
                 ));
-                $payment->setPaydata($payData);
             } else {
                 $birthdayDate = $info->getPayoneCustomerDob();
                 if (empty($birthdayDate)) {
@@ -627,6 +621,7 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
                     $payment->setBirthday($this->formatBirthday($birthdayDate));
                 }
             }
+            $payment->setPaydata($payData);
         }
 
         if ($isRedirect === true) {
@@ -646,7 +641,6 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
         $sType = false;
 
         $aPostPayment = Mage::app()->getRequest()->getPost('payment');
-
         if($aPostPayment && array_key_exists('payone_wallet_type', $aPostPayment)) {
             $sType = $aPostPayment['payone_wallet_type'];
         } else {

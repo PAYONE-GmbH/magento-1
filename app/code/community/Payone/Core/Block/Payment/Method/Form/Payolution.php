@@ -66,6 +66,10 @@ class Payone_Core_Block_Payment_Method_Form_Payolution extends Payone_Core_Block
 	DVR: 4008655
 </footer>";
     
+    protected $_aBackendBlacklist = array(
+        Payone_Api_Enum_PayolutionType::PYS
+    );
+    
     protected function _construct() {
         parent::_construct();
         $this->setTemplate('payone/core/payment/method/form/payolution.phtml');
@@ -81,6 +85,18 @@ class Payone_Core_Block_Payment_Method_Form_Payolution extends Payone_Core_Block
     
     public function getPayolutionTypes() {
         return $this->getMethod()->getConfig()->getTypes();
+    }
+    
+    public function getPayolutionTypesBackend() {
+        $aTypes = $this->getPayolutionTypes();
+        
+        $aTypesReturn = array();
+        foreach ($aTypes as $sType) {
+            if(array_search($sType, $this->_aBackendBlacklist) === false) {
+                $aTypesReturn[] = $sType;
+            }
+        }
+        return $aTypesReturn;
     }
     
     /**
@@ -180,6 +196,11 @@ class Payone_Core_Block_Payment_Method_Form_Payolution extends Payone_Core_Block
     protected function getSystemConfigMethodTypes()
     {
         return $this->getFactory()->getModelSystemConfigPayolutionType()->toSelectArray();
+    }
+    
+    public function getHandleInstallmentUrl()
+    {
+        return $this->getUrl('payone_core/checkout_onepage/handlePayolutionInstallment');
     }
     
 }

@@ -1063,11 +1063,29 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </company_name>
+                        <installment_draft_user translate="label,tooltip">
+                            <label>Installment Draft Username</label>
+                            <tooltip>This is needed if you use Payolution installment payments, to offer the download of the Installment-Contract-Draft.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>53</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </installment_draft_user>
+                        <installment_draft_password translate="label,tooltip">
+                            <label>Installment Draft Password</label>
+                            <tooltip>This is needed if you use Payolution installment payments, to offer the download of the Installment-Contract-Draft.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>54</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </installment_draft_password>
                         <b2b_mode translate="label">
                             <label>B2B mode</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>53</sort_order>
+                            <sort_order>55</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -1076,7 +1094,7 @@
                             <label>Type</label>
                             <frontend_type>multiselect</frontend_type>
                             <source_model>payone_core/system_config_payolutionType</source_model>
-                            <sort_order>54</sort_order>
+                            <sort_order>56</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>

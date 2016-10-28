@@ -182,13 +182,11 @@ class Payone_Core_Block_Payment_Method_Form_Abstract
                 $configId = $config->getId();
 
                 $configTypes = $config->getTypes();
-
                 if (!is_array($configTypes)) {
                     continue;
                 }
 
                 foreach ($configTypes as $keyType => $typeCode) {
-
                     $configTypeKey = $configId . '_' . $typeCode; // key to correctly identify this config and type
                     $return[$configTypeKey]['code'] = $typeCode;
 

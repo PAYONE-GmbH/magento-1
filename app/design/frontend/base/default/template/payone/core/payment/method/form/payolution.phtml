@@ -50,8 +50,9 @@ $aTypes = $this->getPayolutionTypes();
                 <?php } ?>
             </div>
             <div id="<?php echo $code ?>_main_block" style="display:none;">
-                <div class="field">
-                    <?php if ($this->isB2BMode()) { ?>
+                <div class="field" id="<?php echo $code; ?>_installment_wrap2" style="display:none;"></div>
+                <?php if ($this->isB2BMode()) { ?>
+                    <div id="<?php echo $code; ?>_b2b_wrap" class="field">
                         <div class="input-box">
                             <label for="<?php echo $code ?>_trade_registry_number"><?php echo $this->__('Company trade registry number') ?>
                                 <span class="required">*</span>
@@ -60,8 +61,10 @@ $aTypes = $this->getPayolutionTypes();
                             <input type="text" id="<?php echo $code ?>_trade_registry_number" name="payment[payone_trade_registry_number]"
                                    value="" title="" class="required-entry input-text no-submit"/>
                         </div>
-                    <?php } ?>
-                    <?php if ($this->showBirthdayFields()){ ?>
+                    </div>
+                <?php } ?>
+                <?php if ($this->showBirthdayFields()){ ?>
+                    <div id="<?php echo $code; ?>_birthday_wrap" class="field">
                         <label for="<?php echo $code ?>_additional_fields_customer_dob_month"
                                class="required"><em>*</em><?php echo $this->__('Date of birth (DD MM YYYY)') ?>
                         </label>
@@ -96,39 +99,52 @@ $aTypes = $this->getPayolutionTypes();
 
                         <input type="hidden" id="<?php echo $code ?>_additional_fields_customer_dob_full"
                                 name="payment[payone_customer_dob]" class="validate-18-years">
-                    <?php } ?>
-                    <div id="<?php echo $code; ?>_debit_wrap" style="display:none;">
+                    </div>
+                <?php } ?>
+                <div id="<?php echo $code; ?>_debit_wrap" class="field" style="display:none;">
+                    <div id="<?php echo $code; ?>_debit_subwrap" style="display:none;"><br>
+                        <strong><?php echo $this->__('Account Information'); ?></strong><br>
                         <div class="input-box">
-                            <label for="<?php echo $code ?>_sepa_iban_xxx">
-                                <?php echo $this->__('IBAN') ?><span class="required">*</span>
+                            <label for="<?php echo $code ?>_payolution_accountholder">
+                                <?php echo $this->__('Accountholder') ?><span class="required">*</span>
                             </label>
                             <br class="clear"/>
-                            <input type="text" id="<?php echo $code ?>_sepa_iban_xxx"
-                                   title="<?php echo $this->__('IBAN') ?>"
-                                   class="validate-sepa-iban required-entry input-text"
-                                   value=""
-                                   autocomplete="off" maxlength="34"
-                                   onchange="inputToUppaerCaseAndNumbers(this); copyDebitPaymentSepaIban('<?php echo $code ?>');"
-                                   oninput="inputToUppaerCaseAndNumbers(this); copyDebitPaymentSepaIban('<?php echo $code ?>');"/>
-                            <input type="hidden" id="<?php echo $code ?>_sepa_iban" name="payment[payone_payolution_iban]"
-                                   value="">
-                        </div>
-                        <div class="input-box">
-                            <label for="<?php echo $code ?>_payolution_bic">
-                                <?php echo $this->__('BIC') ?><span class="required">*</span>
-                            </label>
-                            <br class="clear"/>
-                            <input type="text" id="<?php echo $code ?>_payolution_bic" name="payment[payone_payolution_bic]"
-                                   title="<?php echo $this->__('BIC') ?>"
-                                   class="validate-sepa-bic required-entry input-text"
-                                   value=""
-                                   autocomplete="off" maxlength="11"
-                                   onchange="inputToUppaerCaseAndNumbers(this);"
-                                   oninput="inputToUppaerCaseAndNumbers(this);"/>
+                            <input type="text" id="<?php echo $code ?>_payolution_accountholder"
+                                   title="<?php echo $this->__('Accountholder') ?>"
+                                   class="required-entry input-text"
+                                   value=""/>
                         </div>
                     </div>
+                    <div class="input-box">
+                        <label for="<?php echo $code ?>_sepa_iban_xxx">
+                            <?php echo $this->__('IBAN') ?><span class="required">*</span>
+                        </label>
+                        <br class="clear"/>
+                        <input type="text" id="<?php echo $code ?>_sepa_iban_xxx"
+                               title="<?php echo $this->__('IBAN') ?>"
+                               class="validate-sepa-iban required-entry input-text"
+                               value=""
+                               autocomplete="off" maxlength="34"
+                               onchange="inputToUppaerCaseAndNumbers(this); copyDebitPaymentSepaIban('<?php echo $code ?>');"
+                               oninput="inputToUppaerCaseAndNumbers(this); copyDebitPaymentSepaIban('<?php echo $code ?>');"/>
+                        <input type="hidden" id="<?php echo $code ?>_sepa_iban" name="payment[payone_payolution_iban]"
+                               value="">
+                    </div>
+                    <div class="input-box">
+                        <label for="<?php echo $code ?>_payolution_bic">
+                            <?php echo $this->__('BIC') ?><span class="required">*</span>
+                        </label>
+                        <br class="clear"/>
+                        <input type="text" id="<?php echo $code ?>_payolution_bic" name="payment[payone_payolution_bic]"
+                               title="<?php echo $this->__('BIC') ?>"
+                               class="validate-sepa-bic required-entry input-text"
+                               value=""
+                               autocomplete="off" maxlength="11"
+                               onchange="inputToUppaerCaseAndNumbers(this);"
+                               oninput="inputToUppaerCaseAndNumbers(this);"/>
+                    </div>
                 </div>
-                <div class="field" style="position:relative;">
+                <div id="<?php echo $code; ?>_acceptance_wrap" class="field" style="position:relative;">
                     <input type="checkbox" id="<?php echo $code ?>_additional_fields_agreement_checkbox" class="checkbox required-entry"/>
                     <label for="<?php echo $code ?>_additional_fields_agreement_checkbox" class="required" style="float:none;">
                         <?php echo $this->__('PAYOLUTION_ACCEPTANCE_1'); ?><br>
@@ -137,20 +153,28 @@ $aTypes = $this->getPayolutionTypes();
                         <?php echo $this->__('PAYOLUTION_ACCEPTANCE_3'); ?>
                         <em style="float:none; position:relative;">*</em>
                     </label>
-                    <input type="hidden" name="payment[payone_config_payment_method_id]" value="<?php echo $configId; ?>"/>
+                    <input type="hidden" name="payment[payone_config_payment_method_id]" value="<?php echo $configId; ?>" id="<?php echo $code ?>_payment_method_id" />
                     <input type="hidden" name="payment[payone_isb2b]" value="<?php echo (int)$this->isB2BMode(); ?>"/>
+                    <input type="hidden" name="payment[payone_payolution_installment_duration]" value="" id="<?php echo $code ?>_selected_installmentplan" />
                     <div id="payolution_overlay" style="display:none;">
                         <a href="#" onclick="removePayolutionOverlay();return false;" style="float:right;font-weight:bold;"><?php echo $this->__('Close window'); ?></a><br><br>
                         <?php echo $this->getPayolutionAcceptanceText(); ?>
                     </div>
                 </div>
-                <div class="field" id="<?php echo $code; ?>_debit_wrap2" style="display:none;">
+                <div id="<?php echo $code; ?>_debit_wrap2" class="field" style="display:none;">
                     <input type="checkbox" id="<?php echo $code ?>_payolution_sepa_mandate" class="checkbox required-entry"/>
                     <label for="<?php echo $code ?>_payolution_sepa_mandate" class="required" style="float:none;">
                         <?php echo $this->__('Hereby I grant the'); ?>
                         <a href="https://payment.payolution.com/payolution-payment/infoport/sepa/mandate.pdf" target="_blank" style="float:none; margin:0;"><?php echo $this->__('SEPA-Mandate'); ?></a>.
                         <em style="float:none; position:relative;">*</em>
                     </label>
+                </div>
+                <div id="<?php echo $code; ?>_installment_wrap1" class="field" style="display:none;">
+                    <button onclick="handleInstallment('<?php echo $code ?>', '<?php echo $this->getHandleInstallmentUrl(); ?>');" class="button" type="button">
+                        <span>
+                            <span><?php echo $this->__('Check installment availability'); ?></span>
+                        </span>
+                    </button>
                 </div>
             </div>
         </li>
@@ -185,4 +209,5 @@ $aTypes = $this->getPayolutionTypes();
     
     //    Add validation messages translation
     Translator.add('You have to be at least 18 years old to use this payment type!', '<?php echo $this->__('You have to be at least 18 years old to use this payment type!'); ?>');
+    Translator.add('The installment calculation failed. Please choose another payment type.', '<?php echo $this->__('The installment calculation failed. Please choose another payment type.'); ?>');
 </script>

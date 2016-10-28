@@ -24,7 +24,7 @@
 <config>
     <modules>
         <Payone_Core>
-            <version>3.6.6</version>
+            <version>3.6.9</version>
         </Payone_Core>
     </modules>
 
@@ -251,6 +251,10 @@
                     <!-- Creditcard cardexpiredate -->
                     <to_order_payment>*</to_order_payment>
                 </payone_cardexpiredate>
+                <payone_payolution_installment_duration>
+                    <!-- Payolution installment duration -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_payolution_installment_duration>
             </sales_convert_quote_payment>
             <sales_convert_quote_address>
                 <payone_addresscheck_score>

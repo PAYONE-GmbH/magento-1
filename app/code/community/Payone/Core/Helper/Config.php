@@ -95,7 +95,6 @@ class Payone_Core_Helper_Config
         // Add invoice_transmit to defaultConfig
         $defaultConfig['invoice_transmit'] = $invoiceTransmit;
 
-
         $config = $this->getFactory()->getModelDomainConfigPaymentMethod();
         $config->load($id);
         $config->loadMergedData();

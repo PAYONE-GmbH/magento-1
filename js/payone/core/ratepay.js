@@ -135,14 +135,7 @@ function ratepayRateCalculatorAction(mode, paymentMethod, url)
  */
 function payoneSwitchPayRate(element)
 {
-    var ElementValue = element.value;
-    var ElementValueSplit = ElementValue.split('_');
-    var typeId = ElementValueSplit[0];
-    var typeCode = ElementValueSplit[1];
-    $("payone_ratepay_type").setValue(typeCode);
-    $("payone_ratepay_config_id").setValue(typeId);
-
-    if(typeCode === 'RPS'){
+    if(element.value === 'RPS'){
         $("ratepay-main-cont").setStyle({
             display: 'block'
         });
