@@ -82,12 +82,14 @@ class Payone_Core_Block_Adminhtml_System_Config_Tooltip extends Mage_Adminhtml_B
         if ($block == '') {
             $block = self::DEFAULT_BLOCK_CLASS;
         }
+
         $hintBlock = $this->getLayout()->createBlock($block);
         if ($hintBlock != null) {
             $hintBlock->setParentBlock($this);
             if ($template != '') {
                 $hintBlock->setTemplate($template);
             }
+
             if (is_callable(array($hintBlock, 'toHtml'))) {
                 $hintHtml = $hintBlock->toHtml();
             }
@@ -137,6 +139,7 @@ class Payone_Core_Block_Adminhtml_System_Config_Tooltip extends Mage_Adminhtml_B
             $block->setTemplate($template);
             $result = $block->toHtml();
         }
+
         return $result;
     }
 

@@ -58,8 +58,9 @@ class Payone_Core_Model_Payment_Method_OnlineBankTransfer
         if (empty($this->matchingConfigs)) {
             $configStore = $this->getConfigStore($quote->getStoreId());
 
-            $this->matchingConfigs = $configStore->getPayment()->getMethodsForQuote($this->methodType ,$quote);
+            $this->matchingConfigs = $configStore->getPayment()->getMethodsForQuote($this->methodType, $quote);
         }
+
         return $this->matchingConfigs;
     }
 }

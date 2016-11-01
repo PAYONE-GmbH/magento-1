@@ -51,6 +51,7 @@ class Payone_Core_Block_Adminhtml_System_Config_Payment extends Mage_Adminhtml_B
                 $this->_addNewMethodButton($key, $name);
             }
         }
+
         $this->setTemplate('payone/core/system/config/payment/grid/container.phtml');
     }
 
@@ -77,11 +78,13 @@ class Payone_Core_Block_Adminhtml_System_Config_Payment extends Mage_Adminhtml_B
      */
     public function _addNewMethodButton($type, $name)
     {
-        $this->_addButton('new_' . $type, array(
+        $this->_addButton(
+            'new_' . $type, array(
             'label' => $this->helperPayone()->__('New ' . $name),
             'onclick' => 'setLocation(\'' . $this->getNewUrl(array('type' => $type)) . '\')',
             'class' => 'add',
-        ));
+            )
+        );
     }
 
     /**

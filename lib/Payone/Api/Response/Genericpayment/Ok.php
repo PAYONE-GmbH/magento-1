@@ -18,6 +18,7 @@
  * @author          Ronny Schröder
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
  */
-class Payone_Api_Response_Genericpayment_Ok extends Payone_Api_Response_Genericpayment_Approved {
+class Payone_Api_Response_Genericpayment_Ok extends Payone_Api_Response_Genericpayment_Approved
+{
     
 }

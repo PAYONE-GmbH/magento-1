@@ -85,9 +85,7 @@ class Payone_Core_Block_Adminhtml_System_Config_Payment_Grid
 
 
             if (empty($storeCode) && $website->hasData()) {
-
                 $methodConfigCollection->getCollectionByScopeIdMerged($website->getId(), 'websites');
-
             }
             else {
                 /** @var $store Mage_Core_Model_Store */
@@ -102,8 +100,10 @@ class Payone_Core_Block_Adminhtml_System_Config_Payment_Grid
                     $methodConfigCollection->getCollectionByScopeIdMerged($store->getId(), 'stores');
                 }
             }
+
             Mage::register('payone_core_adminhtml_system_config_payment_collection', $methodConfigCollection);
         }
+
         return Mage::registry('payone_core_adminhtml_system_config_payment_collection');
     }
 
@@ -212,7 +212,6 @@ class Payone_Core_Block_Adminhtml_System_Config_Payment_Grid
 
         $this->addColumn(
             'action',
-
             array(
                 'header' => $this->helperPayoneCore()->__('Action'),
                 'width' => '100',

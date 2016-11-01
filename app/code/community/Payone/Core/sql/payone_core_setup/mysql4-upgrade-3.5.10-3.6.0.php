@@ -45,14 +45,16 @@ if ($useSqlInstaller) {
 } else {
     $connection = $installer->getConnection();
     
-    $connection->addColumn($tableQuoteAddress, 'payone_payment_fee',
+    $connection->addColumn(
+        $tableQuoteAddress, 'payone_payment_fee',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_FLOAT,
             'NULLABLE' => true,
             'COMMENT' => 'payone_payment_fee'
-        ));
-
+        )
+    );
 }
+
 $installer->endSetup();
  
 

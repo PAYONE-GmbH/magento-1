@@ -34,27 +34,27 @@ $helper = Mage::helper('payone_core');
 $useSqlInstaller = $helper->mustUseSqlInstaller();
 
 if ($useSqlInstaller) {
-    $sql = file_get_contents(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'upgrade-3.5.2-3.5.3.sql');
+    $sql = file_get_contents(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'upgrade-3.6.9-3.7.0.sql');
 
     $installSqlConfig = array(
-        '{{payone_config_payment_method}}' => $tablePaymentMethod,
+        '{{payone_config_payment_method}}' => $tablePaymentMethod
     );
 
     $installSql = str_replace(array_keys($installSqlConfig), array_values($installSqlConfig), $sql);
     $installer->run($installSql);
-}
-else {
+} else {
     $connection = $installer->getConnection();
+    
+    // Update table payone_config_payment_method
     $connection->addColumn(
-        $tablePaymentMethod, 'show_customermessage',
+        $tablePaymentMethod, 'narrative_text',
         array(
-            'TYPE' => Varien_Db_Ddl_Table::TYPE_BOOLEAN,
+            'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
+            'LENGTH' => 255,
             'NULLABLE' => true,
             'DEFAULT' => NULL,
-            'COMMENT' => 'show_customermessage')
-    );
+            'COMMENT' => 'narrative_text')
+    ); 
 }
 
 $installer->endSetup();
- 
-

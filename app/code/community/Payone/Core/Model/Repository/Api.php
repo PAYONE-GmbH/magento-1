@@ -56,8 +56,19 @@ class Payone_Core_Model_Repository_Api
      */
     public function save(
         Payone_Api_Request_Interface $request,
-        Payone_Api_Response_Interface $response)
-    {
+        Payone_Api_Response_Interface $response
+) 
+    { 
+     
+     
+     
+     
+     
+     
+     
+     
+    
+    
         $domainObject = $this->getFactory()->getModelApi();
         $domainObject->setData($request->toArray());
         $domainObject->setRawRequest($request->__toString());
@@ -89,6 +100,7 @@ class Payone_Core_Model_Repository_Api
         if ($this->helper === null) {
             $this->helper = Mage::helper('payone_core');
         }
+
         return $this->helper;
     }
 
@@ -116,6 +128,7 @@ class Payone_Core_Model_Repository_Api
         if ($this->factory === null) {
             $this->factory = new Payone_Core_Model_Factory();
         }
+
         return $this->factory;
     }
 

@@ -68,6 +68,7 @@ class Payone_Core_Block_Payment_Method_Info_Creditcard
                 $sMonth = substr($sDate, 2, 2);
             }
         }
+
         return $sMonth;
     }
 
@@ -83,6 +84,7 @@ class Payone_Core_Block_Payment_Method_Info_Creditcard
                 $sYear = substr($sDate, 0, 2);
             }
         }
+
         return $sYear;
     }
 

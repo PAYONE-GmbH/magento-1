@@ -57,8 +57,9 @@ class Payone_Core_Model_Payment_Method_Wallet extends Payone_Core_Model_Payment_
         if (empty($this->matchingConfigs)) {
             $configStore = $this->getConfigStore($quote->getStoreId());
 
-            $this->matchingConfigs = $configStore->getPayment()->getMethodsForQuote($this->methodType ,$quote);
+            $this->matchingConfigs = $configStore->getPayment()->getMethodsForQuote($this->methodType, $quote);
         }
+
         return $this->matchingConfigs;
     }
     
@@ -72,6 +73,7 @@ class Payone_Core_Model_Payment_Method_Wallet extends Payone_Core_Model_Payment_
             $oSession = Mage::getSingleton('checkout/session');
             $oSession->setPayoneIsRedirectedToPayPal(true);
         }
+
         $this->redirectUrl = $redirectUrl;
     }
     

@@ -60,6 +60,7 @@ class Payone_SessionStatus_Validator_Ip
                 return true;
             }
         }
+
         throw new Payone_SessionStatus_Exception_Validation();
     }
 
@@ -73,9 +74,11 @@ class Payone_SessionStatus_Validator_Ip
         if (substr($ip, 0, 1) !== '/') {
             $ip = '/' . $ip;
         }
+
         if (substr($ip, -1, 1) !== '/') {
             $ip = $ip . '/';
         }
+
         return $ip;
     }
 
@@ -102,20 +105,19 @@ class Payone_SessionStatus_Validator_Ip
      */
     public function getRemoteAddress()
     {
-        $remoteAddr = $_SERVER['REMOTE_ADDR'];
+        $remoteAddr = filter_input(INPUT_SERVER, 'REMOTE_ADDR', FILTER_SANITIZE_STRING);
         if ($this->getProxyCheckEnabled() == 1) {
-            if(array_key_exists('HTTP_X_FORWARDED_FOR', $_SERVER)) {
-                $proxy = $_SERVER['HTTP_X_FORWARDED_FOR'];
-                if (!empty($proxy)) {
-                    $proxyIps = explode(',', $proxy);
-                    $relevantIp = array_shift($proxyIps);
-                    $relevantIp = trim($relevantIp);
-                    if (!empty($relevantIp)) {
-                        return $relevantIp;
-                    }
+            $proxy = filter_input(INPUT_SERVER, 'HTTP_X_FORWARDED_FOR', FILTER_SANITIZE_STRING);
+            if(!empty($proxy)) {
+                $proxyIps = explode(',', $proxy);
+                $relevantIp = array_shift($proxyIps);
+                $relevantIp = trim($relevantIp);
+                if (!empty($relevantIp)) {
+                    return $relevantIp;
                 }
             }
         }
+
         return $remoteAddr;
 
     }

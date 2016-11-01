@@ -38,15 +38,19 @@ class Payone_Core_Block_Adminhtml_System_Config_Form_Field_StatusMapping
      */
     protected function _prepareToRender()
     {
-        $this->addColumn('txaction', array(
+        $this->addColumn(
+            'txaction', array(
             'label' => Mage::helper('payone_core')->__('Transactionstatus-Message'),
             'style' => 'width:150px',
-        ));
+            )
+        );
 
-        $this->addColumn('state_status', array(
+        $this->addColumn(
+            'state_status', array(
             'label' => Mage::helper('payone_core')->__('Magento-Status'),
             'style' => 'width:120px;',
-        ));
+            )
+        );
         $this->_addAfter = false;
         $this->_addButtonLabel = Mage::helper('payone_core')->__('Add Statusmapping');
         parent::_prepareToRender();

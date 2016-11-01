@@ -21,9 +21,11 @@
  * @link            http://www.fatchip.com
  */
 
-class Payone_Core_Block_Payment_Method_Form_Barzahlen extends Payone_Core_Block_Payment_Method_Form_Abstract {
+class Payone_Core_Block_Payment_Method_Form_Barzahlen extends Payone_Core_Block_Payment_Method_Form_Abstract
+{
     
-    protected function _construct() {
+    protected function _construct() 
+    {
         parent::_construct();
         $this->setTemplate('payone/core/payment/method/form/barzahlen.phtml');
     }

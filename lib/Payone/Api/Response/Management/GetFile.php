@@ -65,6 +65,7 @@ class Payone_Api_Response_Management_GetFile extends Payone_Api_Response_Abstrac
             $stringArray = array('status=' . $this->getStatus(), 'data=PDF-Content');
             $result = implode('|', $stringArray);
         }
+
         return $result;
     }
 }

@@ -92,7 +92,8 @@ class Payone_Core_Model_Observer_Sales_Quote_Address
         return $actions;
     }
 
-    protected function _alreadyCheckedAndChangeWasDenied($sType) {
+    protected function _alreadyCheckedAndChangeWasDenied($sType) 
+    {
         $blReturn = (bool)Mage::app()->getRequest()->getPost($sType.'_change_denied', false);
         return $blReturn;
     }
@@ -112,21 +113,25 @@ class Payone_Core_Model_Observer_Sales_Quote_Address
         if ($addressType === 'shipping' && !$this->_alreadyCheckedAndChangeWasDenied($addressType) && $config->mustCheckShipping()) {
             return true;
         }
+
         // check if address is billing-address
         if ($addressType === 'billing' && !$this->_alreadyCheckedAndChangeWasDenied($addressType)) {
             // check if billing-address has to be checked
             if ($config->mustCheckBilling()) {
                 return true;
             }
+
             // check if billing-address is used for shipping address and shipping-address has to be checked
             if ($useForShipping === true and $config->mustCheckShipping() and !$quote->isVirtual()) {
                 return true;
             }
+
             // check if billing-address has to be checked for virtual order
             if ($quote->isVirtual() and $config->mustCheckBillingForVirtualOrder()) {
                 return true;
             }
         }
+
         return false;
     }
 }

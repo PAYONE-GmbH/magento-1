@@ -48,16 +48,18 @@ if ($useSqlInstaller) {
     $connection = $installer->getConnection();
     
     // Update table sales_flat_order_payment
-    $connection->addColumn($tableSalesOrderPayment, 'payone_cardexpiredate',
+    $connection->addColumn(
+        $tableSalesOrderPayment, 'payone_cardexpiredate',
         'VARCHAR(4) COMMENT \'Creditcard cardexpiredate\' AFTER `payone_pseudocardpan`'
     );
 
     // Update table sales_flat_quote_payment
-    $connection->addColumn($tableSalesQuotePayment, 'payone_cardexpiredate',
+    $connection->addColumn(
+        $tableSalesQuotePayment, 'payone_cardexpiredate',
         'VARCHAR(4) COMMENT \'Creditcard cardexpiredate\' AFTER `payone_pseudocardpan`'
     );
-
 }
+
 $installer->endSetup();
  
 

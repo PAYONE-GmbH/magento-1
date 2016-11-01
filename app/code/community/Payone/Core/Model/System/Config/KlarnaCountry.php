@@ -48,6 +48,7 @@ class Payone_Core_Model_System_Config_KlarnaCountry extends Payone_Core_Model_Sy
                 $result[$countryOption['value']] = $countryOption['label'];
             }
         }
+
         return $result;
     }
 
@@ -75,6 +76,7 @@ class Payone_Core_Model_System_Config_KlarnaCountry extends Payone_Core_Model_Sy
         if ($this->sourceModelCountry === null) {
             $this->sourceModelCountry = $this->getFactory()->getModelSystemConfigCountryFull();
         }
+
         return $this->sourceModelCountry;
     }
 }

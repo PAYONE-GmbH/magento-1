@@ -103,10 +103,14 @@ class Payone_Core_Block_Paypal_Express_Shortcut extends Mage_Core_Block_Template
         $this->setShortcutHtmlId($this->helper('core')->uniqHash('ppe_shortcut_'))
             ->setCheckoutUrl($this->getUrl($this->_startAction, array('_secure' => $isSecure)));
 
-        $this->setImageUrl(Mage::getModel('payone_core/service_paypal_express_checkout', array(
-            'quote'  => $quote,
-            'config' => $configMethod
-        ))->getCheckoutShortcutImageUrl());
+        $this->setImageUrl(
+            Mage::getModel(
+                'payone_core/service_paypal_express_checkout', array(
+                'quote'  => $quote,
+                'config' => $configMethod
+                )
+            )->getCheckoutShortcutImageUrl()
+        );
 
 
         return $result;
@@ -122,6 +126,7 @@ class Payone_Core_Block_Paypal_Express_Shortcut extends Mage_Core_Block_Template
         if (!$this->_shouldRender) {
             return '';
         }
+
         return parent::_toHtml();
     }
 
@@ -161,6 +166,7 @@ class Payone_Core_Block_Paypal_Express_Shortcut extends Mage_Core_Block_Template
         if ($this->factory === null) {
             $this->factory = new Payone_Core_Model_Factory();
         }
+
         return $this->factory;
     }
 }

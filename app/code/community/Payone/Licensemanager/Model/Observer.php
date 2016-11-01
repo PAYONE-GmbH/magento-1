@@ -50,6 +50,7 @@ class Payone_Licensemanager_Model_Observer
                 $helper->setPayoneModuleDeactive();
             }
         }
+
         return $this;
     }
 }

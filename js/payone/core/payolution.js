@@ -1,11 +1,14 @@
-function displayPayolutionOverlay() {
+function displayPayolutionOverlay() 
+{
     document.getElementById('payolution_overlay').style.display = "";
 }
-function removePayolutionOverlay() {
+function removePayolutionOverlay() 
+{
     document.getElementById('payolution_overlay').style.display = "none";
 }
 
-function switchVisibility(aIds, blShow) {
+function switchVisibility(aIds, blShow) 
+{
     for(var i = 0; i < aIds.length; i++) {
         var oElement = $(aIds[i]);
         if(oElement) {
@@ -18,7 +21,8 @@ function switchVisibility(aIds, blShow) {
     }
 }
 
-function payoneSwitchPayolution(oSelect, sCode) {
+function payoneSwitchPayolution(oSelect, sCode) 
+{
     if (oSelect == undefined) {
         return;
     }
@@ -77,7 +81,8 @@ function payoneSwitchPayolution(oSelect, sCode) {
     }
 }
 
-function handleInstallmentAllowed(response) {
+function handleInstallmentAllowed(response) 
+{
     $(response.code + '_installment_wrap2').update(response.update_section.html);
     
     var aHide = [
@@ -93,7 +98,8 @@ function handleInstallmentAllowed(response) {
     switchVisibility(aShow, true);
 }
 
-function handleInstallment(sCode, sUrl) {
+function handleInstallment(sCode, sUrl) 
+{
     if (checkout.loadWaiting!=false) return;
     
     var validator = new Validation(payment.form);
@@ -104,7 +110,8 @@ function handleInstallment(sCode, sUrl) {
         var sType = $(sCode + '_type_select').value;
         var sPaymentMethodId = $(sCode + '_payment_method_id').value;
 
-        new Ajax.Request(sUrl, {
+        new Ajax.Request(
+            sUrl, {
             method: 'Post',
             parameters: {
                 payone_payolution_type : sType,
@@ -112,7 +119,7 @@ function handleInstallment(sCode, sUrl) {
                 payone_config_payment_method_id : sPaymentMethodId,
                 code : sCode
             },
-            onComplete: function(transport) {
+            onComplete: function (transport) {
                 checkout.setLoadWaiting(false);
                 if(transport.responseText) {
                     response = JSON.parse(transport.responseText);
@@ -121,22 +128,25 @@ function handleInstallment(sCode, sUrl) {
                         return;
                     }
                 }
+
                 alert(Translator.translate("The installment calculation failed. Please choose another payment type."));
             }
-        });
+            }
+        );
     }
 }
 
-function switchInstallmentPlan(sKey, sCode, iInstallments) {
+function switchInstallmentPlan(sKey, sCode, iInstallments) 
+{
     $$('.payolution_installmentplans').each(
-       function (e) {
+        function (e) {
           e.hide(); 
-       } 
+        } 
     );
     $$('.payolution_installment_overview').each(
-       function (e) {
+        function (e) {
           e.hide(); 
-       } 
+        } 
     );
     
     var aShow = [

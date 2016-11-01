@@ -65,6 +65,7 @@ class Payone_Core_Model_Config_Misc_EmailAvs
         if (array_key_exists($responseAvs, $resultAvsArray)) {
             return true;
         }
+
         return false;
     }
 }

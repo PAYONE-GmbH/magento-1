@@ -57,6 +57,7 @@ class Payone_Core_Block_Checkout_Onepage_Success_Barzahlen
         if (!$orderId) {
             return false;
         }
+
         $order = $this->getFactory()->getModelSalesOrder();
         $order->load($orderId);
 
@@ -67,10 +68,12 @@ class Payone_Core_Block_Checkout_Onepage_Success_Barzahlen
         if(!$this->getBarzahlenHtml()) {
             return false;
         }
+
         return true;
     }
     
-    public function getBarzahlenHtml() {
+    public function getBarzahlenHtml() 
+    {
         return $this->getCheckoutSession()->getPayoneBarzahlenHtml();
     }
 
@@ -90,6 +93,7 @@ class Payone_Core_Block_Checkout_Onepage_Success_Barzahlen
         if ($this->factory === null) {
             $this->factory = new Payone_Core_Model_Factory();
         }
+
         return $this->factory;
     }
 

@@ -45,12 +45,15 @@ class Payone_Api_Validator_DefaultParameters extends Payone_Api_Validator_Abstra
         if ($request->getMid() == '') {
             throw new Payone_Api_Exception_Request_InvalidMid();
         }
+
         if ($request->getPortalid() == '') {
             throw new Payone_Api_Exception_Request_InvalidPortalid();
         }
+
         if ($request->getKey() == '') {
             throw new Payone_Api_Exception_Request_InvalidKey();
         }
+
         if ($request->getMode() == '') {
             throw new Payone_Api_Exception_Request_InvalidMode();
         }

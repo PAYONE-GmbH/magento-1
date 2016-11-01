@@ -106,6 +106,7 @@ class Payone_Api_Mapper_Currency extends Payone_Api_Mapper_Abstract
         if (!array_key_exists($id, $mappingById) || trim($mappingById[$id]) === '') {
             throw new Payone_Api_Exception_MappingNotFound();
         }
+
         return $mappingById[$id];
     }
 
@@ -120,6 +121,7 @@ class Payone_Api_Mapper_Currency extends Payone_Api_Mapper_Abstract
         if (!$this->hasMappingByCode($code, self::PROPERTY_NAME_SIGN)) {
             throw new Payone_Api_Exception_MappingNotFound();
         }
+
         $mapping = $this->getMappingByCode($code);
         return $mapping[self::PROPERTY_NAME_SIGN];
     }
@@ -142,10 +144,12 @@ class Payone_Api_Mapper_Currency extends Payone_Api_Mapper_Abstract
         if (!is_numeric($subdiv)) {
             throw new Payone_Api_Exception_MappingNotFound();
         }
+
         $subdiv = (int)$subdiv;
         if ($subdiv === 0) {
             $subdiv = 1;
         }
+
         return $subdiv;
     }
 
@@ -167,11 +171,13 @@ class Payone_Api_Mapper_Currency extends Payone_Api_Mapper_Abstract
                 if (count($exploded) !== 2) {
                     continue;
                 }
+
                 $key = trim($exploded[0]);
                 $value = trim($exploded[1]);
                 $currenciesRaw[$key] = $value;
             }
         }
+
         return $currenciesRaw;
     }
 
@@ -188,6 +194,7 @@ class Payone_Api_Mapper_Currency extends Payone_Api_Mapper_Abstract
             if (count($explodedKey) != 3) {
                 continue;
             }
+
             $type = $explodedKey[1];
             $typeCode = $explodedKey[2];
 
@@ -211,6 +218,7 @@ class Payone_Api_Mapper_Currency extends Payone_Api_Mapper_Abstract
 
             $mappingByCode[$typeCode][$typeCodeKey] = trim($data);
         }
+
         ksort($mappingByCode);
         return $mappingByCode;
     }
@@ -232,9 +240,11 @@ class Payone_Api_Mapper_Currency extends Payone_Api_Mapper_Abstract
         if ($this->mappingByCode === null) {
             $this->mappingByCode = $this->initMappingByCode();
         }
+
         if ($code != '') {
             return $this->mappingByCode[$code];
         }
+
         return $this->mappingByCode;
     }
 
@@ -249,12 +259,15 @@ class Payone_Api_Mapper_Currency extends Payone_Api_Mapper_Abstract
         if (!array_key_exists($code, $mappingByCode)) {
             return false;
         }
+
         if (!array_key_exists($innerArrayKey, $mappingByCode[$code])) {
             return false;
         }
+
         if ($mappingByCode[$code][$innerArrayKey] === '') {
             return false;
         }
+
         return true;
     }
 
@@ -268,6 +281,7 @@ class Payone_Api_Mapper_Currency extends Payone_Api_Mapper_Abstract
         if ($this->mappingById === null) {
             $this->mappingById = $this->initMappingById();
         }
+
         return $this->mappingById;
     }
 
@@ -282,11 +296,13 @@ class Payone_Api_Mapper_Currency extends Payone_Api_Mapper_Abstract
             if (!array_key_exists(self::PROPERTY_NAME_ID, $data)) {
                 continue;
             }
+
             $id = $data[self::PROPERTY_NAME_ID];
             if ($id !== '') {
                 $mappingById[$id] = $code;
             }
         }
+
         return $mappingById;
     }
 

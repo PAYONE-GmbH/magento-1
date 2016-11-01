@@ -26,18 +26,24 @@ class Payone_Core_Block_Adminhtml_System_Config_Form_Field_CcTranslationMonths
 
     protected function _prepareToRender()
     {
-        $this->addColumn('translation_type', array(
+        $this->addColumn(
+            'translation_type', array(
             'label' => Mage::helper('payone_core')->__('Text'),
             'style' => 'width: 160px',
-        ));
-        $this->addColumn('translation_language', array(
+            )
+        );
+        $this->addColumn(
+            'translation_language', array(
             'label' => Mage::helper('payone_core')->__('Language'),
             'style' => 'width: 160px',
-        ));
-        $this->addColumn('translation_message', array(
+            )
+        );
+        $this->addColumn(
+            'translation_message', array(
             'label' => Mage::helper('payone_core')->__('Translation'),
             'style' => 'width: 160px',
-        ));
+            )
+        );
         $this->_addAfter = false;
         $this->_addButtonLabel = Mage::helper('payone_core')->__('Add');
         parent::_prepareToRender();
@@ -56,7 +62,7 @@ class Payone_Core_Block_Adminhtml_System_Config_Form_Field_CcTranslationMonths
             $modelConfigCode = $this->getFactory()->getModelSystemConfigTranslationMonths();
             $options = $modelConfigCode->toOptionArray();
 
-            return $this->prepareCellTemplate($columnName,$selectType,$options);
+            return $this->prepareCellTemplate($columnName, $selectType, $options);
         } elseif($columnName == 'translation_language') {
             $selectType = Payone_Core_Block_Adminhtml_System_Config_Form_Field_Abstract::PAYONE_CORE_FIELD_SELECT;
 
@@ -64,7 +70,7 @@ class Payone_Core_Block_Adminhtml_System_Config_Form_Field_CcTranslationMonths
             $options = $modelConfigCode->toOptionArray();
             $options = $this->_getFormattedLanguageOptions($options);
 
-            return $this->prepareCellTemplate($columnName,$selectType,$options);
+            return $this->prepareCellTemplate($columnName, $selectType, $options);
         } else {
             return parent::_renderCellTemplate($columnName);
         }

@@ -20,15 +20,18 @@
  * @link            http://www.noovias.com
  */
 
-Event.observe(window, 'load', function () {
+Event.observe(
+    window, 'load', function () {
     wrapAddressNextStepEvents();
-});
+    }
+);
 
 
 /**
  * Place a wrapper for the nextStep function on Magento´s Billing and Shipping objects, to allow additional output on addresscheck failure
  */
-function wrapAddressNextStepEvents() {
+function wrapAddressNextStepEvents() 
+{
     billing.onSave = nextStepWithAddresscheckOutput.bindAsEventListener(billing.nextStep, 'billing', billing.nextStep);
 
     if (typeof shipping != "undefined") // no shipping inputs for virtual orders.
@@ -37,7 +40,8 @@ function wrapAddressNextStepEvents() {
     }
 }
 
-function nextStepWithAddresscheckOutput(transport, address_type, origSaveMethod) {
+function nextStepWithAddresscheckOutput(transport, address_type, origSaveMethod) 
+{
 
     if (transport && transport.responseText) {
         var response = transport.responseText.evalJSON();
@@ -45,19 +49,19 @@ function nextStepWithAddresscheckOutput(transport, address_type, origSaveMethod)
             if (response.message.payone_address_invalid) {
                 response.message = response.message.payone_address_invalid;
                     transport.responseText = '{"error":1,"message":"' + response.message + '"}';
-
             }
+
             if (response.message.payone_address_error) {
                 response.message = response.message.payone_address_error;
                     transport.responseText = '{"error":1,"message":"' + response.message + '"}';
             }
+
             if (response.message.payone_address_corrected) {
                 handleCorrectedAddress(response.message.payone_address_corrected, address_type);
                 response.message = response.message.payone_address_corrected.customermessage;
 
                     //transport.responseText = '{"error":1,"message":"' + response.message + '"}';
             }
-
         }
     }
 
@@ -65,12 +69,14 @@ function nextStepWithAddresscheckOutput(transport, address_type, origSaveMethod)
 }
 
 
-function handleCorrectedAddress(data, address_type) {
+function handleCorrectedAddress(data, address_type) 
+{
     sConfirmMessage  = data.customermessage + "\n\n";
     sConfirmMessage += data.street + "\n";
     if(data.street2 != '') {
         sConfirmMessage += data.street2 + "\n";
     }
+
     sConfirmMessage += data.city + "\n";
     sConfirmMessage += data.postcode;
     if(confirm(sConfirmMessage)) {

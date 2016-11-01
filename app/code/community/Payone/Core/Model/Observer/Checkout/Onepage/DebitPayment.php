@@ -80,6 +80,7 @@ class Payone_Core_Model_Observer_Checkout_Onepage_DebitPayment extends Payone_Co
         } elseif($selectedMethod == Payone_Core_Model_System_Config_PaymentMethodCode::CREDITCARD) {
             $controllerAction = $this->_performHostedCreditcardChecks($controllerAction);
         }
+
         return $controllerAction;
     }
     
@@ -194,8 +195,10 @@ class Payone_Core_Model_Observer_Checkout_Onepage_DebitPayment extends Payone_Co
 
         // Perform check:
         $serviceBankaccountCheck = $this->getFactory()
-                                        ->getServiceVerificationBankAccountCheck($paymentMethodConfigId, $this->getQuote()
-                                                                                                              ->getStoreId());
+                                        ->getServiceVerificationBankAccountCheck(
+                                            $paymentMethodConfigId, $this->getQuote()
+                                            ->getStoreId()
+                                        );
         $serviceBankaccountCheck->execute($bankAccountNumber, $bankCode, $bankCountry, $iban, $bic);
     }
 
@@ -210,8 +213,10 @@ class Payone_Core_Model_Observer_Checkout_Onepage_DebitPayment extends Payone_Co
         $paymentMethodConfigId = $paymentData['payone_config_payment_method_id'];
 
         $manageMandateService = $this->getFactory()
-                                     ->getServiceManagementManageMandate($paymentMethodConfigId, $this->getQuote()
-                                                                                                      ->getStoreId());
+                                     ->getServiceManagementManageMandate(
+                                         $paymentMethodConfigId, $this->getQuote()
+                                         ->getStoreId()
+                                     );
 
         // Gather Data:
         $bankAccountNumber = array_key_exists('payone_account_number', $paymentData) ? $paymentData['payone_account_number'] : '';
@@ -233,6 +238,7 @@ class Payone_Core_Model_Observer_Checkout_Onepage_DebitPayment extends Payone_Co
             $checkoutSession->setPayoneSepaMandateIdentification($mandateIdentification);
             $checkoutSession->setPayoneSepaMandateDownloadEnabled($sepaMandateDownloadEnabled);
         }
+
         return $response;
 //    else {
 //            Mage::log($response, null, 'test.log', true);
@@ -258,6 +264,7 @@ class Payone_Core_Model_Observer_Checkout_Onepage_DebitPayment extends Payone_Co
         if (!array_key_exists('payone_config_payment_method_id', $paymentData)) {
             throw new Payone_Core_Exception_PaymentMethodConfigNotFound();
         }
+
         $paymentMethodConfigId = $paymentData['payone_config_payment_method_id'];
         if (empty($paymentMethodConfigId)) {
             throw new Payone_Core_Exception_PaymentMethodConfigNotFound();

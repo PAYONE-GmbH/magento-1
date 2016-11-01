@@ -46,7 +46,8 @@ if ($useSqlInstaller) {
 else {
     $connection = $installer->getConnection();
 
-    $connection->modifyColumn($tablePaymentMethod, 'key',
+    $connection->modifyColumn(
+        $tablePaymentMethod, 'key',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'LENGTH' => 255,
@@ -56,4 +57,5 @@ else {
         )
     );
 }
+
 $installer->endSetup();

@@ -53,6 +53,7 @@ class Payone_Core_Helper_Compatibility
                 $isActive = true;
             }
         }
+
         return $isActive;
     }
 

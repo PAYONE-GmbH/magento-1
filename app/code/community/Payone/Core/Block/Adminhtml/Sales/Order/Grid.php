@@ -72,61 +72,77 @@ class Payone_Core_Block_Adminhtml_Sales_Order_Grid extends Mage_Adminhtml_Block_
     public function _prepareColumns()
     {
 
-        $this->addColumn('real_order_id', array(
+        $this->addColumn(
+            'real_order_id', array(
             'header'=> Mage::helper('sales')->__('Order #'),
             'width' => '80px',
             'type'  => 'text',
             'index' => 'increment_id',
-        ));
+            )
+        );
 
         if (!Mage::app()->isSingleStoreMode()) {
-            $this->addColumn('store_id', array(
+            $this->addColumn(
+                'store_id', array(
                 'header'    => Mage::helper('sales')->__('Purchased From (Store)'),
                 'index'     => 'store_id',
                 'type'      => 'store',
                 'store_view'=> true,
                 'display_deleted' => true,
-            ));
+                )
+            );
         }
 
-        $this->addColumn('created_at', array(
+        $this->addColumn(
+            'created_at', array(
             'header' => Mage::helper('sales')->__('Purchased On'),
             'index' => 'created_at',
             'type' => 'datetime',
             'width' => '100px',
-        ));
+            )
+        );
 
-        $this->addColumn('billing_name', array(
+        $this->addColumn(
+            'billing_name', array(
             'header' => Mage::helper('sales')->__('Bill to Name'),
             'index' => 'billing_name',
-        ));
+            )
+        );
 
-        $this->addColumn('shipping_name', array(
+        $this->addColumn(
+            'shipping_name', array(
             'header' => Mage::helper('sales')->__('Ship to Name'),
             'index' => 'shipping_name',
-        ));
+            )
+        );
 
-        $this->addColumn('base_grand_total', array(
+        $this->addColumn(
+            'base_grand_total', array(
             'header' => Mage::helper('sales')->__('G.T. (Base)'),
             'index' => 'base_grand_total',
             'type'  => 'currency',
             'currency' => 'base_currency_code',
-        ));
+            )
+        );
 
-        $this->addColumn('grand_total', array(
+        $this->addColumn(
+            'grand_total', array(
             'header' => Mage::helper('sales')->__('G.T. (Purchased)'),
             'index' => 'grand_total',
             'type'  => 'currency',
             'currency' => 'order_currency_code',
-        ));
+            )
+        );
 
-        $this->addColumn('status', array(
+        $this->addColumn(
+            'status', array(
             'header' => Mage::helper('sales')->__('Status'),
             'index' => 'status',
             'type'  => 'options',
             'width' => '70px',
             'options' => Mage::getSingleton('sales/order_config')->getStatuses(),
-        ));
+            )
+        );
 
         $this->addColumnAfter(
             'payone_status',
@@ -182,7 +198,8 @@ class Payone_Core_Block_Adminhtml_Sales_Order_Grid extends Mage_Adminhtml_Block_
         );
 
         if (Mage::getSingleton('admin/session')->isAllowed('sales/order/actions/view')) {
-            $this->addColumn('action',
+            $this->addColumn(
+                'action',
                 array(
                     'header' => Mage::helper('sales')->__('Action'),
                     'width' => '50px',
@@ -199,7 +216,8 @@ class Payone_Core_Block_Adminhtml_Sales_Order_Grid extends Mage_Adminhtml_Block_
                     'sortable' => false,
                     'index' => 'stores',
                     'is_system' => true,
-                ));
+                )
+            );
         }
 
         $this->setDefaultSort('created_at');
@@ -224,50 +242,66 @@ class Payone_Core_Block_Adminhtml_Sales_Order_Grid extends Mage_Adminhtml_Block_
         $this->getMassactionBlock()->setUseSelectAll(false);
 
         if (Mage::getSingleton('admin/session')->isAllowed('sales/order/actions/cancel')) {
-            $this->getMassactionBlock()->addItem('cancel_order', array(
+            $this->getMassactionBlock()->addItem(
+                'cancel_order', array(
                  'label'=> Mage::helper('sales')->__('Cancel'),
                  'url'  => $this->getUrl('*/*/massCancel'),
-            ));
+                )
+            );
         }
 
         if (Mage::getSingleton('admin/session')->isAllowed('sales/order/actions/hold')) {
-            $this->getMassactionBlock()->addItem('hold_order', array(
+            $this->getMassactionBlock()->addItem(
+                'hold_order', array(
                  'label'=> Mage::helper('sales')->__('Hold'),
                  'url'  => $this->getUrl('*/*/massHold'),
-            ));
+                )
+            );
         }
 
         if (Mage::getSingleton('admin/session')->isAllowed('sales/order/actions/unhold')) {
-            $this->getMassactionBlock()->addItem('unhold_order', array(
+            $this->getMassactionBlock()->addItem(
+                'unhold_order', array(
                  'label'=> Mage::helper('sales')->__('Unhold'),
                  'url'  => $this->getUrl('*/*/massUnhold'),
-            ));
+                )
+            );
         }
 
-        $this->getMassactionBlock()->addItem('pdfinvoices_order', array(
+        $this->getMassactionBlock()->addItem(
+            'pdfinvoices_order', array(
              'label'=> Mage::helper('sales')->__('Print Invoices'),
              'url'  => $this->getUrl('*/*/pdfinvoices'),
-        ));
+            )
+        );
 
-        $this->getMassactionBlock()->addItem('pdfshipments_order', array(
+        $this->getMassactionBlock()->addItem(
+            'pdfshipments_order', array(
              'label'=> Mage::helper('sales')->__('Print Packingslips'),
              'url'  => $this->getUrl('*/*/pdfshipments'),
-        ));
+            )
+        );
 
-        $this->getMassactionBlock()->addItem('pdfcreditmemos_order', array(
+        $this->getMassactionBlock()->addItem(
+            'pdfcreditmemos_order', array(
              'label'=> Mage::helper('sales')->__('Print Credit Memos'),
              'url'  => $this->getUrl('*/*/pdfcreditmemos'),
-        ));
+            )
+        );
 
-        $this->getMassactionBlock()->addItem('pdfdocs_order', array(
+        $this->getMassactionBlock()->addItem(
+            'pdfdocs_order', array(
              'label'=> Mage::helper('sales')->__('Print All'),
              'url'  => $this->getUrl('*/*/pdfdocs'),
-        ));
+            )
+        );
 
-        $this->getMassactionBlock()->addItem('print_shipping_label', array(
+        $this->getMassactionBlock()->addItem(
+            'print_shipping_label', array(
              'label'=> Mage::helper('sales')->__('Print Shipping Labels'),
              'url'  => $this->getUrl('adminhtml/sales_order_shipment/massPrintShippingLabel'),
-        ));
+            )
+        );
 
         return $this;
     }

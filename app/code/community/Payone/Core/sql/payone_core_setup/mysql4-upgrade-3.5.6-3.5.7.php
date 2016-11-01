@@ -48,14 +48,16 @@ if ($useSqlInstaller) {
     $installer->run($installSql);
 } else {
     $connection = $installer->getConnection();
-    $connection->addColumn($tablePaymentMethod, 'sofortueberweisung_show_iban',
+    $connection->addColumn(
+        $tablePaymentMethod, 'sofortueberweisung_show_iban',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_BOOLEAN,
             'NULLABLE' => true,
             'DEFAULT' => NULL,
             'COMMENT' => 'sofortueberweisung_show_iban')
     );
-    $connection->addColumn($tablePaymentMethod, 'sepa_request_bic',
+    $connection->addColumn(
+        $tablePaymentMethod, 'sepa_request_bic',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_BOOLEAN,
             'NULLABLE' => true,
@@ -64,24 +66,28 @@ if ($useSqlInstaller) {
     );
     
     // Update table sales_flat_order_payment
-    $connection->addColumn($tableSalesOrderPayment, 'payone_payolution_bic',
+    $connection->addColumn(
+        $tableSalesOrderPayment, 'payone_payolution_bic',
         'VARCHAR(11) COMMENT \'PAYOLUTION BIC\' AFTER `payone_sepa_bic`'
     );
 
-    $connection->addColumn($tableSalesOrderPayment, 'payone_payolution_iban',
+    $connection->addColumn(
+        $tableSalesOrderPayment, 'payone_payolution_iban',
         'VARCHAR(34) COMMENT \'PAYOLUTION IBAN\' AFTER `payone_sepa_bic`'
     );
 
     // Update table sales_flat_quote_payment
-    $connection->addColumn($tableSalesQuotePayment, 'payone_payolution_bic',
+    $connection->addColumn(
+        $tableSalesQuotePayment, 'payone_payolution_bic',
         'VARCHAR(11) COMMENT \'PAYOLUTION BIC\' AFTER `payone_sepa_bic`'
     );
 
-    $connection->addColumn($tableSalesQuotePayment, 'payone_payolution_iban',
+    $connection->addColumn(
+        $tableSalesQuotePayment, 'payone_payolution_iban',
         'VARCHAR(34) COMMENT \'PAYOLUTION IBAN\' AFTER `payone_sepa_bic`'
     );
-
 }
+
 $installer->endSetup();
  
 

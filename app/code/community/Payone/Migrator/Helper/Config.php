@@ -67,6 +67,7 @@ class Payone_Migrator_Helper_Config
                 return false;
             }
         }
+
         return true;
     }
 
@@ -76,12 +77,14 @@ class Payone_Migrator_Helper_Config
             $this->helper()->log($part . ': migration already completed');
             return false;
         }
+
         if ($this->isPartStatusSuccess($part)
                 or $this->isPartStatusError($part)
         ) {
             $this->helper()->log($part . ': status already success or error');
             return false;
         }
+
         return true;
     }
 
@@ -91,6 +94,7 @@ class Payone_Migrator_Helper_Config
         if ($status == 'success') {
             return true;
         }
+
         return false;
     }
 
@@ -100,6 +104,7 @@ class Payone_Migrator_Helper_Config
         if ($status == 'error') {
             return true;
         }
+
         return false;
     }
 
@@ -109,6 +114,7 @@ class Payone_Migrator_Helper_Config
         if ($status == 'success') {
             return true;
         }
+
         return false;
     }
 
@@ -118,6 +124,7 @@ class Payone_Migrator_Helper_Config
         if ($status == 'error') {
             return true;
         }
+
         return false;
     }
 

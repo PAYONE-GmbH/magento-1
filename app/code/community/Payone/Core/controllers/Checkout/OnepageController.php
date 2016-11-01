@@ -45,7 +45,8 @@ class Payone_Core_Checkout_OnepageController extends Mage_Checkout_OnepageContro
     
     protected static $_aLoadedScopes = array();
     
-    protected static function _addLoadedScope($sScope) {
+    protected static function _addLoadedScope($sScope) 
+    {
         self::$_aLoadedScopes[] = $sScope;
     }
     
@@ -74,6 +75,7 @@ class Payone_Core_Checkout_OnepageController extends Mage_Checkout_OnepageContro
                 $this->setFlag('', self::FLAG_NO_PRE_DISPATCH, 1);
             }
         }
+
         return parent::preDispatch();
     }
     
@@ -87,6 +89,7 @@ class Payone_Core_Checkout_OnepageController extends Mage_Checkout_OnepageContro
         if ($this->_expireAjax()) {
             return;
         }
+
         try {
             if (!$this->getRequest()->isPost()) {
                 $this->_ajaxRedirectResponse();
@@ -98,7 +101,6 @@ class Payone_Core_Checkout_OnepageController extends Mage_Checkout_OnepageContro
 
             $result = array();
             if ($settings->getData('have_to_filter_methods') == true) {
-
                 // register Allowed methods
                 $allowedMethods = $settings->getData('allowed_methods');
 
@@ -119,6 +121,7 @@ class Payone_Core_Checkout_OnepageController extends Mage_Checkout_OnepageContro
             if ($e->getFields()) {
                 $result['fields'] = $e->getFields();
             }
+
             $result['error'] = $e->getMessage();
         }
         catch (Mage_Core_Exception $e) {
@@ -170,6 +173,7 @@ class Payone_Core_Checkout_OnepageController extends Mage_Checkout_OnepageContro
         if (empty($sPaymentMethodCodeId)) {
             throw new Payone_Core_Exception_PaymentMethodConfigNotFound();
         }
+
         $oPaymentConfig = $this->helperConfig()->getConfigPaymentMethodById($sPaymentMethodCodeId, $oQuote->getStoreId());
         $this->setPaymentConfig($oPaymentConfig);
     }
@@ -186,6 +190,7 @@ class Payone_Core_Checkout_OnepageController extends Mage_Checkout_OnepageContro
             $checkoutSession->setPayoneWorkorderId($oResponse->getWorkorderId());
             return true;
         }
+
         return false;
     }
 
@@ -195,6 +200,7 @@ class Payone_Core_Checkout_OnepageController extends Mage_Checkout_OnepageContro
         foreach ($aInstallments as $aInstallment) {
             $aDownloadLinks[$aInstallment['duration']] = $aInstallment['standardcreditinformationurl'];
         }
+
         $checkoutSession = $this->getFactory()->getSingletonCheckoutSession();
         $checkoutSession->setInstallmentDraftLinks($aDownloadLinks);
     }
@@ -215,6 +221,7 @@ class Payone_Core_Checkout_OnepageController extends Mage_Checkout_OnepageContro
             
             return $aInstallments;
         }
+
         return false;
     }
     
@@ -267,6 +274,7 @@ class Payone_Core_Checkout_OnepageController extends Mage_Checkout_OnepageContro
                 $this->_ajaxRedirectResponse();
                 return;
             }
+
             $this->_init();
             
             $blSuccess = $this->_handlePayolutionPreCheck();
@@ -279,7 +287,6 @@ class Payone_Core_Checkout_OnepageController extends Mage_Checkout_OnepageContro
                 }
             }
         } catch(Exception $oEx) {
-            
         }
 
         $aReturn = array(
@@ -322,6 +329,7 @@ class Payone_Core_Checkout_OnepageController extends Mage_Checkout_OnepageContro
         if ($this->factory === null) {
             $this->factory = new Payone_Core_Model_Factory();
         }
+
         return $this->factory;
     }
     
@@ -333,6 +341,7 @@ class Payone_Core_Checkout_OnepageController extends Mage_Checkout_OnepageContro
         if ($this->helperConfig === null) {
             $this->helperConfig = $this->getFactory()->helperConfig();
         }
+
         return $this->helperConfig;
     }
 

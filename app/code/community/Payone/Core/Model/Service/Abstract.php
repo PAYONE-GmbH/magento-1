@@ -50,6 +50,7 @@ abstract class Payone_Core_Model_Service_Abstract
         if ($this->factory === null) {
             $this->factory = new Payone_Core_Model_Factory();
         }
+
         return $this->factory;
     }
 
@@ -70,6 +71,7 @@ abstract class Payone_Core_Model_Service_Abstract
         if ($this->helper === null) {
             $this->helper = $this->getFactory()->helper();
         }
+
         return $this->helper;
     }
 

@@ -47,6 +47,7 @@ abstract class Payone_Api_Mapper_Response_Abstract extends Payone_Api_Mapper_Abs
         if ($status === 'APPROVED') {
             return true;
         }
+
         return false;
     }
 
@@ -59,6 +60,7 @@ abstract class Payone_Api_Mapper_Response_Abstract extends Payone_Api_Mapper_Abs
         if ($status === 'REDIRECT') {
             return true;
         }
+
         return false;
     }
 
@@ -71,6 +73,7 @@ abstract class Payone_Api_Mapper_Response_Abstract extends Payone_Api_Mapper_Abs
         if ($status === 'VALID') {
             return true;
         }
+
         return false;
     }
 
@@ -83,6 +86,7 @@ abstract class Payone_Api_Mapper_Response_Abstract extends Payone_Api_Mapper_Abs
         if ($status === 'INVALID') {
             return true;
         }
+
         return false;
     }
 
@@ -95,6 +99,7 @@ abstract class Payone_Api_Mapper_Response_Abstract extends Payone_Api_Mapper_Abs
         if ($status === 'BLOCKED') {
             return true;
         }
+
         return false;
     }
 
@@ -107,6 +112,7 @@ abstract class Payone_Api_Mapper_Response_Abstract extends Payone_Api_Mapper_Abs
         if ($status === 'ENROLLED') {
             return true;
         }
+
         return false;
     }
 
@@ -119,6 +125,7 @@ abstract class Payone_Api_Mapper_Response_Abstract extends Payone_Api_Mapper_Abs
         if ($status === 'ERROR') {
             return true;
         }
+
         return false;
     }
 
@@ -131,6 +138,7 @@ abstract class Payone_Api_Mapper_Response_Abstract extends Payone_Api_Mapper_Abs
         if ($status === 'OK') {
             return true;
         }
+
         return false;
     }
 

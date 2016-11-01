@@ -30,10 +30,12 @@ $installer->startSetup();
 // Add attributes:
 /* @var $installer Mage_Customer_Model_Entity_Setup */
 $setup = new Mage_Customer_Model_Entity_Setup('core_setup');
-$setup->addAttribute('customer', 'payone_last_payment_method', array(
+$setup->addAttribute(
+    'customer', 'payone_last_payment_method', array(
     'type' => Varien_Db_Ddl_Table::TYPE_VARCHAR,
     'label' => 'Payone Last Payment Method',
     'visible' => false,
-    'required' => false));
+    'required' => false)
+);
 
 $installer->endSetup();

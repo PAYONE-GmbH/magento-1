@@ -71,8 +71,11 @@ class Payone_Core_Block_Adminhtml_Protocol_Api_View
                 $this->_addButtonChildBlock($childId);
             }
         }
-        $this->setChild('plane', $this->getLayout()
-                ->createBlock('payone_core/adminhtml_protocol_api_view_plane', 'payone_core_adminhtml_protocol_api_view_plane'));
+
+        $this->setChild(
+            'plane', $this->getLayout()
+            ->createBlock('payone_core/adminhtml_protocol_api_view_plane', 'payone_core_adminhtml_protocol_api_view_plane')
+        );
         return $this;
     }
 

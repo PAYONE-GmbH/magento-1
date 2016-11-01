@@ -99,8 +99,10 @@ class Payone_ClientApi_Service_GenerateHash
             if (!array_key_exists($key, $requestData)) {
                 continue;
             }
+
             $hashString .= $requestData[$key];
         }
+
         $hashString .= $securityKey;
         $hash = md5($hashString);
         return $hash;

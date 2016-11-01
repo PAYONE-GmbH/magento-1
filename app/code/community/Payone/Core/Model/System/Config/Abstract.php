@@ -54,6 +54,7 @@ abstract class Payone_Core_Model_System_Config_Abstract
                 'label' => $this->helper()->__($value)
             );
         }
+
         return $data;
     }
 
@@ -66,6 +67,7 @@ abstract class Payone_Core_Model_System_Config_Abstract
         foreach ($this->toArray() as $key => $value) {
             $data[$key] = $this->helper()->__($value);
         }
+
         return $data;
     }
 
@@ -93,6 +95,7 @@ abstract class Payone_Core_Model_System_Config_Abstract
         if ($this->factory === null) {
             $this->factory = new Payone_Core_Model_Factory();
         }
+
         return $this->factory;
     }
 

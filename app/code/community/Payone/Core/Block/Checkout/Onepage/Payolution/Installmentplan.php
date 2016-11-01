@@ -88,7 +88,8 @@ class Payone_Core_Block_Checkout_Onepage_Payolution_Installmentplan extends Mage
     {
         $isSecure = Mage::app()->getStore()->isCurrentlySecure();
 
-        $url = Mage::getUrl('payone_core/checkout_onepage_payment/getInstallmentDraft',
+        $url = Mage::getUrl(
+            'payone_core/checkout_onepage_payment/getInstallmentDraft',
             array(
                 '_nosid' => true,
                 '_secure' => $isSecure,

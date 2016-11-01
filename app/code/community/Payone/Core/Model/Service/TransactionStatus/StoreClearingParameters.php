@@ -49,6 +49,7 @@ class Payone_Core_Model_Service_TransactionStatus_StoreClearingParameters
             $order = $this->getFactory()->getModelSalesOrder();
             $order->load($transactionStatus->getOrderId());
         }
+
         $payment = $order->getPayment();
         $methodInstance = $payment->getMethodInstance();
 

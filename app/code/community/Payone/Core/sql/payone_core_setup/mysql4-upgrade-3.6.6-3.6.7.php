@@ -52,7 +52,8 @@ if ($useSqlInstaller) {
     $connection = $installer->getConnection();
     
     // Update table payone_config_payment_method
-    $connection->addColumn($tablePaymentMethod, 'installment_draft_user',
+    $connection->addColumn(
+        $tablePaymentMethod, 'installment_draft_user',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'LENGTH' => 255,
@@ -60,7 +61,8 @@ if ($useSqlInstaller) {
             'DEFAULT' => NULL,
             'COMMENT' => 'installment_draft_user')
     ); 
-    $connection->addColumn($tablePaymentMethod, 'installment_draft_password',
+    $connection->addColumn(
+        $tablePaymentMethod, 'installment_draft_password',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'LENGTH' => 255,
@@ -70,25 +72,27 @@ if ($useSqlInstaller) {
     ); 
     
     // Update table sales_flat_order_payment
-    $connection->addColumn($tableSalesOrderPayment, 'payone_payolution_installment_duration',
+    $connection->addColumn(
+        $tableSalesOrderPayment, 'payone_payolution_installment_duration',
         'VARCHAR(4) COMMENT \'Installment duration\' AFTER `payone_payolution_type`'
     );
 
     // Update table sales_flat_quote_payment
-    $connection->addColumn($tableSalesQuotePayment, 'payone_payolution_installment_duration',
+    $connection->addColumn(
+        $tableSalesQuotePayment, 'payone_payolution_installment_duration',
         'VARCHAR(4) COMMENT \'Installment duration\' AFTER `payone_payolution_type`'
     );
     
-    $connection->addColumn($tableOrder, 'payone_payment_fee',
+    $connection->addColumn(
+        $tableOrder, 'payone_payment_fee',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_FLOAT,
             'NULLABLE' => true,
             'COMMENT' => 'payone_payment_fee'
         )
     );
-
-
 }
+
 $installer->endSetup();
  
 

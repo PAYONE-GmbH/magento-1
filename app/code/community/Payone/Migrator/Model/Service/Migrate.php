@@ -118,6 +118,7 @@ class Payone_Migrator_Model_Service_Migrate
         ) {
             return false;
         }
+
         return $this->getServiceConfigPaymentMigrate()->finishPaymentMigration();
     }
 
@@ -132,6 +133,7 @@ class Payone_Migrator_Model_Service_Migrate
             $this->helperConfig()->setMigrationStatus();
             return true;
         }
+
         return false;
     }
 

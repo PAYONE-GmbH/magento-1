@@ -42,7 +42,8 @@ class Payone_Core_Controller_Abstract
     /**
      * @return Payone_Core_Helper_Config
      */
-    protected function helperConfig(){
+    protected function helperConfig()
+    {
         return $this->getFactory()->helperConfig();
     }
 
@@ -62,6 +63,7 @@ class Payone_Core_Controller_Abstract
         if ($this->factory === null) {
             $this->factory = Mage::getModel('payone_core/factory');
         }
+
         return $this->factory;
     }
 
@@ -73,6 +75,7 @@ class Payone_Core_Controller_Abstract
         if ($this->helper === null) {
             $this->helper = $this->getFactory()->helper();
         }
+
         return $this->helper;
     }
 }

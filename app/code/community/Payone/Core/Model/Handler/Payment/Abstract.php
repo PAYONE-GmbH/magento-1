@@ -65,33 +65,40 @@ abstract class Payone_Core_Model_Handler_Payment_Abstract
      */
     protected $request = null;
 
-    protected function _isIframePaymentOrder($oRequest) {
+    protected function _isIframePaymentOrder($oRequest) 
+    {
         if($this->_isYapitalOrder($oRequest) || $this->_isCreditcardIframe($oRequest)) {
             return true;
         }
+
         return false;
     }
     
-    protected function _getPaymentMethod() {
+    protected function _getPaymentMethod() 
+    {
         $oOrder = Mage::getSingleton('checkout/session')->getQuote();
         $oPayment = $oOrder->getPayment();
         return $oPayment->getMethod();
     }
     
-    protected function _isCreditcardIframe($oRequest) {
+    protected function _isCreditcardIframe($oRequest) 
+    {
         if($this->_getPaymentMethod() == 'payone_creditcard_iframe') {
             return true;
         }
+
         return false;
     }
     
-    protected function _isYapitalOrder($oRequest) {
+    protected function _isYapitalOrder($oRequest) 
+    {
         if($oRequest->getClearingtype() == 'wlt') {
             $oPayment = $oRequest->getPayment();
             if($oPayment->getWallettype() == 'YPL') {
                 return true;
             }
         }
+
         return false;
     }
     
@@ -125,6 +132,7 @@ abstract class Payone_Core_Model_Handler_Payment_Abstract
             if (version_compare(Mage::getVersion(), '1.9.3', '>=')) {
                 $sRedirectUrl = urldecode($sRedirectUrl);
             }
+
             $paymentMethod->setRedirectUrl($sRedirectUrl);
         }
 
@@ -280,7 +288,6 @@ abstract class Payone_Core_Model_Handler_Payment_Abstract
             $response instanceof Payone_Api_Response_Preauthorization_Approved
         ) {
             if ($configEmailAvs->isResultAvsInConfig($response->getProtectResultAvs())) {
-
                 // Mailtemplates need an Varien_Object if we want to use Getter from the Object
                 $responseMailObject = new Varien_Object($response->toArray());
 

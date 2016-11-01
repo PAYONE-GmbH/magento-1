@@ -67,6 +67,7 @@ abstract class Payone_Core_Model_Handler_Abstract
         if ($this->factory === null) {
             $this->factory = new Payone_Core_Model_Factory();
         }
+
         return $this->factory;
     }
 

@@ -81,7 +81,7 @@ class Payone_Core_TransactionStatusController extends Payone_Core_Controller_Abs
             // Send Confirmation Message
             $this->getResponse()->setBody($response->getStatus());
         }
-        catch( Payone_TransactionStatus_Exception_Validation $e)
+        catch(Payone_TransactionStatus_Exception_Validation $e)
         {
             // Throw generic error.
             $type = get_class($e);
@@ -118,7 +118,8 @@ class Payone_Core_TransactionStatusController extends Payone_Core_Controller_Abs
         return $this->helperConfig()->getConfigMisc($storeId)->getTransactionstatusProcessing();
     }
     
-    protected function _forwardStatus($oOrder) {
+    protected function _forwardStatus($oOrder) 
+    {
         $sAction = $this->getRequest()->getParam('txaction');
 
         $oMisc = $this->helperConfig()->getConfigMisc($oOrder->getStoreId());
@@ -126,6 +127,7 @@ class Payone_Core_TransactionStatusController extends Payone_Core_Controller_Abs
         if (!$oForwarding->isActive() || !$oForwarding->canForwardTxAction($sAction)) {
             return;
         }
+
         $aForwardUrls = $oForwarding->getConfig($sAction);
 
         foreach ($aForwardUrls as $aHost) {
@@ -133,7 +135,8 @@ class Payone_Core_TransactionStatusController extends Payone_Core_Controller_Abs
         }
     }
     
-    protected function _addParam($sKey, $mValue) {
+    protected function _addParam($sKey, $mValue) 
+    {
         $sParams = '';
         if(is_array($mValue)) {
             foreach ($mValue as $sKey2 => $mValue2) {
@@ -142,13 +145,16 @@ class Payone_Core_TransactionStatusController extends Payone_Core_Controller_Abs
         } else {
             $sParams .= "&".$sKey."=".urlencode($mValue);
         }
+
         return $sParams;
     }
     
-    protected function _forwardRequest($aHost) {
+    protected function _forwardRequest($aHost) 
+    {
         if(array_key_exists('url', $aHost) === false) {
             return;
         }
+
         $sUrl = $aHost['url'];
         
         $iTimeout = 15;
@@ -157,11 +163,12 @@ class Payone_Core_TransactionStatusController extends Payone_Core_Controller_Abs
         }
         
         $sParams = '';
-        foreach($_POST as $sKey => $mValue) {
+        $aRequest = Mage::app()->getRequest()->getParams();
+        foreach($aRequest as $sKey => $mValue) {
             $sParams .= $this->_addParam($sKey, $mValue);
         }
 
-        $sParams = substr($sParams,1);
+        $sParams = substr($sParams, 1);
 
         $oCurl = curl_init($sUrl);
         curl_setopt($oCurl, CURLOPT_POST, 1);

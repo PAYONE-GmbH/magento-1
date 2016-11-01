@@ -38,4 +38,14 @@ class Payone_Licensemanager_Adminhtml_Payonelicensemanager_TestController extend
         $this->renderLayout();
         return $this;
     }
+    
+    /**
+     * Check current user permission on resource and privilege
+     *
+     * @return bool
+     */
+    protected function _isAllowed()
+    {
+        return Mage::getSingleton('admin/session')->isAllowed('admin');
+    }
 }

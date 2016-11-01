@@ -49,7 +49,8 @@ if ($useSqlInstaller) {
     $table = $connection->newTable($tableCustomer);
 
     // Add Columns
-    $table->addColumn('id', Varien_Db_Ddl_Table::TYPE_INTEGER, NULL,
+    $table->addColumn(
+        'id', Varien_Db_Ddl_Table::TYPE_INTEGER, NULL,
         array(
             'unsigned' => true,
             'nullable' => false,
@@ -57,17 +58,20 @@ if ($useSqlInstaller) {
             'identity' => true,
             'auto_increment' => true)
     );
-    $table->addColumn('customer_id', Varien_Db_Ddl_Table::TYPE_INTEGER, NULL,
+    $table->addColumn(
+        'customer_id', Varien_Db_Ddl_Table::TYPE_INTEGER, NULL,
         array(
             'nullable' => true,
             'default' => NULL)
     );
-    $table->addColumn('code', Varien_Db_Ddl_Table::TYPE_VARCHAR, 50,
+    $table->addColumn(
+        'code', Varien_Db_Ddl_Table::TYPE_VARCHAR, 50,
         array(
             'nullable' => true,
             'default' => NULL)
     );
-    $table->addColumn('customer_data', Varien_Db_Ddl_Table::TYPE_TEXT, NULL,
+    $table->addColumn(
+        'customer_data', Varien_Db_Ddl_Table::TYPE_TEXT, NULL,
         array(
             'nullable' => true,
             'default' => NULL)
@@ -95,8 +99,10 @@ if ($useSqlInstaller) {
     $connection->createTable($table);
 
     // Update table payone_config_payment_method
-    $connection->addColumn($tablePaymentMethod, 'customer_form_data_save',
+    $connection->addColumn(
+        $tablePaymentMethod, 'customer_form_data_save',
         'INT(1) COMMENT \'Save payment data for logged in customer\' AFTER `sepa_mandate_download_enabled`'
     );
 }
+
 $installer->endSetup();

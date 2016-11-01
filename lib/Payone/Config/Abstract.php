@@ -124,9 +124,9 @@ abstract class Payone_Config_Abstract
                 // Create new array index:
                 $tree[$currentKey] = array();
             }
+
             // Start recursion:
             return $this->set($newKey, $value, $tree[$currentKey]);
-
         }
         else {
             // Set value (can overwrite an existing value)
@@ -170,7 +170,6 @@ abstract class Payone_Config_Abstract
             else {
                 return NULL; // Exit recursion, unsuccessful
             }
-
         }
         elseif (is_array($tree) and array_key_exists($key, $tree)) {
             return $tree[$key]; // Exit recursion, Success!

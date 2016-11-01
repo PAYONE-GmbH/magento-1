@@ -185,7 +185,6 @@ class Payone_Core_Model_Domain_Config_PaymentMethod
                     $child->save();
                 }
             }
-
         }
 
 
@@ -226,7 +225,6 @@ class Payone_Core_Model_Domain_Config_PaymentMethod
                 foreach ($websites as $website) {
                     /** @var $website Mage_Core_Model_Website */
                     $this->saveChildConfig($website->getId(), 'websites');
-
                 }
             }
             elseif ($myScope == 'websites') {
@@ -238,10 +236,10 @@ class Payone_Core_Model_Domain_Config_PaymentMethod
                 foreach ($stores as $store) {
                     /** @var $store Mage_Core_Model_Store */
                     $this->saveChildConfig($store->getId(), 'stores');
-
                 }
             }
         }
+
         return parent::_afterSave();
     }
 
@@ -302,6 +300,7 @@ class Payone_Core_Model_Domain_Config_PaymentMethod
                     $this->_data[$key] = $value;
                 }
             }
+
             $configMethod->init($this->_data);
         }
 
@@ -313,6 +312,7 @@ class Payone_Core_Model_Domain_Config_PaymentMethod
             $generalAllowedCountries = $this->helperConfig()->getStoreConfig('general/country/allow', $storeId);
             $allowedCountries = explode(',', $generalAllowedCountries);
         }
+
         $configMethod->setAllowedCountries($allowedCountries);
 
         $parentDefaultId = $this->getParentDefaultId();
@@ -325,6 +325,7 @@ class Payone_Core_Model_Domain_Config_PaymentMethod
             $configMethod->setParent($parentWebsitesId);
             return $configMethod;
         }
+
         return $configMethod;
     }
 
@@ -342,6 +343,7 @@ class Payone_Core_Model_Domain_Config_PaymentMethod
             $originModel->prepareData();
             return $originModel;
         }
+
         return null;
     }
 
@@ -360,12 +362,14 @@ class Payone_Core_Model_Domain_Config_PaymentMethod
             else {
                 return array();
             }
+
             /** @var $collection Payone_Core_Model_Domain_Resource_Config_PaymentMethod_Collection */
             $collection = $this->getCollection();
             $collection->addFieldToFilter($parentFieldName, $this->getId());
 
             return $collection;
         }
+
         return null;
     }
 
@@ -377,6 +381,7 @@ class Payone_Core_Model_Domain_Config_PaymentMethod
         if (is_null($this->getWebsite())) {
             $this->setWebsite('');
         }
+
         if (is_null($this->getStore())) {
             $this->setStore('');
         }
@@ -390,8 +395,6 @@ class Payone_Core_Model_Domain_Config_PaymentMethod
         $scope = $this->getScope();
         $scopeId = $this->getScopeId();
         if (!isset($scope) && !isset($scopeId)) {
-
-
             if ($this->getStore()) {
                 $scope = 'stores';
                 $scopeId = (int)Mage::getConfig()->getNode('stores/' . $this->getStore() . '/system/store/id');
@@ -404,6 +407,7 @@ class Payone_Core_Model_Domain_Config_PaymentMethod
                 $scope = 'default';
                 $scopeId = 0;
             }
+
             $this->setScope($scope);
             $this->setScopeId($scopeId);
         }
@@ -422,6 +426,7 @@ class Payone_Core_Model_Domain_Config_PaymentMethod
         if ($this->getScope() != $currentScope) {
             return null;
         }
+
         $data = $this->getData();
         $configData = array();
         $keyPrefix = Payone_Core_Block_Adminhtml_System_Config_Form_Payment_Method::SECTION_PAYONE_PAYMENT . '/';
@@ -481,9 +486,11 @@ class Payone_Core_Model_Domain_Config_PaymentMethod
                         }
                         break;
                 }
+
                 $mappedData[$fieldKey] = $value;
             }
         }
+
         return $mappedData;
     }
 
@@ -497,6 +504,7 @@ class Payone_Core_Model_Domain_Config_PaymentMethod
         if ($originModel) {
             return $this->loadParentModel($originModel);
         }
+
         return null;
     }
 
@@ -519,6 +527,7 @@ class Payone_Core_Model_Domain_Config_PaymentMethod
             $model->prepareData();
             return $model;
         }
+
         /** @var $parentModel Payone_Core_Model_Domain_Config_PaymentMethod */
         $parentModel = Mage::getModel('payone_core/domain_config_paymentMethod');
         $parentModel->load($model->getData($parentField));
@@ -542,10 +551,12 @@ class Payone_Core_Model_Domain_Config_PaymentMethod
             $mergedArray = array_merge($grandParentModel->getData(), $parentCleanModel->getData(), $currentCleanModel->getData());
             $this->setData($mergedArray);
         }
+
         // prepare data
         if ($prepareData) {
             $this->afterLoadPrepareData();
         }
+
         return $this;
     }
 
@@ -563,6 +574,7 @@ class Payone_Core_Model_Domain_Config_PaymentMethod
                 $model->setData($key, $value);
             }
         }
+
         return $model;
     }
 
@@ -733,6 +745,7 @@ class Payone_Core_Model_Domain_Config_PaymentMethod
         if ($this->factory === null) {
             $this->factory = new Payone_Core_Model_Factory();
         }
+
         return $this->factory;
     }
 

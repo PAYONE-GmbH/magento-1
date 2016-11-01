@@ -30,7 +30,8 @@
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
  * @link            http://www.noovias.com
  */
-class Payone_Licensemanager_Adminhtml_Payonelicensemanager_ActiveController extends Mage_Adminhtml_Controller_Action {
+class Payone_Licensemanager_Adminhtml_Payonelicensemanager_ActiveController extends Mage_Adminhtml_Controller_Action
+{
 
     public function indexAction()
     {
@@ -41,5 +42,15 @@ class Payone_Licensemanager_Adminhtml_Payonelicensemanager_ActiveController exte
         $setRedirect = base64_encode(Mage::helper("adminhtml")->getUrl('adminhtml'));
         $url = $url . '?setRedirect=' . $setRedirect;
         $this->_redirectUrl($url);
+    }
+    
+    /**
+     * Check current user permission on resource and privilege
+     *
+     * @return bool
+     */
+    protected function _isAllowed()
+    {
+        return Mage::getSingleton('admin/session')->isAllowed('admin');
     }
 }

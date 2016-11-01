@@ -68,11 +68,13 @@ class Payone_Core_PexpressController extends Payone_Core_Controller_Abstract
                 $this->_getQuote()->removeAllAddresses();
             }
 
-            $this->_checkout->savePayment(array(
+            $this->_checkout->savePayment(
+                array(
                 'method' => Payone_Core_Model_System_Config_PaymentMethodCode::WALLET,
                 'payone_wallet_type' => Payone_Api_Enum_WalletType::PAYPAL_EXPRESS,
                 'payone_config_payment_method_id' => $this->_config->getId()
-            ));
+                )
+            );
 
             $this->_checkout->start();
 
@@ -81,7 +83,6 @@ class Payone_Core_PexpressController extends Payone_Core_Controller_Abstract
                 $this->getResponse()->setRedirect($url);
                 return;
             }
-
         } catch (Mage_Core_Exception $e) {
             $this->_getCheckoutSession()->addError($e->getMessage());
         } catch (Exception $e) {
@@ -99,7 +100,8 @@ class Payone_Core_PexpressController extends Payone_Core_Controller_Abstract
             $workOrderId = $this->_initWorkOrderId();
 
             $this->_checkout->returnFromPaypal($workOrderId);
-            $this->_redirect('*/*/review', array(
+            $this->_redirect(
+                '*/*/review', array(
                 '_nosid' => true,
                 '_secure' => Mage::app()->getStore()->isCurrentlySecure())
             );
@@ -110,6 +112,7 @@ class Payone_Core_PexpressController extends Payone_Core_Controller_Abstract
             $this->_getCheckoutSession()->addError($this->__('Unable to start Express Checkout.'));
             Mage::logException($e);
         }
+
         $this->_redirect('checkout/cart');
     }
 
@@ -130,6 +133,7 @@ class Payone_Core_PexpressController extends Payone_Core_Controller_Abstract
             if ($reviewBlock->getChild('shipping_method')) {
                 $reviewBlock->getChild('shipping_method')->setQuote($this->_getQuote());
             }
+
             $this->renderLayout();
             return;
         }
@@ -142,6 +146,7 @@ class Payone_Core_PexpressController extends Payone_Core_Controller_Abstract
             );
             Mage::logException($e);
         }
+
         $this->_redirect('checkout/cart');
     }
 
@@ -189,11 +194,13 @@ class Payone_Core_PexpressController extends Payone_Core_Controller_Abstract
                 foreach($profiles as $profile) {
                     $ids[] = $profile->getId();
                 }
+
                 $session->setLastRecurringProfileIds($ids);
             }
 
             $this->_initWorkOrderId(false); // no need in WorkOrderId anymore
-            $this->_redirect('checkout/onepage/success', array(
+            $this->_redirect(
+                'checkout/onepage/success', array(
                 '_nosid' => true,
                 '_secure' => Mage::app()->getStore()->isCurrentlySecure())
             );
@@ -206,7 +213,9 @@ class Payone_Core_PexpressController extends Payone_Core_Controller_Abstract
             $this->_getSession()->addError($this->__('Unable to place the order.'));
             Mage::logException($e);
         }
-        $this->_redirect('*/*/review', array(
+
+        $this->_redirect(
+            '*/*/review', array(
             '_nosid' => true,
             '_secure' => Mage::app()->getStore()->isCurrentlySecure())
         );
@@ -220,16 +229,19 @@ class Payone_Core_PexpressController extends Payone_Core_Controller_Abstract
     {
         $quote = $this->_getQuote();
         if (!$quote->hasItems() || $quote->getHasError()) {
-            $this->getResponse()->setHeader('HTTP/1.1','403 Forbidden');
+            $this->getResponse()->setHeader('HTTP/1.1', '403 Forbidden');
             Mage::throwException(Mage::helper('payone_core')->__('Unable to initialize Payone Express Checkout.'));
         }
+
         $methodInstance = Mage::helper('payment')->getMethodInstance(Payone_Core_Model_System_Config_PaymentMethodCode::WALLET);
         $this->_config = $methodInstance->getConfigForQuote($quote);
 
-        $this->_checkout = Mage::getModel('payone_core/service_paypal_express_checkout', array(
+        $this->_checkout = Mage::getModel(
+            'payone_core/service_paypal_express_checkout', array(
             'quote'  => $quote,
             'config' => $this->_config,
-        ));
+            )
+        );
     }
 
     /**
@@ -245,10 +257,12 @@ class Payone_Core_PexpressController extends Payone_Core_Controller_Abstract
                 if (!$this->_getSession()->getWorkOrderId()) {
                     Mage::throwException($this->__('PayPal Express Checkout Token does not exist.'));
                 }
+
                 $this->_getSession()->unsWorkOrderId();
             } else {
                 $this->_getSession()->setWorkOrderId($workOrderId);
             }
+
             return $this;
         } else {
             return $this->_getSession()->getWorkOrderId();
@@ -275,6 +289,7 @@ class Payone_Core_PexpressController extends Payone_Core_Controller_Abstract
         if (!$this->_quote) {
             $this->_quote = $this->_getCheckoutSession()->getQuote();
         }
+
         return $this->_quote;
     }
 

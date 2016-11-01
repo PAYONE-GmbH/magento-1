@@ -20,7 +20,8 @@
  * @link            http://www.noovias.com
  */
 
-function showBankData(code, configShowBankData) {
+function showBankData(code, configShowBankData) 
+{
     var bankCountry = $(code + '_bank_country').getValue();
     if (configShowBankData && configShowBankData == 1) {
         if (bankCountry == "DE") {
@@ -37,20 +38,24 @@ function showBankData(code, configShowBankData) {
  *
  * @param code
  */
-function checkIbanCountryCode(code) {
+function checkIbanCountryCode(code) 
+{
     var ibanEl = $(code + '_sepa_iban');
     if (!ibanEl || typeof ibanEl === 'undefined') {
         return;
     }
+
     var bankCountryEl = $(code + '_bank_country');
     if (!bankCountryEl || typeof bankCountryEl === 'undefined') {
         return;
     }
+
     var bankCountryCode = bankCountryEl.value;
     var value = ibanEl.value;
     if (value.length < 2) {
         return;
     }
+
     var countryCode = value.substring(0, 2).toUpperCase();
     var validationAdvice = $("advice-validate-sepa-iban-countrycode");
     if (countryCode != bankCountryCode) {
@@ -58,9 +63,11 @@ function checkIbanCountryCode(code) {
         ibanEl.addClassName("validation-failed");
         if (!validationAdvice || typeof validationAdvice === 'undefined') {
             var valText = Translator.translate("Entered IBAN is not valid for selected bank country");
-            ibanEl.insert({
+            ibanEl.insert(
+                {
                 after: '<div class="validation-advice" id="advice-validate-sepa-iban-countrycode">' + valText + '</div>'
-            });
+                }
+            );
         }
     } else {
         ibanEl.removeClassName('validation-failed');
@@ -70,10 +77,12 @@ function checkIbanCountryCode(code) {
     }
 }
 
-function disableElement(element) {
+function disableElement(element) 
+{
     if (element == undefined) {
         return;
     }
+
     element.value = '';
     element.disabled = true;
     element.removeClassName('required-entry');
@@ -84,21 +93,25 @@ function disableElement(element) {
     }
 }
 
-function enableElement(element) {
+function enableElement(element) 
+{
     if (element == undefined) {
         return;
     }
+
     element.disabled = false;
     element.toggleClassName('require-entry');
 }
 
-function copyDebitPaymentSepaIban(code) {
+function copyDebitPaymentSepaIban(code) 
+{
     var input_sepa_iban_xxx_el = $(code + '_sepa_iban_xxx');
     var input_sepa_iban_el = $(code + '_sepa_iban');
     input_sepa_iban_el.value = input_sepa_iban_xxx_el.value;
 }
 
-function blockPaymentMethodInputs(code, configShowBankData) {
+function blockPaymentMethodInputs(code, configShowBankData) 
+{
     var input_sepa_iban_el = $(code + '_sepa_iban');
     var input_sepa_bic_el = $(code + '_sepa_bic');
     var input_account_number_el = $(code + '_account_number');
@@ -110,6 +123,7 @@ function blockPaymentMethodInputs(code, configShowBankData) {
         if (inputboxpayoneaccountnumber != undefined) {
             inputboxpayoneaccountnumber.hide();
         }
+
         disableElement(input_bank_code_el);
         var inputboxpayonebankcode = $('input_box_payone_bank_code');
         if (inputboxpayonebankcode != undefined) {
@@ -147,7 +161,8 @@ function blockPaymentMethodInputs(code, configShowBankData) {
  *
  * @param checkboxEl
  */
-function changeSubmitButtonStatus(checkboxEl) {
+function changeSubmitButtonStatus(checkboxEl) 
+{
     if (checkboxEl.checked) {
         $$('.btn-checkout')[0].removeAttribute("disabled");
         $$('.btn-checkout')[0].show();

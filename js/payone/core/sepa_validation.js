@@ -22,35 +22,47 @@
 
 var Translator = new Translate([]);
 
-Validation.add('validate-bank-code', Translator.translate('Bank code must contain 8 digits'), function (value) {
+Validation.add(
+    'validate-bank-code', Translator.translate('Bank code must contain 8 digits'), function (value) {
     value = value.replace(/\s/g, '');
     if (value == '') {
         return true;
     }
+
     if (value.length != 8) {
         return false;
     }
-    return true;
-});
 
-Validation.add('validate-sepa-iban', Translator.translate('IBAN should contain only letters and digits'), function (value) {
+    return true;
+    }
+);
+
+Validation.add(
+    'validate-sepa-iban', Translator.translate('IBAN should contain only letters and digits'), function (value) {
     value = value.replace(/\s/g, '');
     if (value == '') {
         return true;
     }
+
     if (!/[a-zA-Z]{2}[A-Za-z0-9]{10,}$/.test(value)) {
         return false;
     }
-    return true;
-});
 
-Validation.add('validate-sepa-bic', Translator.translate('BIC can contain only 8-11 characters: digits and letters'), function (value) {
+    return true;
+    }
+);
+
+Validation.add(
+    'validate-sepa-bic', Translator.translate('BIC can contain only 8-11 characters: digits and letters'), function (value) {
     value = value.replace(/\s/g, '');
     if (value == '') {
         return true;
     }
+
     if (!/[A-Za-z0-9]{8,11}$/.test(value)) {
         return false;
     }
+
     return true;
-});
+    }
+);

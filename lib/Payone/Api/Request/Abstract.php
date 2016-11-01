@@ -135,6 +135,7 @@ abstract class Payone_Api_Request_Abstract
             if ($data === null) {
                 continue;
             }
+
             if ($data instanceof Payone_Api_Request_Parameter_Interface) {
                 /**
                  * @var Payone_Api_Request_Parameter_Interface $data
@@ -174,11 +175,12 @@ abstract class Payone_Api_Request_Abstract
      */
     public function get($name)
     {
-        if (strpos($name, '/')) {
+        if (strpos($name, '/') !== false) {
             $explodedName = explode('/', $name);
             if (count($explodedName) != 2) {
                 return null;
             }
+
             $property = $explodedName[0];
             $propertyName = $explodedName[1];
             if (property_exists($this, $property)) {
@@ -196,6 +198,7 @@ abstract class Payone_Api_Request_Abstract
         elseif (property_exists($this, $name)) {
             return $this->$name;
         }
+
         return null;
     }
 
@@ -206,11 +209,12 @@ abstract class Payone_Api_Request_Abstract
      */
     public function set($name, $value)
     {
-        if (strpos($name, '/')) {
+        if (strpos($name, '/') !== false) {
             $explodedName = explode('/', $name);
             if (count($explodedName) != 2) {
                 return null;
             }
+
             $property = $explodedName[0];
             $propertyName = $explodedName[1];
             if (property_exists($this, $property)) {
@@ -229,6 +233,7 @@ abstract class Payone_Api_Request_Abstract
             $this->$name = $value;
             return true;
         }
+
         return null;
     }
 
@@ -408,7 +413,8 @@ abstract class Payone_Api_Request_Abstract
         $this->applyFilters = $applyFilters;
     }
     
-    public function isFrontendApiCall() {
+    public function isFrontendApiCall() 
+    {
         if($this instanceof Payone_Api_Request_Authorization_Abstract) {
             $oOrder = Mage::getSingleton('checkout/session')->getQuote();
             $oPayment = $oOrder->getPayment();
@@ -416,6 +422,7 @@ abstract class Payone_Api_Request_Abstract
                 return true;
             }
         }
+
         return false;
     }
     

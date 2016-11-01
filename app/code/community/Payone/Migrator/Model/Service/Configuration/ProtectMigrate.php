@@ -77,6 +77,7 @@ class Payone_Migrator_Model_Service_Configuration_ProtectMigrate
             /** @var $newConfig Mage_Core_Model_Config_Data */
             $newConfig->save();
         }
+
         $this->log('Success');
 
         return true;

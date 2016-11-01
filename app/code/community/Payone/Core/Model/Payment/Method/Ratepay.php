@@ -121,7 +121,8 @@ class Payone_Core_Model_Payment_Method_Ratepay extends Payone_Core_Model_Payment
         'eligibility_ratepay_prepayment',
     );
     
-    public function addRatePayConfig($aPayData) {
+    public function addRatePayConfig($aPayData) 
+    {
         $oResource = Mage::getSingleton('core/resource');
         $oWrite = $oResource->getConnection('core_write');
         $sTable = $oResource->getTableName($this->_sTableName);
@@ -136,6 +137,7 @@ class Payone_Core_Model_Payment_Method_Ratepay extends Payone_Core_Model_Payment
                 $blFirst = false;
             }
         }
+
         $sQuery .= ") VALUES (";
         
         $blFirst = true;
@@ -153,7 +155,8 @@ class Payone_Core_Model_Payment_Method_Ratepay extends Payone_Core_Model_Payment
         $oWrite->query($sQuery);
     }
     
-    protected function _getCorrectedValue($sKey, $sValue) {
+    protected function _getCorrectedValue($sKey, $sValue) 
+    {
         if(array_search($sKey, $this->_aBooleanConversionColumns) !== false) {
             if(strtolower($sValue) == 'yes') {
                 $sValue = 1;
@@ -161,6 +164,7 @@ class Payone_Core_Model_Payment_Method_Ratepay extends Payone_Core_Model_Payment
                 $sValue = 0;
             }
         }
+
         return $sValue;
     }
 
@@ -177,12 +181,14 @@ class Payone_Core_Model_Payment_Method_Ratepay extends Payone_Core_Model_Payment
         if (empty($this->matchingConfigs)) {
             $configStore = $this->getConfigStore($quote->getStoreId());
 
-            $this->matchingConfigs = $configStore->getPayment()->getMethodsForQuote($this->methodType ,$quote);
+            $this->matchingConfigs = $configStore->getPayment()->getMethodsForQuote($this->methodType, $quote);
         }
+
         return $this->matchingConfigs;
     }
     
-    public function getRatePayConfigById($sRatePayShopId) {
+    public function getRatePayConfigById($sRatePayShopId) 
+    {
         $oResource = Mage::getSingleton('core/resource');
         $oRead = $oResource->getConnection('core_read');
         $sTable = $oResource->getTableName($this->_sTableName);
@@ -192,15 +198,18 @@ class Payone_Core_Model_Payment_Method_Ratepay extends Payone_Core_Model_Payment
         if(is_array($aResult) && count($aResult) == 1) {
             return array_shift($aResult);
         }
+
         return false;
     }
     
-    protected function _getQuote() {
+    protected function _getQuote() 
+    {
         /** @var $session Mage_Checkout_Model_Session */
         $oSession = Mage::getSingleton('checkout/session');
         if($this->getFactory()->getIsAdmin() === true) {
             $oSession = Mage::getSingleton('adminhtml/session_quote');
         }
+
         $oQuote = $oSession->getQuote();
         try {
             if (!$oQuote instanceof Mage_Sales_Model_Quote or !$oQuote->getId()) {
@@ -209,10 +218,12 @@ class Payone_Core_Model_Payment_Method_Ratepay extends Payone_Core_Model_Payment
         } catch (Exception $ex) {
             $oQuote = false;
         }
+
         return $oQuote;
     }
     
-    public function getMatchingRatePayConfig() {
+    public function getMatchingRatePayConfig() 
+    {
         if($this->_aRatePayShopConfig === null) {
             $this->_aRatePayShopConfig = false;
             
@@ -236,6 +247,7 @@ class Payone_Core_Model_Payment_Method_Ratepay extends Payone_Core_Model_Payment
                     $sQuery .= " AND delivery_address_invoice = 1 ";
                     $sQuery .= " AND country_code_delivery = {$oRead->quote($oQuote->getShippingAddress()->getCountryId())} ";
                 }
+
                 $sQuery .= " LIMIT 1";
                 $sShopId = $oRead->fetchOne($sQuery);
                 if($sShopId) {
@@ -243,23 +255,28 @@ class Payone_Core_Model_Payment_Method_Ratepay extends Payone_Core_Model_Payment
                 }
             }
         }
+
         return $this->_aRatePayShopConfig;
     }
     
-    protected function _hasMatchingRatePayConfig() {
+    protected function _hasMatchingRatePayConfig() 
+    {
         $aRatePayConfig = $this->getMatchingRatePayConfig();
         if($aRatePayConfig !== false) {
             return true;
         }
+
         return false;
     }
     
-    public function isAvailable($quote = null) {
+    public function isAvailable($quote = null) 
+    {
         $blParentReturn = parent::isAvailable($quote);
         if($blParentReturn === true) {
             $blHasMatchingRatePayConfig = $this->_hasMatchingRatePayConfig();
             return $blHasMatchingRatePayConfig;
         }
+
         return $blParentReturn;
     }
     
@@ -268,6 +285,7 @@ class Payone_Core_Model_Payment_Method_Ratepay extends Payone_Core_Model_Payment
         if((bool)$this->getConfig()->getShowCustomermessage() === true) {
             return $response->getCustomermessage();
         }
+
         return parent::getApiResponseErrorMessage($response);
     }
 

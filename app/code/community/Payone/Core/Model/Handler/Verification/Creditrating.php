@@ -76,6 +76,7 @@ class Payone_Core_Model_Handler_Verification_Creditrating
 
             $creditRatingScore = $this->handleError(null, $response);
         }
+
         //address shoult be saved to prevent to much creditratings
         $address->save();
         return $creditRatingScore;
@@ -110,6 +111,7 @@ class Payone_Core_Model_Handler_Verification_Creditrating
                 // Mage_Payment_Exception is caught in checkout and message gets displayed to customer.
                 throw new Mage_Payment_Exception($config->getStopCheckoutMessage());
             }
+
             return true;
         }
 

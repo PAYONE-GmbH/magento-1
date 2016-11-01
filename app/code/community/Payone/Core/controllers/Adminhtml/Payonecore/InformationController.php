@@ -32,6 +32,8 @@
  */
 class Payone_Core_Adminhtml_Payonecore_InformationController extends Payone_Core_Controller_Adminhtml_Abstract
 {
+    protected $acl_resource = 'payone/information';
+    
     /**
      *
      */

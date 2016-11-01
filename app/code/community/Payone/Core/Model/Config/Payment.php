@@ -71,6 +71,7 @@ class Payone_Core_Model_Config_Payment extends Payone_Core_Model_Config_AreaAbst
         if (count($methods) > 0) {
             return true;
         }
+
         return false;
     }
 
@@ -188,6 +189,7 @@ class Payone_Core_Model_Config_Payment extends Payone_Core_Model_Config_AreaAbst
                 $methods[] = $method;
             }
         }
+
         return $methods;
     }
 
@@ -209,6 +211,7 @@ class Payone_Core_Model_Config_Payment extends Payone_Core_Model_Config_AreaAbst
                 }
             }
         }
+
         return $methods;
     }
 

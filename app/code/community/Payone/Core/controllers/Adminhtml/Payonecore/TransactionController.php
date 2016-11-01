@@ -32,6 +32,8 @@
  */
 class Payone_Core_Adminhtml_Payonecore_TransactionController extends Payone_Core_Controller_Adminhtml_Abstract
 {
+    protected $acl_resource = 'payone/transaction';
+    
     /**
      * @return Payone_Core_Adminhtml_TransactionController
      */
@@ -79,7 +81,6 @@ class Payone_Core_Adminhtml_Payonecore_TransactionController extends Payone_Core
         /** @var $transactionModel Payone_Core_Model_Domain_Transaction */
         $transactionModel = Mage::getModel('payone_core/domain_transaction')->load($id);
         if ($transactionModel->getId() || $id == 0) {
-
             Mage::register('payone_core_transaction', $transactionModel);
 
             /** @var $transactionStatusCollection Payone_Core_Model_Domain_Resource_Protocol_TransactionStatus_Collection */

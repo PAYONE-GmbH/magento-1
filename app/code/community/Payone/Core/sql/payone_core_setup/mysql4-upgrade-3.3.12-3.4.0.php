@@ -46,7 +46,8 @@ if ($useSqlInstaller) {
 else {
     $connection = $installer->getConnection();
 
-    $connection->modifyColumn($tablePaymentMethod, 'check_cvc',
+    $connection->modifyColumn(
+        $tablePaymentMethod, 'check_cvc',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'LENGTH' => 40,

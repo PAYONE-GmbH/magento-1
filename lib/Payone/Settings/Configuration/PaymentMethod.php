@@ -43,6 +43,7 @@ class Payone_Settings_Configuration_PaymentMethod
         if($blFlipArray === true) {
             $constants = array_flip($constants);
         }
+
         return $constants;
     }
 

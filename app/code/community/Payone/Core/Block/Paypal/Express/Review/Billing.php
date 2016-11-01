@@ -46,6 +46,7 @@ class Payone_Core_Block_Paypal_Express_Review_Billing extends Mage_Checkout_Bloc
                 if (!$this->_address->getFirstname()) {
                     $this->_address->setFirstname($this->getQuote()->getCustomer()->getFirstname());
                 }
+
                 if (!$this->_address->getLastname()) {
                     $this->_address->setLastname($this->getQuote()->getCustomer()->getLastname());
                 }

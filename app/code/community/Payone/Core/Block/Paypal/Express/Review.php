@@ -70,8 +70,7 @@ class Payone_Core_Block_Paypal_Express_Review extends Mage_Paypal_Block_Express_
             // misc shipping parameters
             $this->setShippingMethodSubmitUrl($this->getUrl("{$this->_paypalActionPrefix}/express/saveShippingMethod", array('_secure' => $isSecure)))
                 ->setCanEditShippingAddress(false)
-                ->setCanEditShippingMethod($this->_quote->getMayEditShippingMethod())
-            ;
+                ->setCanEditShippingMethod($this->_quote->getMayEditShippingMethod());
         }
 
         $this->setEditUrl(null) //$this->getUrl("{$this->_paypalActionPrefix}/express/edit")

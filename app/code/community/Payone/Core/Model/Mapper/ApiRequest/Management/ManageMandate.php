@@ -94,11 +94,13 @@ class Payone_Core_Model_Mapper_ApiRequest_Management_ManageMandate
         if ($quote->getCustomerId()) {
             $personalData->setCustomerid($quote->getCustomerId());
         }
+
         $personalData->setLastname($billingAddress->getLastname());
         $personalData->setFirstname($billingAddress->getFirstname());
         if ($billingAddress->getCompany()) {
             $personalData->setCompany($billingAddress->getCompany());
         }
+
         $personalData->setStreet($helper->normalizeStreet($billingAddress->getStreet()));
         $personalData->setZip($billingAddress->getPostcode());
         $personalData->setCity($billingAddress->getCity());

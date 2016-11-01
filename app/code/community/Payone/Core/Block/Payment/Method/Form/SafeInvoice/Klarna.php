@@ -88,6 +88,7 @@ class Payone_Core_Block_Payment_Method_Form_SafeInvoice_Klarna
         if ($country == 'AT' or $country == 'DE') {
             return true;
         }
+
         return false;
     }
 
@@ -101,6 +102,7 @@ class Payone_Core_Block_Payment_Method_Form_SafeInvoice_Klarna
         if (empty($klarnaConfig)) {
             return '';
         }
+
         foreach ($klarnaConfig as $config) {
             if (isset($config['countries']) and is_array($config['countries'])
                     and in_array($country, $config['countries'])
@@ -108,6 +110,7 @@ class Payone_Core_Block_Payment_Method_Form_SafeInvoice_Klarna
                 return $config['klarna_store_id'];
             }
         }
+
         return '';
     }
 
@@ -132,6 +135,7 @@ class Payone_Core_Block_Payment_Method_Form_SafeInvoice_Klarna
         if (empty($customerDob)) {
             return true;
         }
+
         return false;
     }
 
@@ -144,6 +148,7 @@ class Payone_Core_Block_Payment_Method_Form_SafeInvoice_Klarna
         if (empty($country)) {
             return false;
         }
+
         return true;
     }
 
@@ -157,11 +162,13 @@ class Payone_Core_Block_Payment_Method_Form_SafeInvoice_Klarna
         if ($country != 'AT' and $country != 'DE' and $country != 'NL') {
             return false;
         }
+
         // required only if customer didn't enter gender in his customer account or previous checkout step
         $customerGender = $this->getQuote()->getCustomerGender();
         if (empty($customerGender)) {
             return true;
         }
+
         return false;
     }
 
@@ -176,7 +183,8 @@ class Payone_Core_Block_Payment_Method_Form_SafeInvoice_Klarna
         return $options;
     }
     
-    protected function _filterGenderOptions($options) {
+    protected function _filterGenderOptions($options) 
+    {
         $aAdded = array();
         $aFilteredOptions = array();
         $aWhitelist = array(
@@ -201,6 +209,7 @@ class Payone_Core_Block_Payment_Method_Form_SafeInvoice_Klarna
                 }
             }
         }
+
         return $aFilteredOptions;
     }
 
@@ -214,6 +223,7 @@ class Payone_Core_Block_Payment_Method_Form_SafeInvoice_Klarna
         if ($country == 'DK' or $country == 'FI' or $country == 'NO' or $country == 'SE') {
             return true;
         }
+
         return false;
     }
 
@@ -245,10 +255,12 @@ class Payone_Core_Block_Payment_Method_Form_SafeInvoice_Klarna
         if ($country != 'NL') {
             return false;
         }
+
         $addressAdditionBilling = $billingAddress->getStreet(2);
         if (empty($addressAdditionBilling)) {
             return true;
         }
+
         return false;
     }
 
@@ -282,6 +294,7 @@ class Payone_Core_Block_Payment_Method_Form_SafeInvoice_Klarna
         if ($this->factory === null) {
             $this->factory = new Payone_Core_Model_Factory();
         }
+
         return $this->factory;
     }
 }

@@ -163,6 +163,7 @@ class Payone_Core_Helper_Wizard
         if (!array_key_exists($page, $this->config)) {
             return null;
         }
+
         return $this->config[$page];
     }
 
@@ -198,6 +199,7 @@ class Payone_Core_Helper_Wizard
         else {
             $url = '*/payonecore_configuration_wizard_page/' . $nextPageName;
         }
+
         return $url;
     }
 
@@ -208,6 +210,7 @@ class Payone_Core_Helper_Wizard
         if ($pages === null) {
             return 'index';
         }
+
         if (!array_key_exists('next_page', $pages)) {
             return 'index';
         }

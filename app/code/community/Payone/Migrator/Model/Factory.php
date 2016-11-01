@@ -45,6 +45,7 @@ class Payone_Migrator_Model_Factory
         if ($this->helper === null) {
             $this->helper = Mage::helper('payone_migrator');
         }
+
         return $this->helper;
     }
 

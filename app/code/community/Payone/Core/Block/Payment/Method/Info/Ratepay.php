@@ -24,9 +24,11 @@
 /**
  * Class Payone_Core_Block_Payment_Method_Info_Ratepay
  */
-class Payone_Core_Block_Payment_Method_Info_Ratepay extends Payone_Core_Block_Payment_Method_Info_Abstract {
+class Payone_Core_Block_Payment_Method_Info_Ratepay extends Payone_Core_Block_Payment_Method_Info_Abstract
+{
     
-    protected function _construct() {
+    protected function _construct() 
+    {
         parent::_construct();
         $this->setTemplate('payone/core/payment/method/info/ratepay.phtml');
     }

@@ -115,8 +115,10 @@ class Payone_Core_Model_Service_Sales_InvoiceCreate extends Payone_Core_Model_Se
             } catch (Mage_Core_Exception $e) {
                 throw new Payone_Core_Exception_InvoiceSave($e->getMessage());
             }
+
             return $invoice;
         }
+
         return null;
     }
 

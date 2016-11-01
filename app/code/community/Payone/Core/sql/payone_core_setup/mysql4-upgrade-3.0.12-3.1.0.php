@@ -50,7 +50,8 @@ if ($useSqlInstaller) {
 else {
     $connection = $installer->getConnection();
 
-    $connection->addColumn($tableQuotePayment, 'payone_financing_type',
+    $connection->addColumn(
+        $tableQuotePayment, 'payone_financing_type',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'LENGTH' => 3,
@@ -59,7 +60,8 @@ else {
             'DEFAULT' => '')
     );
 
-    $connection->addColumn($tableQuotePayment, 'payone_safe_invoice_type',
+    $connection->addColumn(
+        $tableQuotePayment, 'payone_safe_invoice_type',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'LENGTH' => 3,
@@ -69,7 +71,8 @@ else {
     );
 
 
-    $connection->addColumn($tableOrderPayment, 'payone_financing_type',
+    $connection->addColumn(
+        $tableOrderPayment, 'payone_financing_type',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'LENGTH' => 3,
@@ -79,7 +82,8 @@ else {
     );
 
 
-    $connection->addColumn($tableOrderPayment, 'payone_safe_invoice_type',
+    $connection->addColumn(
+        $tableOrderPayment, 'payone_safe_invoice_type',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'LENGTH' => 3,
@@ -89,7 +93,8 @@ else {
     );
     
     
-    $connection->addColumn($tableOrderPayment, 'payone_clearing_legalnote',
+    $connection->addColumn(
+        $tableOrderPayment, 'payone_clearing_legalnote',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'LENGTH' => 500,
@@ -98,7 +103,8 @@ else {
             'DEFAULT' => '')
     );
 
-    $connection->addColumn($tableOrderPayment, 'payone_clearing_duedate',
+    $connection->addColumn(
+        $tableOrderPayment, 'payone_clearing_duedate',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'LENGTH' => 8,
@@ -107,7 +113,8 @@ else {
             'DEFAULT' => '')
     );
 
-    $connection->addColumn($tableOrderPayment, 'payone_clearing_reference',
+    $connection->addColumn(
+        $tableOrderPayment, 'payone_clearing_reference',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'LENGTH' => 50,
@@ -116,7 +123,8 @@ else {
             'DEFAULT' => '')
     );
 
-    $connection->addColumn($tableOrderPayment, 'payone_clearing_instructionnote',
+    $connection->addColumn(
+        $tableOrderPayment, 'payone_clearing_instructionnote',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'LENGTH' => 200,
@@ -133,7 +141,8 @@ else {
     
     
 
-    $connection->addColumn($tableTransactionStatus, 'clearing_bankaccountholder',
+    $connection->addColumn(
+        $tableTransactionStatus, 'clearing_bankaccountholder',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'LENGTH' => 50,
@@ -142,7 +151,8 @@ else {
             'DEFAULT' => '')
     );
 
-    $connection->addColumn($tableTransactionStatus, 'clearing_bankcountry',
+    $connection->addColumn(
+        $tableTransactionStatus, 'clearing_bankcountry',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'LENGTH' => 2,
@@ -150,7 +160,8 @@ else {
             'COMMENT' => 'Recipient Bank Country',
             'DEFAULT' => '')
     );
-    $connection->addColumn($tableTransactionStatus, 'clearing_bankaccount',
+    $connection->addColumn(
+        $tableTransactionStatus, 'clearing_bankaccount',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'LENGTH' => 14,
@@ -158,7 +169,8 @@ else {
             'COMMENT' => 'Recipient Bank Account',
             'DEFAULT' => '')
     );
-    $connection->addColumn($tableTransactionStatus, 'clearing_bankcode',
+    $connection->addColumn(
+        $tableTransactionStatus, 'clearing_bankcode',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_INTEGER,
             'LENGTH' => 11,
@@ -166,7 +178,8 @@ else {
             'COMMENT' => 'Recipient Bank Code',
             'DEFAULT' => 0)
     );
-    $connection->addColumn($tableTransactionStatus, 'clearing_bankiban',
+    $connection->addColumn(
+        $tableTransactionStatus, 'clearing_bankiban',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'LENGTH' => 50,
@@ -174,7 +187,8 @@ else {
             'COMMENT' => 'Recipient Bank IBAN',
             'DEFAULT' => '')
     );
-    $connection->addColumn($tableTransactionStatus, 'clearing_bankbic',
+    $connection->addColumn(
+        $tableTransactionStatus, 'clearing_bankbic',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'LENGTH' => 11,
@@ -182,7 +196,8 @@ else {
             'COMMENT' => 'Recipient Bank BIC',
             'DEFAULT' => '')
     );
-    $connection->addColumn($tableTransactionStatus, 'clearing_bankcity',
+    $connection->addColumn(
+        $tableTransactionStatus, 'clearing_bankcity',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'LENGTH' => 50,
@@ -191,7 +206,8 @@ else {
             'DEFAULT' => '')
     );
 
-    $connection->addColumn($tableTransactionStatus, 'clearing_bankname',
+    $connection->addColumn(
+        $tableTransactionStatus, 'clearing_bankname',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'LENGTH' => 50,
@@ -200,7 +216,8 @@ else {
             'DEFAULT' => '')
     );
 
-    $connection->addColumn($tableTransactionStatus, 'clearing_legalnote',
+    $connection->addColumn(
+        $tableTransactionStatus, 'clearing_legalnote',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'LENGTH' => 500,
@@ -209,7 +226,8 @@ else {
             'DEFAULT' => '')
     );
 
-    $connection->addColumn($tableTransactionStatus, 'clearing_duedate',
+    $connection->addColumn(
+        $tableTransactionStatus, 'clearing_duedate',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'LENGTH' => 8,
@@ -218,7 +236,8 @@ else {
             'DEFAULT' => '')
     );
 
-    $connection->addColumn($tableTransactionStatus, 'clearing_reference',
+    $connection->addColumn(
+        $tableTransactionStatus, 'clearing_reference',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'LENGTH' => 50,
@@ -227,7 +246,8 @@ else {
             'DEFAULT' => '')
     );
 
-    $connection->addColumn($tableTransactionStatus, 'clearing_instructionnote',
+    $connection->addColumn(
+        $tableTransactionStatus, 'clearing_instructionnote',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'LENGTH' => 200,
@@ -236,4 +256,5 @@ else {
             'DEFAULT' => '')
     );
 }
+
 $installer->endSetup();

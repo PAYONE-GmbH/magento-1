@@ -129,6 +129,7 @@ abstract class Payone_Api_Adapter_Http_Abstract
                 if (strlen($line) > 0) {
                     $result[$key] = $line;
                 }
+
                 continue;
             }
 
