@@ -33,6 +33,8 @@
 class Payone_Core_Adminhtml_Payonecore_System_ConfigurationController
     extends Payone_Core_Controller_Adminhtml_Abstract
 {
+    protected $acl_resource = 'payone/configuration/configuration_export';
+    
     /**
      * @return Mage_Core_Controller_Varien_Action
      */
@@ -88,6 +90,7 @@ class Payone_Core_Adminhtml_Payonecore_System_ConfigurationController
             foreach ($configMethod as $key => $value) {
                 $config .= $key . ' = ' . $value . "\n";
             }
+
             $config .= "\n";
         }
 
@@ -97,6 +100,7 @@ class Payone_Core_Adminhtml_Payonecore_System_ConfigurationController
             foreach ($configMethod as $key => $value) {
                 $config .= $key . ' = ' . $value . "\n";
             }
+
             $config .= "\n";
         }
 

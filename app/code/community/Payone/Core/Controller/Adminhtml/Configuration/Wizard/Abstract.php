@@ -43,6 +43,7 @@ class Payone_Core_Controller_Adminhtml_Configuration_Wizard_Abstract
                 if (!$session->isAllowed($resourceId)) {
                     throw new Exception('');
                 }
+
                 return true;
             }
         }

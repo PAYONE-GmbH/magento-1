@@ -39,15 +39,19 @@ class Payone_Core_Block_Adminhtml_System_Config_Form_Field_KlarnaStoreId
      */
     protected function _prepareToRender()
     {
-        $this->addColumn('klarna_store_id', array(
+        $this->addColumn(
+            'klarna_store_id', array(
             'label' => Mage::helper('payone_core')->__('Store-ID'),
             'style' => 'min-width:120px;',
-        ));
+            )
+        );
 
-        $this->addColumn('countries', array(
+        $this->addColumn(
+            'countries', array(
             'label' => Mage::helper('payone_core')->__('Countries'),
             'style' => 'min-width:120px; min-height: 110px;',
-        ));
+            )
+        );
         $this->_addAfter = false;
         $this->_addButtonLabel = Mage::helper('payone_core')->__('Add Store-ID');
         parent::_prepareToRender();
@@ -66,7 +70,6 @@ class Payone_Core_Block_Adminhtml_System_Config_Form_Field_KlarnaStoreId
             $modelConfigCode = $this->getFactory()->getModelSystemConfigKlarnaCountry();
             $options = $modelConfigCode->toOptionArray();
             $rendered = $this->prepareCellTemplate($columnName, $selectType, $options);
-
         }
         else {
             return parent::_renderCellTemplate($columnName);

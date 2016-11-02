@@ -52,6 +52,7 @@ class Payone_Core_Model_Factory
         if ($this->helper === null) {
             $this->helper = Mage::helper('payone_core');
         }
+
         return $this->helper;
     }
 
@@ -1326,6 +1327,7 @@ class Payone_Core_Model_Factory
             $config = $this->getConfig();
             $this->builder = new Payone_Builder($config);
         }
+
         return $this->builder;
     }
 
@@ -1355,6 +1357,7 @@ class Payone_Core_Model_Factory
                 $this->config->setValue('api/default/mapper/currency/currency_properties', $this->getLibCurrencyProperties());
             }
         }
+
         return $this->config;
     }
 

@@ -59,6 +59,7 @@ abstract class Payone_Core_Model_Handler_Verification_Abstract
         if (empty($customerAddressId)) {
             return false;
         }
+
         $customerAddress = $this->getFactory()->getModelCustomerAddress();
         $customerAddress->load($customerAddressId);
 

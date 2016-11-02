@@ -315,42 +315,48 @@ abstract class Payone_Api_Response_Authorization_Abstract
     /**
      * @param string $sContentEncoding
      */
-    public function setAddPaydataContentEncoding($sContentEncoding) {
+    public function setAddPaydataContentEncoding($sContentEncoding) 
+    {
         $this->paydata_content_encoding = $sContentEncoding;
     }
 
     /**
      * @return string
      */
-    public function getAddPaydataContentEncoding() {
+    public function getAddPaydataContentEncoding() 
+    {
         return $this->paydata_content_encoding;
     }
     
     /**
      * @param string $sInstructionNotes
      */
-    public function setAddPaydataInstructionNotes($sInstructionNotes) {
+    public function setAddPaydataInstructionNotes($sInstructionNotes) 
+    {
         $this->paydata_instruction_notes = $sInstructionNotes;
     }
 
     /**
      * @return string
      */
-    public function getAddPaydataInstructionNotes() {
+    public function getAddPaydataInstructionNotes() 
+    {
         return $this->paydata_instruction_notes;
     }
     
     /**
      * @param string $sContentFormat
      */
-    public function setAddPaydataContentFormat($sContentFormat) {
+    public function setAddPaydataContentFormat($sContentFormat) 
+    {
         $this->paydata_content_format = $sContentFormat;
     }
 
     /**
      * @return string
      */
-    public function getAddPaydataContentFormat() {
+    public function getAddPaydataContentFormat() 
+    {
         return $this->paydata_content_format;
     }
     
@@ -418,11 +424,13 @@ abstract class Payone_Api_Response_Authorization_Abstract
         return $this->clearing_duedate;
     }
     
-    public function getAddPaydataClearingReference() {
+    public function getAddPaydataClearingReference() 
+    {
         return $this->paydata_clearing_reference;
     }
 
-    public function setAddPaydataClearingReference($sClearingReference) {
+    public function setAddPaydataClearingReference($sClearingReference) 
+    {
         $this->paydata_clearing_reference = $sClearingReference;
     }
 

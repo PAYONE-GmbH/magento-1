@@ -32,7 +32,7 @@
  */
 class Payone_Core_Model_Domain_Resource_Transaction
     extends Mage_Core_Model_Mysql4_Abstract
-    {
+{
         /**
          *
          */

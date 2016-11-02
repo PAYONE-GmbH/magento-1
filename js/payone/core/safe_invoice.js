@@ -52,23 +52,30 @@ function payoneSwitchSafeInvoice(element)
     }
 }
 
-Event.observe(document, "dom:loaded", function() {
+Event.observe(
+    document, "dom:loaded", function () {
     payoneSwitchSafeInvoice($('payone_safe_invoice_sin_type_select'));
-});
+    }
+);
 
-Event.observe(document, "dom:ready", function() {
+Event.observe(
+    document, "dom:ready", function () {
     payoneSwitchSafeInvoice($('payone_safe_invoice_sin_type_select'));
-});
+    }
+);
 
-Ajax.Responders.register({
-    onComplete: function(transport, element) {
+Ajax.Responders.register(
+    {
+    onComplete: function (transport, element) {
         var typeSelect = $('payone_safe_invoice_sin_type_select');
         if (typeSelect == undefined) {
             return;
         }
+
         var url = element.request.url;
         if (url.indexOf('checkout/onepage/saveShippingMethod') !== -1 || url.indexOf('checkout/onepage/progress') !== 1) {
             payoneSwitchSafeInvoice(typeSelect);
         }
     }
-});
+    }
+);

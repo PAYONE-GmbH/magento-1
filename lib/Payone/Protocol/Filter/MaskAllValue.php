@@ -1,7 +1,8 @@
 <?php
 
 class Payone_Protocol_Filter_MaskAllValue
-    extends Payone_Protocol_Filter_Abstract {
+    extends Payone_Protocol_Filter_Abstract
+{
 
     const MASK_CHAR = 'x';
     const FILTER_KEY = 'mask_all_value';

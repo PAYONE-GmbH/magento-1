@@ -52,6 +52,7 @@ class Payone_Core_Block_Payment_Method_Info_SafeInvoice
         if (array_key_exists($safeInvoiceType, $array)) {
             return $array[$safeInvoiceType];
         }
+
         return '';
     }
 

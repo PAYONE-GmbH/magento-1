@@ -61,6 +61,7 @@ class Payone_Core_Block_Adminhtml_System_Config_Notice
         if ($this->getTemplate() != '') {
             $html = $this->toHtml();
         }
+
         return $html;
     }
 
@@ -73,6 +74,7 @@ class Payone_Core_Block_Adminhtml_System_Config_Notice
             /** @var $hintElement Mage_Core_Model_Config_Element */
             $template = (string)$hintElement->template;
         }
+
         if ($template != '') {
             $this->setTemplate($template);
         }
@@ -83,6 +85,7 @@ class Payone_Core_Block_Adminhtml_System_Config_Notice
         if ($this->configGroup === null) {
             $this->initConfigGroup();
         }
+
         return $this->configGroup->hint;
     }
 

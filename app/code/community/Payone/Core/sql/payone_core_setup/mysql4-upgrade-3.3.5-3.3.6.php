@@ -45,7 +45,8 @@ if ($useSqlInstaller) {
     $connection = $installer->getConnection();
 
     // Update table payone_protocol_transactionstatus
-    $connection->addColumn($tableTransaction, 'frontend_api_call',
+    $connection->addColumn(
+        $tableTransaction, 'frontend_api_call',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_INTEGER,
             'NULLABLE' => false,

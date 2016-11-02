@@ -43,9 +43,11 @@ class Payone_Core_Helper_Url
     {
         $isSecure = Mage::app()->getStore()->isCurrentlySecure();
 
-        $url = Mage::getUrl($controllerAction, array(
+        $url = Mage::getUrl(
+            $controllerAction, array(
             '_nosid' => true,
-            '_secure' => $isSecure));
+            '_secure' => $isSecure)
+        );
         return $url;
     }
 

@@ -71,6 +71,7 @@ class Payone_Core_Block_Payment_Method_Form_Abstract
             $method = $this->getMethod();
             $this->paymentConfig = $method->getConfigForQuote($this->getQuote());
         }
+
         return $this->paymentConfig;
     }
 
@@ -103,7 +104,8 @@ class Payone_Core_Block_Payment_Method_Form_Abstract
         return $this->getPaymentConfig()->getFeeConfigForQuote($this->getQuote());
     }
 
-    protected function _calcFeePrice() {
+    protected function _calcFeePrice() 
+    {
         $oQuote = $this->getQuote();
         
         $feeConfig = $this->getFeeConfig();
@@ -114,9 +116,11 @@ class Payone_Core_Block_Payment_Method_Form_Abstract
             if(isset($feeConfig['fee_type'][0]) && $feeConfig['fee_type'][0] == 'percent') {
                 $price = $oQuote->getSubtotal() * $price / 100;
             }
+
             #$oQuote->getSubtotal();
             #$oQuote->getGrandTotal();
         }
+
         return $price;
     }
     
@@ -161,6 +165,7 @@ class Payone_Core_Block_Payment_Method_Form_Abstract
         if($this->hasTypes === false){
             return null;
         }
+
         if ($this->types === null) {
             $quote = $this->getQuote();
             $return = array();
@@ -203,8 +208,10 @@ class Payone_Core_Block_Payment_Method_Form_Abstract
                     $return[$configTypeKey]['config_id'] = $configId;
                 }
             }
+
             $this->types = $return;
         }
+
         return $this->types;
     }
 
@@ -227,6 +234,7 @@ class Payone_Core_Block_Payment_Method_Form_Abstract
         if (false == $this->getFeeConfig()) {
             return '';
         }
+
         $text = '(+ %s)';
         $text = $this->__($text, $this->getFeePrice());
 
@@ -269,6 +277,7 @@ class Payone_Core_Block_Payment_Method_Form_Abstract
         if ($this->factory === null) {
             $this->factory = new Payone_Core_Model_Factory();
         }
+
         return $this->factory;
     }
 
@@ -286,6 +295,7 @@ class Payone_Core_Block_Payment_Method_Form_Abstract
                 return $keyData;
             }
         }
+
         return '';
     }
 
@@ -293,13 +303,15 @@ class Payone_Core_Block_Payment_Method_Form_Abstract
      * @param string $text
      * @return string
      */
-    public function strToXXX($text) {
+    public function strToXXX($text) 
+    {
         if(!empty($text)) {
             $result = str_repeat('x', strlen($text) - 8);
             $result = substr($text, 0, 4).$result.substr($text, -4);
         } else {
             $result = $text;
         }
+
         return $result;
     }
 }

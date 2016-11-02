@@ -54,6 +54,7 @@ class Payone_Core_Model_System_Config_OrderStatus extends Payone_Core_Model_Syst
         else {
             $statuses = Mage::getSingleton('sales/order_config')->getStatuses();
         }
+
         $options = array();
         $options[] = array(
             'value' => '',
@@ -65,6 +66,7 @@ class Payone_Core_Model_System_Config_OrderStatus extends Payone_Core_Model_Syst
                 'label' => $label
             );
         }
+
         return $options;
     }
 
@@ -91,6 +93,7 @@ class Payone_Core_Model_System_Config_OrderStatus extends Payone_Core_Model_Syst
                 'values' => $stateStatuses
             );
         }
+
         return $stateStatusArray;
     }
 
@@ -105,6 +108,7 @@ class Payone_Core_Model_System_Config_OrderStatus extends Payone_Core_Model_Syst
             if (!array_key_exists('values', $stateConfig)) {
                 continue;
             }
+
             $stateValues = $stateConfig['values'];
 
             if (array_key_exists('label', $stateConfig)) {

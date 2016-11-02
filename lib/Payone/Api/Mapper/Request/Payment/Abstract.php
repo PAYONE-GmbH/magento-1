@@ -64,6 +64,7 @@ abstract class Payone_Api_Mapper_Request_Payment_Abstract
         if ($invoicing == null) {
             return false;
         }
+
         if ($invoicing->hasItems()) {
             /** @var $request Payone_Api_Request_Authorization  */
             $currency = $request->getCurrency();
@@ -75,6 +76,7 @@ abstract class Payone_Api_Mapper_Request_Payment_Abstract
                 $item->setPr($mappedPrice);
             }
         }
+
         return true;
     }
 }

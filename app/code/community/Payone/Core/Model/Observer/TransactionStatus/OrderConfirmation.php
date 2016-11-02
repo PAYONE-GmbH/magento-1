@@ -90,6 +90,7 @@ class Payone_Core_Model_Observer_TransactionStatus_OrderConfirmation
         if ($this->serviceOrderConfirmation === null) {
             $this->serviceOrderConfirmation = $this->getFactory()->getServiceSalesOrderConfirmation();
         }
+
         return $this->serviceOrderConfirmation;
     }
 

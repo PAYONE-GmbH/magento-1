@@ -49,6 +49,7 @@ class Payone_Licensemanager_Helper_Data
         if (empty($licenseKey)) {
             $licenseKey = 'NOTREGISTERED';
         }
+
         return $licenseKey;
     }
 

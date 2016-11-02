@@ -76,6 +76,7 @@ abstract class Payone_Core_Model_Config_AreaAbstract implements Payone_Core_Mode
         if (method_exists($this, $method)) {
             return $this->{$method}();
         }
+
         return null;
     }
 
@@ -89,6 +90,7 @@ abstract class Payone_Core_Model_Config_AreaAbstract implements Payone_Core_Mode
             if ($data === null) {
                 continue;
             }
+
             if ($data instanceof Payone_Core_Model_Config_AreaInterface) {
                 /**
                  * @var Payone_Core_Model_Config_AreaInterface $data

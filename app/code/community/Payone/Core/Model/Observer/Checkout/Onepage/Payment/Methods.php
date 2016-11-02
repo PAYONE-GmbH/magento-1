@@ -58,7 +58,7 @@ class Payone_Core_Model_Observer_Checkout_Onepage_Payment_Methods
                         $quote->getPayment()->setMethod($oMethod)->getMethodInstance();
                     }
                 }
-            } catch ( Exception $e ) {
+            } catch (Exception $e) {
                 //do nothing - getPayoneLastPaymentMethod method was just not accessible - no big deal
             }
         }
@@ -81,7 +81,7 @@ class Payone_Core_Model_Observer_Checkout_Onepage_Payment_Methods
         {
             // get worst address-score and add to score array
             $worstAddressScore = $this->helperScore()->detectWorstAddressScoreByQuote($quote);
-            array_push($scores,$worstAddressScore);
+            array_push($scores, $worstAddressScore);
         }
 
         // check if config is enabled and event is before payment
@@ -90,13 +90,13 @@ class Payone_Core_Model_Observer_Checkout_Onepage_Payment_Methods
             // get score for creditrating and add to score array
             $service = $this->getFactory()->getServiceVerificationCreditrating($configCreditrating);
             $worstCreditratingScore = $service->execute($quote);
-            array_push($scores,$worstCreditratingScore);
+            array_push($scores, $worstCreditratingScore);
         }
 
         // compare scores, select worst
         $worstScore = $this->helperScore()->detectWorstScore($scores);
         // evaluate score, load allowed payment methods
-        $allowedPaymentMethods = $this->helperScore()->evaluate($worstScore,$quote->getStoreId());
+        $allowedPaymentMethods = $this->helperScore()->evaluate($worstScore, $quote->getStoreId());
 
         // Check not necessary
         if ($allowedPaymentMethods === true) {

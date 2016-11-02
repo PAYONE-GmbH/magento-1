@@ -103,6 +103,7 @@ abstract class Payone_SessionStatus_Request_Abstract
         if (property_exists($this, $name)) {
             return $this->$name;
         }
+
         return null;
     }
 
@@ -117,6 +118,7 @@ abstract class Payone_SessionStatus_Request_Abstract
             $this->$name = $value;
             return true;
         }
+
         return null;
     }
 

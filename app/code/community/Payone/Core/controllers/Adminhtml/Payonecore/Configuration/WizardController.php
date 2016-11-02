@@ -33,6 +33,8 @@
 class Payone_Core_Adminhtml_Payonecore_Configuration_WizardController
     extends Payone_Core_Controller_Adminhtml_Abstract
 {
+    protected $acl_resource = 'payone/configuration_wizard';
+    
     public function indexAction()
     {
         $this->loadLayout();

@@ -47,6 +47,7 @@ abstract class Payone_Settings_Data_ConfigFile_Abstract
             if ($data === null || $key == 'key') {
                 continue;
             }
+
             if ($data instanceof Payone_Settings_Data_ConfigFile_Interface) {
                 /** @var Payone_Api_Request_Parameter_Interface $data */
                 $array[$key] = $data->toArray();

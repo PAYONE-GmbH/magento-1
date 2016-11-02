@@ -38,7 +38,8 @@ class Payone_Core_Helper_Score
      * @param $storeId
      * @return array|bool
      */
-    public function evaluate($score, $storeId){
+    public function evaluate($score, $storeId)
+    {
 
         /** @var Payone_Core_Model_Config_Protect_Creditrating $config */
         $config = $this->getFactory()->helperConfig()->getConfigProtect($storeId)->getCreditrating();//@todo cw should be moved as a seperate config
@@ -76,7 +77,7 @@ class Payone_Core_Helper_Score
     public function detectWorstScore(array $scores)
     {
         $worstScore = Payone_Api_Enum_AddressCheckScore::GREEN;
-        if (in_array(Payone_Api_Enum_AddressCheckScore::RED, $scores,true)) {
+        if (in_array(Payone_Api_Enum_AddressCheckScore::RED, $scores, true)) {
             $worstScore = Payone_Api_Enum_AddressCheckScore::RED;
         }
         elseif (in_array(Payone_Api_Enum_AddressCheckScore::YELLOW, $scores, true)) {
@@ -99,6 +100,7 @@ class Payone_Core_Helper_Score
             /** @var $address Mage_Sales_Model_Quote_Address */
             $addressScores[] = $address->getPayoneAddresscheckScore();
         }
+
         return $this->detectWorstScore($addressScores);
     }
 }

@@ -80,6 +80,7 @@ class Payone_Migrator_Model_Mapper_Config_Protect
                 return $newConfigPath;
             }
         }
+
         return FALSE;
     }
 
@@ -99,11 +100,8 @@ class Payone_Migrator_Model_Mapper_Config_Protect
             $valueMap = $this->mappingConfigValueOldToNew[$oldPath];
             if (is_array($valueMap)) {
                 if (array_key_exists($oldValue, $valueMap)) {
-
                     // Value differs, return new one.
                     $newValue = $valueMap[$oldValue];
-
-
                 }
             }
             elseif (method_exists($this, $valueMap)) {
@@ -111,6 +109,7 @@ class Payone_Migrator_Model_Mapper_Config_Protect
                 $newValue = $this->{$valueMap}($oldValue);
             }
         }
+
         return $newValue;
 
     }
@@ -128,6 +127,7 @@ class Payone_Migrator_Model_Mapper_Config_Protect
         foreach ($this->getMapperConfigPayment()->getMappingMethodCode() as $oldCode => $newCode) {
             $subject = str_replace($oldCode, $newCode, $subject);
         }
+
         return $subject;
     }
 
@@ -167,12 +167,14 @@ class Payone_Migrator_Model_Mapper_Config_Protect
             ) {
                 continue;
             }
+
             $status = $statusArray[$i];
             $score = $scoreArray[$i];
 
             if (empty($status) or empty($score)) {
                 continue;
             }
+
             $newMapping = array(
 
                 'personstatus' => array(0 => $status),
@@ -180,6 +182,7 @@ class Payone_Migrator_Model_Mapper_Config_Protect
             );
             array_push($newMappings, $newMapping);
         }
+
         return serialize($newMappings);
     }
 

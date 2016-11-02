@@ -116,6 +116,7 @@ foreach ($websites as $website) {
             if ($storeViewConfig) {
                 continue;
             }
+
             // No config found, create a new one on storeView scope
             $newConfigData = array(
                 'scope' => 'stores',
@@ -126,9 +127,8 @@ foreach ($websites as $website) {
             );
 
             $connection->insert($tableConfigPaymentMethod, $newConfigData);
-
         }
-
     }
 }
+
 $installer->endSetup();

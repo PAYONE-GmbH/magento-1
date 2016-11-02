@@ -46,13 +46,16 @@ if ($useSqlInstaller) {
     $connection = $installer->getConnection();
 
     // Update table payone_config_payment_method
-    $connection->addColumn($tablePaymentMethod, 'paypal_express_visible_on_cart',
+    $connection->addColumn(
+        $tablePaymentMethod, 'paypal_express_visible_on_cart',
         'INT(1) COMMENT \'Paypal Express Visible on Cart\' AFTER `klarna_campaign_code`'
     );
-    $connection->addColumn($tablePaymentMethod, 'paypal_express_address',
+    $connection->addColumn(
+        $tablePaymentMethod, 'paypal_express_address',
         'INT(1) COMMENT \'Paypal Express Address\' AFTER `paypal_express_visible_on_cart`'
     );
-    $connection->addColumn($tablePaymentMethod, 'paypal_express_image',
+    $connection->addColumn(
+        $tablePaymentMethod, 'paypal_express_image',
         'VARCHAR(250) COMMENT \'Paypal Express Image\' AFTER `paypal_express_address`'
     );
 }

@@ -73,7 +73,8 @@ class Payone_Core_Block_Adminhtml_Protocol_Api_Grid extends Mage_Adminhtml_Block
                 'type' => 'text',
                 'filter' => false,
                 'index' => 'id',
-            ));
+            )
+        );
 
         $this->addColumn(
             'request',
@@ -82,7 +83,8 @@ class Payone_Core_Block_Adminhtml_Protocol_Api_Grid extends Mage_Adminhtml_Block
                 'index' => 'request',
                 'type' => 'options',
                 'options' => $this->getFactory()->getModelSystemConfigRequestType()->toSelectArray()
-            ));
+            )
+        );
 
         $this->addColumn(
             'response',
@@ -91,7 +93,8 @@ class Payone_Core_Block_Adminhtml_Protocol_Api_Grid extends Mage_Adminhtml_Block
                 'index' => 'response',
                 'type' => 'options',
                 'options' => $this->getFactory()->getModelSystemConfigResponseType()->toSelectArray()
-            ));
+            )
+        );
 
         $this->addColumn(
             'mode',
@@ -100,7 +103,8 @@ class Payone_Core_Block_Adminhtml_Protocol_Api_Grid extends Mage_Adminhtml_Block
                 'index' => 'mode',
                 'type' => 'options',
                 'options' => $this->getFactory()->getModelSystemConfigMode()->toSelectArray()
-            ));
+            )
+        );
 
         $this->addColumn(
             'mid',
@@ -108,7 +112,8 @@ class Payone_Core_Block_Adminhtml_Protocol_Api_Grid extends Mage_Adminhtml_Block
                 'header' => $this->helperPayone()->__('Merchant-ID'),
                 'type' => 'text',
                 'index' => 'mid',
-            ));
+            )
+        );
 
         $this->addColumn(
             'portalid',
@@ -116,7 +121,8 @@ class Payone_Core_Block_Adminhtml_Protocol_Api_Grid extends Mage_Adminhtml_Block
                 'header' => $this->helperPayone()->__('Portal ID'),
                 'type' => 'text',
                 'index' => 'portalid',
-            ));
+            )
+        );
 
         $this->addColumn(
             'created_at',
@@ -126,10 +132,12 @@ class Payone_Core_Block_Adminhtml_Protocol_Api_Grid extends Mage_Adminhtml_Block
                 'type' => 'datetime',
                 'width' => '80px',
                 'renderer' => 'payone_core/adminhtml_widget_grid_column_renderer_datetime',
-            ));
+            )
+        );
 
         if (Mage::getSingleton('admin/session')->isAllowed('payone/protocol/api/view')) {
-            $this->addColumn('action',
+            $this->addColumn(
+                'action',
                 array(
                     'header' => $this->helperPayone()->__('Action'),
                     'width' => '50px',
@@ -146,7 +154,8 @@ class Payone_Core_Block_Adminhtml_Protocol_Api_Grid extends Mage_Adminhtml_Block
                     'sortable' => false,
                     'index' => 'stores',
                     'is_system' => true,
-                ));
+                )
+            );
         }
 
         if (Mage::getSingleton('admin/session')->isAllowed('payone/protocol/api/export')) {
@@ -187,7 +196,8 @@ class Payone_Core_Block_Adminhtml_Protocol_Api_Grid extends Mage_Adminhtml_Block
     /**
      * @return Payone_Core_Model_Factory
      */
-    public function getFactory(){
+    public function getFactory()
+    {
         return $this->helperPayone()->getFactory();
     }
 

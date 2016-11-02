@@ -32,6 +32,8 @@
  */
 class Payone_Core_Adminhtml_Payonecore_Protocol_ApiController extends Payone_Core_Controller_Adminhtml_Abstract
 {
+    protected $acl_resource = 'payone/protocol/api';
+    
     /**
      * @return \Payone_Core_Adminhtml_Protocol_ApiController
      */
@@ -79,7 +81,6 @@ class Payone_Core_Adminhtml_Payonecore_Protocol_ApiController extends Payone_Cor
         /** @var $model Payone_Core_Model_Domain_Protocol_Api */
         $model = Mage::getModel('payone_core/domain_protocol_api')->load($id);
         if ($model->getId() || $id == 0) {
-
             Mage::register('payone_core_protocol_api', $model);
 
             $this->_initAction();

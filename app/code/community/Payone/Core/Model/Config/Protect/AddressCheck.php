@@ -85,6 +85,7 @@ class Payone_Core_Model_Config_Protect_AddressCheck
             if ($key == 'mapping_personstatus' and is_string($value)) {
                 $value = $this->initValue($value);
             }
+
             $this->setValue($key, $value);
         }
     }
@@ -107,14 +108,18 @@ class Payone_Core_Model_Config_Protect_AddressCheck
             if (array_key_exists('personstatus', $data)) {
                 $personStatus = array_shift($data['personstatus']);
             }
+
             if (array_key_exists('score', $data)) {
                 $score = array_shift($data['score']);
             }
+
             if ($personStatus == '' and $score == '') {
                 continue;
             }
+
             $return[$personStatus] = $score;
         }
+
         return $return;
     }
 
@@ -142,6 +147,7 @@ class Payone_Core_Model_Config_Protect_AddressCheck
         if ($this->check_billing === Payone_Api_Enum_AddressCheckType::NONE) {
             return false;
         }
+
         return true;
     }
 
@@ -153,6 +159,7 @@ class Payone_Core_Model_Config_Protect_AddressCheck
         if ($this->check_shipping === Payone_Api_Enum_AddressCheckType::NONE) {
             return false;
         }
+
         return true;
     }
 
@@ -164,6 +171,7 @@ class Payone_Core_Model_Config_Protect_AddressCheck
         if ($this->getCheckBillingForVirtualOrder()) {
             return true;
         }
+
         return false;
     }
 
@@ -343,6 +351,7 @@ class Payone_Core_Model_Config_Protect_AddressCheck
         if ($this->handle_response_error === Payone_Core_Model_System_Config_HandleResponseError::CONTINUE_CHECKOUT) {
             return true;
         }
+
         return false;
     }
 
@@ -354,6 +363,7 @@ class Payone_Core_Model_Config_Protect_AddressCheck
         if ($this->handle_response_error === Payone_Core_Model_System_Config_HandleResponseError::STOP_CHECKOUT) {
             return true;
         }
+
         return false;
     }
 

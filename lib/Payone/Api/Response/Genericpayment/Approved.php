@@ -19,7 +19,8 @@
  * @author          Ronny Schröder
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
  */
-class Payone_Api_Response_Genericpayment_Approved extends Payone_Api_Response_Genericpayment_Abstract {
+class Payone_Api_Response_Genericpayment_Approved extends Payone_Api_Response_Genericpayment_Abstract
+{
     
     /**
      * add_paydata[workorderid] = workorderid from payone
@@ -31,12 +32,14 @@ class Payone_Api_Response_Genericpayment_Approved extends Payone_Api_Response_Ge
     /**
      * @param array $params
      */
-    function __construct(array $params = array()) {
+    function __construct(array $params = array()) 
+    {
         parent::__construct($params);
         $this->initPaydata($params);
     }
 
-    protected function initPaydata($param) {
+    protected function initPaydata($param) 
+    {
 
         $payData = new Payone_Api_Response_Parameter_Paydata_Paydata($param);
 
@@ -72,14 +75,16 @@ class Payone_Api_Response_Genericpayment_Approved extends Payone_Api_Response_Ge
      * 
      * @return Payone_Api_Response_Parameter_Paydata_Paydata
      */
-    public function getPaydata() {
+    public function getPaydata() 
+    {
         return $this->paydata;
     }
 
     /**
      * @param Payone_Api_Response_Parameter_Paydata_Paydata $paydata
      */
-    public function setPaydata($paydata) {
+    public function setPaydata($paydata) 
+    {
         $this->paydata = $paydata;
     }
     
@@ -87,13 +92,15 @@ class Payone_Api_Response_Genericpayment_Approved extends Payone_Api_Response_Ge
      * 
      * @return Payone_Api_Request_Parameter_Paydata_Paydata
      */
-    public function getPayDataArray() {
+    public function getPayDataArray() 
+    {
         $aPayData = array();
         foreach($this->getPayData()->getItems() as $item) {
             $sCorrectedKey = strtolower($item->getKey());
             $sCorrectedKey = str_replace('-', '_', $sCorrectedKey);
             $aPayData[$sCorrectedKey] = $item->getData();
         }
+
         ksort($aPayData);
         return $aPayData;
     }
@@ -112,12 +119,14 @@ class Payone_Api_Response_Genericpayment_Approved extends Payone_Api_Response_Ge
                     $aTmp = array($aSplit[$i-1] => $aTmp);
                 }
             }
+
             $aInstallmentData = array_replace_recursive($aInstallmentData, $aTmp);
         }
         
         if(isset($aInstallmentData['paymentdetails']) && count($aInstallmentData['paymentdetails']) > 0) {
             return $aInstallmentData['paymentdetails'];
         }
+
         return false;
     }
 

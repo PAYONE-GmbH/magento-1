@@ -74,6 +74,7 @@ class Payone_Core_Block_Payment_Method_Form_Wallet
                 $preselectPossible = true;
             }
         }
+
         if ($preselectPossible) {
             return $preselectedConfigId;
         }

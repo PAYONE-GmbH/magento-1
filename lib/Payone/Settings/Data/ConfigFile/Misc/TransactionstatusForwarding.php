@@ -50,7 +50,8 @@ class Payone_Settings_Data_ConfigFile_Misc_TransactionstatusForwarding
     /**
      * @param $value
      */
-    public function addTransactionstatusForwarding($value){
+    public function addTransactionstatusForwarding($value)
+    {
         $this->transactionstatus_forwarding[] = $value;
     }
 

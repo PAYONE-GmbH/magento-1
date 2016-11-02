@@ -42,8 +42,20 @@ class Payone_Core_Model_Service_Sales_OrderComment extends Payone_Core_Model_Ser
      * @param Payone_Api_Response_Interface $response
      */
     public function addByApiResponse(
-        Mage_Sales_Model_Order $order, Payone_Api_Response_Interface $response)
-    {
+        Mage_Sales_Model_Order $order,
+        Payone_Api_Response_Interface $response
+) 
+    { 
+     
+     
+     
+     
+     
+     
+     
+     
+    
+    
         // Preauthorization
         if ($response instanceof Payone_Api_Response_Preauthorization_Approved) {
             $comment = 'PAYONE successfully processed the payment-request.';
@@ -82,9 +94,20 @@ class Payone_Core_Model_Service_Sales_OrderComment extends Payone_Core_Model_Ser
      * @param Payone_Core_Model_Domain_Protocol_TransactionStatus $transactionStatus
      */
     public function addByTransactionStatus(
-        Mage_Sales_Model_Order $order, Payone_Core_Model_Domain_Protocol_TransactionStatus $transactionStatus
-    )
-    {
+        Mage_Sales_Model_Order $order,
+        Payone_Core_Model_Domain_Protocol_TransactionStatus $transactionStatus
+    ) { 
+     
+     
+     
+     
+     
+     
+     
+     
+     
+    
+    
         if ($transactionStatus->isAppointed()) {
             $comment = 'PAYONE accepted the payment-request.';
         }

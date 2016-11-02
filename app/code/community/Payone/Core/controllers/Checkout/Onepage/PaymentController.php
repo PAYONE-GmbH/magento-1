@@ -47,6 +47,7 @@ class Payone_Core_Checkout_Onepage_PaymentController extends Payone_Core_Control
         } catch (Exception $e) {
             $this->handleException($e);
         }
+
         // Redirect customer to cart
         $this->_redirect('checkout/cart');
     }
@@ -64,7 +65,8 @@ class Payone_Core_Checkout_Onepage_PaymentController extends Payone_Core_Control
 
             if ($success === true) {
                 // Payment is okay. Redirect to standard Magento success page:
-                $this->_redirect('checkout/onepage/success', array(
+                $this->_redirect(
+                    'checkout/onepage/success', array(
                     '_nosid' => true,
                     '_secure' => Mage::app()->getStore()->isCurrentlySecure())
                 );
@@ -91,6 +93,7 @@ class Payone_Core_Checkout_Onepage_PaymentController extends Payone_Core_Control
         } catch (Exception $e) {
             $this->handleException($e);
         }
+
         // Redirect customer to cart
         $this->_redirect('checkout/cart');
     }
@@ -237,6 +240,7 @@ class Payone_Core_Checkout_Onepage_PaymentController extends Payone_Core_Control
         if(isset($aDraftLinks[$iDuration])) {
             return $aDraftLinks[$iDuration];
         }
+
         return false;
     }
     
@@ -254,13 +258,15 @@ class Payone_Core_Checkout_Onepage_PaymentController extends Payone_Core_Control
 
             $oContent = file_get_contents($sDownloadUrl);
             if($oContent) {
-                header("Content-Type: application/pdf");
-                header("Content-Disposition: attachment; filename=\"{$sFilename}\"");
-
-                echo $oContent;
-                exit;
+                $this->getResponse()
+                    ->clearHeaders()
+                    ->setHeader('Content-Type', 'application/pdf')
+                    ->setHeader('Content-Disposition', 'attachment; filename="'.$sFilename.'"')
+                    ->setBody($oContent);
+                return;
             }
         }
+
         Mage::getSingleton('customer/session')->addError($this->helper()->__("Error trying to download the pdf"));
         $this->_redirect('');
     }

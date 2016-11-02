@@ -78,18 +78,21 @@ abstract class Payone_Core_Model_Payment_Method_Abstract
         if ($this->getConfig() instanceof Payone_Core_Model_Config_Payment_Method_Interface) {
             return $this->getConfig()->getName();
         }
+
         try {
             // order has higher priority than quote
             $order = $this->getInfoInstance()->getOrder();
             if ($order instanceof Mage_Sales_Model_Order and $order->hasData()) {
                 return $this->getConfigByOrder($order)->getName();
             }
+
             /** @var $session Mage_Checkout_Model_Session */
             $session = Mage::getSingleton('checkout/session');
             $quote = $session->getQuote();
             if (!$quote instanceof Mage_Sales_Model_Quote or !$quote->getId()) {
                 $quote = $this->getInfoInstance()->getQuote();
             }
+
             if ($quote instanceof Mage_Sales_Model_Quote and $quote->getId()) {
                 return $this->getConfigForQuote($quote)->getName();
             }
@@ -97,6 +100,7 @@ abstract class Payone_Core_Model_Payment_Method_Abstract
         catch (Exception $e) {
             return parent::getTitle(); // if for some reason config was not found, use parent method
         }
+
         // call parent method if no config available
         return parent::getTitle();
     }
@@ -115,6 +119,7 @@ abstract class Payone_Core_Model_Payment_Method_Abstract
             // Quote is given, availability check is detailed (includes store, country settings, min/max quote totals, etc.)
             $configPayment = $this->helperConfig()->getConfigPaymentByQuote($quote);
         }
+
         $isAvailable = $configPayment->isAvailable($this->getMethodType(), $quote);
 
         return $this->dispatchPaymentMethodIsActive($isAvailable, $quote);
@@ -226,6 +231,7 @@ abstract class Payone_Core_Model_Payment_Method_Abstract
             $stateObject->setState(Mage_Sales_Model_Order::STATE_PENDING_PAYMENT);
             $this->setRedirectToQuotePaymentMethod();
         }
+
         return $this;
     }
 
@@ -268,6 +274,7 @@ abstract class Payone_Core_Model_Payment_Method_Abstract
             $service->setConfigStore($this->getConfigStore($order->getStoreId()));
             $service->execute($payment, $amount);
         }
+
         return $this;
     }
 
@@ -282,6 +289,7 @@ abstract class Payone_Core_Model_Payment_Method_Abstract
             $service->setConfigStore($this->getConfigStore($order->getStoreId()));
             $service->execute($payment, $amount);
         }
+
         return $this;
     }
 
@@ -302,6 +310,7 @@ abstract class Payone_Core_Model_Payment_Method_Abstract
         if ($this->configStore === null) {
             $this->initConfigStore($storeId);
         }
+
         return $this->configStore;
     }
 
@@ -350,8 +359,10 @@ abstract class Payone_Core_Model_Payment_Method_Abstract
             if (is_null($order)) {
                 $order = $this->getInfoInstance()->getOrder();
             }
+
             $this->config = $this->helperConfig()->getConfigPaymentMethodByOrder($order);
         }
+
         return $this->config;
     }
 
@@ -359,10 +370,11 @@ abstract class Payone_Core_Model_Payment_Method_Abstract
      * Get a payment configuration that is applicable for the quote
      *
      * @param Mage_Sales_Model_Quote $quote is need to get various values like order_total
+     * @param int $iStoreId
      * @return Payone_Core_Model_Config_Payment_Method_Interface
      * @throws Payone_Core_Exception_PaymentMethodConfigNotFound
      */
-    public function getConfigForQuote(Mage_Sales_Model_Quote $quote = null)
+    public function getConfigForQuote(Mage_Sales_Model_Quote $quote = null, $iStoreId = null)
     {
         if (is_null($this->config)) {
             if (is_null($quote)) {
@@ -370,11 +382,14 @@ abstract class Payone_Core_Model_Payment_Method_Abstract
                 $session = Mage::getSingleton('checkout/session');
                 $quote = $session->getQuote();
             }
+
             if (is_null($quote)) {
                 $quote = $this->getInfoInstance()->getQuote();
             }
-            $this->config = $this->helperConfig()->getConfigPaymentMethodForQuote($this->getMethodType(), $quote);
+
+            $this->config = $this->helperConfig()->getConfigPaymentMethodForQuote($this->getMethodType(), $quote, $iStoreId);
         }
+
         return $this->config;
     }
 
@@ -387,7 +402,7 @@ abstract class Payone_Core_Model_Payment_Method_Abstract
     {
         if ($field == 'sort_order') {
             try {
-                $data = $this->getConfigForQuote()->getSortOrder();
+                $data = $this->getConfigForQuote(null, $storeId)->getSortOrder();
             }
             catch (Payone_Core_Exception_PaymentMethodConfigNotFound $e) {
                 return 0;
@@ -396,6 +411,7 @@ abstract class Payone_Core_Model_Payment_Method_Abstract
         else {
             $data = parent::getConfigData($field, $storeId);
         }
+
         return $data;
     }
 
@@ -411,11 +427,13 @@ abstract class Payone_Core_Model_Payment_Method_Abstract
         $checkResult = new StdClass;
         $checkResult->isAvailable = $isAvailable;
 
-        $this->dispatchEvent('payment_method_is_active', array(
+        $this->dispatchEvent(
+            'payment_method_is_active', array(
                 'result' => $checkResult,
                 'method_instance' => $this,
                 'quote' => $quote,
-        ));
+            )
+        );
 
         return $checkResult->isAvailable;
     }
@@ -521,6 +539,7 @@ abstract class Payone_Core_Model_Payment_Method_Abstract
         if ($this->factory === null) {
             $this->factory = Mage::getModel('payone_core/factory');
         }
+
         return $this->factory;
     }
 

@@ -69,6 +69,7 @@ class Payone_Core_Block_Adminhtml_System_Config_Payment_Edit
 
             $this->setChild('form', $block);
         }
+
         $activeScope = Mage::registry('payone_core_config_active_scope');
         if ($activeScope != 'default') {
           $this->_removeButton('delete'); // Not allowed to delete configs from scopes "websites" or "stores".
@@ -89,6 +90,7 @@ class Payone_Core_Block_Adminhtml_System_Config_Payment_Edit
         if ($this->getRequest()->getParam('id')) {
             $headerText = 'Edit ';
         }
+
         $headerText .= $method;
         return $this->helperPayone()->__($headerText);
     }
@@ -128,6 +130,7 @@ class Payone_Core_Block_Adminhtml_System_Config_Payment_Edit
                 throw new Payone_Core_Exception_PaymentTypeNotFound();
             }
         }
+
         return $type;
     }
 
@@ -147,6 +150,7 @@ class Payone_Core_Block_Adminhtml_System_Config_Payment_Edit
         if ($this->factory === null) {
             $this->factory = new Payone_Core_Model_Factory();
         }
+
         return $this->factory;
     }
 

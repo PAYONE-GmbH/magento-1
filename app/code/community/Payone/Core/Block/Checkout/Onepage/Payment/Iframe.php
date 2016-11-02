@@ -21,7 +21,8 @@
  * @link            http://www.fatchip.de
  */
 
-class Payone_Core_Block_Checkout_Onepage_Payment_Iframe extends Mage_Core_Block_Template {
+class Payone_Core_Block_Checkout_Onepage_Payment_Iframe extends Mage_Core_Block_Template
+{
     
     protected function _construct()
     {
@@ -29,19 +30,22 @@ class Payone_Core_Block_Checkout_Onepage_Payment_Iframe extends Mage_Core_Block_
         $this->setTemplate('payone/core/checkout/iframe.phtml');
     }
 
-    public function getIframeUrl() {
+    public function getIframeUrl() 
+    {
         $oSession = Mage::getSingleton('checkout/session');
         $sIframeUrl = $oSession->getPayoneIframeUrl();
         return $sIframeUrl;
     }
     
-    public function getPaymentType() {
+    public function getPaymentType() 
+    {
         $oSession = Mage::getSingleton('checkout/session');
         $sPaymentMethod = $oSession->getPayonePaymentType();
         return $sPaymentMethod;
     }
     
-    public function getIframeHeight() {
+    public function getIframeHeight() 
+    {
         $sPaymentId = $this->getPaymentType();
         switch ($sPaymentId) {
             case 'payone_wallet':
@@ -51,10 +55,12 @@ class Payone_Core_Block_Checkout_Onepage_Payment_Iframe extends Mage_Core_Block_
                 $sHeight = 700;
                 break;
         }
+
         return $sHeight;
     }
     
-    public function getIframeWidth() {
+    public function getIframeWidth() 
+    {
         $sPaymentId = $this->getPaymentType();
         switch ($sPaymentId) {
             case 'payone_wallet':
@@ -64,10 +70,12 @@ class Payone_Core_Block_Checkout_Onepage_Payment_Iframe extends Mage_Core_Block_
                 $sWidth = 360;
                 break;
         }
+
         return $sWidth;
     }
     
-    public function getIframeStyle() {
+    public function getIframeStyle() 
+    {
         $sPaymentId = $this->getPaymentType();
         switch ($sPaymentId) {
             case 'payone_wallet':
@@ -77,10 +85,12 @@ class Payone_Core_Block_Checkout_Onepage_Payment_Iframe extends Mage_Core_Block_
                 $sStyle = "border:0;margin-top:20px;";
                 break;
         }
+
         return $sStyle;
     }
     
-    public function getIframeHeader() {
+    public function getIframeHeader() 
+    {
         $sPaymentId = $this->getPaymentType();
         switch ($sPaymentId) {
         /*
@@ -92,10 +102,12 @@ class Payone_Core_Block_Checkout_Onepage_Payment_Iframe extends Mage_Core_Block_
                 $sHeader = $this->__('Payment with creditcard');
                 break;
         }
+
         return $sHeader;
     }
     
-    public function getIframeText() {
+    public function getIframeText() 
+    {
         $sPaymentId = $this->getPaymentType();
         switch ($sPaymentId) {
         /*
@@ -109,6 +121,7 @@ class Payone_Core_Block_Checkout_Onepage_Payment_Iframe extends Mage_Core_Block_
                 $sText = false;
                 break;
         }
+
         return $sText;
     }
     

@@ -51,38 +51,47 @@ else {
     $connection = $installer->getConnection();
 
     // using string definition as AFTER is not supported via array:
-    $connection->addColumn($tablePaymentMethod, 'sepa_country',
+    $connection->addColumn(
+        $tablePaymentMethod, 'sepa_country',
         'TEXT COMMENT \'SEPA Country\' AFTER `message_response_blocked`'
     );
 
-    $connection->addColumn($tablePaymentMethod, 'sepa_de_show_bank_data',
+    $connection->addColumn(
+        $tablePaymentMethod, 'sepa_de_show_bank_data',
         'INT(1) COMMENT \'SEPA Germany Show Bank Data\' AFTER `sepa_country`'
     );
 
-    $connection->addColumn($tablePaymentMethod, 'sepa_mandate_enabled',
+    $connection->addColumn(
+        $tablePaymentMethod, 'sepa_mandate_enabled',
         'INT(1) COMMENT \'SEPA Mandate Enabled\' AFTER `sepa_de_show_bank_data`'
     );
 
-    $connection->addColumn($tablePaymentMethod, 'sepa_mandate_download_enabled',
+    $connection->addColumn(
+        $tablePaymentMethod, 'sepa_mandate_download_enabled',
         'INT(1) COMMENT \'SEPA Mandate Download Enabled\' AFTER `sepa_mandate_enabled`'
     );
 
     // Update table sales_flat_order_payment
-    $connection->addColumn($tableSalesOrderPayment, 'payone_sepa_bic',
+    $connection->addColumn(
+        $tableSalesOrderPayment, 'payone_sepa_bic',
         'VARCHAR(11) COMMENT \'SEPA BIC\' AFTER `payone_bank_group`'
     );
 
-    $connection->addColumn($tableSalesOrderPayment, 'payone_sepa_iban',
+    $connection->addColumn(
+        $tableSalesOrderPayment, 'payone_sepa_iban',
         'VARCHAR(34) COMMENT \'SEPA IBAN\' AFTER `payone_bank_group`'
     );
 
     // Update table sales_flat_quote_payment
-    $connection->addColumn($tableSalesQuotePayment, 'payone_sepa_bic',
+    $connection->addColumn(
+        $tableSalesQuotePayment, 'payone_sepa_bic',
         'VARCHAR(11) COMMENT \'SEPA BIC\' AFTER `payone_bank_group`'
     );
 
-    $connection->addColumn($tableSalesQuotePayment, 'payone_sepa_iban',
+    $connection->addColumn(
+        $tableSalesQuotePayment, 'payone_sepa_iban',
         'VARCHAR(34) COMMENT \'SEPA IBAN\' AFTER `payone_bank_group`'
     );
 }
+
 $installer->endSetup();

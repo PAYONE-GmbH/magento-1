@@ -190,7 +190,8 @@ class Payone_Api_Request_Capture extends Payone_Api_Request_Abstract
     /**
      * @param Payone_Api_Request_Parameter_Paydata_Paydata $paydata
      */
-    public function setPaydata($paydata) {
+    public function setPaydata($paydata) 
+    {
         $this->paydata = $paydata;
     }
 
@@ -198,7 +199,8 @@ class Payone_Api_Request_Capture extends Payone_Api_Request_Abstract
      * 
      * @return Payone_Api_Request_Parameter_Paydata_Paydata
      */
-    public function getPaydata() {
+    public function getPaydata() 
+    {
         return $this->paydata;
     }
 

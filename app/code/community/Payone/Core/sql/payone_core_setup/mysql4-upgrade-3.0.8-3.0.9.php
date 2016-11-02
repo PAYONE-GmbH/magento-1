@@ -32,8 +32,6 @@ $helper = Mage::helper('payone_core');
 
 
 if ($helper->isCronEnabled() === false) {
-
-
     $title = 'PAYONE Payment Extension 3.0: Cronjob Configuration';
     $wikiUrl = 'http://www.magentocommerce.com/wiki/1_-_installation_and_configuration/how_to_setup_a_cron_job';
 
@@ -55,6 +53,6 @@ if ($helper->isCronEnabled() === false) {
     $message->setUrl($wikiUrl);
     $message->setDateAdded(date('Y-m-d H:i:s'));
     $message->save();
-
 }
+
 $installer->endSetup();

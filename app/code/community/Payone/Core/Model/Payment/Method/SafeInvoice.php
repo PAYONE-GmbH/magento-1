@@ -101,9 +101,9 @@ class Payone_Core_Model_Payment_Method_SafeInvoice
                 if (count($types) === 0) {
                     unset($this->matchingConfigs[$configKey]);
                 }
-
             }
         }
+
         return $this->matchingConfigs;
     }
 

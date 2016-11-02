@@ -109,6 +109,7 @@ class Payone_Core_Model_Observer_Sales_Order
                 $customerSavedData['payone_sepa_bic']       = $payment->getPayoneSepaBic()?$payment->getPayoneSepaBic():'';
                 $customerSavedData['payone_bank_country']   = $payment->getPayoneBankCountry();
             }
+
             if($payment->getMethodInstance()->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::ONLINEBANKTRANSFER) {
                 $paymentMethodCode = $payment->getMethodInstance()->getCode();
                 $customerSavedData['payone_onlinebanktransfer_type'] = $payment->getPayoneOnlinebanktransferType();
@@ -118,6 +119,7 @@ class Payone_Core_Model_Observer_Sales_Order
                 $customerSavedData['payone_sepa_bic']       = $payment->getPayoneSepaBic()?$payment->getPayoneSepaBic():'';
                 $customerSavedData['payone_bank_group']     = $payment->getPayoneBankGroup();
             }
+
             if($payment->getMethodInstance()->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::CREDITCARD) {
                 $paymentMethodCode = $payment->getMethodInstance()->getCode();
                 $customerSavedData['cc_owner'] = $payment->getCcOwner();

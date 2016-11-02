@@ -395,11 +395,13 @@ class Payone_Api_Response_Capture_Approved extends Payone_Api_Response_Abstract
         return $this->clearing_amount;
     }
     
-    public function getAddPaydataClearingReference() {
+    public function getAddPaydataClearingReference() 
+    {
         return $this->paydata_clearing_reference;
     }
 
-    public function setAddPaydataClearingReference($sClearingReference) {
+    public function setAddPaydataClearingReference($sClearingReference) 
+    {
         $this->paydata_clearing_reference = $sClearingReference;
     }
     

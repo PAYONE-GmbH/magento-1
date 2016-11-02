@@ -96,6 +96,7 @@ class Payone_Core_Block_Adminhtml_Sales_Order_View_Tab_Transaction
             $transaction->loadByPayment($payment);
             Mage::register('payone_core_protocol_transaction', $transaction);
         }
+
         return Mage::registry('payone_core_protocol_transaction');
     }
 
@@ -110,7 +111,8 @@ class Payone_Core_Block_Adminhtml_Sales_Order_View_Tab_Transaction
     /**
      * @return Payone_Core_Model_Factory
      */
-    public function getPayoneFactory(){
+    public function getPayoneFactory()
+    {
         return $this->helperPayoneCore()->getFactory();
     }
 

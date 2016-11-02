@@ -88,6 +88,7 @@ class Payone_Core_Model_Service_Config_XmlGenerate
             if ($key === 'enabled') {
                 $key = 'active';
             }
+
             $setterName = 'set' . uc_words($key, '');
             if (method_exists($sectionConfig, $setterName)) {
                 $sectionConfig->$setterName($data);
@@ -176,11 +177,13 @@ class Payone_Core_Model_Service_Config_XmlGenerate
                     if (is_array($value)) {
                         $mapTo = implode('|', $value);
                     }
+
                     $singleMap['to'] = $mapTo;
                     $singleMap['method'] = $paymentMethod;
 
                     array_push($data, $singleMap);
                 }
+
                 $statusMappingConfig->addStatusMapping($keyClearingType, $data);
             }
         }
@@ -212,6 +215,7 @@ class Payone_Core_Model_Service_Config_XmlGenerate
                 if ($key === 'enabled') {
                     $key = 'active';
                 }
+
                 $setterName = 'set' . uc_words($key, '');
                 if (method_exists($paymentMethodConfig, $setterName)) {
                     $paymentMethodConfig->$setterName($value);
@@ -222,9 +226,11 @@ class Payone_Core_Model_Service_Config_XmlGenerate
             if (method_exists($paymentMethodConfig, 'setCountries')) {
                 $paymentMethodConfig->setCountries(implode(',', $allowedCountries));
             }
+
             if (method_exists($paymentMethodConfig, 'setAuthorization')) {
                 $paymentMethodConfig->setAuthorization($paymentMethod->getRequestType());
             }
+
             $paymentMethodConfig->setTitle($paymentMethod->getName());
 
             if ($paymentMethod->getTypes() !== NULL && $paymentMethod->getTypes() !== false) {
@@ -232,12 +238,13 @@ class Payone_Core_Model_Service_Config_XmlGenerate
                 if (is_array($types)) {
                     $types = implode(',', $types);
                 }
+
                 if ($paymentMethodConfig instanceof Payone_Settings_Data_ConfigFile_PaymentMethod_Creditcard) {
                     /**@var $paymentMethodConfig Payone_Settings_Data_ConfigFile_PaymentMethod_Creditcard */
                     $paymentMethodConfig->setCvc2($paymentMethod->getCheckCvc());
                 }
-                $paymentMethodConfig->setTypes($types);
 
+                $paymentMethodConfig->setTypes($types);
             }
 
             $feeConfigs = $paymentMethod->getFeeConfig();
@@ -249,10 +256,12 @@ class Payone_Core_Model_Service_Config_XmlGenerate
                         if (array_key_exists('countries', $feeConfig)) {
                             $attributeCountry = array_shift($feeConfig['countries']);
                         }
+
                         if (array_key_exists('shipping_method', $feeConfig)) {
                             $attributeShippingMethod = array_shift($feeConfig['shipping_method']);
                         }
                     }
+
                     $attributeArray = array(
                         'country' => $attributeCountry,
                         'shipping_method' => $attributeShippingMethod);
@@ -300,6 +309,7 @@ class Payone_Core_Model_Service_Config_XmlGenerate
         if (!is_array($personStatusmapping)) {
             $personStatusmapping = array();
         }
+
         $addressCheck->setPersonstatusmapping($personStatusmapping);
         $protectConfig->setConsumerscore($consumerScore);
         $protectConfig->setAddresscheck($addressCheck);
@@ -315,6 +325,7 @@ class Payone_Core_Model_Service_Config_XmlGenerate
         if (is_array($paymentMethods)) {
             $paymentMethods = str_replace('payone_', '', implode(',', $paymentMethods));
         }
+
         return $paymentMethods;
     }
 
@@ -401,6 +412,7 @@ class Payone_Core_Model_Service_Config_XmlGenerate
                 $activeModules[$key] = (string)$value->version;
             }
         }
+
         return $activeModules;
     }
 }

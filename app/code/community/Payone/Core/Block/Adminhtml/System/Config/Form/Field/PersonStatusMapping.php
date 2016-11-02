@@ -38,15 +38,19 @@ class Payone_Core_Block_Adminhtml_System_Config_Form_Field_PersonStatusMapping
      */
     protected function _prepareToRender()
     {
-        $this->addColumn('personstatus', array(
+        $this->addColumn(
+            'personstatus', array(
             'label' => Mage::helper('payone_core')->__('Personstatus'),
             'style' => 'width:120px',
-        ));
+            )
+        );
 
-        $this->addColumn('score', array(
+        $this->addColumn(
+            'score', array(
             'label' => Mage::helper('payone_core')->__('Score'),
             'style' => 'width:120px;',
-        ));
+            )
+        );
         $this->_addAfter = false;
         $this->_addButtonLabel = Mage::helper('payone_core')->__('Add Personstatus Mapping');
         parent::_prepareToRender();
@@ -69,7 +73,7 @@ class Payone_Core_Block_Adminhtml_System_Config_Form_Field_PersonStatusMapping
         }
 
         $options = $modelConfigCode->toOptionArray();
-        $rendered = $this->prepareCellTemplate($columnName,$selectType,$options);
+        $rendered = $this->prepareCellTemplate($columnName, $selectType, $options);
 
         return $rendered;
     }

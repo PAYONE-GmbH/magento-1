@@ -57,7 +57,7 @@ PAYONE.Service.CreditCardCheck = function (handler, form, config) {
         }
     };
     
-    this.initHosted = function(fieldconfig, type_id) {
+    this.initHosted = function (fieldconfig, type_id) {
         var configId = false;
         var elementCcType = $('payone_creditcard_cc_type_select');
         if (elementCcType != undefined) {
@@ -124,6 +124,7 @@ PAYONE.Service.CreditCardCheck = function (handler, form, config) {
             $("payone_creditcard_config_id").setValue(configId);
             $("payone_creditcard_cc_type").setValue(ccType);
         }
+
         config = this.getConfig();
         configValidation = config.validation;
 
@@ -151,7 +152,7 @@ PAYONE.Service.CreditCardCheck = function (handler, form, config) {
         payoneGateway.call(data);
     };
     
-    this.creditcardcheckHosted = function() {
+    this.creditcardcheckHosted = function () {
         if (this.iframes.isComplete()) {
             $('payone_creditcard_hosted_error').hide();
             $('payone_creditcard_cc_owner').value = $('firstname').value + ' ' + $('lastname').value;            
@@ -207,6 +208,7 @@ PAYONE.Service.CreditCardCheck = function (handler, form, config) {
             configJson = $('payone_creditcard_config').value;
             this.config = configJson.evalJSON();
         }
+
         return this.config;
     };
 };
@@ -221,14 +223,18 @@ PAYONE.Handler.CreditCardCheck.OnepageCheckout = function () {
             if($('payone_cc_check_validation').value == 0) {
                 return 0;
             }
+
             if (checkout.loadWaiting != false) {
                 return 0;
             }
+
             if (payment.validate() != true) {
                 return 0;
             }
+
             return 1;
         }
+
         return 0;
     };
 
@@ -240,6 +246,7 @@ PAYONE.Handler.CreditCardCheck.OnepageCheckout = function () {
             } else if(typeof response.errormessage != 'undefined') {
                 alert(response.errormessage);
             }
+
             checkout.setLoadWaiting(false);
             return false;
         }
@@ -286,12 +293,13 @@ PAYONE.Handler.CreditCardCheck.Admin = function () {
 
         if (radio_p1_cc != undefined && radio_p1_cc != null && radio_p1_cc.checked
             && $('payone_pseudocardpan').value == '') {
-
             if($('payone_cc_check_validation').value == 0) {
                 return 0;
             }
+
             return 1;
         }
+
         return 0;
     };
 
@@ -304,6 +312,7 @@ PAYONE.Handler.CreditCardCheck.Admin = function () {
             } else if(typeof response.errormessage != 'undefined') {
                 alert(response.errormessage);
             }
+
             return false;
         }
 
@@ -420,7 +429,8 @@ PAYONE.Validation.CreditCard = function (config) {
         }
 
         // validations for Payone credit card types
-        this.validationsCc = $H({
+        this.validationsCc = $H(
+            {
             'O':[new RegExp('(^(5[0678])\\d{11,18}$)|(^(6[^0357])\\d{11,18}$)|(^(601)[^1]\\d{9,16}$)|(^(6011)\\d{9,11}$)|(^(6011)\\d{13,16}$)|(^(65)\\d{11,13}$)|(^(65)\\d{15,18}$)|(^(633)[^34](\\d{9,16}$))|(^(6333)[0-4](\\d{8,10}$))|(^(6333)[0-4](\\d{12}$))|(^(6333)[0-4](\\d{15}$))|(^(6333)[5-9](\\d{8,10}$))|(^(6333)[5-9](\\d{12}$))|(^(6333)[5-9](\\d{15}$))|(^(6334)[0-4](\\d{8,10}$))|(^(6334)[0-4](\\d{12}$))|(^(6334)[0-4](\\d{15}$))|(^(67)[^(59)](\\d{9,16}$))|(^(6759)](\\d{9,11}$))|(^(6759)](\\d{13}$))|(^(6759)](\\d{16}$))|(^(67)[^(67)](\\d{9,16}$))|(^(6767)](\\d{9,11}$))|(^(6767)](\\d{13}$))|(^(6767)](\\d{16}$))'),
                 new RegExp('^[0-9]{3}$'),
                 false],
@@ -432,7 +442,8 @@ PAYONE.Validation.CreditCard = function (config) {
             'D':this.validationsCcMagento.get('OT'),
             'B':this.validationsCcMagento.get('OT'),
             'U':this.validationsCcMagento.get('OT')
-        });
+            }
+        );
     };
 
     this.getConfig = function () {
@@ -440,12 +451,14 @@ PAYONE.Validation.CreditCard = function (config) {
     };
 };
 
-function payoneChangedCreditCardInfo() {
+function payoneChangedCreditCardInfo() 
+{
     $('payone_pseudocardpan').value = '';
     $('payone_cc_check_validation').value = 1;
     $('payone_creditcard_cc_number').addClassName('validate-cc-number');
 }
 
-function processPayoneResponseCCHosted(response) {
+function processPayoneResponseCCHosted(response) 
+{
     payone.handleResponseCreditcardCheck(response, true);
 }

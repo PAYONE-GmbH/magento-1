@@ -53,6 +53,7 @@ class Payone_Core_Block_Adminhtml_Protocol_Api_View_Tab_Exception extends Mage_A
         {
             return true;
         }
+
         return false;
     }
 

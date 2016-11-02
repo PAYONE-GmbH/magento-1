@@ -119,6 +119,7 @@ abstract class Payone_Api_Response_Abstract implements Payone_Api_Response_Inter
         if ($this->getStatus() === Payone_Api_Enum_ResponseType::APPROVED) {
             return true;
         }
+
         return false;
     }
 
@@ -130,6 +131,7 @@ abstract class Payone_Api_Response_Abstract implements Payone_Api_Response_Inter
         if ($this->getStatus() === Payone_Api_Enum_ResponseType::REDIRECT) {
             return true;
         }
+
         return false;
     }
 
@@ -141,6 +143,7 @@ abstract class Payone_Api_Response_Abstract implements Payone_Api_Response_Inter
         if ($this->getStatus() === Payone_Api_Enum_ResponseType::VALID) {
             return true;
         }
+
         return false;
     }
 
@@ -152,6 +155,7 @@ abstract class Payone_Api_Response_Abstract implements Payone_Api_Response_Inter
         if ($this->getStatus() === Payone_Api_Enum_ResponseType::INVALID) {
             return true;
         }
+
         return false;
     }
 
@@ -163,6 +167,7 @@ abstract class Payone_Api_Response_Abstract implements Payone_Api_Response_Inter
         if ($this->getStatus() === Payone_Api_Enum_ResponseType::BLOCKED) {
             return true;
         }
+
         return false;
     }
 
@@ -174,6 +179,7 @@ abstract class Payone_Api_Response_Abstract implements Payone_Api_Response_Inter
         if ($this->getStatus() === Payone_Api_Enum_ResponseType::ENROLLED) {
             return true;
         }
+
         return false;
     }
 
@@ -185,6 +191,7 @@ abstract class Payone_Api_Response_Abstract implements Payone_Api_Response_Inter
         if ($this->getStatus() === Payone_Api_Enum_ResponseType::ERROR) {
             return true;
         }
+
         return false;
     }
 
@@ -232,6 +239,7 @@ abstract class Payone_Api_Response_Abstract implements Payone_Api_Response_Inter
         if (property_exists($this, $name)) {
             return $this->$name;
         }
+
         return null;
     }
 
@@ -246,6 +254,7 @@ abstract class Payone_Api_Response_Abstract implements Payone_Api_Response_Inter
             $this->$name = $value;
             return true;
         }
+
         return null;
     }
 

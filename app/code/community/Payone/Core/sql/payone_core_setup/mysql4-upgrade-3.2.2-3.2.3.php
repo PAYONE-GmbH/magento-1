@@ -46,7 +46,8 @@ if ($useSqlInstaller) {
     $connection = $installer->getConnection();
 
     // Update table payone_config_payment_method
-    $connection->addColumn($tablePaymentMethod, 'klarna_campaign_code',
+    $connection->addColumn(
+        $tablePaymentMethod, 'klarna_campaign_code',
         'VARCHAR(50) COMMENT \'Klarna Campaign Code\' AFTER `klarna_config`'
     );
 }

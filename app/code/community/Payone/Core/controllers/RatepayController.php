@@ -27,6 +27,7 @@ class Payone_Core_RatepayController extends Mage_Core_Controller_Front_Action
      */
     public function rateAction()
     {
+        $html = '';
         $paymentMethod = $this->getRequest()->getParam('paymentMethod');
         $calcValue = $this->getRequest()->getParam('calcValue');
         $ratePayShopId = $this->getRequest()->getParam('ratePayshopId');
@@ -49,24 +50,16 @@ class Payone_Core_RatepayController extends Mage_Core_Controller_Front_Action
                     $reviewBlock = $this->getLayout()->getBlock('payone_ratepay.checkout.installmentplan');
                     $html = $reviewBlock->showRateResultHtml($responseData);
                     //set payone Session Data
-                    $this->setSessionData($responseData,$paymentMethod);
-
-                    $this->getResponse()
-                        ->clearHeaders()
-                        ->setHeader('Content-Type', 'text/html')
-                        ->setBody($html);
-                    return;
+                    $this->setSessionData($responseData, $paymentMethod);
                 } else {
                     $this->unsetSessionData($paymentMethod);
                     if($result instanceof Payone_Api_Response_Error) {
-                        echo "<div class='ratepay-result rateError'>" . $this->__($result->getCustomermessage()) . "</div>";
+                        $html = "<div class='ratepay-result rateError'>" . $this->__($result->getCustomermessage()) . "</div>";
                     }
-                    return false;
                 }
-
             } else {
                 $this->unsetSessionData($paymentMethod);
-                echo "<div class='ratepay-result rateError'>" . $this->__('lang_error') . ":<br/>" . $this->__('lang_wrong_value') . "</div>";
+                $html = "<div class='ratepay-result rateError'>" . $this->__('lang_error') . ":<br/>" . $this->__('lang_wrong_value') . "</div>";
             }
         } catch (Exception $e) {
             $this->unsetSessionData($paymentMethod);
@@ -75,7 +68,12 @@ class Payone_Core_RatepayController extends Mage_Core_Controller_Front_Action
             );
             Mage::logException($e);
         }
-        return false;
+        
+        $this->getResponse()
+            ->clearHeaders()
+            ->setHeader('Content-Type', 'text/html')
+            ->setBody($html);
+        return;
     }
 
     /**
@@ -104,21 +102,14 @@ class Payone_Core_RatepayController extends Mage_Core_Controller_Front_Action
                         $reviewBlock = $this->getLayout()->getBlock('payone_ratepay.checkout.installmentplan');
                         $html = $reviewBlock->showRateResultHtml($responseData);
                         //set payone Session Data
-                        $this->setSessionData($responseData,$paymentMethod);
-                        $this->getResponse()
-                            ->clearHeaders()
-                            ->setHeader('Content-Type', 'text/html')
-                            ->setBody($html);
-                        return;
+                        $this->setSessionData($responseData, $paymentMethod);
                     } else {
                         $this->unsetSessionData($paymentMethod);
-                        echo "<div class='rateError'>" . $this->__('lang_error') . ":<br/>" . $this->__('lang_request_error_else') . "</div>";
-
+                        $html = "<div class='rateError'>" . $this->__('lang_error') . ":<br/>" . $this->__('lang_request_error_else') . "</div>";
                     }
-
                 } else {
                     $this->unsetSessionData($paymentMethod);
-                    echo "<div class='rateError'>" . $this->__('lang_error') . ":<br/>" . $this->__('lang_wrong_value') . "</div>";
+                    $html = "<div class='rateError'>" . $this->__('lang_error') . ":<br/>" . $this->__('lang_wrong_value') . "</div>";
                 }
         } catch (Exception $e) {
             $this->unsetSessionData($paymentMethod);
@@ -127,7 +118,12 @@ class Payone_Core_RatepayController extends Mage_Core_Controller_Front_Action
             );
             Mage::logException($e);
         }
-        return false;
+        
+        $this->getResponse()
+            ->clearHeaders()
+            ->setHeader('Content-Type', 'text/html')
+            ->setBody($html);
+        return;
     }
 
     /**

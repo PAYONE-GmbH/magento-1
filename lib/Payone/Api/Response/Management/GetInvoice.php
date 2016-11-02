@@ -65,6 +65,7 @@ class Payone_Api_Response_Management_GetInvoice extends Payone_Api_Response_Abst
             $stringArray = array('status=' . $this->getStatus(), 'data=PDF-Content');
             $result = implode('|', $stringArray);
         }
+
         return $result;
     }
 }

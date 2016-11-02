@@ -111,6 +111,7 @@ class Payone_Core_Model_Config_Protect_Creditrating
                     $value = explode(',', $value);
                 }
             }
+
             $this->setValue($key, $value);
         }
     }
@@ -197,6 +198,7 @@ class Payone_Core_Model_Config_Protect_Creditrating
         {
             return true;
         }
+
         return false;
     }
 
@@ -344,6 +346,7 @@ class Payone_Core_Model_Config_Protect_Creditrating
         if ($this->handle_response_error === Payone_Core_Model_System_Config_HandleResponseError::CONTINUE_CHECKOUT) {
             return true;
         }
+
         return false;
     }
 
@@ -355,6 +358,7 @@ class Payone_Core_Model_Config_Protect_Creditrating
         if ($this->handle_response_error === Payone_Core_Model_System_Config_HandleResponseError::STOP_CHECKOUT) {
             return true;
         }
+
         return false;
     }
 
@@ -398,6 +402,7 @@ class Payone_Core_Model_Config_Protect_Creditrating
         if ($this->getSampleModeEnabled()) {
             return true;
         }
+
         return false;
     }
 
@@ -444,6 +449,7 @@ class Payone_Core_Model_Config_Protect_Creditrating
         {
             return true;
         }
+
         return false;
     }
 
@@ -488,6 +494,7 @@ class Payone_Core_Model_Config_Protect_Creditrating
         {
             return true;
         }
+
         return false;
     }
 

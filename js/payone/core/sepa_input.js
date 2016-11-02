@@ -24,7 +24,8 @@
  *
  * @param input
  */
-function inputToUpperCase(input) {
+function inputToUpperCase(input) 
+{
     var caretPosition = getCaretPos(input);
     input.value = input.value.toUpperCase().replace(/\s/g, '');
     setCaretPos(input, caretPosition);
@@ -34,7 +35,8 @@ function inputToUpperCase(input) {
  *
  * @param input
  */
-function inputToUppaerCaseAndNumbers(input) {
+function inputToUppaerCaseAndNumbers(input) 
+{
     var caretPosition = getCaretPos(input);
     input.value = input.value.toUpperCase().replace(/\W|[_]/g, '');
     setCaretPos(input, caretPosition);
@@ -44,7 +46,8 @@ function inputToUppaerCaseAndNumbers(input) {
  *
  * @param input
  */
-function inputToNumbers(input) {
+function inputToNumbers(input) 
+{
     var caretPosition = getCaretPos(input);
     input.value = input.value.replace(/\D/g, '');
     setCaretPos(input, caretPosition);
@@ -55,7 +58,8 @@ function inputToNumbers(input) {
  * @param oField
  * @returns {number}
  */
-function getCaretPos(oField) {
+function getCaretPos(oField) 
+{
     var iCaretPos = 0;
     if (Prototype.Browser.IE) {
         var oSel = document.selection.createRange();
@@ -64,6 +68,7 @@ function getCaretPos(oField) {
     } else {
         iCaretPos = oField.selectionEnd;
     }
+
     return iCaretPos;
 }
 
@@ -72,7 +77,8 @@ function getCaretPos(oField) {
  * @param oField
  * @param iCaretPos
  */
-function setCaretPos(oField, iCaretPos) {
+function setCaretPos(oField, iCaretPos) 
+{
     if (Prototype.Browser.IE) {
         var oSel = document.selection.createRange();
         oSel.moveStart('character', -oField.value.length);

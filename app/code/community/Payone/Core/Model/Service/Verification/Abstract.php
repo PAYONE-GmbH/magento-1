@@ -78,6 +78,7 @@ abstract class Payone_Core_Model_Service_Verification_Abstract
         if (empty($customerAddressId)) {
             return false;
         }
+
         $customerAddress = $this->getFactory()->getModelCustomerAddress();
         $customerAddress->load($customerAddressId);
 
@@ -140,6 +141,7 @@ abstract class Payone_Core_Model_Service_Verification_Abstract
         if (!empty($minOrderTotal) and $minOrderTotal > $quoteTotal) {
             return false; // quote total is too low.
         }
+
         return true;
     }
     

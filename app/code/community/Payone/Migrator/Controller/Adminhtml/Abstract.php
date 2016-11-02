@@ -34,6 +34,13 @@ class Payone_Migrator_Controller_Adminhtml_Abstract extends Mage_Adminhtml_Contr
 {
     /** @var Payone_Migrator_Model_Factory */
     protected $factory = null;
+    
+    /**
+     * Property to be overloaded by the implementing class
+     * 
+     * @var string
+     */
+    protected $acl_resource = 'admin';
 
     /**
      * @return Payone_Migrator_Helper_Data
@@ -59,6 +66,17 @@ class Payone_Migrator_Controller_Adminhtml_Abstract extends Mage_Adminhtml_Contr
         if ($this->factory === null) {
             $this->factory = Mage::getModel('payone_migrator/factory');
         }
+
         return $this->factory;
+    }
+    
+    /**
+     * Check current user permission on resource and privilege
+     *
+     * @return bool
+     */
+    protected function _isAllowed()
+    {
+        return Mage::getSingleton('admin/session')->isAllowed($this->acl_resource);
     }
 }

@@ -75,6 +75,7 @@ class Payone_Core_Helper_Email extends Payone_Core_Helper_Abstract
         if (!$config->isEnabled()) {
             return false;
         }
+
         if ($config->getFrom() == '' or $config->getTo() == '') {
             return false;
         }
@@ -107,6 +108,7 @@ class Payone_Core_Helper_Email extends Payone_Core_Helper_Abstract
                 if ($bccEmail == '') {
                     continue;
                 }
+
                 array_push($emails, $bccEmail);
             }
         }
@@ -152,6 +154,7 @@ class Payone_Core_Helper_Email extends Payone_Core_Helper_Abstract
         if($this->emailTemplate === null){
             $this->emailTemplate = $this->getFactory()->getModelEmailTemplate();
         }
+
         return $this->emailTemplate;
     }
 

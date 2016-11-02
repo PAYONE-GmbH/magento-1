@@ -21,14 +21,16 @@
  * @link            http://www.fatchip.de
  */
 
-class Payone_Core_IframeController extends Payone_Core_Controller_Abstract {
+class Payone_Core_IframeController extends Payone_Core_Controller_Abstract
+{
     
     /**
      * Handles Iframe payments for Payone
      *
      * @return null
      */
-    public function showAction() {
+    public function showAction() 
+    {
         $this->loadLayout();
         $sPaymentId = $this->getPaymentType();
         switch ($sPaymentId) {
@@ -41,10 +43,12 @@ class Payone_Core_IframeController extends Payone_Core_Controller_Abstract {
                 $this->getLayout()->getBlock('head')->setTitle($this->__('Payment with creditcard'));
                 break;
         }
+
         $this->renderLayout();
     }
     
-    public function getPaymentType() {
+    public function getPaymentType() 
+    {
         $oSession = Mage::getSingleton('checkout/session');
         $sPaymentMethod = $oSession->getPayonePaymentType();
         return $sPaymentMethod;

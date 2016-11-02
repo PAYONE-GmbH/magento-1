@@ -76,10 +76,11 @@ class Payone_TransactionStatus_Service_HandleRequest
      */
     public function handleByPost()
     {
-        if (count($_POST) == 0) {
+        $aRequest = Mage::app()->getRequest()->getParams();
+        if (count($aRequest) == 0) {
             throw new Payone_TransactionStatus_Exception_NoPostRequest();
         }
-        $request = $this->getMapper()->mapByArray($_POST);
+        $request = $this->getMapper()->mapByArray($aRequest);
         return $this->handle($request);
     }
 

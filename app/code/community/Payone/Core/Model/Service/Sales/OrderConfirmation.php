@@ -41,9 +41,9 @@ class Payone_Core_Model_Service_Sales_OrderConfirmation extends Payone_Core_Mode
         {
             // Old Magento does not use app Emulation in emails yet, we must set the proper environment.
             $this->app()->loadAreaPart(Mage_Core_Model_App_Area::AREA_FRONTEND, Mage_Core_Model_App_Area::PART_TRANSLATE);
-          	$this->app()->loadAreaPart(Mage_Core_Model_App_Area::AREA_FRONTEND, Mage_Core_Model_App_Area::PART_DESIGN);
-
+              $this->app()->loadAreaPart(Mage_Core_Model_App_Area::AREA_FRONTEND, Mage_Core_Model_App_Area::PART_DESIGN);
         }
+
         $order->sendNewOrderEmail();
     }
 

@@ -100,24 +100,27 @@ class Payone_Migrator_Model_Mapper_Config_Payment extends Payone_Migrator_Model_
         elseif ($type == 'authorize_capture') {
             $value = 'preauthorization';
         }
+
         return $value;
     }
 
     public function mapOldMethodCodeToConfigCode($methodCode)
     {
         $configKey = '';
-        if (array_key_exists($methodCode,  $this->mappingMethodToConfigCode)) {
+        if (array_key_exists($methodCode, $this->mappingMethodToConfigCode)) {
             $configKey =  $this->mappingMethodToConfigCode[$methodCode];
         }
+
         return $configKey;
     }
 
     public function mapOldMethodCodeToNew($methodCode)
     {
         $configKey = '';
-        if (array_key_exists($methodCode,  $this->mappingMethodToMethodCode)) {
+        if (array_key_exists($methodCode, $this->mappingMethodToMethodCode)) {
             $configKey =  $this->mappingMethodToMethodCode[$methodCode];
         }
+
         return $configKey;
     }
 

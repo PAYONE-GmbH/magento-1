@@ -48,7 +48,8 @@ if ($useSqlInstaller) {
 else {
     $connection = $installer->getConnection();
 
-    $connection->modifyColumn($tableTransaction, 'customerid',
+    $connection->modifyColumn(
+        $tableTransaction, 'customerid',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'LENGTH' => 40,
@@ -57,7 +58,8 @@ else {
             'DEFAULT' => '')
     );
 
-    $connection->modifyColumn($tableTransactionStatus, 'customerid',
+    $connection->modifyColumn(
+        $tableTransactionStatus, 'customerid',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'LENGTH' => 40,
@@ -66,4 +68,5 @@ else {
             'DEFAULT' => '')
     );
 }
+
 $installer->endSetup();

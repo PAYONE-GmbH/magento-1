@@ -96,6 +96,7 @@ class Payone_Core_Block_Payment_Method_Form_OnlineBankTransfer
                 $preselectPossible = true;
             }
         }
+
         if ($preselectPossible) {
             return $preselectedConfigId;
         }

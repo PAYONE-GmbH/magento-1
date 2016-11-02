@@ -31,7 +31,8 @@ class Payone_Core_Block_Checkout_RatePayInstallmentplan extends Mage_Core_Block_
      * @param $result
      * @return string
      */
-    public function showRateResultHtml($result) {
+    public function showRateResultHtml($result) 
+    {
 
         $numberOfRates = $result['last-rate']?$result['number-of-rates']-1:$result['number-of-rates'];
         $html = '
@@ -164,5 +165,5 @@ class Payone_Core_Block_Checkout_RatePayInstallmentplan extends Mage_Core_Block_
         </table>';
 
         return $html;
-      }
+    }
 }

@@ -49,23 +49,29 @@ class Payone_Core_Block_Adminhtml_Configuration_Wizard_Page_Edit
         $this->_removeButton('back');
         $this->_removeButton('save');
 
-        $this->_addButton('cancel', array(
+        $this->_addButton(
+            'cancel', array(
             'label' => Mage::helper('payone_core')->__('Cancel'),
             'onclick' => 'parent.window.wizardPopup.close()',
             'class' => 'default',
-        ));
+            )
+        );
 
-        $this->_addButton('back', array(
+        $this->_addButton(
+            'back', array(
             'label' => Mage::helper('payone_core')->__('Back'),
             'onclick' => 'setLocation(\'' . $this->getBackUrl() . '\')',
             'class' => 'default',
-        ));
+            )
+        );
 
-        $this->_addButton('save', array(
+        $this->_addButton(
+            'save', array(
             'label' => Mage::helper('payone_core')->__('Save & Continue'),
             'onclick' => 'editForm.submit();',
             'class' => 'default',
-        ));
+            )
+        );
 
         $this->setData('edit_form_id', 'edit_form_wizard_page');
     }

@@ -77,18 +77,22 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Capture
             $info = $paymentMethod->getInfoInstance();
 
             $payData = new Payone_Api_Request_Parameter_Paydata_Paydata();
-            $payData->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
-                array('key' => 'shop_id', 'data' => $info->getPayoneRatepayShopId())
-            ));
+            $payData->addItem(
+                new Payone_Api_Request_Parameter_Paydata_DataItem(
+                    array('key' => 'shop_id', 'data' => $info->getPayoneRatepayShopId())
+                )
+            );
             $request->setPaydata($payData);
             $request->setApiVersion('3.10');
         } elseif($paymentMethod instanceof Payone_Core_Model_Payment_Method_Payolution) {
             $info = $paymentMethod->getInfoInstance();
             if($info->getPayoneIsb2b() == '1') {
                 $payData = new Payone_Api_Request_Parameter_Paydata_Paydata();
-                $payData->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
-                    array('key' => 'b2b', 'data' => 'yes')
-                ));
+                $payData->addItem(
+                    new Payone_Api_Request_Parameter_Paydata_DataItem(
+                        array('key' => 'b2b', 'data' => 'yes')
+                    )
+                );
                 $request->setPaydata($payData);
             }
         }
@@ -118,6 +122,7 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Capture
         } else {
             $request->setAmount($this->getAmount());
         }
+
         $request->setRequest(Payone_Api_Enum_RequestType::CAPTURE);
     }
 
@@ -154,6 +159,7 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Capture
             // all other can always use AUTO, regardless of complete or partial capture
             $business->setSettleaccount(Payone_Api_Enum_Settleaccount::AUTO);
         }
+
         return $business;
     }
 
@@ -167,7 +173,6 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Capture
 
         $invoicing = new Payone_Api_Request_Parameter_Capture_Invoicing_Transaction();
         if (!empty($invoice) && $invoice->hasData()) {
-
             $invoiceIncrementId = $invoice->getIncrementId();
             if ($invoiceIncrementId === null) {
                 $invoiceIncrementId = $this->fetchNewIncrementId($invoice);
@@ -193,6 +198,7 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Capture
                 if ($number <= 0) {
                     continue; // Do not map items with zero quantity
                 }
+
                 $params['it'] = Payone_Api_Enum_InvoicingItemType::GOODS;
                 $params['id'] = $itemData->getSku();
                 $params['de'] = $itemData->getName();
@@ -201,7 +207,7 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Capture
 
                 // We have to load the tax percentage from the order item
 //                $params['va'] = number_format($orderItem->getTaxPercent(), 0, '.', '');
-                $params['va'] = round( $orderItem->getTaxPercent() * 100 );   // transfer vat in basis point format [#MAGE-186]
+                $params['va'] = round($orderItem->getTaxPercent() * 100);   // transfer vat in basis point format [#MAGE-186]
 
                 $item = new Payone_Api_Request_Parameter_Invoicing_Item();
                 $item->init($params);
@@ -279,6 +285,7 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Capture
             // we need to check registry because Magento won't give the invoice instance to PaymentMethodInstance
             $this->invoice = $this->helperRegistry()->registry('current_invoice');
         }
+
         return $this->invoice;
     }
 

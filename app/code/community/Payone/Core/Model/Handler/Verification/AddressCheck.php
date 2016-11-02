@@ -125,6 +125,7 @@ class Payone_Core_Model_Handler_Verification_AddressCheck
         if (empty($message)) {
             $message = $this->getGenericErrorMessage();
         }
+
         $message = $this->helper()->__($message); // Trying to translate the message
 
         $this->getErrors()->setData('payone_address_error', $message);
@@ -206,6 +207,7 @@ class Payone_Core_Model_Handler_Verification_AddressCheck
         {
             $message = $this->helper()->__('Address data invalid.');
         }
+
         $substitutionArray = array(
             '{{payone_customermessage}}' => $customermessage,
         );

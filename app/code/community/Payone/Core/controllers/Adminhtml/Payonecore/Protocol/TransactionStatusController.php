@@ -33,6 +33,8 @@
 class Payone_Core_Adminhtml_Payonecore_Protocol_TransactionStatusController
     extends Payone_Core_Controller_Adminhtml_Abstract
 {
+    protected $acl_resource = 'payone/protocol/transactionStatus';
+    
     /**
      * @return Payone_Core_Adminhtml_Protocol_TransactionStatusController
      */
@@ -74,7 +76,6 @@ class Payone_Core_Adminhtml_Payonecore_Protocol_TransactionStatusController
         /** @var $modelTransactionStatus Payone_Core_Model_Domain_Protocol_TransactionStatus */
         $modelTransactionStatus = Mage::getModel('payone_core/domain_protocol_transactionStatus')->load($id);
         if ($modelTransactionStatus->getId() || $id == 0) {
-
             Mage::register('payone_core_protocol_transactionstatus', $modelTransactionStatus);
 
             /** @var $modelTransaction Payone_Core_Model_Domain_Transaction */

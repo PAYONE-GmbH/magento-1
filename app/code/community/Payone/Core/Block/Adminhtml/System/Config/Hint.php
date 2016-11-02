@@ -86,6 +86,7 @@ class Payone_Core_Block_Adminhtml_System_Config_Hint
         if ($this->configGroup === null) {
             $this->initConfigGroup();
         }
+
         return $this->configGroup->hint;
     }
 

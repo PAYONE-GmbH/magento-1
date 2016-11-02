@@ -41,11 +41,11 @@ class Payone_Core_Block_Payment_Method_Form_DebitPayment
     }
 
    public function getBillingName()
-    {
+   {
         $quote = $this->getQuote();
         $address = $quote->getBillingAddress();
         return $address->getFirstname() . ' ' . $address->getLastname();
-    }
+   }
 
     /**
      * Returns quote country
@@ -58,6 +58,7 @@ class Payone_Core_Block_Payment_Method_Form_DebitPayment
             $quote = $this->getQuote();
             $country = $quote->getBillingAddress()->getCountry();
         }
+
         return $country;
     }
 

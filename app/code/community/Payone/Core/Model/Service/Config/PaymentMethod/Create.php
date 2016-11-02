@@ -94,7 +94,6 @@ class Payone_Core_Model_Service_Config_PaymentMethod_Create
             $childPaymentConfig->setCode($parentConfig->getCode());
             $childPaymentConfig->setData($parentField, $parentConfig->getId());
             $childPaymentConfig->save();
-
         }
 
 

@@ -36,14 +36,17 @@ class Payone_Core_Model_Config_General_CcHostedTranslations extends Payone_Core_
             if(!isset($aReturn[$sLanguage])) {
                 $aReturn[$sLanguage] = array();
             }
+
             $sVarName = 'Payone.ClientApi.Language.'.$sLanguage;
             if($sType) {
                 $sVarName .= '.'.$sType;
             }
+
             $sVarName .= '.'.array_shift($aTranslation['translation_type']);
             
             $aReturn[$sLanguage][$sVarName] = $aTranslation['translation_message'];
         }
+
         return $aReturn;
     }
     
@@ -89,8 +92,10 @@ class Payone_Core_Model_Config_General_CcHostedTranslations extends Payone_Core_
             if(!isset($aArray1[$sLanguage])) {
                 $aArray1[$sLanguage] = array();
             }
+
             $aArray1[$sLanguage] = array_merge($aArray1[$sLanguage], $aTranslations);
         }
+
         return $aArray1;
     }
     

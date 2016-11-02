@@ -115,7 +115,8 @@ class Payone_Core_Model_Service_Config_ProtectCheck
     {
         /** @var $configCollection Mage_Core_Model_Mysql4_Config_Data_Collection */
         $configCollection = $this->getFactory()->getModelCoreConfigData()->getCollection();
-        $configCollection->addFieldToFilter('path',
+        $configCollection->addFieldToFilter(
+            'path',
             array(
                 array('eq' => 'payone_protect/creditrating/enabled'),
                 array('eq' => 'payone_protect/address_check/enabled'))

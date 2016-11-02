@@ -66,10 +66,10 @@ class Payone_Migrator_Model_Service_Sales_PaymentMigrate
 
         // Migrate credit card types:
         foreach ($this->getMapperConfigPayment()->getMappingCreditcardTypes() as $old => $new) {
-
             $query = $this->prepareCreditcardtypeMigrationQuery($tableSalesOrderPayment, $old, $new);
             $db->query($query);
         }
+
         // Migrate onlinebanktransfer types:
         $query = $this->prepareOnlinebanktransferTypeMigrationQuery($tableSalesOrderPayment);
         $db->query($query);
@@ -97,6 +97,7 @@ class Payone_Migrator_Model_Service_Sales_PaymentMigrate
             if (strlen($methodCodes) > 0) {
                 $methodCodes .= ', ';
             }
+
             $methodCodes .= "'" . $code . "'";
         }
 

@@ -76,7 +76,6 @@ class Payone_Protocol_Service_ApplyFilters
         $stringArray = array();
 
         foreach ($objectArray as $key => $value) {
-
             if($value instanceof Payone_Api_Response_Parameter_Interface){
                 $stringArray[] = $this->apply($value->toArray());
             } elseif ($value !== null) {
@@ -117,6 +116,7 @@ class Payone_Protocol_Service_ApplyFilters
             unset($this->filters[$key]);
             return true;
         }
+
         return false;
     }
 
@@ -149,6 +149,7 @@ class Payone_Protocol_Service_ApplyFilters
         if (array_key_exists($key, $this->filters)) {
             return $this->filters[$key];
         }
+
         // if the requested filter was not found return Payone_Protocol_Filter_MaskAllValue
         return new Payone_Protocol_Filter_MaskAllValue();
     }
@@ -164,6 +165,7 @@ class Payone_Protocol_Service_ApplyFilters
                 return $this->getFilter($filter);
             }
         }
+
         return null;
     }
 
