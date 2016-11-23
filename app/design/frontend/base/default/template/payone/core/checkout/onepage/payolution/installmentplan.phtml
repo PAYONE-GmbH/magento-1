@@ -1,0 +1,77 @@
+<?php
+/**
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the GNU General Public License (GPL 3)
+ * that is bundled with this package in the file LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Payone_Core to newer
+ * versions in the future. If you wish to customize Payone_Core for your
+ * needs please refer to http://www.payone.de for more information.
+ *
+ * @category        Payone
+ * @package         design_frontend_base_default
+ * @subpackage      template
+ * @copyright       Copyright (c) 2016 <kontakt@fatchip.de> - www.fatchip.com
+ * @author          Robert Müller <robert.mueller@fatchip.de>
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.fatchip.com
+ */
+
+$aInstallmentData = array_reverse($this->getInstallmentData());
+
+?>
+<strong><?php echo $this->__('Please select your desired number of installments'); ?></strong><br>
+<div style="float:left;">
+    <?php foreach ($aInstallmentData as $sKey => $aInstallment) { ?>
+        <a href="#" onclick="switchInstallmentPlan('<?php echo $sKey; ?>', '<?php echo $this->getCode(); ?>', '<?php echo $aInstallment['duration']; ?>');return false;">
+            <?php echo $this->getSelectLinkText($aInstallment) ?>
+        </a><br>
+    <?php } ?><br>
+        
+    <?php foreach ($aInstallmentData as $sKey => $aInstallment) { ?>
+        <div id="payolution_installment_overview_<?php echo $sKey; ?>" class="payolution_installment_overview" style="display:none;">
+            <strong><?php echo $this->__('Overview'); ?></strong><br>
+            <table>
+                <tr>
+                    <td><?php echo $this->__('No. of installments:'); ?></td>
+                    <td class="value"><?php echo $aInstallment['duration']; ?></td>
+                </tr>
+                <tr>
+                    <td><?php echo $this->__('Financingamount:'); ?></td>
+                    <td class="value"><?php echo $this->formatPrice($aInstallment['originalamount']).' '.$aInstallment['currency']; ?></td>
+                </tr>
+                <tr>
+                    <td><?php echo $this->__('Total:'); ?></td>
+                    <td class="value"><?php echo $this->formatPrice($aInstallment['totalamount']).' '.$aInstallment['currency']; ?></td>
+                </tr>
+                <tr>
+                    <td><?php echo $this->__('Interest rate:'); ?></td>
+                    <td class="value"><?php echo $aInstallment['interestrate']; ?>%</td>
+                </tr>
+                <tr>
+                    <td><?php echo $this->__('Effective interest rate:'); ?></td>
+                    <td class="value"><?php echo $aInstallment['effectiveinterestrate']; ?>%</td>
+                </tr>
+                <tr class="final">
+                    <td><?php echo $this->__('Monthly installment:'); ?></td>
+                    <td class="value"><?php echo $this->formatPrice($aInstallment['installment'][1]['amount']).' '.$aInstallment['currency']; ?></td>
+                </tr>
+            </table>
+        </div>
+    <?php } ?>
+</div>
+<?php foreach ($aInstallmentData as $sKey => $aInstallment) { ?>
+    <?php $aSingleInstallments = ksort($aInstallment['installment'], SORT_NUMERIC); ?>
+    <div id="payolution_installmentplan_<?php echo $sKey; ?>" class="payolution_installmentplans" style="float:right;display:none;">
+        <?php foreach ($aInstallment['installment'] as $sSingleKey => $aPayment) { ?>
+            <span><?php echo $this->getPaymentInfoText($sSingleKey, $aInstallment, $aPayment); ?></span><br>
+        <?php } ?>
+        <br>
+        <a href="<?php echo $this->getDraftDownloadLink($aInstallment['duration']); ?>" target="_blank"><?php echo $this->__('Download Installment-Contract-Draft'); ?></a>
+    </div>
+<?php } ?>
+<div style="clear:both;"></div>

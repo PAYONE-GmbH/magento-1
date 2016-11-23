@@ -46,7 +46,8 @@ if ($useSqlInstaller) {
 else {
     $connection = $installer->getConnection();
 
-    $connection->modifyColumn($tablePaymentMethod, 'bankaccountcheck_type',
+    $connection->modifyColumn(
+        $tablePaymentMethod, 'bankaccountcheck_type',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'LENGTH' => 2,
@@ -55,6 +56,7 @@ else {
     );
 
     // update table content
-    $connection->update($tablePaymentMethod,array('bankaccountcheck_type' => null),"bankaccountcheck_type = '' AND code = 'debit_payment'");
+    $connection->update($tablePaymentMethod, array('bankaccountcheck_type' => null), "bankaccountcheck_type = '' AND code = 'debit_payment'");
 }
+
 $installer->endSetup();

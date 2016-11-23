@@ -56,6 +56,7 @@ class Payone_Core_Model_System_Config_Backend_Protect extends Mage_Core_Model_Co
         if ($this->factory === null) {
             $this->factory = new Payone_Core_Model_Factory();
         }
+
         return $this->factory;
     }
 

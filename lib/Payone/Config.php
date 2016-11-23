@@ -95,22 +95,25 @@ class Payone_Config
             {
                 $this->apiConfig = new Payone_Api_Config();
             }
+
             if($this->getTransactionStatusConfig() === null)
             {
                 $this->transactionStatusConfig = new Payone_TransactionStatus_Config();
             }
+
             if($this->getSessionStatusConfig() === null)
             {
                 $this->sessionStatusConfig = new Payone_SessionStatus_Config();
             }
+
             $this->config = $this->getDefaultConfigData();
         }
         else {
             if(array_key_exists('api', $data))
                 $this->setApiConfig($data['api']);
-            if(array_key_exists('transaction_status',$data))
+            if(array_key_exists('transaction_status', $data))
                 $this->setTransactionStatusConfig($data['transaction_status']);
-            if(array_key_exists('session_status',$data))
+            if(array_key_exists('session_status', $data))
                 $this->setSessionStatusConfig($data['session_status']);
             $this->config = $data;
         }
@@ -164,11 +167,11 @@ class Payone_Config
             // Disassemble key, extracting the first node of the string:
             $explodedKey = explode(self::KEY_SEPARATOR, $key);
             $currentKey = array_shift($explodedKey);
-            $newKey = implode(self::KEY_SEPARATOR,$explodedKey);
+            $newKey = implode(self::KEY_SEPARATOR, $explodedKey);
 
             /** @var $object Payone_Config_Abstract  */
             $object = $tree[$currentKey];
-            $object->setValue($newKey,$value);
+            $object->setValue($newKey, $value);
             return TRUE;
         }
         else {
@@ -200,7 +203,7 @@ class Payone_Config
             // Disassemble key, extracting the first node of the string:
             $explodedKey = explode(self::KEY_SEPARATOR, $key);
             $currentKey = array_shift($explodedKey);
-            $newKey = implode(self::KEY_SEPARATOR,$explodedKey);
+            $newKey = implode(self::KEY_SEPARATOR, $explodedKey);
 
             /** @var $object Payone_Config_Abstract */
             $object = $tree[$currentKey];

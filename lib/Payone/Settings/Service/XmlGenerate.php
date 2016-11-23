@@ -101,7 +101,6 @@ class Payone_Settings_Service_XmlGenerate
         $parent = $root->addChild($name);
         foreach ($array as $key => $value) {
             if (is_array($value)) {
-
                 if (array_key_exists('attribute', $value)) {
                     //add node
                     $node = $parent->addChild($value['node']);
@@ -117,8 +116,8 @@ class Payone_Settings_Service_XmlGenerate
             else {
                 $parent->addChild($key, $value);
             }
-
         }
+
         return $parent;
     }
 
@@ -173,9 +172,9 @@ class Payone_Settings_Service_XmlGenerate
         $this->addChild($globalXml, $globalConfig, 'aid');
         $this->addChild($globalXml, $globalConfig, 'portalid');
         $this->addChild($globalXml, $globalConfig, 'request_type');
-        $this->mapParameterInvoice($globalConfig,$globalXml);
+        $this->mapParameterInvoice($globalConfig, $globalXml);
         $this->addStatusMapping($globalConfig, $globalXml);
-        $this->mapPaymentCreditcard($globalConfig,$globalXml);
+        $this->mapPaymentCreditcard($globalConfig, $globalXml);
         return $shopXml;
     }
 
@@ -201,7 +200,6 @@ class Payone_Settings_Service_XmlGenerate
             $this->addChild($clearingTypeNode, $valueClearingType, 'max_order_total');
 
             $this->addTypesOrGlobalInfo($clearingTypeNode, $valueClearingType);
-
         }
 
         return $shopXml;
@@ -214,7 +212,7 @@ class Payone_Settings_Service_XmlGenerate
      */
     protected function mapProtect(Payone_Settings_Data_ConfigFile_Shop_Protect $protectConfig, DOMElement $shopXml)
     {
-        $protectXml = $this->appendElement($shopXml,$protectConfig->getKey());
+        $protectXml = $this->appendElement($shopXml, $protectConfig->getKey());
 
         $protectXml = $this->mapConsumerscore($protectConfig->getConsumerscore(), $protectXml);
         $protectXml = $this->mapAddresscheck($protectConfig->getAddresscheck(), $protectXml);
@@ -321,7 +319,7 @@ class Payone_Settings_Service_XmlGenerate
         $tasXml = $this->appendElement($miscXml, $tasForwarding->getKey());
 
         foreach ($tasForwarding->getTransactionstatusForwarding() as $keyTas => $config) {
-            $configNode = $this->appendElement($tasXml,'config');
+            $configNode = $this->appendElement($tasXml, 'config');
 
             foreach ($config as $key => $value) {
                 $configNode->setAttribute($key, $value);
@@ -336,10 +334,10 @@ class Payone_Settings_Service_XmlGenerate
     public function addStatusMapping(Payone_Settings_Data_ConfigFile_Shop_Global $globalConfig, DOMElement $globalXml)
     {
         $statusMapping = $globalConfig->getStatusMapping();
-        $tasXml = $this->appendElement($globalXml,$statusMapping->getKey());
+        $tasXml = $this->appendElement($globalXml, $statusMapping->getKey());
 
         foreach ($statusMapping->getStatusMapping() as $keyStatusMapping => $valueStatusMapping) {
-            $parent = $this->appendElement($tasXml,$keyStatusMapping);
+            $parent = $this->appendElement($tasXml, $keyStatusMapping);
 
             foreach ($valueStatusMapping as $key => $value) {
                 $mapNode = $this->appendElement($parent, 'map');
@@ -356,13 +354,14 @@ class Payone_Settings_Service_XmlGenerate
     public function addTypesOrGlobalInfo(DOMElement $cleatringTypeNode, Payone_Settings_Data_ConfigFile_PaymentMethod_Abstract $valueClearingType)
     {
         if ($valueClearingType->getTypes() !== NULL && $valueClearingType->getTypes() !== FALSE) {
-
             if ($valueClearingType instanceof Payone_Settings_Data_ConfigFile_PaymentMethod_Creditcard) {
                 /** @var $valueClearingType Payone_Settings_Data_ConfigFile_PaymentMethod_Creditcard */
                 $this->addChild($cleatringTypeNode, $valueClearingType, 'cvc2');
             }
+
             $this->addChild($cleatringTypeNode, $valueClearingType, 'types');
         }
+
         $this->addGlobal($cleatringTypeNode, $valueClearingType);
     }
 
@@ -385,7 +384,7 @@ class Payone_Settings_Service_XmlGenerate
     {
         $feeConfig = $valueClearingType->getFeeConfig();
         if (!empty($feeConfig)) {
-            $feeConfigNode = $this->appendElement($cleatringTypeNode,'fee_config');
+            $feeConfigNode = $this->appendElement($cleatringTypeNode, 'fee_config');
 
             foreach ($feeConfig as $keyFeeConfig => $valueFeeConfig) {
                 if (array_key_exists('value', $valueFeeConfig) && array_key_exists('attribute', $valueFeeConfig)) {
@@ -411,7 +410,7 @@ class Payone_Settings_Service_XmlGenerate
         $data = $object->$getter();
         $child = $parent;
         if (is_array($data)) {
-            $parentNode = $this->appendElement($parent,$property);
+            $parentNode = $this->appendElement($parent, $property);
             foreach ($data as $key => $value) {
                 $child = $this->appendElement($parentNode, $key, $value, $withCdata);
             }
@@ -421,6 +420,7 @@ class Payone_Settings_Service_XmlGenerate
                 $child = $this->appendElement($parent, $property, $data, $withCdata);
             }
         }
+
         return $child;
     }
 
@@ -442,6 +442,7 @@ class Payone_Settings_Service_XmlGenerate
                 $mapNode->setAttribute($name, $value);
             }
         }
+
         return $mapNode;
     }
 
@@ -469,6 +470,7 @@ class Payone_Settings_Service_XmlGenerate
                 $child->appendChild($domValue);
             }
         }
+
         $parent->appendChild($child);
         return $child;
     }

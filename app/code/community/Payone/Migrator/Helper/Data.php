@@ -91,7 +91,8 @@ class Payone_Migrator_Helper_Data
         /** @var $paymentCollection Mage_Sales_Model_Resource_Order_Payment_Collection */
         $paymentCollection = Mage::getModel('sales/order_payment')->getCollection();
         $paymentCollection->join('order', 'main_table.parent_id = order.entity_id', 'store_id');
-        $paymentCollection->addFieldToFilter('method',
+        $paymentCollection->addFieldToFilter(
+            'method',
             array(
                 0 => array('eq' => 'payone_rec'),
                 1 => array('eq' => 'payone_cc'),

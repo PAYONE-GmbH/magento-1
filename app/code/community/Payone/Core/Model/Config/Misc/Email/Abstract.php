@@ -79,6 +79,7 @@ abstract class Payone_Core_Model_Config_Misc_Email_Abstract
         if ($this->getEnabled()) {
             return true;
         }
+
         return false;
     }
 

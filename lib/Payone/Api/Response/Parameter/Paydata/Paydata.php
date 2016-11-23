@@ -19,7 +19,8 @@
  * @author          Ronny Schröder
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
  */
-class Payone_Api_Response_Parameter_Paydata_Paydata extends Payone_Api_Response_Parameter_Abstract {
+class Payone_Api_Response_Parameter_Paydata_Paydata extends Payone_Api_Response_Parameter_Abstract
+{
 
     const PAYDATA_PARAM = 'add_paydata';
     
@@ -31,7 +32,8 @@ class Payone_Api_Response_Parameter_Paydata_Paydata extends Payone_Api_Response_
     /**
      * @param array $data
      */
-    public function __construct(array $data = array()) {
+    public function __construct(array $data = array()) 
+    {
         if (count($data) > 0) {
             $this->init($data);
         }
@@ -40,7 +42,8 @@ class Payone_Api_Response_Parameter_Paydata_Paydata extends Payone_Api_Response_
     /**
      * @param array $data
      */
-    public function init(array $data = array()) {
+    public function init(array $data = array()) 
+    {
 
         $addPaydata = array();
 
@@ -60,13 +63,13 @@ class Payone_Api_Response_Parameter_Paydata_Paydata extends Payone_Api_Response_
         }
     }
 
-    public function toArray() {
+    public function toArray() 
+    {
         $data = array(); //parent::toArray();
         /**
          * @var Payone_Api_Response_Parameter_Paydata_DataItem $item
          */
         foreach ($this->items as $item) {
-
             $data = array_merge($data, $item->toArray());
         }
 
@@ -88,40 +91,46 @@ class Payone_Api_Response_Parameter_Paydata_Paydata extends Payone_Api_Response_
      * 
      * @return array
      */
-    public function toAssocArray() {
+    public function toAssocArray() 
+    {
         $tmp = array();
 
         foreach ($this->getItems() as $item) {
             $tmp[$item->getKey()] = $item->getData();
         }
+
         return $tmp;
     }
 
     /**
      * @return bool
      */
-    public function hasItems() {
+    public function hasItems() 
+    {
         return count($this->items) ? true : false;
     }
 
     /**
      * @param Payone_Api_Response_Parameter_Paydata_DataItem $item
      */
-    public function addItem(Payone_Api_Response_Parameter_Paydata_DataItem $item) {
+    public function addItem(Payone_Api_Response_Parameter_Paydata_DataItem $item) 
+    {
         $this->items[] = $item;
     }
 
     /**
      * @param Payone_Api_Response_Parameter_Paydata_DataItem[] $items
      */
-    public function setItems($items) {
+    public function setItems($items) 
+    {
         $this->items = $items;
     }
 
     /**
      * @return Payone_Api_Response_Parameter_Paydata_DataItem[]
      */
-    public function getItems() {
+    public function getItems() 
+    {
         return $this->items;
     }
 

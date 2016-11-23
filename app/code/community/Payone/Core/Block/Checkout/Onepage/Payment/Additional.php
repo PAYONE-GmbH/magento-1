@@ -45,6 +45,7 @@ class Payone_Core_Block_Checkout_Onepage_Payment_Additional extends Mage_Core_Bl
         {
             return true;
         }
+
         return false;
     }
 
@@ -67,6 +68,7 @@ class Payone_Core_Block_Checkout_Onepage_Payment_Additional extends Mage_Core_Bl
         {
             return true;
         }
+
         return false;
     }
 
@@ -106,6 +108,7 @@ class Payone_Core_Block_Checkout_Onepage_Payment_Additional extends Mage_Core_Bl
         if ($this->factory === null) {
             $this->factory = new Payone_Core_Model_Factory();
         }
+
         return $this->factory;
     }
 }

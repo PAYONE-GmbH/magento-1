@@ -38,24 +38,32 @@ class Payone_Core_Block_Adminhtml_System_Config_Form_Field_PaymentFee
      */
     protected function _prepareToRender()
     {
-        $this->addColumn('shipping_method', array(
+        $this->addColumn(
+            'shipping_method', array(
             'label' => Mage::helper('payone_core')->__('Shipping Method'),
             'style' => 'min-width:100px;',
-        ));
+            )
+        );
 
-        $this->addColumn('countries', array(
+        $this->addColumn(
+            'countries', array(
             'label' => Mage::helper('payone_core')->__('Countries'),
             'style' => 'min-width:100px; min-height: 150px;',
-        ));
+            )
+        );
 
-        $this->addColumn('fee_config', array(
+        $this->addColumn(
+            'fee_config', array(
             'label' => Mage::helper('payone_core')->__('Fee'),
             'style' => 'width:60px;',
-        ));
-        $this->addColumn('fee_type', array(
+            )
+        );
+        $this->addColumn(
+            'fee_type', array(
             'label' => Mage::helper('payone_core')->__('Type'),
             'style' => 'width:50px;',
-        ));
+            )
+        );
         $this->_addAfter = false;
         $this->_addButtonLabel = Mage::helper('payone_core')->__('Add');
         parent::_prepareToRender();
@@ -83,7 +91,7 @@ class Payone_Core_Block_Adminhtml_System_Config_Form_Field_PaymentFee
 
         $options = $modelConfigCode->toOptionArray(true);
 
-        $rendered = $this->prepareCellTemplate($columnName,$selectType,$options);
+        $rendered = $this->prepareCellTemplate($columnName, $selectType, $options);
 
         return $rendered;
     }

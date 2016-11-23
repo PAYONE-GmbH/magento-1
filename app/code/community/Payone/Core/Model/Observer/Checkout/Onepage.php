@@ -78,16 +78,16 @@ class Payone_Core_Model_Observer_Checkout_Onepage extends Payone_Core_Model_Obse
         {
             // get worst address-score and add to score array
             $worstAddressScore = $this->helperScore()->detectWorstAddressScoreByQuote($quote);
-            array_push($scores,$worstAddressScore);
+            array_push($scores, $worstAddressScore);
         }
 
         // Perform creditrating check:
         $serviceCreditrating = $this->getFactory()->getServiceVerificationCreditrating($configCreditrating);
         $worstCreditratingScore = $serviceCreditrating->execute($quote);
-        array_push($scores,$worstCreditratingScore);
+        array_push($scores, $worstCreditratingScore);
 
         $worstScore = $this->helperScore()->detectWorstScore($scores);
-        $allowedMethods = $this->helperScore()->evaluate($worstScore,$quote->getStoreId());
+        $allowedMethods = $this->helperScore()->evaluate($worstScore, $quote->getStoreId());
 
         if ($allowedMethods === true) {
             $this->setSettingsHavetoFilterMethods(false);
@@ -118,6 +118,7 @@ class Payone_Core_Model_Observer_Checkout_Onepage extends Payone_Core_Model_Obse
         ) {
             return false;
         }
+
         return true;
     }
 

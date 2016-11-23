@@ -56,19 +56,23 @@ class Payone_Core_Model_Config_General_PaymentCreditcard extends Payone_Core_Mod
         return $this->min_validity_period;
     }
     
-    public function setCcTemplate($sTemplate) {
+    public function setCcTemplate($sTemplate) 
+    {
         $this->sCCTemplate = $sTemplate;
     }
     
-    public function getCcTemplate() {
+    public function getCcTemplate() 
+    {
         return $this->sCCTemplate;
     }
     
-    public function setCcRequestType($sRequestType) {
+    public function setCcRequestType($sRequestType) 
+    {
         $this->sCCRequestType = $sRequestType;
     }
     
-    public function getCcRequestType() {
+    public function getCcRequestType() 
+    {
         return $this->sCCRequestType;
     }
     

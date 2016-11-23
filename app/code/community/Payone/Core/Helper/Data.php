@@ -95,6 +95,7 @@ class Payone_Core_Helper_Data
                 $edition = 'CE';
             }
         }
+
         return $edition;
     }
 
@@ -181,6 +182,7 @@ class Payone_Core_Helper_Data
             // No cronjobs found, we must assume they are disabled.
             return false;
         }
+
         return true;
     }
 
@@ -196,6 +198,7 @@ class Payone_Core_Helper_Data
         if (!is_array($street)) {
             return $street;
         }
+
         return implode(' ', $street);
     }
 
@@ -250,6 +253,7 @@ class Payone_Core_Helper_Data
         if ($secondsElapsed > $validForSeconds) {
             return false; // Allowed time has elapsed
         }
+
         return true;
 
     }
@@ -294,6 +298,7 @@ class Payone_Core_Helper_Data
         {
             return true;
         }
+
         return false;
     }
 }

@@ -1,26 +1,26 @@
 #payolution_overlay header {
-	margin: 0px 0px 20px 20px;
+    margin: 0px 0px 20px 20px;
 }
 
 #payolution_overlay li {
-	margin: 0px 20px 0px 20px;
-	text-align: justify;
+    margin: 0px 20px 0px 20px;
+    text-align: justify;
 }
 
 #payolution_overlay ol {
-	margin-bottom: 30px;
+    margin-bottom: 30px;
 }
 
 #payolution_overlay ol ul {
-	margin-bottom: 10px;
+    margin-bottom: 10px;
 }
 
 #payolution_overlay footer {
-	margin: 10px 0px 30px 30px;
+    margin: 10px 0px 30px 30px;
 }
 
 #payolution_overlay .right {
-	float:right;
+    float:right;
 }
 
 #payolution_overlay {
@@ -38,4 +38,17 @@
 
 #payolution_overlay ul {
     list-style: circle outside none;
+}
+
+.payolution_installment_overview TABLE TR TD.value {
+    text-align: right;
+    padding-left: 60px;
+}
+
+.payolution_installment_overview TABLE TR.final TD {
+    font-weight: bold;
+}
+
+.payolution_installment_overview TABLE TR.final TD.value {
+    color: red;
 }

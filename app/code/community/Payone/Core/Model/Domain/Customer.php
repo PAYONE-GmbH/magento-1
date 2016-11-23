@@ -57,6 +57,7 @@ class Payone_Core_Model_Domain_Customer
         foreach($collection->load() as $item) {
             return $item;
         }
+
         return $this;
     }
 
@@ -71,6 +72,7 @@ class Payone_Core_Model_Domain_Customer
         foreach($collection->load() as $item) {
             return $item->getCode();
         }
+
         return '';
     }
 
@@ -98,6 +100,7 @@ class Payone_Core_Model_Domain_Customer
         if(!is_null($key) && is_array($result) && isset($result[$key])) {
             return $result[$key];
         }
+
         return $result;
     }
 }

@@ -50,6 +50,7 @@ class Payone_Core_Model_Config_Misc_TransactionstatusProcessing
             if ($key == 'valid_ips' and is_string($value)) {
                 $value = $this->initValidIpsByString($value);
             }
+
             $this->setValue($key, $value);
         }
     }
@@ -70,6 +71,7 @@ class Payone_Core_Model_Config_Misc_TransactionstatusProcessing
                 $validIps[$key] = trim($ip);
             }
         }
+
         return $validIps;
     }
 

@@ -38,20 +38,26 @@ class Payone_Core_Block_Adminhtml_System_Config_Form_Field_Forwarding
      */
     protected function _prepareToRender()
     {
-        $this->addColumn('txactions', array(
+        $this->addColumn(
+            'txactions', array(
             'label' => Mage::helper('payone_core')->__('Status'),
             'style' => 'width:175px; height:100px;',
-        ));
+            )
+        );
 
-        $this->addColumn('url', array(
+        $this->addColumn(
+            'url', array(
             'label' => Mage::helper('payone_core')->__('URL'),
             'style' => 'width:250px',
-        ));
+            )
+        );
 
-        $this->addColumn('timeout', array(
+        $this->addColumn(
+            'timeout', array(
             'label' => Mage::helper('payone_core')->__('Timeout'),
             'style' => 'width:50px;',
-        ));
+            )
+        );
         $this->_addAfter = false;
         $this->_addButtonLabel = Mage::helper('payone_core')->__('Add');
         parent::_prepareToRender();
@@ -70,7 +76,7 @@ class Payone_Core_Block_Adminhtml_System_Config_Form_Field_Forwarding
             $modelConfigCode = $this->getFactory()->getModelSystemConfigTransactionStatus();
             $options = $modelConfigCode->toOptionArray();
 
-            $rendered = $this->prepareCellTemplate($columnName,$selectType,$options);
+            $rendered = $this->prepareCellTemplate($columnName, $selectType, $options);
         }
         else
         {

@@ -69,6 +69,7 @@ class Payone_Core_Model_Observer_TransactionStatus_InvoiceCreate
 
                 $this->sendInvoiceEmail($invoice);
             }
+
             // Advance Payment: invoice is created on Transaction Paid
         }
     }
@@ -112,6 +113,7 @@ class Payone_Core_Model_Observer_TransactionStatus_InvoiceCreate
                 }
             }
         }
+
         // All Other PaymentMethods already have an invoice
     }
 
@@ -161,6 +163,7 @@ class Payone_Core_Model_Observer_TransactionStatus_InvoiceCreate
         if ($this->serviceInvoiceCreate === null) {
             $this->serviceInvoiceCreate = $this->getFactory()->getServiceSalesInvoiceCreate();
         }
+
         return $this->serviceInvoiceCreate;
     }
 

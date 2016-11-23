@@ -73,7 +73,8 @@ class Payone_Core_Block_Adminhtml_Transaction_Grid extends Mage_Adminhtml_Block_
                 'type' => 'text',
                 'index' => 'id',
                 'filter' => false,
-            ));
+            )
+        );
 
         $this->addColumn(
             'txid',
@@ -81,7 +82,8 @@ class Payone_Core_Block_Adminhtml_Transaction_Grid extends Mage_Adminhtml_Block_
                 'header' => $this->helperPayone()->__('Txid'),
                 'type' => 'text',
                 'index' => 'txid',
-            ));
+            )
+        );
 
         $this->addColumn(
             'reference',
@@ -89,7 +91,8 @@ class Payone_Core_Block_Adminhtml_Transaction_Grid extends Mage_Adminhtml_Block_
                 'header' => $this->helperPayone()->__('Reference'),
                 'type' => 'text',
                 'index' => 'reference',
-            ));
+            )
+        );
 
         $this->addColumn(
             'txaction',
@@ -98,7 +101,8 @@ class Payone_Core_Block_Adminhtml_Transaction_Grid extends Mage_Adminhtml_Block_
                 'index' => 'last_txaction',
                 'type' => 'options',
                 'options' => $this->getFactory()->getModelSystemConfigStatusTransaction()->toSelectArray()
-            ));
+            )
+        );
 
         $this->addColumn(
             'txtime',
@@ -107,7 +111,8 @@ class Payone_Core_Block_Adminhtml_Transaction_Grid extends Mage_Adminhtml_Block_
                 'index' => 'txtime',
                 'type' => 'datetime',
                 'renderer' => 'payone_core/adminhtml_widget_grid_column_renderer_unixTimestamp',
-            ));
+            )
+        );
 
         $this->addColumn(
             'clearingtype',
@@ -116,7 +121,8 @@ class Payone_Core_Block_Adminhtml_Transaction_Grid extends Mage_Adminhtml_Block_
                 'index' => 'clearingtype',
                 'type' => 'options',
                 'options' => $this->getFactory()->getModelSystemConfigClearingType()->toSelectArray()
-            ));
+            )
+        );
 
         $this->addColumn(
             'mode',
@@ -125,7 +131,8 @@ class Payone_Core_Block_Adminhtml_Transaction_Grid extends Mage_Adminhtml_Block_
                 'index' => 'mode',
                 'type' => 'options',
                 'options' => $this->getFactory()->getModelSystemConfigMode()->toSelectArray()
-            ));
+            )
+        );
 
         $this->addColumn(
             'portalid',
@@ -133,7 +140,8 @@ class Payone_Core_Block_Adminhtml_Transaction_Grid extends Mage_Adminhtml_Block_
                 'header' => $this->helperPayone()->__('Portal-ID'),
                 'index' => 'portalid',
                 'type' => 'text',
-            ));
+            )
+        );
 
         $this->addColumn(
             'receivable',
@@ -141,7 +149,8 @@ class Payone_Core_Block_Adminhtml_Transaction_Grid extends Mage_Adminhtml_Block_
                 'header' => $this->helperPayone()->__('Receivable'),
                 'index' => 'receivable',
                 'type' => 'text',
-            ));
+            )
+        );
 
         $this->addColumn(
             'balance',
@@ -149,7 +158,8 @@ class Payone_Core_Block_Adminhtml_Transaction_Grid extends Mage_Adminhtml_Block_
                 'header' => $this->helperPayone()->__('Balance'),
                 'index' => 'balance',
                 'type' => 'text',
-            ));
+            )
+        );
 
         $this->addColumn(
             'created_at',
@@ -159,7 +169,8 @@ class Payone_Core_Block_Adminhtml_Transaction_Grid extends Mage_Adminhtml_Block_
                 'type' => 'datetime',
                 'width' => '80px',
                 'renderer' => 'payone_core/adminhtml_widget_grid_column_renderer_datetime',
-            ));
+            )
+        );
 
         $this->addColumn(
             'updated_at',
@@ -169,10 +180,12 @@ class Payone_Core_Block_Adminhtml_Transaction_Grid extends Mage_Adminhtml_Block_
                 'type' => 'datetime',
                 'width' => '80px',
                 'renderer' => 'payone_core/adminhtml_widget_grid_column_renderer_datetime',
-            ));
+            )
+        );
 
         if (Mage::getSingleton('admin/session')->isAllowed('payone/transaction/view')) {
-            $this->addColumn('action',
+            $this->addColumn(
+                'action',
                 array(
                     'header' => $this->helperPayone()->__('Action'),
                     'width' => '50px',
@@ -189,7 +202,8 @@ class Payone_Core_Block_Adminhtml_Transaction_Grid extends Mage_Adminhtml_Block_
                     'sortable' => false,
                     'index' => 'stores',
                     'is_system' => true,
-                ));
+                )
+            );
         }
 
         return parent::_prepareColumns();

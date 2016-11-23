@@ -45,7 +45,8 @@ if ($useSqlInstaller) {
 }
 else {
     $connection = $installer->getConnection();
-    $connection->addColumn($tablePaymentMethod, 'show_customermessage',
+    $connection->addColumn(
+        $tablePaymentMethod, 'show_customermessage',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_BOOLEAN,
             'NULLABLE' => true,
@@ -53,6 +54,7 @@ else {
             'COMMENT' => 'show_customermessage')
     );
 }
+
 $installer->endSetup();
  
 

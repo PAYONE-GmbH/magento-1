@@ -141,6 +141,7 @@ abstract class Payone_ClientApi_Request_Abstract implements Payone_ClientApi_Req
             if ($data === null) {
                 continue;
             }
+
             $result[$key] = $data;
         }
 
@@ -169,11 +170,12 @@ abstract class Payone_ClientApi_Request_Abstract implements Payone_ClientApi_Req
      */
     public function get($name)
     {
-        if (strpos($name, '/')) {
+        if (strpos($name, '/') !== false) {
             $explodedName = explode('/', $name);
             if (count($explodedName) != 2) {
                 return null;
             }
+
             $property = $explodedName[0];
             $propertyName = $explodedName[1];
             if (property_exists($this, $property)) {
@@ -191,6 +193,7 @@ abstract class Payone_ClientApi_Request_Abstract implements Payone_ClientApi_Req
         elseif (property_exists($this, $name)) {
             return $this->$name;
         }
+
         return null;
     }
 
@@ -205,6 +208,7 @@ abstract class Payone_ClientApi_Request_Abstract implements Payone_ClientApi_Req
             $this->$name = $value;
             return true;
         }
+
         return null;
     }
 

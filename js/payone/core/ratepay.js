@@ -68,12 +68,16 @@ function ratepayRateCalculatorAction(mode, paymentMethod, url)
         ajaxLoader = $("ajaxLoaderId"),
         cover = $("cover");
 
-    ajaxLoader.setStyle({
+    ajaxLoader.setStyle(
+        {
         display: 'block'
-    });
-    cover.setStyle({
+        }
+    );
+    cover.setStyle(
+        {
         display: 'block'
-    });
+        }
+    );
 
 
     if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -81,6 +85,7 @@ function ratepayRateCalculatorAction(mode, paymentMethod, url)
     } else {// code for IE6, IE5
         xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
     }
+
     amount = document.getElementById('amount').value;
     ratePayshopId = document.getElementById('ratePayShopId').value;
     ratePayCurrency = document.getElementById('ratePayCurrency').value;
@@ -104,15 +109,19 @@ function ratepayRateCalculatorAction(mode, paymentMethod, url)
             dueDate= '';
         }
     }
+
     xmlhttp.open("POST", url, false);
 
-    xmlhttp.setRequestHeader("Content-Type",
-        "application/x-www-form-urlencoded");
+    xmlhttp.setRequestHeader(
+        "Content-Type",
+        "application/x-www-form-urlencoded"
+    );
 
-    xmlhttp.send("paymentMethod=" + paymentMethod + "&calcValue=" + calcValue + "&calcMethod=" + calcMethod + "&dueDate=" + dueDate
+    xmlhttp.send(
+        "paymentMethod=" + paymentMethod + "&calcValue=" + calcValue + "&calcMethod=" + calcMethod + "&dueDate=" + dueDate
                  + "&notification=" + notification
                  + "&ratePayshopId=" + ratePayshopId + "&ratePayCurrency=" + ratePayCurrency + "&amount=" + amount
-                );
+    );
 
     if (xmlhttp.responseText != null) {
         html = xmlhttp.responseText;
@@ -121,12 +130,16 @@ function ratepayRateCalculatorAction(mode, paymentMethod, url)
         document.getElementById(paymentMethod + '_ResultContainer').style.padding = '3px 0 0 0';
         document.getElementById(paymentMethod + '_SwitchToTerm').style.display = 'none';
 
-        ajaxLoader.setStyle({
+        ajaxLoader.setStyle(
+            {
             display: 'none'
-        });
-        cover.setStyle({
+            }
+        );
+        cover.setStyle(
+            {
             display: 'none'
-        });
+            }
+        );
     }
 
 }
@@ -135,21 +148,18 @@ function ratepayRateCalculatorAction(mode, paymentMethod, url)
  */
 function payoneSwitchPayRate(element)
 {
-    var ElementValue = element.value;
-    var ElementValueSplit = ElementValue.split('_');
-    var typeId = ElementValueSplit[0];
-    var typeCode = ElementValueSplit[1];
-    $("payone_ratepay_type").setValue(typeCode);
-    $("payone_ratepay_config_id").setValue(typeId);
-
-    if(typeCode === 'RPS'){
-        $("ratepay-main-cont").setStyle({
+    if(element.value === 'RPS'){
+        $("ratepay-main-cont").setStyle(
+            {
             display: 'block'
-        });
+            }
+        );
     } else {
-        $("ratepay-main-cont").setStyle({
+        $("ratepay-main-cont").setStyle(
+            {
             display: 'none'
-        });
+            }
+        );
     }
 }
 
@@ -174,11 +184,14 @@ function payoneRatepayCustomerDobInput(payment_code)
 
 var Translator = new Translate([]);
 
-Validation.add('validate-18-years', Translator.translate('You have to be at least 18 years old to use this payment type!'), function (value) {
+Validation.add(
+    'validate-18-years', Translator.translate('You have to be at least 18 years old to use this payment type!'), function (value) {
     var oBirthDate = new Date(value);
     var oMinDate = new Date(new Date().setYear(new Date().getFullYear() - 18));
     if(oBirthDate > oMinDate) {
         return false;
     }
+
     return true;
-});
+    }
+);

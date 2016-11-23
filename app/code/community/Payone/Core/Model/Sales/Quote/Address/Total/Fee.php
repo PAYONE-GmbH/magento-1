@@ -92,7 +92,8 @@ class Payone_Core_Model_Sales_Quote_Address_Total_Fee
         return parent::collect($address);
     }
     
-    protected function _setNewPayonePaymentAmount($oQuote, $oAddress, $dPaymentFee) {
+    protected function _setNewPayonePaymentAmount($oQuote, $oAddress, $dPaymentFee) 
+    {
         $dOldShippingAmount = $oAddress->getBaseShippingAmount();
         $dNewShippingAmount = $dOldShippingAmount + $dPaymentFee;
 
@@ -113,6 +114,7 @@ class Payone_Core_Model_Sales_Quote_Address_Total_Fee
         if ($this->factory === null) {
             $this->factory = new Payone_Core_Model_Factory();
         }
+
         return $this->factory;
     }
 

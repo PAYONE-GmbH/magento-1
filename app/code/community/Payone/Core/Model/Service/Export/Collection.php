@@ -66,8 +66,10 @@ class Payone_Core_Model_Service_Export_Collection extends Payone_Core_Model_Serv
             foreach ($this->getColumns() as $column) {
                 $data[] = '"' . $item->getData($column) . '"';
             }
+
             $csv .= implode(',', $data) . "\n";
         }
+
         return $csv;
     }
 

@@ -21,7 +21,8 @@
  * @link            http://www.fatchip.com
  */
 
-class Payone_Core_Block_Payment_Method_Form_Payolution extends Payone_Core_Block_Payment_Method_Form_Abstract {
+class Payone_Core_Block_Payment_Method_Form_Payolution extends Payone_Core_Block_Payment_Method_Form_Abstract
+{
     
     protected $_sAcceptanceBaseUrl = 'https://payment.payolution.com/payolution-payment/infoport/dataprivacydeclaration?mId=';
 
@@ -66,21 +67,43 @@ class Payone_Core_Block_Payment_Method_Form_Payolution extends Payone_Core_Block
 	DVR: 4008655
 </footer>";
     
-    protected function _construct() {
+    protected $_aBackendBlacklist = array(
+        Payone_Api_Enum_PayolutionType::PYS
+    );
+    
+    protected function _construct() 
+    {
         parent::_construct();
         $this->setTemplate('payone/core/payment/method/form/payolution.phtml');
     }
 
-    public function getPayolutionType() {
+    public function getPayolutionType() 
+    {
         if($this->_sType === null) {
             $aTypes = $this->getMethod()->getConfig()->getTypes();
             $this->_sType = array_shift($aTypes);
         }
+
         return $this->_sType;
     }
     
-    public function getPayolutionTypes() {
+    public function getPayolutionTypes() 
+    {
         return $this->getMethod()->getConfig()->getTypes();
+    }
+    
+    public function getPayolutionTypesBackend() 
+    {
+        $aTypes = $this->getPayolutionTypes();
+        
+        $aTypesReturn = array();
+        foreach ($aTypes as $sType) {
+            if(array_search($sType, $this->_aBackendBlacklist) === false) {
+                $aTypesReturn[] = $sType;
+            }
+        }
+
+        return $aTypesReturn;
     }
     
     /**
@@ -94,6 +117,7 @@ class Payone_Core_Block_Payment_Method_Form_Payolution extends Payone_Core_Block
         if (empty($customerDob)) {
             return true;
         }
+
         return false;
     }
 
@@ -111,36 +135,44 @@ class Payone_Core_Block_Payment_Method_Form_Payolution extends Payone_Core_Block
         return false;
     }
     
-    public function isB2BMode() {
+    public function isB2BMode() 
+    {
         if((bool)$this->getMethod()->getConfig()->getB2bMode() === true) {
             $sCompany = $this->getQuote()->getBillingAddress()->getCompany();
             if($sCompany) {
                 return true;
             }
         }
+
         return false;
     }
     
-    public function showBirthdayFields() {
+    public function showBirthdayFields() 
+    {
         if($this->isB2BMode() === false) {
             return true;
         }
+
         return false;
     }
     
-    public function showDebitFields() {
+    public function showDebitFields() 
+    {
         if ($this->getPayolutionType() == Payone_Api_Enum_PayolutionType::PYD) {
             return true;
         }
+
         return false;
     }
     
-    protected function _getFallbackText($sCompany) {
+    protected function _getFallbackText($sCompany) 
+    {
         $sFallback = str_replace('**company**', $sCompany, $this->_sFallback);
         return $sFallback;
     }
     
-    protected function _isUtf8EncodingNeeded($sString) {
+    protected function _isUtf8EncodingNeeded($sString) 
+    {
         if (preg_match('!!u', $sString)) {
             // this is utf-8
             return false;
@@ -150,7 +182,8 @@ class Payone_Core_Block_Payment_Method_Form_Payolution extends Payone_Core_Block
         }
     }
     
-    public function getPayolutionAcceptanceText() {
+    public function getPayolutionAcceptanceText() 
+    {
         $sCompany = $this->getMethod()->getConfig()->getCompanyName();
         $sUrl = $this->_sAcceptanceBaseUrl.base64_encode($sCompany);
         $sContent = file_get_contents($sUrl);
@@ -165,12 +198,15 @@ class Payone_Core_Block_Payment_Method_Form_Payolution extends Payone_Core_Block
                 $sPage = substr($sPage, stripos($sPage, '<header>'));
             }
         }
+
         if(!$sPage) {
             $sPage = $this->_getFallbackText($sCompany);
         }
+
         if($this->_isUtf8EncodingNeeded($sPage)) {
             $sPage = utf8_encode($sPage);
         }
+
         return $sPage;
     }
     
@@ -180,6 +216,11 @@ class Payone_Core_Block_Payment_Method_Form_Payolution extends Payone_Core_Block
     protected function getSystemConfigMethodTypes()
     {
         return $this->getFactory()->getModelSystemConfigPayolutionType()->toSelectArray();
+    }
+    
+    public function getHandleInstallmentUrl()
+    {
+        return $this->getUrl('payone_core/checkout_onepage/handlePayolutionInstallment');
     }
     
 }

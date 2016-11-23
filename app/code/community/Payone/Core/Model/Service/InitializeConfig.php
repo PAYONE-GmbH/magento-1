@@ -126,6 +126,7 @@ class Payone_Core_Model_Service_InitializeConfig
             if (!property_exists($group, 'fields')) {
                 continue;
             }
+
             // we want a clean directory structure
             $configGroup = $this->initConfigByGroup($sectionKey, $groupKey);
             $configSection->init(array($groupKey => $configGroup));
@@ -153,6 +154,7 @@ class Payone_Core_Model_Service_InitializeConfig
         if ($data !== null) {
             $config->init($data);
         }
+
         return $config;
     }
 
@@ -207,6 +209,7 @@ class Payone_Core_Model_Service_InitializeConfig
         if ($key != '') {
             $key = '_' . $key;
         }
+
         $className = 'payone_core/config' . $key;
         return Mage::getModel($className);
     }
@@ -220,9 +223,11 @@ class Payone_Core_Model_Service_InitializeConfig
         if ($storeId === null) {
             $storeId = $this->getStoreId();
         }
+
         if ($storeId === null) {
             $storeId = 0;
         }
+
         $cacheId = sprintf(self::CONIG_REGISTRY_KEY, $storeId);
         return $cacheId;
     }
@@ -236,9 +241,11 @@ class Payone_Core_Model_Service_InitializeConfig
         if ($storeId === null) {
             $storeId = $this->getStoreId();
         }
+
         if ($storeId === null) {
             $storeId = 0;
         }
+
         $cacheId = sprintf(self::CONFIG_CACHE_ID, $storeId);
         return $cacheId;
     }
@@ -259,6 +266,7 @@ class Payone_Core_Model_Service_InitializeConfig
                 return $config;
             }
         }
+
         return NULL;
     }
 
@@ -279,7 +287,8 @@ class Payone_Core_Model_Service_InitializeConfig
                     self::CACHE_TAG,
                     Mage_Core_Model_Store::CACHE_TAG,
                     Mage_Core_Model_Config::CACHE_TAG
-                ));
+                )
+            );
         }
     }
 

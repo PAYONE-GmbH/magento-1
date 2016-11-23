@@ -145,7 +145,8 @@ class Payone_Core_Block_Adminhtml_Transaction_View_Tab_TransactionStatus extends
                 'type' => 'text',
                 'index' => 'id',
                 'filter' => false,
-            ));
+            )
+        );
 
         $this->addColumn(
             'txid',
@@ -153,7 +154,8 @@ class Payone_Core_Block_Adminhtml_Transaction_View_Tab_TransactionStatus extends
                 'header' => $this->helperPayoneCore()->__('Txid'),
                 'type' => 'text',
                 'index' => 'txid',
-            ));
+            )
+        );
 
         $this->addColumn(
             'reference',
@@ -163,7 +165,8 @@ class Payone_Core_Block_Adminhtml_Transaction_View_Tab_TransactionStatus extends
                 'sortable' => false,
                 'filter' => false,
                 'index' => 'reference',
-            ));
+            )
+        );
 
         $this->addColumn(
             'txaction',
@@ -172,7 +175,8 @@ class Payone_Core_Block_Adminhtml_Transaction_View_Tab_TransactionStatus extends
                 'index' => 'txaction',
                 'type' => 'options',
                 'options' => $this->getPayoneFactory()->getModelSystemConfigTransactionStatus()->toSelectArray()
-            ));
+            )
+        );
 
         $this->addColumn(
             'txtime',
@@ -182,7 +186,8 @@ class Payone_Core_Block_Adminhtml_Transaction_View_Tab_TransactionStatus extends
                 'type' => 'text',
                 'sortable' => false,
                 'filter' => false,
-            ));
+            )
+        );
 
         $this->addColumn(
             'sequencenumber',
@@ -192,7 +197,8 @@ class Payone_Core_Block_Adminhtml_Transaction_View_Tab_TransactionStatus extends
                 'sortable' => false,
                 'filter' => false,
                 'type' => 'text',
-            ));
+            )
+        );
 
         $this->addColumn(
             'clearingtype',
@@ -203,7 +209,8 @@ class Payone_Core_Block_Adminhtml_Transaction_View_Tab_TransactionStatus extends
                 'filter' => false,
                 'type' => 'options',
                 'options' => $this->getPayoneFactory()->getModelSystemConfigClearingType()->toSelectArray()
-            ));
+            )
+        );
 
         $this->addColumn(
             'mode',
@@ -214,7 +221,8 @@ class Payone_Core_Block_Adminhtml_Transaction_View_Tab_TransactionStatus extends
                 'filter' => false,
                 'type' => 'options',
                 'options' => $this->getPayoneFactory()->getModelSystemConfigMode()->toSelectArray()
-            ));
+            )
+        );
 
         $this->addColumn(
             'portalid',
@@ -224,7 +232,8 @@ class Payone_Core_Block_Adminhtml_Transaction_View_Tab_TransactionStatus extends
                 'sortable' => false,
                 'filter' => false,
                 'type' => 'text',
-            ));
+            )
+        );
 
         $this->addColumn(
             'receivable',
@@ -234,7 +243,8 @@ class Payone_Core_Block_Adminhtml_Transaction_View_Tab_TransactionStatus extends
                 'sortable' => false,
                 'filter' => false,
                 'type' => 'text',
-            ));
+            )
+        );
 
         $this->addColumn(
             'balance',
@@ -244,7 +254,8 @@ class Payone_Core_Block_Adminhtml_Transaction_View_Tab_TransactionStatus extends
                 'sortable' => false,
                 'filter' => false,
                 'type' => 'text',
-            ));
+            )
+        );
 
         $this->addColumn(
             'created_at',
@@ -255,7 +266,8 @@ class Payone_Core_Block_Adminhtml_Transaction_View_Tab_TransactionStatus extends
                 'width' => '80px',
                 'filter' => false,
                 'renderer' => 'payone_core/adminhtml_widget_grid_column_renderer_datetime',
-            ));
+            )
+        );
 
         $this->addColumn(
             'updated_at',
@@ -266,7 +278,8 @@ class Payone_Core_Block_Adminhtml_Transaction_View_Tab_TransactionStatus extends
                 'width' => '80px',
                 'filter' => false,
                 'renderer' => 'payone_core/adminhtml_widget_grid_column_renderer_datetime',
-            ));
+            )
+        );
 
         return parent::_prepareColumns();
     }
@@ -283,7 +296,8 @@ class Payone_Core_Block_Adminhtml_Transaction_View_Tab_TransactionStatus extends
     /**
      * @return Payone_Core_Model_Factory
      */
-    public function getPayoneFactory(){
+    public function getPayoneFactory()
+    {
         return $this->helperPayoneCore()->getFactory();
     }
 

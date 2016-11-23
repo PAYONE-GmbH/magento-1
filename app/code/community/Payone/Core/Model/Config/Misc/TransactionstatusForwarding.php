@@ -46,6 +46,7 @@ class Payone_Core_Model_Config_Misc_TransactionstatusForwarding
             if ($key == 'config' and is_string($value)) {
                 $value = $this->initConfig($value);
             }
+
             $this->setValue($key, $value);
         }
     }
@@ -58,6 +59,7 @@ class Payone_Core_Model_Config_Misc_TransactionstatusForwarding
         if (count($this->getConfig()) > 0) {
             return true;
         }
+
         return false;
     }
 
@@ -70,6 +72,7 @@ class Payone_Core_Model_Config_Misc_TransactionstatusForwarding
         if (array_key_exists($txaction, $this->getConfig())) {
             return true;
         }
+
         return false;
     }
 
@@ -92,6 +95,7 @@ class Payone_Core_Model_Config_Misc_TransactionstatusForwarding
                 return $this->config[$txaction];
             }
         }
+
         return $this->config;
     }
 
@@ -112,12 +116,14 @@ class Payone_Core_Model_Config_Misc_TransactionstatusForwarding
                 // Without URL we cannot forward => config is ignored
                 continue;
             }
+
             $url = $configSet['url'];
 
             if (!array_key_exists('txactions', $configSet)) {
                 // Without actions we cannot forward => config is ignored
                 continue;
             }
+
             $txactions = $configSet['txactions'];
             if (!count($txactions)) {
                 // Without actions we cannot forward => config is ignored
@@ -139,9 +145,11 @@ class Payone_Core_Model_Config_Misc_TransactionstatusForwarding
                 if (!array_key_exists($txaction, $return)) {
                     $return[$txaction] = array();
                 }
+
                 array_push($return[$txaction], $actionConfig);
             }
         }
+
         return $return;
     }
 
@@ -154,24 +162,23 @@ class Payone_Core_Model_Config_Misc_TransactionstatusForwarding
         $return = array();
 
         foreach ($this->getConfig() as $status => $statusArray) {
-
             foreach ($statusArray as $urlArray) {
                 $url = $urlArray['url'];
                 $timeout = $urlArray['timeout'];
 
-                if(!array_key_exists($url,$return))
+                if(!array_key_exists($url, $return))
                 {
                     $return[$url] = array();
                     $return[$url]['timeout'] =  $timeout;
                 }
-                if(!array_key_exists('status',$return[$url]))
+
+                if(!array_key_exists('status', $return[$url]))
                 {
                     $return[$url]['status'] = array();
                 }
-                array_push($return[$url]['status'],$status);
 
+                array_push($return[$url]['status'], $status);
             }
-
         }
 
         return $return;

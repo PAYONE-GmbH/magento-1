@@ -43,11 +43,13 @@ class Payone_Core_Block_Adminhtml_Transaction_View
         $this->_blockGroup = 'payone_core_transaction_view';
         $this->_controller = 'adminhtml_transaction';
 
-        $this->_addButton('forward_to_order', array(
+        $this->_addButton(
+            'forward_to_order', array(
             'label' => Mage::helper('payone_core')->__('Go to Order'),
             'onclick' => 'setLocation(\'' . $this->getForwardToOrderUrl() . '\')',
             'class' => 'go',
-        ), 0, 250);
+            ), 0, 250
+        );
 
         parent::__construct();
 
@@ -99,10 +101,13 @@ class Payone_Core_Block_Adminhtml_Transaction_View
                 $this->_addButtonChildBlock($childId);
             }
         }
-        $this->setChild('plane',
+
+        $this->setChild(
+            'plane',
             $this->getLayout()->createBlock(
                 'payone_core/adminhtml_transaction_view_plane',
-                'payone_core_adminhtml_transaction_view_plane')
+                'payone_core_adminhtml_transaction_view_plane'
+            )
         );
         return $this;
     }

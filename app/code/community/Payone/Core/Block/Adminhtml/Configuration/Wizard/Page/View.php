@@ -46,23 +46,29 @@ class Payone_Core_Block_Adminhtml_Configuration_Wizard_Page_View
         $this->_removeButton('edit');
         $this->_removeButton('back');
 
-        $this->_addButton('cancel', array(
+        $this->_addButton(
+            'cancel', array(
             'label' => Mage::helper('adminhtml')->__('Cancel'),
             'onclick' => 'parent.window.wizardPopup.close()',
             'class' => 'default'
-        ));
+            )
+        );
 
-        $this->_addButton('back', array(
+        $this->_addButton(
+            'back', array(
             'label' => Mage::helper('adminhtml')->__('Back'),
             'onclick' => 'window.location.href=\'' . $this->getBackUrl() . '\'',
             'class' => 'default',
-        ));
+            )
+        );
 
-        $this->_addButton('save', array(
+        $this->_addButton(
+            'save', array(
             'label' => Mage::helper('adminhtml')->__('Continue'),
             'class' => 'default',
             'onclick' => 'window.location.href=\'' . $this->getNextUrl() . '\'',
-        ));
+            )
+        );
 
         $this->setId('wizard_page_view');
     }
@@ -75,6 +81,7 @@ class Payone_Core_Block_Adminhtml_Configuration_Wizard_Page_View
             /** @var $child Mage_Adminhtml_Block_Abstract */
             $html .= $child->toHtml();
         }
+
         return $html;
     }
 
@@ -126,6 +133,7 @@ class Payone_Core_Block_Adminhtml_Configuration_Wizard_Page_View
                 $this->_addButtonChildBlock($childId);
             }
         }
+
         $this->setChild('plane', $this->getLayout()->createBlock('payone_core/adminhtml_configuration_wizard_page_view_plane'));
         return $this;
     }

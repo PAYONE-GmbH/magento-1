@@ -43,17 +43,21 @@ class Payone_Core_Block_Adminhtml_Protocol_TransactionStatus_View
         $this->_blockGroup = 'payone_core_transactionstatus_view';
         $this->_controller = 'adminhtml_protocol_transactionStatus';
 
-        $this->_addButton('forward_to_order', array(
+        $this->_addButton(
+            'forward_to_order', array(
             'label' => Mage::helper('payone_core')->__('Go to Order'),
             'onclick' => 'setLocation(\'' . $this->getForwardToOrderUrl() . '\')',
             'class' => 'go',
-        ), 0, 250);
+            ), 0, 250
+        );
 
-        $this->_addButton('forward_to_transaction', array(
+        $this->_addButton(
+            'forward_to_transaction', array(
             'label' => Mage::helper('payone_core')->__('Go to Transaction'),
             'onclick' => 'setLocation(\'' . $this->getForwardToTransactionUrl() . '\')',
             'class' => 'go',
-        ), 0, 500);
+            ), 0, 500
+        );
 
         parent::__construct();
 
@@ -106,7 +110,9 @@ class Payone_Core_Block_Adminhtml_Protocol_TransactionStatus_View
                 $this->_addButtonChildBlock($childId);
             }
         }
-        $this->setChild('plane',
+
+        $this->setChild(
+            'plane',
             $this->getLayout()->createBlock(
                 'payone_core/adminhtml_protocol_transactionStatus_view_plane',
                 'payone_core_adminhtml_protocol_transactionstatus_view_plane'

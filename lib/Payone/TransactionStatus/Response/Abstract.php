@@ -51,6 +51,7 @@ abstract class Payone_TransactionStatus_Response_Abstract
         if (property_exists($this, $name)) {
             return $this->$name;
         }
+
         return null;
     }
 
@@ -65,6 +66,7 @@ abstract class Payone_TransactionStatus_Response_Abstract
             $this->$name = $value;
             return true;
         }
+
         return null;
     }
 

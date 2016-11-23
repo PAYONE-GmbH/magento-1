@@ -144,6 +144,7 @@ class Payone_Core_Block_Adminhtml_Sales_Order_View_Tab_Api
             $apiCollection->getByOrder($order);
             Mage::register('payone_core_protocol_api_collection', $apiCollection);
         }
+
         return Mage::registry('payone_core_protocol_api_collection');
     }
 
@@ -160,7 +161,8 @@ class Payone_Core_Block_Adminhtml_Sales_Order_View_Tab_Api
                 'type' => 'text',
                 'filter' => false,
                 'index' => 'id',
-            ));
+            )
+        );
 
         $this->addColumn(
             'request',
@@ -171,7 +173,8 @@ class Payone_Core_Block_Adminhtml_Sales_Order_View_Tab_Api
                 'index' => 'request',
                 'type' => 'options',
                 'options' => $this->getPayoneFactory()->getModelSystemConfigRequestType()->toSelectArray()
-            ));
+            )
+        );
 
         $this->addColumn(
             'response',
@@ -182,7 +185,8 @@ class Payone_Core_Block_Adminhtml_Sales_Order_View_Tab_Api
                 'index' => 'response',
                 'type' => 'options',
                 'options' => $this->getPayoneFactory()->getModelSystemConfigResponseType()->toSelectArray()
-            ));
+            )
+        );
 
         $this->addColumn(
             'mode',
@@ -190,7 +194,8 @@ class Payone_Core_Block_Adminhtml_Sales_Order_View_Tab_Api
                 'header' => $this->helperPayoneCore()->__('Mode'),
                 'type' => 'text',
                 'index' => 'mode',
-            ));
+            )
+        );
 
         $this->addColumn(
             'mid',
@@ -198,7 +203,8 @@ class Payone_Core_Block_Adminhtml_Sales_Order_View_Tab_Api
                 'header' => $this->helperPayoneCore()->__('Merchant-ID'),
                 'type' => 'text',
                 'index' => 'mid',
-            ));
+            )
+        );
 
         $this->addColumn(
             'portalid',
@@ -206,7 +212,8 @@ class Payone_Core_Block_Adminhtml_Sales_Order_View_Tab_Api
                 'header' => $this->helperPayoneCore()->__('Portal-ID'),
                 'type' => 'text',
                 'index' => 'portalid',
-            ));
+            )
+        );
 
         $this->addColumn(
             'aid',
@@ -214,7 +221,8 @@ class Payone_Core_Block_Adminhtml_Sales_Order_View_Tab_Api
                 'header' => $this->helperPayoneCore()->__('Sub-Account-ID'),
                 'type' => 'text',
                 'index' => 'aid',
-            ));
+            )
+        );
 
         $this->addColumn(
             'created_at',
@@ -225,7 +233,8 @@ class Payone_Core_Block_Adminhtml_Sales_Order_View_Tab_Api
                 'width' => '80px',
                 'filter' => false,
                 'renderer' => 'payone_core/adminhtml_widget_grid_column_renderer_datetime',
-            ));
+            )
+        );
 
         return parent::_prepareColumns();
     }

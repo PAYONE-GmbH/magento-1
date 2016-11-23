@@ -68,6 +68,7 @@ class Payone_Core_Block_Checkout_Onepage_Success_SepaMandatePdfLink
         if (!$orderId) {
             return false;
         }
+
         $order = $this->getFactory()->getModelSalesOrder();
         $order->load($orderId);
 
@@ -108,7 +109,8 @@ class Payone_Core_Block_Checkout_Onepage_Success_SepaMandatePdfLink
     {
         $isSecure = Mage::app()->getStore()->isCurrentlySecure();
 
-        $url = Mage::getUrl('payone_core/checkout_onepage_success/getSepaPdf',
+        $url = Mage::getUrl(
+            'payone_core/checkout_onepage_success/getSepaPdf',
             array(
                 '_nosid' => true,
                 '_secure' => $isSecure,
@@ -144,6 +146,7 @@ class Payone_Core_Block_Checkout_Onepage_Success_SepaMandatePdfLink
         if ($this->factory === null) {
             $this->factory = new Payone_Core_Model_Factory();
         }
+
         return $this->factory;
     }
 

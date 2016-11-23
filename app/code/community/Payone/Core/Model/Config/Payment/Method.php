@@ -233,6 +233,21 @@ class Payone_Core_Model_Config_Payment_Method
     protected $sepa_request_bic = false;
     
     /**
+     * @var string
+     */
+    protected $installment_draft_user = '';
+    
+    /**
+     * @var string
+     */
+    protected $installment_draft_password = '';
+    
+    /**
+     * @var string
+     */
+    protected $narrative_text = '';
+    
+    /**
      * Check if Method can be used in Country
      *
      * @param string $country
@@ -243,6 +258,7 @@ class Payone_Core_Model_Config_Payment_Method
         if ($this->getAllowspecific() and !in_array($country, $this->getSpecificcountry())) {
             return false;
         }
+
         return true;
     }
 
@@ -272,6 +288,7 @@ class Payone_Core_Model_Config_Payment_Method
                 unset($feeConfigs[$key]);
                 continue;
             }
+
             if (array_key_exists('countries', $feeConfig) and in_array($country, $feeConfig['countries']) === false) {
                 unset($feeConfigs[$key]);
                 continue;
@@ -294,6 +311,7 @@ class Payone_Core_Model_Config_Payment_Method
         if ($this->getRequestType() === Payone_Api_Enum_RequestType::AUTHORIZATION) {
             return true;
         }
+
         return false;
     }
 
@@ -305,6 +323,7 @@ class Payone_Core_Model_Config_Payment_Method
         if ($this->getRequestType() === Payone_Api_Enum_RequestType::PREAUTHORIZATION) {
             return true;
         }
+
         return false;
     }
 
@@ -316,6 +335,7 @@ class Payone_Core_Model_Config_Payment_Method
         if ($this->getInvoiceTransmit()) {
             return true;
         }
+
         return false;
     }
 
@@ -327,6 +347,7 @@ class Payone_Core_Model_Config_Payment_Method
         if ($this->getAllowspecific()) {
             return true;
         }
+
         return false;
     }
 
@@ -397,6 +418,7 @@ class Payone_Core_Model_Config_Payment_Method
         } elseif($this->check_cvc == '0') {
             $this->check_cvc = 'no';
         }
+
         return $this->check_cvc;
     }
 
@@ -856,6 +878,7 @@ class Payone_Core_Model_Config_Payment_Method
         if ($this->getParent()) {
             return true;
         }
+
         return false;
     }
 
@@ -979,6 +1002,7 @@ class Payone_Core_Model_Config_Payment_Method
         if ($this->getCheckBankAccount()) {
             return true;
         }
+
         return false;
     }
 
@@ -990,16 +1014,19 @@ class Payone_Core_Model_Config_Payment_Method
         if ($this->getSepaMandateEnabled()) {
             return true;
         }
+
         return false;
     }
 
     /**
      * @return bool
      */
-    public function isSepaDeShowBankDataEnabled() {
+    public function isSepaDeShowBankDataEnabled() 
+    {
         if ($this->getSepaDeShowBankData()) {
             return true;
         }
+
         return false;
     }
 
@@ -1068,6 +1095,38 @@ class Payone_Core_Model_Config_Payment_Method
     }
     
     /**
+     * @param string $installment_draft_user
+     */
+    public function setInstallmentDraftUser($installment_draft_user)
+    {
+        $this->installment_draft_user = $installment_draft_user;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInstallmentDraftUser()
+    {
+        return $this->installment_draft_user;
+    }
+    
+    /**
+     * @param string $installment_draft_password
+     */
+    public function setInstallmentDraftPassword($installment_draft_password)
+    {
+        $this->installment_draft_password = $installment_draft_password;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInstallmentDraftPassword()
+    {
+        return $this->installment_draft_password;
+    }
+    
+    /**
      * @param bool $b2b_mode
      */
     public function setB2bMode($b2b_mode)
@@ -1113,6 +1172,22 @@ class Payone_Core_Model_Config_Payment_Method
     public function getSepaRequestBic()
     {
         return (bool)$this->sepa_request_bic;
+    }
+    
+    /**
+     * @param string $sNarrativeText
+     */
+    public function setNarrativeText($sNarrativeText)
+    {
+        $this->narrative_text = $sNarrativeText;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getNarrativeText()
+    {
+        return $this->narrative_text;
     }
     
 }

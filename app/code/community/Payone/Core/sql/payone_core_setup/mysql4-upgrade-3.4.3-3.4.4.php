@@ -47,7 +47,8 @@ else {
     $connection = $installer->getConnection();
     
     // Update table payone_protocol_transactionstatus
-    $connection->addColumn($tableTransactionStatus, 'processing_error',
+    $connection->addColumn(
+        $tableTransactionStatus, 'processing_error',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'LENGTH' => 255,
@@ -55,7 +56,6 @@ else {
             'COMMENT' => 'Exception-message',
             'DEFAULT' => '')
     );
-    
 }
 
 $installer->endSetup();

@@ -66,7 +66,8 @@
  *
  * @api
  */
-class Payone_Api_Service_Payment_Genericpayment extends Payone_Api_Service_Payment_Abstract implements Payone_Api_Service_Payment_GenericpaymentInterface {
+class Payone_Api_Service_Payment_Genericpayment extends Payone_Api_Service_Payment_Abstract implements Payone_Api_Service_Payment_GenericpaymentInterface
+{
 
     /**
      * Execute Genericpayment Request
@@ -76,7 +77,8 @@ class Payone_Api_Service_Payment_Genericpayment extends Payone_Api_Service_Payme
      * @return Payone_Api_Response_Error|Payone_Api_Response_Genericpayment_Approved|Payone_Api_Response_Genericpayment_Redirect
      * @throws Exception
      */
-    public function request(Payone_Api_Request_Genericpayment $request) {
+    public function request(Payone_Api_Request_Genericpayment $request) 
+    {
         try {
             $this->validateRequest($request);
 

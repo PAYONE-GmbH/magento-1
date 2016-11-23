@@ -48,6 +48,7 @@ class Payone_Migrator_Model_Service_Configuration_PaymentMigrate extends Payone_
         if ($orderPayments == null) {
             return true;
         }
+
         $paymentConfigs = $this->preparePaymentConfigsToMigrate($orderPayments->getItems());
 
         // Iterate Payment Configs
@@ -106,6 +107,7 @@ class Payone_Migrator_Model_Service_Configuration_PaymentMigrate extends Payone_
             $query = $this->sqlOrderPaymentUpdateMethod($tableOrderPayment, $new, $old);
             $db->query($query);
         }
+
         return true;
     }
 
@@ -118,8 +120,10 @@ class Payone_Migrator_Model_Service_Configuration_PaymentMigrate extends Payone_
             if (!array_key_exists($methodCode, $paymentConfigs)) {
                 $paymentConfigs[$methodCode] = array();
             }
+
             $paymentConfigs[$methodCode][$storeId] = Mage::getStoreConfig('payment/' . $methodCode, $storeId);
         }
+
         return $paymentConfigs;
     }
 
@@ -128,7 +132,7 @@ class Payone_Migrator_Model_Service_Configuration_PaymentMigrate extends Payone_
      * @return array
      */
     protected function createPaymentConfigurationsByArray($paymentConfigs)
-        {
+    {
             $methodStoreToConfig = array();
             foreach ($paymentConfigs as $methodCode => $paymentConfigForStore) {
                 $globalConfig = $this->paymentCreateGlobalConfiguration($methodCode);
@@ -150,11 +154,13 @@ class Payone_Migrator_Model_Service_Configuration_PaymentMigrate extends Payone_
                     if (!array_key_exists($methodCode, $methodStoreToConfig)) {
                         $methodStoreToConfig[$methodCode] = array();
                     }
+
                     $methodStoreToConfig[$methodCode][$storeId] = $storeConfigId;
                 }
             }
+
             return $methodStoreToConfig;
-        }
+    }
 
     protected function paymentCreateGlobalConfiguration($methodCode)
     {
@@ -187,6 +193,7 @@ class Payone_Migrator_Model_Service_Configuration_PaymentMigrate extends Payone_
         if (array_key_exists('parent_websites_id', $config)) {
             $configData['parent_websites_id'] = $config['parent_websites_id'];
         }
+
         if (array_key_exists('parent_default_id', $config)) {
             $configData['parent_default_id'] = $config['parent_default_id'];
         }

@@ -98,6 +98,7 @@ class Payone_Core_Model_System_Config_MethodType
                 );
             }
         }
+
         return $data;
     }
 }

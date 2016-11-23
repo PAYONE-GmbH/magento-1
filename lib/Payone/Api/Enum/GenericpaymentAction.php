@@ -36,5 +36,6 @@ class Payone_Api_Enum_GenericpaymentAction
     const RATEPAY_DEBIT_TYPE_BANK_TRANSER = "BANK-TRANSFER";
     const RATEPAY_DEBIT_TYPE_DIRECT_DEBIT = "DIRECT-DEBIT";
     const PAYOLUTION_PRE_CHECK = 'pre_check';
-
+    
+    const PAYOLUTION_CALCULATION = 'calculation';
 }

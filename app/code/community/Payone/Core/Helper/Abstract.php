@@ -51,6 +51,7 @@ abstract class Payone_Core_Helper_Abstract extends Mage_Core_Helper_Abstract
         if (is_null($this->helperConfig)) {
             $this->helperConfig = $this->getFactory()->helperConfig();
         }
+
         return $this->helperConfig;
     }
 
@@ -63,6 +64,7 @@ abstract class Payone_Core_Helper_Abstract extends Mage_Core_Helper_Abstract
         if ($this->factory === null) {
             $this->factory = new Payone_Core_Model_Factory();
         }
+
         return $this->factory;
     }
 

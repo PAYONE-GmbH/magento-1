@@ -56,6 +56,7 @@ abstract class Payone_Core_Model_Observer_Abstract
         if ($this->factory === null) {
             $this->factory = new Payone_Core_Model_Factory();
         }
+
         return $this->factory;
     }
 
@@ -76,6 +77,7 @@ abstract class Payone_Core_Model_Observer_Abstract
         if ($this->helper === null) {
             $this->helper = $this->getFactory()->helper();
         }
+
         return $this->helper;
     }
 
@@ -87,6 +89,7 @@ abstract class Payone_Core_Model_Observer_Abstract
         if ($this->helperEmail === null) {
             $this->helperEmail = $this->getFactory()->helperEmail();
         }
+
         return $this->helperEmail;
     }
 
@@ -99,6 +102,7 @@ abstract class Payone_Core_Model_Observer_Abstract
         if ($this->helperConfig === null) {
             $this->helperConfig = $this->getFactory()->helperConfig();
         }
+
         return $this->helperConfig;
     }
 
@@ -110,6 +114,7 @@ abstract class Payone_Core_Model_Observer_Abstract
         if ($this->helperScore === null) {
             $this->helperScore = $this->getFactory()->helperScore();
         }
+
         return $this->helperScore;
     }
 }

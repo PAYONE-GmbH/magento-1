@@ -81,6 +81,7 @@ class Payone_Core_Model_Sales_Quote_Address extends Mage_Sales_Model_Quote_Addre
         else {
             $errors = parent::validate();
         }
+
         return $errors;
     }
 
@@ -105,6 +106,7 @@ class Payone_Core_Model_Sales_Quote_Address extends Mage_Sales_Model_Quote_Addre
         if ($errors === true) {
             $errors = array();
         }
+
         if (!($errors instanceof Varien_Object)) {
             $errors = new Varien_Object($errors);
         }
@@ -144,6 +146,7 @@ class Payone_Core_Model_Sales_Quote_Address extends Mage_Sales_Model_Quote_Addre
             $msg = $this->helper()->__('Entered Address could not be validated.');
             $errors->addData(array($msg));
         }
+
         return $errors;
     }
 
@@ -157,6 +160,7 @@ class Payone_Core_Model_Sales_Quote_Address extends Mage_Sales_Model_Quote_Addre
         if (!is_array($billingParam) or !isset($billingParam['use_for_shipping'])) {
             return null;
         }
+
         return $billingParam['use_for_shipping'];
     }
 
@@ -173,6 +177,7 @@ class Payone_Core_Model_Sales_Quote_Address extends Mage_Sales_Model_Quote_Addre
                     $request->getControllerName() . '/' .
                     $request->getActionName();
         }
+
         return $fullActionName;
     }
 

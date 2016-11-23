@@ -91,6 +91,7 @@ class Payone_Core_Model_Service_Verification_Creditrating
         catch (Exception $ex) {
             $result = $handler->handleException($ex);
         }
+
         return $result;
 
     }
@@ -183,6 +184,7 @@ class Payone_Core_Model_Service_Verification_Creditrating
         if ($counter % $frequency === 0) {
             return true;
         }
+
         return false;
 
     }

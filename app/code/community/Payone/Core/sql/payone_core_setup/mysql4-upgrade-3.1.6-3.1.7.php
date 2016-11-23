@@ -52,14 +52,16 @@ else {
 
     // payone_config_payment_method table:
 
-    $connection->addColumn($tablePaymentMethod, 'klarna_config',
+    $connection->addColumn(
+        $tablePaymentMethod, 'klarna_config',
         // using string definition as AFTER is not supported via array
         'TEXT COMMENT \'Klarna Config\' AFTER `types`'
     );
 
     // sales_flat_quote_payment table:
 
-    $connection->addColumn($tableQuotePayment, 'payone_customer_dob',
+    $connection->addColumn(
+        $tableQuotePayment, 'payone_customer_dob',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_DATETIME,
             'NULLABLE' => true,
@@ -67,7 +69,8 @@ else {
         )
     );
 
-    $connection->addColumn($tableQuotePayment, 'payone_customer_gender',
+    $connection->addColumn(
+        $tableQuotePayment, 'payone_customer_gender',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_INTEGER,
             'NULLABLE' => true,
@@ -75,7 +78,8 @@ else {
         )
     );
 
-    $connection->addColumn($tableQuotePayment, 'payone_customer_personalid',
+    $connection->addColumn(
+        $tableQuotePayment, 'payone_customer_personalid',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'LENGTH' => 255,
@@ -84,7 +88,8 @@ else {
         )
     );
 
-    $connection->addColumn($tableQuotePayment, 'payone_billing_addressaddition',
+    $connection->addColumn(
+        $tableQuotePayment, 'payone_billing_addressaddition',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'LENGTH' => 255,
@@ -93,7 +98,8 @@ else {
         )
     );
 
-    $connection->addColumn($tableQuotePayment, 'payone_shipping_addressaddition',
+    $connection->addColumn(
+        $tableQuotePayment, 'payone_shipping_addressaddition',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'LENGTH' => 255,
@@ -102,7 +108,8 @@ else {
         )
     );
 
-    $connection->addColumn($tableQuotePayment, 'payone_customer_telephone',
+    $connection->addColumn(
+        $tableQuotePayment, 'payone_customer_telephone',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'LENGTH' => 255,
@@ -113,7 +120,8 @@ else {
 
     // sales_flat_order_payment table:
 
-    $connection->addColumn($tableOrderPayment, 'payone_customer_dob',
+    $connection->addColumn(
+        $tableOrderPayment, 'payone_customer_dob',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_DATETIME,
             'NULLABLE' => true,
@@ -121,7 +129,8 @@ else {
         )
     );
 
-    $connection->addColumn($tableOrderPayment, 'payone_customer_gender',
+    $connection->addColumn(
+        $tableOrderPayment, 'payone_customer_gender',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_INTEGER,
             'NULLABLE' => true,
@@ -129,7 +138,8 @@ else {
         )
     );
 
-    $connection->addColumn($tableOrderPayment, 'payone_customer_personalid',
+    $connection->addColumn(
+        $tableOrderPayment, 'payone_customer_personalid',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'LENGTH' => 255,
@@ -138,7 +148,8 @@ else {
         )
     );
 
-    $connection->addColumn($tableOrderPayment, 'payone_billing_addressaddition',
+    $connection->addColumn(
+        $tableOrderPayment, 'payone_billing_addressaddition',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'LENGTH' => 255,
@@ -147,7 +158,8 @@ else {
         )
     );
 
-    $connection->addColumn($tableOrderPayment, 'payone_shipping_addressaddition',
+    $connection->addColumn(
+        $tableOrderPayment, 'payone_shipping_addressaddition',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'LENGTH' => 255,
@@ -156,7 +168,8 @@ else {
         )
     );
 
-    $connection->addColumn($tableOrderPayment, 'payone_customer_telephone',
+    $connection->addColumn(
+        $tableOrderPayment, 'payone_customer_telephone',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'LENGTH' => 255,
@@ -165,5 +178,6 @@ else {
         )
     );
 }
+
 $installer->endSetup();
  

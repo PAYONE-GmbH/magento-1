@@ -54,6 +54,7 @@ class Payone_Migrator_Model_Mapper_Abstract
         if ($this->helper === null) {
             $this->helper = $this->getFactory()->helper();
         }
+
         return $this->helper;
     }
 
@@ -74,6 +75,7 @@ class Payone_Migrator_Model_Mapper_Abstract
         {
             $this->factory = new Payone_Migrator_Model_Factory();
         }
+
         return $this->factory;
     }
 

@@ -44,6 +44,7 @@ class Payone_SessionStatus_Request extends Payone_SessionStatus_Request_Abstract
 
             $i++;
         }
+
         //unset mapped item
         unset($data['sessionStatusItems']);
 

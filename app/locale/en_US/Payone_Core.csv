@@ -39,10 +39,9 @@
 "FCPO_CC_ROW_CC_Year","Validity-year"
 
 "PAYONE_TOOLTIP_CUSTOMERMESSAGE","Yes - display the error-message given by RatePay<br>No - show a generic error-message"
+"PAYONE_PAYOLUTION_API_ERRORMESSAGE","This transaction could not be performed. This may have different causes, such as invalid user input, an unknown address or a temporary technical problem. Please validate your data or choose an alternative payment method."
+"PAYONE_CREDITCARD_VALIDITY_TOO_LOW","This transaction could not be performed. Please select another payment method."
 
 "PAYOLUTION_ACCEPTANCE_1","I agree with the transmission of the necessary data to payolution which is needed for processing the purchase, the identity-check and the credit rating."
 "PAYOLUTION_ACCEPTANCE_2","My"
 "PAYOLUTION_ACCEPTANCE_3"," can be revoked for the future any time."
-
-"PAYONE_PAYOLUTION_API_ERRORMESSAGE","This transaction could not be performed. This may have different causes, such as invalid user input, an unknown address or a temporary technical problem. Please validate your data or choose an alternative payment method."
-"PAYONE_CREDITCARD_VALIDITY_TOO_LOW","This transaction could not be performed. Please select another payment method."

@@ -51,7 +51,8 @@ else {
     /* Changes to payone_config_payment_method */
     
     $connection = $installer->getConnection();
-    $connection->addColumn($tablePaymentMethod, 'company_name',
+    $connection->addColumn(
+        $tablePaymentMethod, 'company_name',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'LENGTH' => 255,
@@ -59,7 +60,8 @@ else {
             'DEFAULT' => NULL,
             'COMMENT' => 'company_name')
     ); 
-    $connection->addColumn($tablePaymentMethod, 'b2b_mode',
+    $connection->addColumn(
+        $tablePaymentMethod, 'b2b_mode',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_BOOLEAN,
             'NULLABLE' => true,
@@ -69,7 +71,8 @@ else {
     
     /* Changes to sales_flat_order_payment */
     
-    $connection->addColumn($tableOrderPayment, 'payone_payolution_type',
+    $connection->addColumn(
+        $tableOrderPayment, 'payone_payolution_type',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'LENGTH' => 3,
@@ -77,14 +80,16 @@ else {
             'COMMENT' => 'Payolution type',
             'DEFAULT' => '')
     );
-    $connection->addColumn($tableOrderPayment, 'payone_isb2b',
+    $connection->addColumn(
+        $tableOrderPayment, 'payone_isb2b',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_BOOLEAN,
             'NULLABLE' => false,
             'COMMENT' => 'Was B2B mode active?',
             'DEFAULT' => '0')
     );
-    $connection->addColumn($tableOrderPayment, 'payone_trade_registry_number',
+    $connection->addColumn(
+        $tableOrderPayment, 'payone_trade_registry_number',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'LENGTH' => 64,
@@ -92,7 +97,8 @@ else {
             'COMMENT' => 'trade registry number',
             'DEFAULT' => '')
     );
-    $connection->addColumn($tableOrderPayment, 'payone_workorder_id',
+    $connection->addColumn(
+        $tableOrderPayment, 'payone_workorder_id',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'LENGTH' => 64,
@@ -103,7 +109,8 @@ else {
 
     /* Changes to sales_flat_quote_payment */
     
-    $connection->addColumn($tableQuotePayment, 'payone_payolution_type',
+    $connection->addColumn(
+        $tableQuotePayment, 'payone_payolution_type',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'LENGTH' => 3,
@@ -111,14 +118,16 @@ else {
             'COMMENT' => 'Payolution type',
             'DEFAULT' => '')
     );
-    $connection->addColumn($tableQuotePayment, 'payone_isb2b',
+    $connection->addColumn(
+        $tableQuotePayment, 'payone_isb2b',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_BOOLEAN,
             'NULLABLE' => false,
             'COMMENT' => 'Was B2B mode active?',
             'DEFAULT' => '0')
     );
-    $connection->addColumn($tableQuotePayment, 'payone_trade_registry_number',
+    $connection->addColumn(
+        $tableQuotePayment, 'payone_trade_registry_number',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'LENGTH' => 64,
@@ -126,7 +135,8 @@ else {
             'COMMENT' => 'trade registry number',
             'DEFAULT' => '')
     );
-    $connection->addColumn($tableQuotePayment, 'payone_workorder_id',
+    $connection->addColumn(
+        $tableQuotePayment, 'payone_workorder_id',
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'LENGTH' => 64,
@@ -134,7 +144,7 @@ else {
             'COMMENT' => 'workorder id',
             'DEFAULT' => '')
     );
-    
 }
+
 $installer->endSetup();
  

@@ -110,6 +110,7 @@ class Payone_Core_Model_Service_Paypal_Express_Checkout
         } else {
             throw new Exception('Config instance is required.');
         }
+
         $this->_customerSession = Mage::getSingleton('customer/session');
     }
 
@@ -124,6 +125,7 @@ class Payone_Core_Model_Service_Paypal_Express_Checkout
         if($localUrl) {
             return Mage::getBaseUrl('media') . 'payone' . DS . $localUrl;
         }
+
         return sprintf('https://www.paypal.com/%s/i/btn/btn_xpressCheckout.gif', $this->_getSupportedLocaleCode(Mage::app()->getLocale()->getLocaleCode()));
     }
 
@@ -212,43 +214,50 @@ class Payone_Core_Model_Service_Paypal_Express_Checkout
                     $billingAddress->setEmail($item->getData());
                     $shippingAddress->setEmail($item->getData());
                 }
+
                 if($item->getKey() == 'shipping_zip') {
                     $billingAddress->setPostcode($item->getData());
                     $shippingAddress->setPostcode($item->getData());
                 }
+
                 if($item->getKey() == 'shipping_country') {
                     $billingAddress->setCountryId($item->getData());
                     $shippingAddress->setCountryId($item->getData());
                 }
+
                 if($item->getKey() == 'shipping_state' && $item->getData() != 'Empty') {
                     $billingAddress->setRegion($item->getData());
                     $shippingAddress->setRegion($item->getData());
                 }
+
                 if($item->getKey() == 'shipping_city') {
                     $billingAddress->setCity($item->getData());
                     $shippingAddress->setCity($item->getData());
                 }
+
                 if($item->getKey() == 'shipping_street') {
                     $billingAddress->setStreet($item->getData());
                     $shippingAddress->setStreet($item->getData());
                 }
+
                 if($item->getKey() == 'shipping_firstname') {
                     $billingAddress->setFirstname($item->getData());
                     $shippingAddress->setFirstname($item->getData());
                     $this->_quote->setCustomerFirstname($item->getData());
                 }
+
                 if($item->getKey() == 'shipping_lastname') {
                     $billingAddress->setLastname($item->getData());
                     $shippingAddress->setLastname($item->getData());
                     $this->_quote->setCustomerLastname($item->getData());
                 }
             }
+
             $this->_quote->setBillingAddress($billingAddress);
             if (!$this->_quote->getIsVirtual()) {
                 $shippingAddress->setCollectShippingRates(true);
                 $shippingAddress->setSameAsBilling(0);
                 $this->_quote->setShippingAddress($shippingAddress);
-
             }
 
             $this->_quote->getPayment()->setAdditionalInformation(self::PAYONE_EXPRESS_CHECKOUT_WORKORDERID, $workOrderId)
@@ -268,6 +277,7 @@ class Payone_Core_Model_Service_Paypal_Express_Checkout
         if (!$payment || !$payment->getAdditionalInformation(self::PAYMENT_INFO_TRANSPORT_PAYER_ID)) {
             Mage::throwException(Mage::helper('paypal')->__('Payer is not identified.'));
         }
+
         $this->_quote->setMayEditShippingAddress(
             1 != $this->_quote->getPayment()->getAdditionalInformation(self::PAYMENT_INFO_TRANSPORT_SHIPPING_OVERRIDEN)
         );
@@ -325,6 +335,7 @@ class Payone_Core_Model_Service_Paypal_Express_Checkout
         if (!$order) {
             return;
         }
+
         $this->_billingAgreement = $order->getPayment()->getBillingAgreement();
 
         switch ($order->getState()) {
@@ -339,6 +350,7 @@ class Payone_Core_Model_Service_Paypal_Express_Checkout
                 $order->sendNewOrderEmail();
                 break;
         }
+
         $this->_order = $order;
 
 
@@ -397,6 +409,7 @@ class Payone_Core_Model_Service_Paypal_Express_Checkout
         if ($this->factory === null) {
             $this->factory = Mage::getModel('payone_core/factory');
         }
+
         return $this->factory;
     }
 
@@ -419,6 +432,7 @@ class Payone_Core_Model_Service_Paypal_Express_Checkout
         if (!$localeCode || !in_array($localeCode, $this->_supportedImageLocales)) {
             return 'en_US';
         }
+
         return $localeCode;
     }
 
@@ -452,6 +466,7 @@ class Payone_Core_Model_Service_Paypal_Express_Checkout
         if ($this->getCustomerSession()->isLoggedIn()) {
             return Mage_Checkout_Model_Type_Onepage::METHOD_CUSTOMER;
         }
+
         if (!$this->_quote->getCheckoutMethod()) {
             if (Mage::helper('checkout')->isAllowedGuestCheckout($this->_quote)) {
                 $this->_quote->setCheckoutMethod(Mage_Checkout_Model_Type_Onepage::METHOD_GUEST);
@@ -459,6 +474,7 @@ class Payone_Core_Model_Service_Paypal_Express_Checkout
                 $this->_quote->setCheckoutMethod(Mage_Checkout_Model_Type_Onepage::METHOD_REGISTER);
             }
         }
+
         return $this->_quote->getCheckoutMethod();
     }
 
@@ -519,6 +535,7 @@ class Payone_Core_Model_Service_Paypal_Express_Checkout
         } elseif ($shipping) {
             $customerBilling->setIsDefaultShipping(true);
         }
+
         /**
          * @todo integration with dynamica attributes customer_dob, customer_taxvat, customer_gender
          */
@@ -566,6 +583,7 @@ class Payone_Core_Model_Service_Paypal_Express_Checkout
             $customer->addAddress($customerBilling);
             $billing->setCustomerAddress($customerBilling);
         }
+
         if ($shipping && ((!$shipping->getCustomerId() && !$shipping->getSameAsBilling())
                 || (!$shipping->getSameAsBilling() && $shipping->getSaveInAddressBook()))) {
             $customerShipping = $shipping->exportCustomerAddress();
@@ -576,11 +594,13 @@ class Payone_Core_Model_Service_Paypal_Express_Checkout
         if (isset($customerBilling) && !$customer->getDefaultBilling()) {
             $customerBilling->setIsDefaultBilling(true);
         }
+
         if ($shipping && isset($customerBilling) && !$customer->getDefaultShipping() && $shipping->getSameAsBilling()) {
             $customerBilling->setIsDefaultShipping(true);
         } elseif ($shipping && isset($customerShipping) && !$customer->getDefaultShipping()) {
             $customerShipping->setIsDefaultShipping(true);
         }
+
         $quote->setCustomer($customer);
 
         return $this;
@@ -617,6 +637,7 @@ class Payone_Core_Model_Service_Paypal_Express_Checkout
             $customer->sendNewAccountEmail();
             $this->getCustomerSession()->loginById($customer->getId());
         }
+
         return $this;
     }
 

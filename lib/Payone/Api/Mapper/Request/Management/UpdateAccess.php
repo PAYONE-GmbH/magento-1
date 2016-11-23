@@ -75,6 +75,7 @@ class Payone_Api_Mapper_Request_Management_UpdateAccess
         if ($invoicing == null) {
             return false;
         }
+
         if ($invoicing->hasItems()) {
             $currency = $request->getCurrency();
             $invoicingItems = $invoicing->getItems();
@@ -89,6 +90,7 @@ class Payone_Api_Mapper_Request_Management_UpdateAccess
                 $item->setPrRecurring($mappedPriceRecurring);
             }
         }
+
         return true;
     }
 

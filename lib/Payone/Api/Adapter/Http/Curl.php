@@ -68,6 +68,7 @@ class Payone_Api_Adapter_Http_Curl extends Payone_Api_Adapter_Http_Abstract
         else {
             $response = explode("\n", $result);
         }
+
         curl_close($curl);
 
         return $response;

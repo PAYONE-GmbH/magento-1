@@ -26,10 +26,12 @@
  * @param country
  * @param currency
  */
-function payoneSwitchOnlineBankTransfer(element, country, currency) {
+function payoneSwitchOnlineBankTransfer(element, country, currency) 
+{
     if (element == undefined) {
         return;
     }
+
     var ElementValue = element.value;
     var ElementValueSplit = ElementValue.split('_');
     var typeId = ElementValueSplit[0];
@@ -80,69 +82,81 @@ function payoneSwitchOnlineBankTransfer(element, country, currency) {
         enableBankGroupNl();
     }
 
-    function disableAll() {
+    function disableAll() 
+    {
         if(accountNumberWrap) {
             accountNumberWrap.hide();
             accountNumberInput.setAttribute("disabled", "disabled");
         }
+
         if(bankCodeWrap) {
             bankCodeWrap.hide();
             bankCodeInput.setAttribute("disabled", "disabled");
         }
+
         if(sepaIbanWrap) {
             sepaIbanWrap.hide();
             sepaIbanInput.setAttribute("disabled", "disabled");
         }
+
         if(sepaBicWrap) {
             sepaBicWrap.hide();
             sepaBicInput.setAttribute("disabled", "disabled");
         }
+
         if(bankGroupWrapAt) {
             bankGroupWrapAt.hide();
             bankGroupSelectAt.setAttribute("disabled", "disabled");
         }
+
         if(bankGroupWrapNl) {
             bankGroupWrapNl.hide();
             bankGroupSelectNl.setAttribute("disabled", "disabled");
         }
     }
 
-    function enableAccountNumber() {
+    function enableAccountNumber() 
+    {
         if(accountNumberWrap) {
             accountNumberWrap.show();
             accountNumberInput.removeAttribute("disabled");
         }
     }
 
-    function enableBankCode() {
+    function enableBankCode() 
+    {
         if(bankCodeWrap) {
             bankCodeWrap.show();
             bankCodeInput.removeAttribute("disabled");
         }
     }
 
-    function enableSepaIban() {
+    function enableSepaIban() 
+    {
         if(sepaIbanWrap) {
             sepaIbanWrap.show();
             sepaIbanInput.removeAttribute("disabled");
         }
     }
 
-    function enableSepaBic() {
+    function enableSepaBic() 
+    {
         if(sepaBicWrap) {
             sepaBicWrap.show();
             sepaBicInput.removeAttribute("disabled");
         }
     }
 
-    function enableBankGroupAt() {
+    function enableBankGroupAt() 
+    {
         if(bankGroupWrapAt) {
             bankGroupWrapAt.show();
             bankGroupSelectAt.removeAttribute("disabled");
         }
     }
 
-    function enableBankGroupNl() {
+    function enableBankGroupNl() 
+    {
         if(bankGroupWrapNl) {
             bankGroupWrapNl.show();
             bankGroupSelectNl.removeAttribute("disabled");
@@ -150,7 +164,8 @@ function payoneSwitchOnlineBankTransfer(element, country, currency) {
     }
 }
 
-function copyOnlineBankTransferSepaIban(code) {
+function copyOnlineBankTransferSepaIban(code) 
+{
     var input_sepa_iban_xxx_el = $(code + '_sepa_iban_xxx');
     var input_sepa_iban_el = $(code + '_sepa_iban');
     input_sepa_iban_el.value = input_sepa_iban_xxx_el.value;

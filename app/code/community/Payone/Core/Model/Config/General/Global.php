@@ -78,7 +78,7 @@ class Payone_Core_Model_Config_General_Global extends Payone_Core_Model_Config_A
      */
     public function init(array $data)
     {
-        if(array_key_exists('specificcountry',$data) && is_string($data['specificcountry']))
+        if(array_key_exists('specificcountry', $data) && is_string($data['specificcountry']))
         {
             $data['specificcountry_by_string'] = $data['specificcountry'];
             unset($data['specificcountry']);

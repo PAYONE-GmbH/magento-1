@@ -53,6 +53,7 @@ class Payone_Core_Model_Mapper_Abstract
         if ($this->factory === null) {
             $this->factory = new Payone_Core_Model_Factory();
         }
+
         return $this->factory;
     }
 
@@ -81,6 +82,7 @@ class Payone_Core_Model_Mapper_Abstract
         if ($this->helper === null) {
             $this->helper = $this->getFactory()->helper();
         }
+
         return $this->helper;
     }
 
@@ -100,6 +102,7 @@ class Payone_Core_Model_Mapper_Abstract
         if ($this->helperUrl === null) {
             $this->helperUrl = $this->getFactory()->helperUrl();
         }
+
         return $this->helperUrl;
     }
 

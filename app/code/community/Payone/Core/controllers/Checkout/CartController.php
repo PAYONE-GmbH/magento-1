@@ -40,6 +40,7 @@ class Payone_Core_Checkout_CartController extends Mage_Checkout_CartController
         if ($this->factory === null) {
             $this->factory = Mage::getModel('payone_core/factory');
         }
+
         return $this->factory;
     }
     
@@ -51,6 +52,7 @@ class Payone_Core_Checkout_CartController extends Mage_Checkout_CartController
         if ($this->helper === null) {
             $this->helper = $this->getFactory()->helper();
         }
+
         return $this->helper;
     }
     
@@ -132,6 +134,7 @@ class Payone_Core_Checkout_CartController extends Mage_Checkout_CartController
                 }
             }
         }
+
         return parent::indexAction();
     }
 

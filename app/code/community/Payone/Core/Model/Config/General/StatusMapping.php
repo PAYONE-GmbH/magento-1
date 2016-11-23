@@ -78,6 +78,7 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
             if (is_string($value)) {
                 $value = $this->initValue($value);
             }
+
             $this->setValue($key, $value);
         }
     }
@@ -107,6 +108,7 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
                 if (count($orderStateStatusArray) !== 2) {
                     continue;
                 }
+
                 $orderStatus = array(
                     'state' => $orderStateStatusArray[0],
                     'status' => $orderStateStatusArray[1]
@@ -127,6 +129,7 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
 
             $return[$txaction] = $orderStatus;
         }
+
         return $return;
     }
 
@@ -147,6 +150,7 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
         if (is_string($banktransfer)) {
             $banktransfer = $this->initValue($banktransfer);
         }
+
         $this->online_bank_transfer = $banktransfer;
     }
 
@@ -166,6 +170,7 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
         if (is_string($cash_on_delivery)) {
             $cash_on_delivery = $this->initValue($cash_on_delivery);
         }
+
         $this->cash_on_delivery = $cash_on_delivery;
     }
 
@@ -185,6 +190,7 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
         if (is_string($creditcard)) {
             $creditcard = $this->initValue($creditcard);
         }
+
         $this->creditcard = $creditcard;
     }
 
@@ -204,6 +210,7 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
         if (is_string($debit)) {
             $debit = $this->initValue($debit);
         }
+
         $this->debit_payment = $debit;
     }
 
@@ -223,6 +230,7 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
         if (is_string($invoice)) {
             $invoice = $this->initValue($invoice);
         }
+
         $this->invoice = $invoice;
     }
 
@@ -242,6 +250,7 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
         if (is_string($prepayment)) {
             $prepayment = $this->initValue($prepayment);
         }
+
         $this->advance_payment = $prepayment;
     }
 
@@ -261,6 +270,7 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
         if (is_string($wallet)) {
             $wallet = $this->initValue($wallet);
         }
+
         $this->wallet = $wallet;
     }
     
@@ -269,6 +279,7 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
         if (is_string($ratepay)) {
             $ratepay = $this->initValue($ratepay);
         }
+
         $this->ratepay = $ratepay;
     }
     
@@ -277,6 +288,7 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
         if (is_string($payolution)) {
             $payolution = $this->initValue($payolution);
         }
+
         $this->payolution = $payolution;
     }
 

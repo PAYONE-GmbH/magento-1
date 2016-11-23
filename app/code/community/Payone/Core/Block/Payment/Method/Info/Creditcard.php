@@ -61,7 +61,15 @@ class Payone_Core_Block_Payment_Method_Info_Creditcard
      */
     public function getCcExpMonth()
     {
-        return $this->getInfo()->getCcExpMonth();
+        $sMonth = $this->getInfo()->getCcExpMonth();
+        if(!$sMonth) {
+            $sDate = $this->getInfo()->getPayoneCardexpiredate();
+            if($sDate && strlen($sDate) == 4) {
+                $sMonth = substr($sDate, 2, 2);
+            }
+        }
+
+        return $sMonth;
     }
 
     /**
@@ -69,7 +77,15 @@ class Payone_Core_Block_Payment_Method_Info_Creditcard
      */
     public function getCcExpYear()
     {
-        return $this->getInfo()->getCcExpYear();
+        $sYear = $this->getInfo()->getCcExpYear();
+        if(!$sYear) {
+            $sDate = $this->getInfo()->getPayoneCardexpiredate();
+            if($sDate && strlen($sDate) == 4) {
+                $sYear = substr($sDate, 0, 2);
+            }
+        }
+
+        return $sYear;
     }
 
     /**

@@ -97,11 +97,13 @@ class Payone_Core_Model_Domain_Protocol_TransactionStatus extends Mage_Core_Mode
         if (count($allowedKeys)) {
             $filter = true;
         }
+
         $stringArray = array();
         foreach ($this->toArray() as $key => $value) {
             if ($filter and !in_array($key, $allowedKeys)) {
                 continue;
             }
+
             $stringArray[] = $key . '=' . $value;
         }
 
@@ -125,6 +127,7 @@ class Payone_Core_Model_Domain_Protocol_TransactionStatus extends Mage_Core_Mode
                 $arrRes[$attribute] = $this->_data[$attribute];
             }
         }
+
         return $arrRes;
     }
 
@@ -180,6 +183,7 @@ class Payone_Core_Model_Domain_Protocol_TransactionStatus extends Mage_Core_Mode
             );
             $aRawData = $this->__toArray($allowedKeys);
         }
+
         ksort($aRawData);
 
         return $aRawData;
@@ -304,13 +308,15 @@ class Payone_Core_Model_Domain_Protocol_TransactionStatus extends Mage_Core_Mode
         $this->setProcessingStatus(self::STATUS_ERROR);
     }
     
-    public function getRawRequestArray() {
+    public function getRawRequestArray() 
+    {
         if(!empty($this->_data['raw_request'])) {
             $aRaw = unserialize($this->_data['raw_request']);
             if($aRaw) {
                 return $aRaw;
             }
         }
+
         return false;
     }
 

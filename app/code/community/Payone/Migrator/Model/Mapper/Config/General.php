@@ -73,7 +73,7 @@ class Payone_Migrator_Model_Mapper_Config_General extends Payone_Migrator_Model_
     {
         $field = $this->getFieldFromPath($path);
 
-        if(!array_key_exists($field,$this->mappingArray)){
+        if(!array_key_exists($field, $this->mappingArray)){
             return null;
         }
 

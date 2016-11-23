@@ -166,6 +166,7 @@ class Payone_Api_Response_AddressCheck_Valid
             unset($aStreetExpl[0]);
             $sNewStreet2 = implode(' - ', $aStreetExpl);
         }
+
         $this->setStreet2($sNewStreet2);
         $this->street = $street;
     }

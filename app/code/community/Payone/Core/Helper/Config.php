@@ -95,7 +95,6 @@ class Payone_Core_Helper_Config
         // Add invoice_transmit to defaultConfig
         $defaultConfig['invoice_transmit'] = $invoiceTransmit;
 
-
         $config = $this->getFactory()->getModelDomainConfigPaymentMethod();
         $config->load($id);
         $config->loadMergedData();
@@ -140,6 +139,7 @@ class Payone_Core_Helper_Config
             $message = 'Payment method configuration with id "' . $configId . '" not found.';
             throw new Payone_Core_Exception_PaymentMethodConfigNotFound($message);
         }
+
         $config = $this->getConfigPaymentMethodById($configId, $order->getStoreId());
         return $config;
     }
@@ -158,6 +158,7 @@ class Payone_Core_Helper_Config
             $message = 'Payment method configuration with id "' . $configId . '" not found.';
             throw new Payone_Core_Exception_PaymentMethodConfigNotFound($message);
         }
+
         $config = $this->getConfigPaymentMethodById($configId, $quote->getStoreId());
         return $config;
     }
@@ -167,12 +168,17 @@ class Payone_Core_Helper_Config
      *
      * @param string $method
      * @param Mage_Sales_Model_Quote $quote
+     * @param int $iStoreId
      * @return Payone_Core_Model_Config_Payment_Method_Interface
      * @throws Payone_Core_Exception_PaymentMethodConfigNotFound
      */
-    public function getConfigPaymentMethodForQuote($method, Mage_Sales_Model_Quote $quote)
+    public function getConfigPaymentMethodForQuote($method, Mage_Sales_Model_Quote $quote, $iStoreId = null)
     {
-        $configPayment = $this->getConfigPayment($quote->getStoreId());
+        if($iStoreId === null) {
+            $iStoreId = $quote->getStoreId();
+        }
+
+        $configPayment = $this->getConfigPayment($iStoreId);
         $config = $configPayment->getMethodForQuote($method, $quote);
         return $config;
     }
@@ -194,6 +200,7 @@ class Payone_Core_Helper_Config
         if (empty($counter) or !is_numeric($counter)) {
             $counter = 0;
         }
+
         return $counter;
     }
 
@@ -221,6 +228,7 @@ class Payone_Core_Helper_Config
         if (empty($counter) or !is_numeric($counter)) {
             $counter = 0;
         }
+
         $counter += 1;
 
         $this->setCreditratingSampleCounter($counter, $storeId);

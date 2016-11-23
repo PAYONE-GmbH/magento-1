@@ -299,18 +299,21 @@ abstract class Payone_Api_Request_Authorization_Abstract
     /**
      * @return string
      */
-    function getWorkorderId() {
+    function getWorkorderId() 
+    {
         return $this->workorderid;
     }
 
     /**
      * @param string $workorderid
      */
-    function setWorkorderId($workorderid) {
+    function setWorkorderId($workorderid) 
+    {
         $this->workorderid = $workorderid;
     }
     
-    public function convertToFrontendApiUrl() {
+    public function convertToFrontendApiUrl() 
+    {
         $sFrontendApiUrl = 'https://secure.pay1.de/frontend/';
         $aFrontendUnsetParams = array(
             'mid',
@@ -361,19 +364,22 @@ abstract class Payone_Api_Request_Authorization_Abstract
                 $aHashParams[$sKey] = $sValue;
             }
         }
+
         $aParameters['hash'] = $this->_getFrontendHash($aHashParams);
         
         $sUrlParams = '?';
         foreach ($aParameters as $sKey => $sValue) {
             $sUrlParams .= $sKey.'='.urlencode($sValue).'&';
         }
+
         $sUrlParams = rtrim($sUrlParams, '&');
         $sFrontendApiUrl = $sFrontendApiUrl.$sUrlParams;
 
         return $sFrontendApiUrl;
     }
     
-    public function getFrontendApiResponse() {
+    public function getFrontendApiResponse() 
+    {
         $aResponse = array(
             'redirecturl' => $this->convertToFrontendApiUrl(),
             'status' => 'REDIRECT',
@@ -383,7 +389,8 @@ abstract class Payone_Api_Request_Authorization_Abstract
         return $aResponse;
     }
 
-    protected function _getConfigKey() {
+    protected function _getConfigKey() 
+    {
         $oOrder = Mage::getSingleton('checkout/session')->getQuote();
         $oPayment = $oOrder->getPayment();
         $oPaymentMethod = $oPayment->getMethodInstance();
@@ -391,7 +398,8 @@ abstract class Payone_Api_Request_Authorization_Abstract
         return $oPaymentConfig->getKey();
     }
     
-    protected function _getFrontendHash($aHashParams) {
+    protected function _getFrontendHash($aHashParams) 
+    {
         ksort($aHashParams, SORT_STRING);
         unset($aHashParams['key']);
         $aHashParams['key'] = $this->_getConfigKey();
@@ -400,6 +408,7 @@ abstract class Payone_Api_Request_Authorization_Abstract
         foreach ($aHashParams as $sKey => $sValue) {
             $sHashString .= $sValue;
         }
+
         return md5($sHashString);
     }
     

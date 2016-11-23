@@ -81,26 +81,35 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment
         $this->mapDefaultParameters($request);
         $paydata = new Payone_Api_Request_Parameter_Paydata_Paydata();
         if(null === $workOrderId) {
-            $paydata->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
-                array('key' => 'action', 'data' => Payone_Api_Enum_GenericpaymentAction::PAYPAL_ECS_SET_EXPRESSCHECKOUT)
-            ));
+            $paydata->addItem(
+                new Payone_Api_Request_Parameter_Paydata_DataItem(
+                    array('key' => 'action', 'data' => Payone_Api_Enum_GenericpaymentAction::PAYPAL_ECS_SET_EXPRESSCHECKOUT)
+                )
+            );
         } else {
-            $paydata->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
-                array('key' => 'action', 'data' => Payone_Api_Enum_GenericpaymentAction::PAYPAL_ECS_GET_EXPRESSCHECKOUTDETAILS)
-            ));
+            $paydata->addItem(
+                new Payone_Api_Request_Parameter_Paydata_DataItem(
+                    array('key' => 'action', 'data' => Payone_Api_Enum_GenericpaymentAction::PAYPAL_ECS_GET_EXPRESSCHECKOUTDETAILS)
+                )
+            );
             $request->setWorkorderId($workOrderId);
         }
+
         $request->setPaydata($paydata);
         $request->setAid($this->getConfigPayment()->getAid());
         $request->setClearingtype(Payone_Enum_ClearingType::WALLET);
         $request->setAmount($quote->getGrandTotal());
         $request->setCurrency($quote->getQuoteCurrencyCode());
-        $request->setWallet(new Payone_Api_Request_Parameter_Authorization_PaymentMethod_Wallet(array(
-            'wallettype' => Payone_Api_Enum_WalletType::PAYPAL_EXPRESS,
-            'successurl' => Mage::helper('payone_core/url')->getMagentoUrl('*/*/return'),
-            'errorurl' => Mage::helper('payone_core/url')->getMagentoUrl('*/*/error'),
-            'backurl' => Mage::helper('payone_core/url')->getMagentoUrl('*/*/cancel')
-        )));
+        $request->setWallet(
+            new Payone_Api_Request_Parameter_Authorization_PaymentMethod_Wallet(
+                array(
+                'wallettype' => Payone_Api_Enum_WalletType::PAYPAL_EXPRESS,
+                'successurl' => Mage::helper('payone_core/url')->getMagentoUrl('*/*/return'),
+                'errorurl' => Mage::helper('payone_core/url')->getMagentoUrl('*/*/error'),
+                'backurl' => Mage::helper('payone_core/url')->getMagentoUrl('*/*/cancel')
+                )
+            )
+        );
         return $request;
     }
 
@@ -146,35 +155,51 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment
          * set ratePay spefific parameters
          */
         $payData = new Payone_Api_Request_Parameter_Paydata_Paydata();
-        $payData->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
-            array('key' => 'action', 'data' => Payone_Api_Enum_GenericpaymentAction::RATEPAY_PROFILE)
-        ));
-        $payData->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
-            array('key' => 'action', 'data' => Payone_Api_Enum_GenericpaymentAction::RATEPAY_REQUEST_TYPE_CALCULATION)
-        ));
+        $payData->addItem(
+            new Payone_Api_Request_Parameter_Paydata_DataItem(
+                array('key' => 'action', 'data' => Payone_Api_Enum_GenericpaymentAction::RATEPAY_PROFILE)
+            )
+        );
+        $payData->addItem(
+            new Payone_Api_Request_Parameter_Paydata_DataItem(
+                array('key' => 'action', 'data' => Payone_Api_Enum_GenericpaymentAction::RATEPAY_REQUEST_TYPE_CALCULATION)
+            )
+        );
 
-        $payData->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
-            array('key' => 'shop_id', 'data' => $sRatePayShopId)
-        ));
+        $payData->addItem(
+            new Payone_Api_Request_Parameter_Paydata_DataItem(
+                array('key' => 'shop_id', 'data' => $sRatePayShopId)
+            )
+        );
 
-        $payData->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
-            array('key' => 'calculation_type', 'data' => $calculationType)
-        ));
+        $payData->addItem(
+            new Payone_Api_Request_Parameter_Paydata_DataItem(
+                array('key' => 'calculation_type', 'data' => $calculationType)
+            )
+        );
 
-        $payData->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
-            array('key' => 'customer_allow_credit_inquiry', 'data' => 'yes')
-        ));
+        $payData->addItem(
+            new Payone_Api_Request_Parameter_Paydata_DataItem(
+                array('key' => 'customer_allow_credit_inquiry', 'data' => 'yes')
+            )
+        );
 
         if($calculationType == 'calculation-by-rate'){
-            $payData->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
-                array('key' => 'rate', 'data' => $rate)
-            ));
+            $payData->addItem(
+                new Payone_Api_Request_Parameter_Paydata_DataItem(
+                    array('key' => 'rate', 'data' => $rate)
+                )
+            );
         }
+
         if($calculationType == 'calculation-by-time'){
-            $payData->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
-                array('key' => 'month', 'data' => $month)
-            ));
+            $payData->addItem(
+                new Payone_Api_Request_Parameter_Paydata_DataItem(
+                    array('key' => 'month', 'data' => $month)
+                )
+            );
         }
+
         $request->setPaydata($payData);
 
         $request->setClearingtype(Payone_Enum_ClearingType::RATEPAY);
@@ -204,17 +229,22 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment
      * @param $sCurrency
      * @return Payone_Api_Request_Genericpayment
      */
-    public function addRatePayParameters($sRatePayShopId, $sCurrency) {
+    public function addRatePayParameters($sRatePayShopId, $sCurrency) 
+    {
         $request = $this->getRequest();
         $this->mapDefaultParameters($request);
 
         $paydata = new Payone_Api_Request_Parameter_Paydata_Paydata();
-        $paydata->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
-            array('key' => 'action', 'data' => Payone_Api_Enum_GenericpaymentAction::RATEPAY_PROFILE)
-        ));
-        $paydata->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
-            array('key' => 'shop_id', 'data' => $sRatePayShopId)
-        ));
+        $paydata->addItem(
+            new Payone_Api_Request_Parameter_Paydata_DataItem(
+                array('key' => 'action', 'data' => Payone_Api_Enum_GenericpaymentAction::RATEPAY_PROFILE)
+            )
+        );
+        $paydata->addItem(
+            new Payone_Api_Request_Parameter_Paydata_DataItem(
+                array('key' => 'shop_id', 'data' => $sRatePayShopId)
+            )
+        );
 
         $request->setPaydata($paydata);
         $request->setAid($this->getConfigPayment()->getAid());
@@ -234,10 +264,12 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment
         if (strlen($date) > 0) {
             $date = substr($date, 0, 4) . substr($date, 5, 2) . substr($date, 8, 2);
         }
+
         return $date;
     }
     
-    public function addPayolutionPreCheckParameters($oQuote, $aRequestParams) {
+    public function addPayolutionPreCheckParameters($oQuote, $aRequestParams) 
+    {
         $request = $this->getRequest();
         $this->mapDefaultParameters($request);
 
@@ -245,6 +277,7 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment
         if ($oAddress->getCompany()) {
             $request->setCompany($oAddress->getCompany());
         }
+
         $request->setFirstname($oAddress->getFirstname());
         $request->setLastname($oAddress->getLastname());
         $request->setStreet($this->helper()->normalizeStreet($oAddress->getStreet()));
@@ -259,30 +292,65 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment
         } elseif($oQuote->getCustomerDob()) {
             $request->setBirthday($this->formatBirthday($oQuote->getCustomerDob()));
         }
+
         $request->setEmail($oQuote->getCustomerEmail());
         $request->setIp(Mage::helper('core/http')->getRemoteAddr());
         $request->setLanguage($this->helper()->getDefaultLanguage());
         
         $paydata = new Payone_Api_Request_Parameter_Paydata_Paydata();
-        $paydata->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
-            array('key' => 'action', 'data' => Payone_Api_Enum_GenericpaymentAction::PAYOLUTION_PRE_CHECK)
-        ));
-        $paydata->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
-            array('key' => 'payment_type', 'data' => Payone_Api_Enum_PayolutionType::getLongType($aRequestParams['payone_payolution_type']))
-        ));
+        $paydata->addItem(
+            new Payone_Api_Request_Parameter_Paydata_DataItem(
+                array('key' => 'action', 'data' => Payone_Api_Enum_GenericpaymentAction::PAYOLUTION_PRE_CHECK)
+            )
+        );
+        $paydata->addItem(
+            new Payone_Api_Request_Parameter_Paydata_DataItem(
+                array('key' => 'payment_type', 'data' => Payone_Api_Enum_PayolutionType::getLongType($aRequestParams['payone_payolution_type']))
+            )
+        );
         if(isset($aRequestParams['payone_trade_registry_number'])) {
-            $paydata->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
-                array('key' => 'b2b', 'data' => 'yes')
-            ));
-            $paydata->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem(
-                array('key' => 'company_trade_registry_number', 'data' => $aRequestParams['payone_trade_registry_number'])
-            ));
+            $paydata->addItem(
+                new Payone_Api_Request_Parameter_Paydata_DataItem(
+                    array('key' => 'b2b', 'data' => 'yes')
+                )
+            );
+            $paydata->addItem(
+                new Payone_Api_Request_Parameter_Paydata_DataItem(
+                    array('key' => 'company_trade_registry_number', 'data' => $aRequestParams['payone_trade_registry_number'])
+                )
+            );
         }
+
         $request->setPaydata($paydata);
         $request->setAid($this->getConfigPayment()->getAid());
         $request->setCurrency($oQuote->getQuoteCurrencyCode());
         $request->setClearingtype(Payone_Enum_ClearingType::FINANCING);
         $request->setFinancingType($aRequestParams['payone_payolution_type']);
+        return $request;
+    }
+    
+    public function addPayolutionCalculationParameters($oQuote) 
+    {
+        $request = $this->getRequest();
+        $this->mapDefaultParameters($request);
+
+        $oAddress = $oQuote->getBillingAddress();
+        $request->setCountry($oAddress->getCountry());
+        $request->setLastname($oAddress->getLastname());
+        $request->setAmount($oQuote->getGrandTotal());
+        $request->setApiVersion('3.10');
+        
+        $paydata = new Payone_Api_Request_Parameter_Paydata_Paydata();
+        $paydata->addItem(
+            new Payone_Api_Request_Parameter_Paydata_DataItem(
+                array('key' => 'action', 'data' => Payone_Api_Enum_GenericpaymentAction::PAYOLUTION_CALCULATION)
+            )
+        );
+        $request->setPaydata($paydata);
+        $request->setAid($this->getConfigPayment()->getAid());
+        $request->setCurrency($oQuote->getQuoteCurrencyCode());
+        $request->setClearingtype(Payone_Enum_ClearingType::FINANCING);
+        $request->setFinancingType(Payone_Api_Enum_PayolutionType::PYS);
         return $request;
     }
 

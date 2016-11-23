@@ -490,6 +490,26 @@ interface Payone_Core_Model_Config_Payment_Method_Interface
     public function getCompanyName();
     
     /**
+     * @param string $installment_draft_user
+     */
+    public function setInstallmentDraftUser($installment_draft_user);
+
+    /**
+     * @return string
+     */
+    public function getInstallmentDraftUser();
+    
+    /**
+     * @param string $installment_draft_password
+     */
+    public function setInstallmentDraftPassword($installment_draft_password);
+
+    /**
+     * @return string
+     */
+    public function getInstallmentDraftPassword();
+    
+    /**
      * @param bool $b2b_mode
      */
     public function setB2bMode($b2b_mode);

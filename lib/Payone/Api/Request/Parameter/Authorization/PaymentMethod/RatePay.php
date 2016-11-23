@@ -104,7 +104,8 @@ class Payone_Api_Request_Parameter_Authorization_PaymentMethod_RatePay
     /**
      * @param Payone_Api_Request_Parameter_Paydata_Paydata $paydata
      */
-    public function setPaydata($paydata) {
+    public function setPaydata($paydata) 
+    {
         $this->paydata = $paydata;
     }
 
@@ -112,7 +113,8 @@ class Payone_Api_Request_Parameter_Authorization_PaymentMethod_RatePay
      * 
      * @return Payone_Api_Request_Parameter_Paydata_Paydata
      */
-    public function getPaydata() {
+    public function getPaydata() 
+    {
         return $this->paydata;
     }
     

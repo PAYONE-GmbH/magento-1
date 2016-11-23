@@ -109,6 +109,7 @@ class Payone_Core_Block_Adminhtml_Sales_Order_View_Tab_TransactionStatus
             $transactionStatusCollection->getByOrder($order);
             Mage::register('payone_core_protocol_transactionstatus_collection', $transactionStatusCollection);
         }
+
         return Mage::registry('payone_core_protocol_transactionstatus_collection');
     }
 
@@ -122,7 +123,8 @@ class Payone_Core_Block_Adminhtml_Sales_Order_View_Tab_TransactionStatus
                 'type' => 'text',
                 'index' => 'id',
                 'filter' => false,
-            ));
+            )
+        );
 
         $this->addColumn(
             'txid',
@@ -131,7 +133,8 @@ class Payone_Core_Block_Adminhtml_Sales_Order_View_Tab_TransactionStatus
                 'width' => '200px',
                 'type' => 'text',
                 'index' => 'txid',
-            ));
+            )
+        );
 
         $this->addColumn(
             'reference',
@@ -142,7 +145,8 @@ class Payone_Core_Block_Adminhtml_Sales_Order_View_Tab_TransactionStatus
                 'sortable' => false,
                 'filter' => false,
                 'index' => 'reference',
-            ));
+            )
+        );
 
         $this->addColumn(
             'txaction',
@@ -151,7 +155,8 @@ class Payone_Core_Block_Adminhtml_Sales_Order_View_Tab_TransactionStatus
                 'index' => 'txaction',
                 'type' => 'options',
                 'options' => $this->getPayoneFactory()->getModelSystemConfigTransactionStatus()->toSelectArray()
-            ));
+            )
+        );
 
         $this->addColumn(
             'txtime',
@@ -162,7 +167,8 @@ class Payone_Core_Block_Adminhtml_Sales_Order_View_Tab_TransactionStatus
                 'sortable' => false,
                 'filter' => false,
                 'width' => '80px',
-            ));
+            )
+        );
 
         $this->addColumn(
             'sequencenumber',
@@ -173,7 +179,8 @@ class Payone_Core_Block_Adminhtml_Sales_Order_View_Tab_TransactionStatus
                 'filter' => false,
                 'type' => 'text',
                 'width' => '80px',
-            ));
+            )
+        );
 
         $this->addColumn(
             'clearingtype',
@@ -183,7 +190,8 @@ class Payone_Core_Block_Adminhtml_Sales_Order_View_Tab_TransactionStatus
                 'sortable' => false,
                 'filter' => false,
                 'type' => 'text',
-            ));
+            )
+        );
 
         $this->addColumn(
             'mode',
@@ -193,7 +201,8 @@ class Payone_Core_Block_Adminhtml_Sales_Order_View_Tab_TransactionStatus
                 'sortable' => false,
                 'filter' => false,
                 'type' => 'text',
-            ));
+            )
+        );
 
         $this->addColumn(
             'portalid',
@@ -203,7 +212,8 @@ class Payone_Core_Block_Adminhtml_Sales_Order_View_Tab_TransactionStatus
                 'sortable' => false,
                 'filter' => false,
                 'type' => 'text',
-            ));
+            )
+        );
 
         $this->addColumn(
             'receivable',
@@ -213,7 +223,8 @@ class Payone_Core_Block_Adminhtml_Sales_Order_View_Tab_TransactionStatus
                 'sortable' => false,
                 'filter' => false,
                 'type' => 'text',
-            ));
+            )
+        );
 
         $this->addColumn(
             'balance',
@@ -223,7 +234,8 @@ class Payone_Core_Block_Adminhtml_Sales_Order_View_Tab_TransactionStatus
                 'sortable' => false,
                 'filter' => false,
                 'type' => 'text',
-            ));
+            )
+        );
 
         $this->addColumn(
             'created_at',
@@ -234,7 +246,8 @@ class Payone_Core_Block_Adminhtml_Sales_Order_View_Tab_TransactionStatus
                 'width' => '80px',
                 'filter' => false,
                 'renderer' => 'payone_core/adminhtml_widget_grid_column_renderer_datetime',
-            ));
+            )
+        );
 
         $this->addColumn(
             'updated_at',
@@ -245,7 +258,8 @@ class Payone_Core_Block_Adminhtml_Sales_Order_View_Tab_TransactionStatus
                 'width' => '80px',
                 'filter' => false,
                 'renderer' => 'payone_core/adminhtml_widget_grid_column_renderer_datetime',
-            ));
+            )
+        );
 
         return parent::_prepareColumns();
     }

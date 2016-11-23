@@ -475,63 +475,6 @@
                         </paypal_express_checkout_image>
                     </fields>
                 </payment_paypal_express_checkout>
-                <parameter_narrative_text>
-                    <label>Narrative Text</label>
-                    <frontend_type>text</frontend_type>
-                    <sort_order>120</sort_order>
-                    <show_in_default>1</show_in_default>
-                    <show_in_website>1</show_in_website>
-                    <show_in_store>1</show_in_store>
-                    <fields>
-                        <hint translate="label">
-                            <label>Narrative Text</label>
-                            <sort_order>0</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                            <hint>
-                                <template>payone/core/system/config/tooltip/general/narrative_text.phtml</template>
-                            </hint>
-                            <frontend_model>payone_core/adminhtml_system_config_form_field_info</frontend_model>
-                        </hint>
-                        <creditcard>
-                            <label>Creditcard</label>
-                            <comment>Maximum 81 digits. Placeholders: {{order_increment_id}}</comment>
-                            <frontend_type>textarea</frontend_type>
-                            <sort_order>10</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </creditcard>
-                        <debit_payment>
-                            <label>Debit Payment</label>
-                            <comment>Maximum 3 lines à 27 digits. Placeholders: {{order_increment_id}}</comment>
-                            <frontend_type>textarea</frontend_type>
-                            <sort_order>20</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </debit_payment>
-                        <!--paydirekt>
-                            <label>Paydirekt</label>
-                            <comment>Maximum 37 digits. Placeholders: {{order_increment_id}}</comment>
-                            <frontend_type>textarea</frontend_type>
-                            <sort_order>30</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </paydirekt-->
-                        <paypal_express>
-                            <label>Paypal Express</label>
-                            <comment>Maximum 81 digits. Placeholders: {{order_increment_id}}. This is an advanced feature that has to be seperately activated by PAYONE for your merchant account!</comment>
-                            <frontend_type>textarea</frontend_type>
-                            <sort_order>40</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </paypal_express>
-                    </fields>
-                </parameter_narrative_text>
             </groups>
         </payone_general>
 
@@ -626,6 +569,15 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </max_order_total>
+                        <narrative_text>
+                            <label>Narrative Text</label>
+                            <comment>Maximum 81 digits. Placeholders: {{order_increment_id}}</comment>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>75</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </narrative_text>
                         <mode>
                             <label>Mode</label>
                             <frontend_type>select</frontend_type>
@@ -1063,11 +1015,29 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </company_name>
+                        <installment_draft_user translate="label,tooltip">
+                            <label>Installment Draft Username</label>
+                            <tooltip>This is needed if you use Payolution installment payments, to offer the download of the Installment-Contract-Draft.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>53</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </installment_draft_user>
+                        <installment_draft_password translate="label,tooltip">
+                            <label>Installment Draft Password</label>
+                            <tooltip>This is needed if you use Payolution installment payments, to offer the download of the Installment-Contract-Draft.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>54</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </installment_draft_password>
                         <b2b_mode translate="label">
                             <label>B2B mode</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>53</sort_order>
+                            <sort_order>55</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -1076,7 +1046,7 @@
                             <label>Type</label>
                             <frontend_type>multiselect</frontend_type>
                             <source_model>payone_core/system_config_payolutionType</source_model>
-                            <sort_order>54</sort_order>
+                            <sort_order>56</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>

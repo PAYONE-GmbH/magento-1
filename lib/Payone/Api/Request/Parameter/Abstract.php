@@ -77,6 +77,7 @@ abstract class Payone_Api_Request_Parameter_Abstract
                 $result = array_merge($result, $data->toArray());
             }
         }
+
         return $result;
     }
 
@@ -89,6 +90,7 @@ abstract class Payone_Api_Request_Parameter_Abstract
         if (property_exists($this, $property)) {
             return $this->$property;
         }
+
         return null;
     }
 
@@ -103,6 +105,7 @@ abstract class Payone_Api_Request_Parameter_Abstract
             $this->$property = $value;
             return true;
         }
+
         return null;
     }
 

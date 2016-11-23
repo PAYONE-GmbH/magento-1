@@ -58,13 +58,16 @@ class Payone_Core_Block_Payment_Method_Info_Abstract
                 $quote = $paymentInfo->getQuote();
                 $config = $this->helperConfig()->getConfigPaymentMethodByQuote($quote);
             }
+
             if(empty($config))
             {
                 $message = 'Payment method configuration not found.';
                 throw new Payone_Core_Exception_PaymentMethodConfigNotFound($message);
             }
+
             $this->paymentConfig = $config;
         }
+
         return $this->paymentConfig;
     }
 
@@ -109,6 +112,7 @@ class Payone_Core_Block_Payment_Method_Info_Abstract
         if ($this->factory === null) {
             $this->factory = new Payone_Core_Model_Factory();
         }
+
         return $this->factory;
     }
 
@@ -116,13 +120,15 @@ class Payone_Core_Block_Payment_Method_Info_Abstract
      * @param string $text
      * @return string
      */
-    public function strToXXX($text) {
+    public function strToXXX($text) 
+    {
         if(!empty($text)) {
             $result = str_repeat('x', strlen($text) - 8);
             $result = substr($text, 0, 4).$result.substr($text, -4);
         } else {
             $result = $text;
         }
+
         return $result;
     }
 }

@@ -47,6 +47,7 @@ class Payone_Core_Checkout_Onepage_PaymentController extends Payone_Core_Control
         } catch (Exception $e) {
             $this->handleException($e);
         }
+
         // Redirect customer to cart
         $this->_redirect('checkout/cart');
     }
@@ -64,7 +65,8 @@ class Payone_Core_Checkout_Onepage_PaymentController extends Payone_Core_Control
 
             if ($success === true) {
                 // Payment is okay. Redirect to standard Magento success page:
-                $this->_redirect('checkout/onepage/success', array(
+                $this->_redirect(
+                    'checkout/onepage/success', array(
                     '_nosid' => true,
                     '_secure' => Mage::app()->getStore()->isCurrentlySecure())
                 );
@@ -91,6 +93,7 @@ class Payone_Core_Checkout_Onepage_PaymentController extends Payone_Core_Control
         } catch (Exception $e) {
             $this->handleException($e);
         }
+
         // Redirect customer to cart
         $this->_redirect('checkout/cart');
     }
@@ -217,4 +220,55 @@ class Payone_Core_Checkout_Onepage_PaymentController extends Payone_Core_Control
         // Log exceptions, any messages relevant to customer have been set to the session by service
         Mage::logException($exception);
     }
+    
+    protected function _getPaymentConfig()
+    {
+        $sPaymentConfigId = $this->getRequest()->getParam('payment_config_id');
+        
+        $oConfig = $this->getFactory()->helperConfig()->getConfigPaymentMethodById($sPaymentConfigId);
+
+        return $oConfig;
+    }
+    
+    protected function _getInstallmentDraftUrl()
+    {
+        $iDuration = $this->getRequest()->getParam('duration');
+        
+        $checkoutSession = $this->getFactory()->getSingletonCheckoutSession();
+        $aDraftLinks = $checkoutSession->getInstallmentDraftLinks();
+        
+        if(isset($aDraftLinks[$iDuration])) {
+            return $aDraftLinks[$iDuration];
+        }
+
+        return false;
+    }
+    
+    public function getInstallmentDraftAction()
+    {
+        $sUrl = $this->_getInstallmentDraftUrl();
+        if ($sUrl) {
+            $oConfig = $this->_getPaymentConfig();
+            $sUser = $oConfig->getInstallmentDraftUser();
+            $sPassword = $oConfig->getInstallmentDraftPassword();
+
+            $sDownloadUrl = str_ireplace('https://', 'https://'.$sUser.':'.$sPassword.'@', $sUrl);
+
+            $sFilename = $this->helper()->__('terms-of-payment').'.pdf';
+
+            $oContent = file_get_contents($sDownloadUrl);
+            if($oContent) {
+                $this->getResponse()
+                    ->clearHeaders()
+                    ->setHeader('Content-Type', 'application/pdf')
+                    ->setHeader('Content-Disposition', 'attachment; filename="'.$sFilename.'"')
+                    ->setBody($oContent);
+                return;
+            }
+        }
+
+        Mage::getSingleton('customer/session')->addError($this->helper()->__("Error trying to download the pdf"));
+        $this->_redirect('');
+    }
+    
 }

@@ -49,6 +49,7 @@ class Payone_Core_Block_Adminhtml_Widget_Grid_Column_Renderer_Datetime
                 return parent::render($row);
             }
         }
+
         return $this->getColumn()->getDefault();
     }
 }

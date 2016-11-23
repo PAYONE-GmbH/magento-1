@@ -37,7 +37,8 @@ class Payone_Core_Model_Observer_Config_Protect
     /**
      * @param Varien_Event_Observer $observer
      */
-    public function checkAllStatuses(Varien_Event_Observer $observer){
+    public function checkAllStatuses(Varien_Event_Observer $observer)
+    {
 
         $serviceProtectCheck = $this->getFactory()->getServiceConfigProtectCheck();
         $serviceProtectCheck->setScopeId(0);

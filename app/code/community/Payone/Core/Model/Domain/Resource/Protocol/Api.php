@@ -32,7 +32,7 @@
  */
 class Payone_Core_Model_Domain_Resource_Protocol_Api
     extends Mage_Core_Model_Mysql4_Abstract
-    {
+{
         /**
          *
          */

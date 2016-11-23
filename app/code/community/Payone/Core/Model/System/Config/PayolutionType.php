@@ -31,7 +31,7 @@ class Payone_Core_Model_System_Config_PayolutionType extends Payone_Core_Model_S
         $types = array(
             Payone_Api_Enum_PayolutionType::PYV => Payone_Api_Enum_PayolutionType::PYV,
             #Payone_Api_Enum_PayolutionType::PYM => Payone_Api_Enum_PayolutionType::PYM,
-            #Payone_Api_Enum_PayolutionType::PYS => Payone_Api_Enum_PayolutionType::PYS,
+            Payone_Api_Enum_PayolutionType::PYS => Payone_Api_Enum_PayolutionType::PYS,
             Payone_Api_Enum_PayolutionType::PYD => Payone_Api_Enum_PayolutionType::PYD,
         );
 

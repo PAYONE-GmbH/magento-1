@@ -86,7 +86,6 @@ class Payone_Core_Block_Adminhtml_System_Config_Form_Payment_Method
                         $value = serialize($value);
                     $this->_configRoot->setNode($path, $value, true);
                 }
-
             }
         }
 
@@ -164,6 +163,7 @@ class Payone_Core_Block_Adminhtml_System_Config_Form_Payment_Method
         if (!empty($group->comment)) {
             $fieldsetConfig['comment'] = Mage::helper('payone_core')->__((string)$group->comment);
         }
+
         if (!empty($group->expanded)) {
             $fieldsetConfig['expanded'] = (bool)$group->expanded;
         }
@@ -185,7 +185,7 @@ class Payone_Core_Block_Adminhtml_System_Config_Form_Payment_Method
                 /** @var $e Mage_Core_Model_Config_Element */
                 /** @var $configElement Mage_Core_Model_Config_Element */
                 $configElement = $group->fields->$name;
-                if( empty($configElement)
+                if(empty($configElement)
                     || !$configElement->hasChildren())
                         $group->fields->appendChild($e);
             }

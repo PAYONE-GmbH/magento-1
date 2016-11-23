@@ -74,6 +74,7 @@ class Payone_Core_Block_Payment_Method_Form_SafeInvoice
                 $preselectPossible = true;
             }
         }
+
         if ($preselectPossible) {
             return $preselectedConfigId;
         }
@@ -114,6 +115,7 @@ class Payone_Core_Block_Payment_Method_Form_SafeInvoice
                 }
             }
         }
+
         return false;
     }
 }

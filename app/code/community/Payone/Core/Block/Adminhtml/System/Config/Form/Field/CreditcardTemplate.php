@@ -79,18 +79,24 @@ class Payone_Core_Block_Adminhtml_System_Config_Form_Field_CreditcardTemplate
      */
     protected function _prepareToRender()
     {
-        $this->addColumn('Number_type', array(
+        $this->addColumn(
+            'Number_type', array(
             'label' =>'',
             'style' => '',
-        ));
-        $this->addColumn('Number_count', array(
+            )
+        );
+        $this->addColumn(
+            'Number_count', array(
             'label' =>'',
             'style' => '',
-        ));
-        $this->addColumn('Number_max', array(
+            )
+        );
+        $this->addColumn(
+            'Number_max', array(
             'label' =>'',
             'style' => '',
-        ));
+            )
+        );
         $this->_addAfter = false;
         $this->_addButtonLabel = Mage::helper('payone_core')->__('Add');
         parent::_prepareToRender();
@@ -109,7 +115,7 @@ class Payone_Core_Block_Adminhtml_System_Config_Form_Field_CreditcardTemplate
             $modelConfigCode = $this->getFactory()->getModelSystemConfigTransactionStatus();
             $options = $modelConfigCode->toOptionArray();
 
-            $rendered = $this->prepareCellTemplate($columnName,$selectType,$options);
+            $rendered = $this->prepareCellTemplate($columnName, $selectType, $options);
         }
         else
         {
@@ -119,7 +125,8 @@ class Payone_Core_Block_Adminhtml_System_Config_Form_Field_CreditcardTemplate
         return $rendered;
     }
 
-    public function getCCFields() {
+    public function getCCFields() 
+    {
         return array(
             'Number',
             'CVC',
@@ -128,31 +135,36 @@ class Payone_Core_Block_Adminhtml_System_Config_Form_Field_CreditcardTemplate
         );
     }
     
-    public function getCCStyles() {
+    public function getCCStyles() 
+    {
         return array(
             'standard' => Mage::helper('payone_core')->__('Standard'),
             'custom' => Mage::helper('payone_core')->__('Custom'),
         );
     }
     
-    public function getCCTypes($sField) {
+    public function getCCTypes($sField) 
+    {
         $aTypes = array();
         if($sField == 'Month' || $sField == 'Year') {
             $aTypes['select'] = Mage::helper('payone_core')->__('Select');
         }
+
         $aTypes['tel'] = Mage::helper('payone_core')->__('Numeric');
         $aTypes['password'] = Mage::helper('payone_core')->__('Password');
         $aTypes['text'] = Mage::helper('payone_core')->__('Text');
         return $aTypes;
     }
     
-    public function fcpoGetValue($sIdent) {
+    public function fcpoGetValue($sIdent) 
+    {
         $aValues = $this->getElement()->getValue();
         if(isset($aValues[$sIdent])) {
             return $aValues[$sIdent];
         } elseif(isset($this->_aFcpoDefaultStringConf[$sIdent])) {
             return $this->_aFcpoDefaultStringConf[$sIdent];
         }
+
         return '';
     }
     
@@ -181,6 +193,7 @@ class Payone_Core_Block_Adminhtml_System_Config_Form_Field_CreditcardTemplate
                 $this->_aTranslations = $aTranslations[$sLang];
             }
         }
+
         return $this->_aTranslations;
     }
     
@@ -190,6 +203,7 @@ class Payone_Core_Block_Adminhtml_System_Config_Form_Field_CreditcardTemplate
         if(count($aTranslations) > 0) {
             return $this->_getShopLanguage();
         }
+
         return false;
     }
     

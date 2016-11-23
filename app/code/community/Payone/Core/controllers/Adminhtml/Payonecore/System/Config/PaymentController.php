@@ -33,6 +33,8 @@
 class Payone_Core_Adminhtml_Payonecore_System_Config_PaymentController
     extends Payone_Core_Controller_Adminhtml_Abstract
 {
+    protected $acl_resource = 'payone/configuration/payment';
+    
     /**
      * @return Payone_Core_Adminhtml_System_Config_PaymentController
      */
@@ -98,6 +100,7 @@ class Payone_Core_Adminhtml_Payonecore_System_Config_PaymentController
             if (!empty($data)) {
                 $model->setData($data);
             }
+
             $model->setWebsite($website);
             $model->setStore($store);
             $model->setCode($type);
@@ -162,6 +165,7 @@ class Payone_Core_Adminhtml_Payonecore_System_Config_PaymentController
                 return;
             }
         }
+
         Mage::getSingleton('adminhtml/session')->addError(
             $this->helper()->__('Unable to find PaymentMethod-Config to save.')
         );
@@ -184,7 +188,7 @@ class Payone_Core_Adminhtml_Payonecore_System_Config_PaymentController
             try {
                 if ($this->determineActiveScope($website, $store) != 'default') {
                    // Deleting payment configs is only allowed in default scope, go back to grid.
-                   $this->_redirect('*/*/index',  array('website' => $website, 'store' => $store));
+                   $this->_redirect('*/*/index', array('website' => $website, 'store' => $store));
                     return;
                 }
 
@@ -208,6 +212,7 @@ class Payone_Core_Adminhtml_Payonecore_System_Config_PaymentController
                 $this->_redirect('*/*/edit', array('id' => $id, '_current' => true));
             }
         }
+
         $this->_redirect('*/*/', array('_current' => true));
     }
 
