@@ -763,10 +763,9 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
 
     /**
      * Returns the narrative text and substitutes the placeholder if neccessary
-     * @param $type
      * @return string
      */
-    protected function getNarrativeText($type)
+    protected function getNarrativeText()
     {
         ///@todo Paydirekt testen - NUR increment id erlaubt???
         $narrativeText = $this->configPayment->getNarrativeText();
