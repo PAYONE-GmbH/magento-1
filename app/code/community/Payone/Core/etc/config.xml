@@ -24,7 +24,7 @@
 <config>
     <modules>
         <Payone_Core>
-            <version>3.7.0</version>
+            <version>3.7.3</version>
         </Payone_Core>
     </modules>
 
@@ -255,6 +255,14 @@
                     <!-- Payolution installment duration -->
                     <to_order_payment>*</to_order_payment>
                 </payone_payolution_installment_duration>
+                <payone_wallet_type>
+                    <!-- Wallet Type -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_wallet_type>
+                <payone_ratepay_type>
+                    <!-- Ratepay Type -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_ratepay_type>
             </sales_convert_quote_payment>
             <sales_convert_quote_address>
                 <payone_addresscheck_score>

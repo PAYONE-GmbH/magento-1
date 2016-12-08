@@ -86,7 +86,7 @@
 "Required when using Klarna","Pflicht bei Verwendung von Klarna"
 "Klarna Campaign Code","Klarna Kampagnen-Code"
 "Save payment data for logged in customer","Zahlungsdaten für angemeldete Benutzer speichern"
-"Sofort-Ueberweisung: Display IBAN/BIC inputs","Sofort-Ueberweisung: IBAN/BIC Felder anzeigen"
+"SOFORT Ueberweisung: Display IBAN/BIC inputs","SOFORT Überweisung: IBAN/BIC Felder anzeigen"
 "Scope","Geltungsbereich"
 "Countries","Länder"
 "Fee","Gebühr"
@@ -398,7 +398,7 @@
 "MANAGEMANDATE","Mandatserteilung (managemandate)"
 "GETFILE","Download Mandat als PDF (getfile)"
 
-"INSTANT_MONEY_TRANSFER","Sofort-Überweisung"
+"INSTANT_MONEY_TRANSFER","SOFORT Überweisung"
 "GIROPAY","giropay"
 "EPS_ONLINE_BANK_TRANSFER","eps Online-Überweisung"
 "POSTFINANCE_EFINANCE","PostFinance E-Finance"
