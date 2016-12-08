@@ -767,7 +767,6 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
      */
     protected function getNarrativeText()
     {
-        ///@todo Paydirekt testen - NUR increment id erlaubt???
         $narrativeText = $this->configPayment->getNarrativeText();
 
         $substitutionArray = array(

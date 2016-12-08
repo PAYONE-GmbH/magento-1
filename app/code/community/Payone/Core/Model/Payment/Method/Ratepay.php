@@ -222,6 +222,21 @@ class Payone_Core_Model_Payment_Method_Ratepay extends Payone_Core_Model_Payment
         return $oQuote;
     }
     
+    protected function _getApplicableRatepayShopIds($oQuote)
+    {
+        $aShopIds = array();
+        
+        $configPayment = $this->getConfigForQuote($oQuote);
+        $aRatepayConfig = $configPayment->getRatepayConfig();
+        foreach ($aRatepayConfig as $aConfig) {
+            if (isset($aConfig['ratepay_shopid'])) {
+                $aShopIds[] = $aConfig['ratepay_shopid'];
+            }
+        }
+        
+        return $aShopIds;
+    }
+    
     public function getMatchingRatePayConfig() 
     {
         if($this->_aRatePayShopConfig === null) {
@@ -235,11 +250,14 @@ class Payone_Core_Model_Payment_Method_Ratepay extends Payone_Core_Model_Payment
                 $sTable = $oResource->getTableName($this->_sTableName);
                 $blAddressesAreEqual = $this->helper()->addressesAreEqual($oQuote->getBillingAddress(), $oQuote->getShippingAddress());
 
+                $aRatepayShopIds = $this->_getApplicableRatepayShopIds($oQuote);
+
                 $sQuery = " SELECT
                                 shop_id
                             FROM
                                 {$sTable}
                             WHERE 
+                                shop_id IN ('".implode("','", $aRatepayShopIds)."') AND
                                 {$oQuote->getGrandTotal()} BETWEEN tx_limit_invoice_min AND tx_limit_invoice_max AND
                                 currency = {$oRead->quote($oQuote->getQuoteCurrencyCode())} AND
                                 country_code_billing = {$oRead->quote($oQuote->getBillingAddress()->getCountryId())}";
@@ -249,6 +267,7 @@ class Payone_Core_Model_Payment_Method_Ratepay extends Payone_Core_Model_Payment
                 }
 
                 $sQuery .= " LIMIT 1";
+
                 $sShopId = $oRead->fetchOne($sQuery);
                 if($sShopId) {
                     $this->_aRatePayShopConfig = $this->getRatePayConfigById($sShopId);
