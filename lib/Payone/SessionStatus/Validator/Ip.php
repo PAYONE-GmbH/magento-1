@@ -105,20 +105,9 @@ class Payone_SessionStatus_Validator_Ip
      */
     public function getRemoteAddress()
     {
-        $remoteAddr = filter_input(INPUT_SERVER, 'REMOTE_ADDR', FILTER_SANITIZE_STRING);
-        if ($this->getProxyCheckEnabled() == 1) {
-            $proxy = filter_input(INPUT_SERVER, 'HTTP_X_FORWARDED_FOR', FILTER_SANITIZE_STRING);
-            if(!empty($proxy)) {
-                $proxyIps = explode(',', $proxy);
-                $relevantIp = array_shift($proxyIps);
-                $relevantIp = trim($relevantIp);
-                if (!empty($relevantIp)) {
-                    return $relevantIp;
-                }
-            }
-        }
-
-        return $remoteAddr;
+        $blCheckProxy = (bool)$this->getProxyCheckEnabled();
+        
+        return Mage::app()->getRequest()->getClientIp($blCheckProxy);
 
     }
 
