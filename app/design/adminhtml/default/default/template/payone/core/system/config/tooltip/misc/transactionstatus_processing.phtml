@@ -1,0 +1,49 @@
+<?php
+/**
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the GNU General Public License (GPL 3)
+ * that is bundled with this package in the file LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Payone_Core to newer
+ * versions in the future. If you wish to customize Payone_Core for your
+ * needs please refer to http://www.payone.de for more information.
+ *
+ * @category        Payone
+ * @package         design_adminhtml_default_default
+ * @subpackage      template
+ * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
+ * @author          Matthias Walter <info@noovias.com>
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.noovias.com
+ */
+?>
+<b><?php echo $this->__('Here you can configure the time intervals in which the transaction messages from the PAYONE Platform will be processed.'); ?>
+</b><br>
+<br>
+<ul class="payone-config-warning">
+    <li class="payone-config-warning-content"><span><?php echo $this->__('Please make sure that cron jobs are configured and working correctly in order to use this feature.'); ?><span></li>
+</ul>
+<div class="field-name"><?php echo $this->__('Cron Expression'); ?>'</div>
+<div class="field-description">
+	<?php echo $this->__('Define the time interval for processing here.'); ?>
+	<?php echo $this->__('An explanation of this expression can be found here: <a href="http://en.wikipedia.org/wiki/Cron#CRON_expression" target="_blank">Cron Expression</a>'); ?>
+    <br>
+</div>
+<br>
+<div class="field-name"><?php echo $this->__('Valid PAYONE IPs'); ?></div>
+<div class="field-description">
+	<?php echo $this->__('Define the IPs that are allowed to trigger transaction status processing here. You can use * as a wild card.'); ?>
+    <br>
+    <b><?php echo $this->__('Examples'); ?>:</b>
+    <br>
+    <ul>
+        <li><?php echo $this->__('Full IP (127.0.0.1)'); ?></li>
+        <li><?php echo $this->__('IPs with wild card (127.0.0.* , 127.0.*.*)'); ?></li>
+    </ul>
+    <br>
+</div>
+<br>

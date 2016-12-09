@@ -1,0 +1,87 @@
+<?php
+/**
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the GNU General Public License (GPL 3)
+ * that is bundled with this package in the file LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Payone_Core to newer
+ * versions in the future. If you wish to customize Payone_Core for your
+ * needs please refer to http://www.payone.de for more information.
+ *
+ * @category        Payone
+ * @package         design_adminhtml_default_default
+ * @subpackage      template
+ * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
+ * @author          Matthias Walter <info@noovias.com>
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.noovias.com
+ */
+?>
+<?php
+/** @var $this Mage_Adminhtml_Block_Template */
+$url = $this->getUrl('adminhtml/payonecore_configuration_wizard_page/index');
+$title = $this->__('Configuration-Wizard');
+
+/** @var $button Mage_Adminhtml_Block_Widget_Button */
+$button = $this->getLayout()->createBlock(
+    'adminhtml/widget_button',
+    'payone.config.wizard.button.start',
+    array(
+        'label' => $this->__('Start Configuration-Wizard'),
+        'onclick' => 'payoneWizardStart()',
+        'class' => '',
+    )
+);
+?>
+<div>
+    <?php echo $this->__('To start the Configuration-Wizard, press the following button:'); ?>
+    <?php echo $button->toHtml(); ?>
+</div>
+<script type="text/javascript">
+    //<![CDATA[
+    Event.observe(window, 'load', function () {
+        payoneWizardStart();
+    });
+
+    var wizardPopup;
+
+    function payoneWizardStart() {
+        var windowHeight = document.viewport.getHeight() - 100;
+        var windowWidth = document.viewport.getWidth() - 100;
+        if (windowWidth > 1024) {
+            windowWidth = 1024;
+        }
+        if (windowHeight > 768) {
+            windowHeight = 768;
+        }
+        wizardPopup = new Window(
+                {
+                    className:"payone",
+                    title:"<?php echo $title; ?>",
+                    top:70,
+                    left:100,
+                    minWidth:800,
+                    minHeight:500,
+                    width:windowWidth,
+                    height:windowHeight,
+                    url:"<?php echo $url; ?>",
+                    zIndex:100,
+                    resizable:true,
+                    closeable:true,
+                    recenterAuto:true,
+                    draggable:true,
+                    showEffect:Effect.Appear,
+                    hideEffect:Effect.Fade,
+                    showEffectOptions:{
+                        duration:1.5
+                    }
+                }
+        );
+        wizardPopup.showCenter(true);
+    }
+    //]]>
+</script>

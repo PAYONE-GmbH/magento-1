@@ -1,0 +1,748 @@
+<?xml version="1.0"?><!--
+/**
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the GNU General Public License (GPL 3)
+ * that is bundled with this package in the file LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Payone_Core to newer
+ * versions in the future. If you wish to customize Payone_Core for your
+ * needs please refer to http://www.payone.de for more information.
+ *
+ * @category        Payone
+ * @package         Payone_Core
+ * @subpackage      etc
+ * @copyright       Copyright (c) 2012 <info@votum.de> - www.votum.de
+ * @author          Edward Mateja <edward.mateja@votum.de>
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.votum.de
+ */
+-->
+<config>
+    <modules>
+        <Payone_Core>
+            <version>3.7.3</version>
+        </Payone_Core>
+    </modules>
+
+    <global>
+        <blocks>
+            <payone_core>
+                <class>Payone_Core_Block</class>
+            </payone_core>
+
+            <checkout>
+                <rewrite>
+                    <onepage_payment_methods>Payone_Core_Block_Checkout_Onepage_Payment_Methods</onepage_payment_methods>
+                </rewrite>
+            </checkout>
+        </blocks>
+
+        <helpers>
+            <payone_core>
+                <class>Payone_Core_Helper</class>
+            </payone_core>
+        </helpers>
+
+        <models>
+            <payone_core>
+                <class>Payone_Core_Model</class>
+                <resourceModel>payone_core_resource</resourceModel>
+            </payone_core>
+            <payone_core_resource>
+                <class>Payone_Core_Model_Domain_Resource</class>
+                <entities>
+                    <transaction>
+                        <table>payone_transaction</table>
+                    </transaction>
+                    <protocol_transactionStatus>
+                        <table>payone_protocol_transactionstatus</table>
+                    </protocol_transactionStatus>
+                    <protocol_api>
+                        <table>payone_protocol_api</table>
+                    </protocol_api>
+                    <config_payment_method>
+                        <table>payone_config_payment_method</table>
+                    </config_payment_method>
+                    <customer>
+                        <table>payone_customer</table>
+                    </customer>
+                    <ratepay_config>
+                        <table>payone_ratepay_config</table>
+                    </ratepay_config>
+                </entities>
+            </payone_core_resource>
+
+            <sales>
+                <rewrite>
+                    <quote_address>Payone_Core_Model_Sales_Quote_Address</quote_address>
+                </rewrite>
+            </sales>
+        </models>
+
+        <resources>
+            <payone_core_setup>
+                <setup>
+                    <module>Payone_Core</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </payone_core_setup>
+            <payone_core_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </payone_core_write>
+            <payone_core_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </payone_core_read>
+        </resources>
+        <rewrite>
+            <!-- Rewrite controller action from old Payone extension to Payone_Core
+                 To allow old transactions to be finished. -->
+            <payone_core_transaction_status>
+                <from><![CDATA[#^/payone/processing/status#]]></from>
+                <to>/payone_core/transactionStatus/</to>
+            </payone_core_transaction_status>
+        </rewrite>
+        <payment>
+            <groups>
+                <payone>PAYONE</payone>
+            </groups>
+            <cc>
+                <types>
+                    <MCI>
+                        <code>MCI</code>
+                        <name>Maestro (International)</name>
+                        <order>53</order>
+                    </MCI>
+                    <JCB>
+                        <code>JCB</code>
+                        <name>JCB</name>
+                        <order>55</order>
+                        <is_cvv_required>0</is_cvv_required>
+                    </JCB>
+                </types>
+            </cc>
+        </payment>
+        <payone>
+            <urls>
+                <api>https://api.pay1.de/post-gateway/</api>
+            </urls>
+            <payment>
+            </payment>
+        </payone>
+
+        <sales>
+            <quote>
+                <totals>
+                    <payone_fee>
+                        <class>payone_core/sales_quote_address_total_fee</class>
+                        <after>shipping</after>
+                    </payone_fee>
+                </totals>
+            </quote>
+        </sales>
+
+        <fieldsets>
+            <sales_convert_quote_payment>
+                <payone_config_payment_method_id>
+                    <to_order_payment>*</to_order_payment>
+                </payone_config_payment_method_id>
+                <payone_safe_invoice_type>
+                    <!-- Financing: Type -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_safe_invoice_type>
+                <payone_klarna_campaign_code>
+                    <!-- Financing Klarna: Campaign Code -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_klarna_campaign_code>
+                <payone_onlinebanktransfer_type>
+                    <!-- Online Bank Transfer: Type -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_onlinebanktransfer_type>
+                <payone_account_number>
+                    <!-- Account number for: OnlineBankTransfer, DebitPayment -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_account_number>
+                <payone_account_owner>
+                    <!-- Account owner for: DebitPayment -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_account_owner>
+                <payone_bank_country>
+                    <!-- Online Bank Transfer: Bank Country -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_bank_country>
+                <payone_bank_code>
+                    <!-- Bank Account Code for: OnlineBankTransfer, DebitPayment -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_bank_code>
+                <payone_sepa_iban>
+                    <!-- Online Bank Transfer, DebitPayment: SEPA IBAN -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_sepa_iban>
+                <payone_sepa_bic>
+                    <!-- Online Bank Transfer, DebitPayment: SEPA BIC -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_sepa_bic>
+                <payone_bank_group>
+                    <!-- Online Bank Transfer: Bank Group -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_bank_group>
+                <payone_pseudocardpan>
+                    <!-- Creditcard: Pseudo Card PAN-->
+                    <to_order_payment>*</to_order_payment>
+                </payone_pseudocardpan>
+                <payone_customer_dob>
+                    <!-- Safe Invoice Klarna: Customer Date Of Birth -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_customer_dob>
+                <payone_customer_gender>
+                    <!-- Safe Invoice Klarna: Customer Gender -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_customer_gender>
+                <payone_customer_personalid>
+                    <!-- Safe Invoice Klarna: Customer Personalid -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_customer_personalid>
+                <payone_billing_addressaddition>
+                    <!-- Safe Invoice Klarna: Billing Address Addition -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_billing_addressaddition>
+                <payone_shipping_addressaddition>
+                    <!-- Safe Invoice Klarna: Shipping Address Addition -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_shipping_addressaddition>
+                <payone_customer_telephone>
+                    <!-- Safe Invoice Klarna: Customer Telephone -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_customer_telephone>
+                <payone_ratepay_shop_id>
+                    <!-- RatePay: Shop (config) ID -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_ratepay_shop_id>
+                <payone_payolution_type>
+                    <!-- Payolution type -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_payolution_type>
+                <payone_payolution_iban>
+                    <!-- Payolution iban -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_payolution_iban>
+                <payone_payolution_bic>
+                    <!-- Payolution bic -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_payolution_bic>
+                <payone_isb2b>
+                    <!-- B2B mode ? -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_isb2b>
+                <payone_trade_registry_number>
+                    <!-- Trade registry number -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_trade_registry_number>
+                <payone_cardexpiredate>
+                    <!-- Creditcard cardexpiredate -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_cardexpiredate>
+                <payone_payolution_installment_duration>
+                    <!-- Payolution installment duration -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_payolution_installment_duration>
+                <payone_wallet_type>
+                    <!-- Wallet Type -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_wallet_type>
+                <payone_ratepay_type>
+                    <!-- Ratepay Type -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_ratepay_type>
+            </sales_convert_quote_payment>
+            <sales_convert_quote_address>
+                <payone_addresscheck_score>
+                    <to_customer_address>*</to_customer_address>
+                </payone_addresscheck_score>
+                <payone_protect_score>
+                    <to_customer_address>*</to_customer_address>
+                </payone_protect_score>
+                <payone_protect_date>
+                    <to_customer_address>*</to_customer_address>
+                </payone_protect_date>
+            </sales_convert_quote_address>
+        </fieldsets>
+
+        <template>
+            <email>
+                <payone_misc_email_error_template translate="label" module="payone_core">
+                    <label>PAYONE - Email Error</label>
+                    <file>payone/core/error_template.phtml</file>
+                    <type>html</type>
+                </payone_misc_email_error_template>
+                <payone_misc_email_avs_template translate="label" module="payone_core">
+                    <label>PAYONE - Email AVS</label>
+                    <file>payone/core/avs_template.phtml</file>
+                    <type>html</type>
+                </payone_misc_email_avs_template>
+            </email>
+        </template>
+
+        <events>
+            <sales_quote_address_validate_after>
+                <observers>
+                    <payone_core_observer>
+                        <type>singleton</type>
+                        <class>payone_core/observer_sales_quote_address</class>
+                        <method>validateAfter</method>
+                    </payone_core_observer>
+                </observers>
+            </sales_quote_address_validate_after>
+            <sales_quote_payment_import_data_before>
+                <observers>
+                    <payone_core_observer>
+                        <type>singleton</type>
+                        <class>payone_core/observer_sales_quote_payment</class>
+                        <method>importDataBefore</method>
+                    </payone_core_observer>
+                </observers>
+            </sales_quote_payment_import_data_before>
+            <checkout_onepage_payment_methods_get_methods>
+                <observers>
+                    <payone_core_observer>
+                        <type>singleton</type>
+                        <class>payone_core/observer_checkout_onepage_payment_methods</class>
+                        <method>getMethods</method>
+                    </payone_core_observer>
+                </observers>
+            </checkout_onepage_payment_methods_get_methods>
+            <website_save_after>
+                <observers>
+                    <payone_core_observer>
+                        <type>singleton</type>
+                        <class>payone_core/observer_store_paymentConfig</class>
+                        <method>createByWebsite</method>
+                    </payone_core_observer>
+                </observers>
+            </website_save_after>
+
+            <store_save_after>
+                <observers>
+                    <payone_core_observer>
+                        <type>singleton</type>
+                        <class>payone_core/observer_store_paymentConfig</class>
+                        <method>createByStore</method>
+                    </payone_core_observer>
+                </observers>
+            </store_save_after>
+            <payone_core_checkout_onepage_verify_payment>
+                <observers>
+                    <payone_core_observer>
+                        <type>singleton</type>
+                        <class>payone_core/observer_checkout_onepage</class>
+                        <method>verifyPayment</method>
+                    </payone_core_observer>
+                </observers>
+            </payone_core_checkout_onepage_verify_payment>
+            <controller_action_predispatch_payone_core_checkout_onepage_verifyPayment>
+                <observers>
+                    <payone_core_observer>
+                        <type>singleton</type>
+                        <class>payone_core/observer_checkout_onepage_debitPayment</class>
+                        <method>performChecks</method>
+                    </payone_core_observer>
+                </observers>
+            </controller_action_predispatch_payone_core_checkout_onepage_verifyPayment>
+            <controller_action_predispatch_checkout_onepage_savePayment>
+                <observers>
+                    <payone_core_observer>
+                        <type>singleton</type>
+                        <class>payone_core/observer_checkout_onepage_debitPayment</class>
+                        <method>performChecks</method>
+                    </payone_core_observer>
+                </observers>
+            </controller_action_predispatch_checkout_onepage_savePayment>
+            <sales_order_resource_init_virtual_grid_columns>
+                <observers>
+                    <payone_core_observer>
+                        <class>payone_core/observer_sales_order</class>
+                        <method>updateOrderGrid</method>
+                    </payone_core_observer>
+                </observers>
+            </sales_order_resource_init_virtual_grid_columns>
+            <sales_order_payment_place_end>
+                <observers>
+                    <payone_core_observer>
+                        <class>payone_core/observer_sales_order</class>
+                        <method>paymentPlaceEnd</method>
+                    </payone_core_observer>
+                </observers>
+            </sales_order_payment_place_end>
+            <sales_order_place_after>
+                <observers>
+                    <payone_core_observer>
+                        <class>payone_core/observer_sales_order</class>
+                        <method>incrementSampleCounter</method>
+                    </payone_core_observer>
+                </observers>
+            </sales_order_place_after>
+            <sales_order_payment_cancel>
+                <observers>
+                    <payone_core_observer>
+                        <class>payone_core/observer_sales_order</class>
+                        <method>cancelPayment</method>
+                    </payone_core_observer>
+                </observers>
+            </sales_order_payment_cancel>
+            <payone_core_transactionstatus_appointed>
+                <observers>
+                    <payone_core_observer_orderConfirmation>
+                        <type>singleton</type>
+                        <class>payone_core/observer_transactionStatus_orderConfirmation</class>
+                        <method>onAppointed</method>
+                    </payone_core_observer_orderConfirmation>
+                    <payone_core_observer_invoiceCreate>
+                        <type>singleton</type>
+                        <class>payone_core/observer_transactionStatus_invoiceCreate</class>
+                        <method>onAppointed</method>
+                    </payone_core_observer_invoiceCreate>
+                </observers>
+            </payone_core_transactionstatus_appointed>
+            <payone_core_transactionstatus_paid>
+                <observers>
+                    <payone_core_observer_invoiceCreate>
+                        <type>singleton</type>
+                        <class>payone_core/observer_transactionStatus_invoiceCreate</class>
+                        <method>onPaid</method>
+                    </payone_core_observer_invoiceCreate>
+                </observers>
+            </payone_core_transactionstatus_paid>
+            <payone_core_transactionstatus_reminder>
+                <observers>
+                    <payone_core_observer_reminder>
+                        <type>singleton</type>
+                        <class>payone_core/observer_transactionStatus_reminder</class>
+                        <method>onReminder</method>
+                    </payone_core_observer_reminder>
+                </observers>
+            </payone_core_transactionstatus_reminder>
+            <sales_order_payment_capture>
+                <observers>
+                    <payone_core_observer_invoice>
+                        <type>singleton</type>
+                        <class>payone_core/observer_sales_order_invoice</class>
+                        <method>prepareInvoice</method>
+                    </payone_core_observer_invoice>
+                </observers>
+            </sales_order_payment_capture>
+            <payone_core_capture_approved>
+                <observers>
+                    <payone_core_observer_invoice>
+                        <type>singleton</type>
+                        <class>payone_core/observer_sales_order_invoice</class>
+                        <method>prepareSequencenumber</method>
+                    </payone_core_observer_invoice>
+                </observers>
+            </payone_core_capture_approved>
+            <payone_core_api_protocol_save_after>
+                <observers>
+                    <payone_core_observer_protocol_api>
+                        <type>singleton</type>
+                        <class>payone_core/observer_protocol_api</class>
+                        <method>prepareApi</method>
+                    </payone_core_observer_protocol_api>
+                </observers>
+            </payone_core_api_protocol_save_after>
+            <payone_core_service_payment>
+                <observers>
+                    <payone_core_observer_protocol_api>
+                        <type>singleton</type>
+                        <class>payone_core/observer_protocol_api</class>
+                        <method>updateApiData</method>
+                    </payone_core_observer_protocol_api>
+                </observers>
+            </payone_core_service_payment>
+            <admin_system_config_changed_section_payone_protect>
+                <observers>
+                    <payone_core_observer_config_protect>
+                        <type>singleton</type>
+                        <class>payone_core/observer_config_protect</class>
+                        <method>checkAllStatuses</method>
+                    </payone_core_observer_config_protect>
+                </observers>
+            </admin_system_config_changed_section_payone_protect>
+
+            <sales_order_save_commit_after>
+                <observers>
+                    <downloadable_observer>
+                        <class>downloadable/observer</class>
+                        <method>setLinkStatus</method>
+                    </downloadable_observer>
+                </observers>
+            </sales_order_save_commit_after>
+        </events>
+    </global>
+
+    <admin>
+        <routers>
+            <adminhtml>
+				<args>
+					<modules>
+						<payone_core before="Mage_Adminhtml">Payone_Core_Adminhtml</payone_core>
+					</modules>
+				</args>
+			</adminhtml>
+        </routers>
+    </admin>
+
+    <adminhtml>
+        <layout>
+            <updates>
+                <payone_core>
+                    <file>payone/core.xml</file>
+                </payone_core>
+                <payone_configuration>
+                    <file>payone/configuration.xml</file>
+                </payone_configuration>
+                <payone_transaction>
+                    <file>payone/transaction.xml</file>
+                </payone_transaction>
+            </updates>
+        </layout>
+
+        <translate>
+            <modules>
+                <Payone_Core>
+                    <files>
+                        <default>Payone_Core.csv</default>
+                    </files>
+                </Payone_Core>
+            </modules>
+        </translate>
+        
+    </adminhtml>
+
+    <frontend>
+        <routers>
+            <payone_core>
+                <use>standard</use>
+                <args>
+                    <module>Payone_Core</module>
+                    <frontName>payone_core</frontName>
+                </args>
+            </payone_core>
+            <checkout>
+                <args>
+                    <modules>
+                         <Payone_Core before="Mage_Checkout">Payone_Core_Checkout</Payone_Core>
+                    </modules>
+                </args>
+            </checkout>
+        </routers>
+
+        <layout>
+            <updates>
+                <payone_core>
+                    <file>payone/core.xml</file>
+                </payone_core>
+            </updates>
+        </layout>
+
+        <translate>
+            <modules>
+                <Payone_Core>
+                    <files>
+                        <default>Payone_Core.csv</default>
+                    </files>
+                </Payone_Core>
+            </modules>
+        </translate>
+    </frontend>
+
+    <default>
+        <payment>
+            <payone_creditcard translate="title" module="payone_core">
+                <title>PAYONE - CreditCard</title>
+                <model>payone_core/payment_method_creditcard</model>
+                <group>payone</group>
+            </payone_creditcard>
+            <payone_creditcard_iframe translate="title" module="payone_core">
+                <title>PAYONE - CreditCard Channel Frontend</title>
+                <model>payone_core/payment_method_creditcardIframe</model>
+                <group>payone</group>
+            </payone_creditcard_iframe>
+            <payone_barzahlen translate="title" module="payone_core">
+                <title>PAYONE - Barzahlen</title>
+                <model>payone_core/payment_method_barzahlen</model>
+                <group>payone</group>
+            </payone_barzahlen>
+            <payone_ratepay translate="title" module="payone_core">
+                <title>PAYONE - RatePay</title>
+                <model>payone_core/payment_method_ratepay</model>
+                <group>payone</group>
+            </payone_ratepay>
+            <payone_payolution translate="title" module="payone_core">
+                <title>PAYONE - Payolution</title>
+                <model>payone_core/payment_method_payolution</model>
+                <group>payone</group>
+            </payone_payolution>
+            <payone_cash_on_delivery translate="title" module="payone_core">
+                <title>PAYONE - Cash on Delivery</title>
+                <model>payone_core/payment_method_cashOnDelivery</model>
+                <group>payone</group>
+            </payone_cash_on_delivery>
+            <payone_debit_payment translate="title" module="payone_core">
+                <title>PAYONE - DebitPayment</title>
+                <model>payone_core/payment_method_debitPayment</model>
+                <group>payone</group>
+            </payone_debit_payment>
+            <payone_safe_invoice translate="title" module="payone_core">
+                <title>PAYONE - Safe Invoice</title>
+                <model>payone_core/payment_method_safeInvoice</model>
+                <group>payone</group>
+            </payone_safe_invoice>
+            <payone_invoice translate="title" module="payone_core">
+                <title>PAYONE - Invoice</title>
+                <model>payone_core/payment_method_invoice</model>
+                <group>payone</group>
+            </payone_invoice>
+            <payone_online_bank_transfer translate="title" module="payone_core">
+                <title>PAYONE - Online Bank Transfer</title>
+                <model>payone_core/payment_method_onlineBankTransfer</model>
+                <group>payone</group>
+            </payone_online_bank_transfer>
+            <payone_advance_payment translate="title" module="payone_core">
+                <title>PAYONE - AdvancePayment</title>
+                <model>payone_core/payment_method_advancePayment</model>
+                <group>payone</group>
+            </payone_advance_payment>
+            <payone_wallet translate="title" module="payone_core">
+                <title>PAYONE - Wallet</title>
+                <model>payone_core/payment_method_wallet</model>
+                <group>payone</group>
+            </payone_wallet>
+        </payment>
+        <payone_payment>
+            <template_creditcard>
+                <use_global>1</use_global>
+            </template_creditcard>
+            <template_debit_payment>
+                <use_global>1</use_global>
+                <check_bankaccount>0</check_bankaccount>
+                <sepa_request_bic>0</sepa_request_bic>
+                <sepa_de_show_bank_data>0</sepa_de_show_bank_data>
+                <sepa_mandate_enabled>1</sepa_mandate_enabled>
+                <sepa_mandate_download_enabled>1</sepa_mandate_download_enabled>
+            </template_debit_payment>
+            <template_online_bank_transfer>
+                <use_global>1</use_global>
+                <sofortueberweisung_show_iban>0</sofortueberweisung_show_iban>
+            </template_online_bank_transfer>
+            <template_safe_invoice>
+                <types>BSV</types>
+                <use_global>1</use_global>
+            </template_safe_invoice>
+            <template_invoice>
+                <use_global>1</use_global>
+            </template_invoice>
+            <template_wallet>
+                <use_global>1</use_global>
+            </template_wallet>
+            <template_advance_payment>
+                <use_global>1</use_global>
+            </template_advance_payment>
+            <template_cash_on_delivery>
+                <use_global>1</use_global>
+            </template_cash_on_delivery>
+            <template_creditcard_iframe>
+                <use_global>1</use_global>
+            </template_creditcard_iframe>
+            <template_barzahlen>
+                <use_global>1</use_global>
+            </template_barzahlen>
+            <template_ratepay>
+                <use_global>1</use_global>
+            </template_ratepay>
+            <template_payolution>
+                <use_global>1</use_global>
+            </template_payolution>
+        </payone_payment>
+        <payone_general>
+            <global>
+                <transmit_ip>1</transmit_ip>
+                <proxy_mode>0</proxy_mode>
+            </global>
+            <parameter_invoice>
+                <pdf_download_enabled>0</pdf_download_enabled>
+            </parameter_invoice>
+            <transactionstatus_execute>
+                <max_execution_time>35</max_execution_time>
+            </transactionstatus_execute>
+            <status_mapping>
+                <creditcard>a:1:{s:18:"_1343137391927_927";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</creditcard>
+                <invoice>a:1:{s:18:"_1338893611948_948";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</invoice>
+                <debit_payment>a:1:{s:18:"_1338893616379_379";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</debit_payment>
+                <safe_invoice>a:1:{s:23:"_payone_status_mapping3";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</safe_invoice>
+                <advance_payment>a:2:{s:18:"_1338893618715_715";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:11:"new|pending";}}s:18:"_1355483828815_815";a:2:{s:8:"txaction";a:1:{i:0;s:4:"paid";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</advance_payment>
+                <online_bank_transfer>a:1:{s:18:"_1343118466182_182";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</online_bank_transfer>
+                <cash_on_delivery>a:1:{s:18:"_1338893625332_332";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</cash_on_delivery>
+                <wallet>a:1:{s:18:"_1343137411652_652";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</wallet>
+                <barzahlen>a:1:{s:23:"_payone_status_mapping4";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</barzahlen>
+                <ratepay>a:1:{s:17:"_1468417699073_73";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</ratepay>
+                <payolution>a:1:{s:18:"_1468430772551_551";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</payolution>
+                <financing>a:1:{s:18:"_1468430123551_512";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</financing>
+            </status_mapping>
+        </payone_general>
+        <payone_protect>
+            <general>
+                <enabled>0</enabled>
+            </general>
+            <addresscheck>
+                <handle_response_error>continue_checkout</handle_response_error>
+            </addresscheck>
+            <creditcrating>
+                <integration_event>before_payment</integration_event>
+                <handle_response_error>continue_checkout</handle_response_error>
+                <payment_hint_text><![CDATA[Ich willige ein, dass von XY-Shop zum Zweck der eigenen Kreditpr&uuml;fung ggf. Bonit&auml;tsinformationen auf der Basis mathematisch-statistischer Verfahren von der Firma ABC, Musterstr. 1, 11111 Musterhausen abgerufen und w&auml;hrend der Dauer der Kundenbeziehung Adress- und ggf. Negativdaten an die ABC &Uuml;bermittelt werden, die bei berechtigtem Interesse Dritten f&uuml;r Kreditpr&uuml;fungszwecke Bonit&auml;tsinformationen auf Basis mathematisch-statistischer Verfahren zur Verf&uuml;gung stellt.
+Detaillierte Informationen zur Arbeitsweise der ABC finde ich unter www.abc.de/fghi...]]>
+                </payment_hint_text>
+            </creditcrating>
+        </payone_protect>
+        <payone_misc>
+            <transactionstatus_processing>
+                <cron_expr>* * * * *</cron_expr>
+                <valid_ips><![CDATA[213.178.72.196
+213.178.72.197
+185.60.20.*
+217.70.200.*]]></valid_ips>
+                <proxy_mode>0</proxy_mode>
+            </transactionstatus_processing>
+            <email_exception>
+                <enabled>0</enabled>
+                <template>payone_misc_email_error_template</template>
+            </email_exception>
+            <email_avs>
+                <enabled>0</enabled>
+                <template>payone_misc_email_avs_template</template>
+            </email_avs>
+        </payone_misc>
+    </default>
+
+    <crontab>
+        <jobs>
+            <!-- decoupled processing of transactionStatus-->
+            <payone_core_cronjob_transactionstatus_process>
+                <schedule>
+                    <config_path>payone_misc/transactionstatus_processing/cron_expr</config_path>
+                </schedule>
+                <run>
+                    <model>payone_core/cronjob_transactionStatus_worker::execute</model>
+                </run>
+            </payone_core_cronjob_transactionstatus_process>
+        </jobs>
+    </crontab>
+</config>

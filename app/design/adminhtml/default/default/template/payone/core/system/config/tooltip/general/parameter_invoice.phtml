@@ -1,0 +1,90 @@
+<?php
+/**
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the GNU General Public License (GPL 3)
+ * that is bundled with this package in the file LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Payone_Core to newer
+ * versions in the future. If you wish to customize Payone_Core for your
+ * needs please refer to http://www.payone.de for more information.
+ *
+ * @category        Payone
+ * @package         design_adminhtml_default_default
+ * @subpackage      template
+ * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
+ * @author          Matthias Walter <info@noovias.com>
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.noovias.com
+ */
+?>
+
+<b><?php echo $this->__('Here you can configure the options for submission of article information. This data is transmitted to PAYONE with authorization, pre-authorization, and capture requests. With this data, the PAYONE Platform can create invoices.'); ?>
+</b><br>
+<br>
+<div class="field-name"><?php echo $this->__('Activate PDF download'); ?></div>
+<div class="field-description">
+    <?php echo $this->__('You can activate or deactivate the download of the invoice from PAYONE. You will have an additional button to download the PDF.'); ?>
+    <b><?php echo $this->__('Options'); ?>:</b><br>
+    <ul>
+        <li><?php echo $this->__(' Yes'); ?></li>
+        <li><?php echo $this->__('No'); ?></li>
+    </ul>
+</div>
+<br>
+<div class="field-name"><?php echo $this->__('Submit invoice information'); ?></div>
+<div class="field-description">
+    <?php echo $this->__('You can activate or deactivate the submission of invoice information'); ?><br>
+    <b><?php echo $this->__('Options'); ?>:</b><br>
+    <ul>
+        <li><?php echo $this->__('Yes'); ?></li>
+        <li><?php echo $this->__('No'); ?></li>
+    </ul>
+</div>
+<br>
+<div class="field-name"><?php echo $this->__('Dynamic text on invoice'); ?></div>
+<div class="field-description">
+    <?php echo $this->__('This text can be transmitted additionally to PAYONE and will appear on the invoice document according to your specification. This text has a maximal length of 255 characters. Any characters exceeding this limit will be cropped. To integrate information from Magento, the following variables are available'); ?><br>
+    <br>
+    <?php echo $this->__('Please use variables in the following way'); ?>:<br>
+    <b>{{VARIABLENAME}}</b><br>
+    <br>
+    <b><?php echo $this->__('For example'); ?>:</b>
+    <br>
+    <?php echo $this->__('Your invoice for order No. {{order_increment_id}}'); ?><br>
+    <br>
+    <b><?php echo $this->__('You can use these variables:'); ?></b><br>
+    <ul>
+        <li><?php echo $this->__('<b>{{order_increment_id}}</b> will be replaced by the order ID'); ?></li>
+        <li><?php echo $this->__('<b>{{order_id}}</b> will be replaced by the database ID of the order'); ?></li>
+        <li><?php echo $this->__('<b>{{customer_increment_id}}</b> will be replaced by the customer ID'); ?></li>
+        <li><?php echo $this->__('<b>{{customer_id}}</b> will be replaced by the database ID of the customer'); ?></li>
+        <li><?php echo $this->__('<b>{{invoice_increment_id}}</b> will be replaced by the invoice number'); ?></li>
+    </ul>
+</div>
+<br>
+<div class="field-name"><?php echo $this->__('Dynamic text on refund document'); ?></div>
+<div class="field-description">
+    <?php echo $this->__('This text can be transmitted additionally to PAYONE and will appear on the invoice document according to your specification. This text has a maximal length of 255 characters. Any characters exceeding this limit will be cropped. To integrate information from Magento, the following variables are available'); ?><br>
+    <br>
+    <?php echo $this->__('Please use variables in the following way'); ?>:<br>
+    <b>{{VARIABLENAME}}</b><br>
+    <br>
+    <b><?php echo $this->__('For example'); ?>:</b>
+    <br>
+    <?php echo $this->__('Your refund for invoice No. {{invoice_increment_id}}'); ?><br>
+    <br>
+    <b><?php echo $this->__('You can use these variables:'); ?></b><br>
+    <ul>
+        <li><?php echo $this->__('<b>{{order_increment_id}}</b> will be replaced by the order ID'); ?></li>
+        <li><?php echo $this->__('<b>{{order_id}}</b> will be replaced by the database ID of the order'); ?></li>
+        <li><?php echo $this->__('<b>{{customer_increment_id}}</b> will be replaced by the customer ID'); ?></li>
+        <li><?php echo $this->__('<b>{{customer_id}}</b> will be replaced by the database ID of the customer'); ?></li>
+        <li><?php echo $this->__('<b>{{invoice_increment_id}}</b> will be replaced by the invoice number'); ?></li>
+        <li><?php echo $this->__('<b>{{creditmemo_increment_id}}</b> will be replaced by the refund document number'); ?></li>
+    </ul>
+</div>
+<br>

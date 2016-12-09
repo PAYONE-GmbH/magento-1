@@ -1,0 +1,62 @@
+<?php
+/**
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the GNU General Public License (GPL 3)
+ * that is bundled with this package in the file LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Payone_Core to newer
+ * versions in the future. If you wish to customize Payone_Core for your
+ * needs please refer to http://www.payone.de for more information.
+ *
+ * @category        Payone
+ * @package         design_adminhtml_default_default
+ * @subpackage      template
+ * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
+ * @author          Matthias Walter <info@noovias.com>
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.noovias.com
+ */
+?>
+<p><strong><?php echo $this->__('The status of a transaction is transmitted to the Magento Shop through a TransactionStatus message.'); ?><br>
+   <?php echo __('This status message can vary, depending on the payment method and the actual state of the transaction. Here you can map PAYONE transaction status to status of Magento orders. The setting can be configured individually per payment method.'); ?><br>
+</strong></p>
+<ul class="payone-config-warning">
+    <li class="payone-config-warning-content"><span><?php echo $this->__('Please make sure that Magento\'s cron jobs are configured correctly and working on your system.'); ?><span></li>
+</ul>
+<br>
+<div class="field-name"><?php echo $this->__('TransactionStatus message'); ?></div>
+<div class="field-description">
+    <b><?php echo $this->__('Options'); ?>:</b><br>
+    <ul>
+        <li><?php echo $this->__('Appointed'); ?></li>
+        <li><?php echo $this->__('Capture'); ?></li>
+        <li><?php echo $this->__('Paid'); ?></li>
+        <li><?php echo $this->__('Underpaid'); ?></li>
+        <li><?php echo $this->__('Cancelation'); ?></li>
+        <li><?php echo $this->__('Refund'); ?></li>
+        <li><?php echo $this->__('Debit'); ?></li>
+        <li><?php echo $this->__('Reminder'); ?></li>
+        <li><?php echo $this->__('Vauthorization'); ?></li>
+        <li><?php echo $this->__('Vsettlement'); ?></li>
+        <li><?php echo $this->__('Transfer'); ?></li>
+        <li><?php echo $this->__('Invoice'); ?></li>
+    </ul>
+</div>
+<br>
+<div class="field-name"><?php echo $this->__('Magento Status'); ?></div>
+<div class="field-description">
+    <b><?php echo $this->__('Options'); ?>:</b><br>
+    <ul>
+        <li><?php echo $this->__('Open'); ?></li>
+        <li><?php echo $this->__('In Progress'); ?></li>
+        <li><?php echo $this->__('Complete'); ?></li>
+        <li><?php echo $this->__('Closed'); ?></li>
+        <li><?php echo $this->__('Cancelation'); ?></li>
+        <li><?php echo $this->__('Delivered'); ?></li>
+    </ul>
+</div>
+<br>

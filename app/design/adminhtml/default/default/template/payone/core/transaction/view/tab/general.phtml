@@ -1,0 +1,286 @@
+<?php
+/**
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the GNU General Public License (GPL 3)
+ * that is bundled with this package in the file LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Payone_Core to newer
+ * versions in the future. If you wish to customize Payone_Core for your
+ * needs please refer to http://www.payone.de for more information.
+ *
+ * @category        Payone
+ * @package         design_adminhtml_default_default
+ * @subpackage      template
+ * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
+ * @author          Matthias Walter <info@noovias.com>
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.noovias.com
+ */
+
+/**
+ * @var $data Payone_Core_Model_Domain_Transaction
+ * @var $this Payone_Core_Block_Adminhtml_Transaction_View_Tab_General
+ */
+$data = $this->getTransaction();
+?>
+<div class="box-left">
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-account"><?php echo Mage::helper('payone_core')->__('General Parameter') ?></h4>
+        </div>
+        <div class="fieldset">
+            <div class="hor-scroll">
+                <table cellspacing="0" class="form-list">
+                    <tr>
+                        <td class="label">
+                            <label><?php echo $this->helper('payone_core')->__('ID') ?></label>
+                        </td>
+                        <td class="label">
+                            <strong><?php echo $data->getId() ?></strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">
+                            <label><?php echo $this->helper('payone_core')->__('Store-ID') ?></label>
+                        </td>
+                        <td class="label">
+                            <strong><?php echo $data->getStoreId() ?></strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">
+                            <label><?php echo $this->helper('payone_core')->__('Order-ID') ?></label>
+                        </td>
+                        <td class="label">
+                            <strong><?php echo $data->getOrderId() ?></strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">
+                            <label><?php echo $this->helper('payone_core')->__('Reference') ?></label>
+                        </td>
+                        <td class="label">
+                            <strong><?php echo $data->getReference() ?></strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">
+                            <label><?php echo $this->helper('payone_core')->__('Txid') ?></label>
+                        </td>
+                        <td class="label">
+                            <strong><?php echo $data->getTxid() ?></strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">
+                            <label><?php echo $this->helper('payone_core')->__('Txtime') ?></label>
+                        </td>
+                        <td class="label">
+                            <strong><?php echo $data->getTxtime() ?></strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">
+                            <label><?php echo $this->helper('payone_core')->__('Last Txaction') ?></label>
+                        </td>
+                        <td class="label">
+                            <strong><?php echo $data->getLastTxaction() ?></strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">
+                            <label><?php echo $this->helper('payone_core')->__('Last Sequence-Number') ?></label>
+                        </td>
+                        <td class="label">
+                            <strong><?php echo $data->getLastSequencenumber() ?></strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">
+                            <label><?php echo $this->helper('payone_core')->__('Clearingtype') ?></label>
+                        </td>
+                        <td class="label">
+                            <strong><?php echo $data->getClearingtype() ?></strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">
+                            <label><?php echo $this->helper('payone_core')->__('Currency') ?></label>
+                        </td>
+                        <td class="label">
+                            <strong><?php echo $data->getCurrency() ?></strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">
+                            <label><?php echo $this->helper('payone_core')->__('User-ID') ?></label>
+                        </td>
+                        <td class="label">
+                            <strong><?php echo $data->getUserid() ?></strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">
+                            <label><?php echo $this->helper('payone_core')->__('Customer-ID') ?></label>
+                        </td>
+                        <td class="label">
+                            <strong><?php echo $data->getCustomerid() ?></strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">
+                            <label><?php echo $this->helper('payone_core')->__('Receivable') ?></label>
+                        </td>
+                        <td class="label">
+                            <strong><?php echo $data->getReceivable() ?></strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">
+                            <label><?php echo $this->helper('payone_core')->__('Balance') ?></label>
+                        </td>
+                        <td class="label">
+                            <strong><?php echo $data->getBalance() ?></strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">
+                            <label><?php echo $this->helper('payone_core')->__('Failed Reason') ?></label>
+                        </td>
+                        <td class="label">
+                            <strong><?php echo $data->getFailedcause() ?></strong>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="box-right">
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-account"><?php echo Mage::helper('payone_core')->__('Transmission Params') ?></h4>
+        </div>
+        <div class="fieldset">
+            <div class="hor-scroll">
+                <table cellspacing="0" class="form-list">
+                    <tr>
+                        <td class="label">
+                            <label><?php echo $this->helper('payone_core')->__('Mode') ?></label>
+                        </td>
+                        <td class="label">
+                            <strong><?php echo $data->getMode() ?></strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">
+                            <label><?php echo $this->helper('payone_core')->__('Merchant-ID') ?></label>
+                        </td>
+                        <td class="label">
+                            <strong><?php echo $data->getMid() ?></strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">
+                            <label><?php echo $this->helper('payone_core')->__('Account-ID') ?></label>
+                        </td>
+                        <td class="label">
+                            <strong><?php echo $data->getAid() ?></strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">
+                            <label><?php echo $this->helper('payone_core')->__('Portal-ID') ?></label>
+                        </td>
+                        <td class="label">
+                            <strong><?php echo $data->getPortalid() ?></strong>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="box-right">
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-account"><?php echo Mage::helper('payone_core')->__('Additional Contract Params') ?></h4>
+        </div>
+        <div class="fieldset">
+            <div class="hor-scroll">
+                <table cellspacing="0" class="form-list">
+                    <tr>
+                        <td class="label">
+                            <label><?php echo $this->helper('payone_core')->__('Product-ID') ?></label>
+                        </td>
+                        <td class="label">
+                            <strong><?php echo $data->getProductid() ?></strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">
+                            <label><?php echo $this->helper('payone_core')->__('Access-ID') ?></label>
+                        </td>
+                        <td class="label">
+                            <strong><?php echo $data->getAccessid() ?></strong>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="box-right">
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-account"><?php echo Mage::helper('payone_core')->__('Additional Collect Params') ?></h4>
+        </div>
+        <div class="fieldset">
+            <div class="hor-scroll">
+                <table cellspacing="0" class="form-list">
+                    <tr>
+                        <td class="label">
+                            <label><?php echo $this->helper('payone_core')->__('Reminderlevel') ?></label>
+                        </td>
+                        <td class="label">
+                            <strong><?php echo $data->getReminderlevel() ?></strong>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="box-right">
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-account"><?php echo Mage::helper('payone_core')->__('Timestamps') ?></h4>
+        </div>
+        <div class="fieldset">
+            <div class="hor-scroll">
+                <table cellspacing="0" class="form-list">
+                    <tr>
+                         <td class="label">
+                             <label><?php echo $this->helper('payone_core')->__('Created At') ?></label>
+                         </td>
+                         <td class="label">
+                             <strong><?php echo $this->getLocaleDatetime($data->getCreatedAt()) ?></strong>
+                         </td>
+                     </tr>
+                    <tr>
+                        <td class="label">
+                            <label><?php echo $this->helper('payone_core')->__('Updated At') ?></label>
+                        </td>
+                        <td class="label">
+                            <strong><?php echo $this->getLocaleDatetime($data->getUpdatedAt()) ?></strong>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

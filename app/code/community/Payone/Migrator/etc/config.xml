@@ -1,0 +1,93 @@
+<?xml version="1.0"?><!--
+/**
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the GNU General Public License (GPL 3)
+ * that is bundled with this package in the file LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Payone_Migrator to newer
+ * versions in the future. If you wish to customize Payone_Migrator for your
+ * needs please refer to http://www.payone.de for more information.
+ *
+ * @category        Payone
+ * @package         Payone_Migrator
+ * @subpackage      etc
+ * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
+ * @author          Matthias Walter <info@noovias.com>
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.noovias.com
+ */
+-->
+<config>
+    <modules>
+        <Payone_Migrator>
+            <version>3.1.2</version>
+        </Payone_Migrator>
+    </modules>
+
+    <global>
+        <blocks>
+            <payone_migrator>
+                <class>Payone_Migrator_Block</class>
+            </payone_migrator>
+        </blocks>
+
+        <helpers>
+            <payone_migrator>
+                <class>Payone_Migrator_Helper</class>
+            </payone_migrator>
+        </helpers>
+
+        <models>
+            <payone_migrator>
+                <class>Payone_Migrator_Model</class>
+            </payone_migrator>
+        </models>
+
+        <rewrite>
+            <!-- Rewrite controller action to integrator migrator -->
+            <payone_migrator_wizard_migration>
+                <from><![CDATA[#^/payone_core/adminhtml_configuration_wizard_page/index#]]></from>
+                <to>/payone_migrator/adminhtml_wizard_migration/index</to>
+            </payone_migrator_wizard_migration>
+        </rewrite>
+
+    </global>
+
+    <admin>
+        <routers>
+            <adminhtml>
+				<args>
+					<modules>
+						<payone_migrator before="Mage_Adminhtml">Payone_Migrator_Adminhtml</payone_migrator>
+					</modules>
+				</args>
+			</adminhtml>
+        </routers>
+    </admin>
+
+    <adminhtml>
+        <layout>
+            <updates>
+                <payone_migrator>
+                    <file>payone/migrator.xml</file>
+                </payone_migrator>
+            </updates>
+        </layout>
+
+        <translate>
+            <modules>
+                <Payone_Migrator>
+                    <files>
+                        <default>Payone_Migrator.csv</default>
+                    </files>
+                </Payone_Migrator>
+            </modules>
+        </translate>
+
+    </adminhtml>
+
+</config>

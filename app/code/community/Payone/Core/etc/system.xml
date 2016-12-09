@@ -1,0 +1,1797 @@
+<?xml version="1.0"?><!--
+/**
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the GNU General Public License (GPL 3)
+ * that is bundled with this package in the file LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Payone_Core to newer
+ * versions in the future. If you wish to customize Payone_Core for your
+ * needs please refer to http://www.payone.de for more information.
+ *
+ * @category        Payone
+ * @package         Payone_Core
+ * @subpackage      etc
+ * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
+ * @author          Matthias Walter <info@noovias.com>
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.noovias.com
+ */
+-->
+<config>
+    <tabs>
+        <payone translate="label" module="payone_core">
+            <label>PAYONE</label>
+            <class>tab-payone</class>
+            <sort_order>401</sort_order>
+        </payone>
+    </tabs>
+    <sections>
+        <payment>
+            <groups>
+                <payone_hint>
+                    <frontend_model>payone_core/adminhtml_system_config_notice</frontend_model>
+                    <hint>
+                        <template>payone/core/system/config/hint/payment_reference.phtml</template>
+                    </hint>
+                    <sort_order>-10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                </payone_hint>
+            </groups>
+        </payment>
+        <payone_general translate="label" module="payone_core">
+            <label>General</label>
+            <tab>payone</tab>
+            <header_css>payone-config-header</header_css>
+            <frontend_type>text</frontend_type>
+            <sort_order>10</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <global>
+                    <label>Global</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <hint translate="label">
+                            <label>Global</label>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <hint>
+                                <template>payone/core/system/config/tooltip/general/global.phtml</template>
+                            </hint>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_info</frontend_model>
+                        </hint>
+                        <mid translate="label">
+                            <label>Merchant-ID</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </mid>
+                        <portalid translate="label">
+                            <label>Portal-ID</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </portalid>
+                        <aid translate="label">
+                            <label>Sub-Account-ID</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </aid>
+                        <key translate="label">
+                            <label>Security Key</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </key>
+                        <allowspecific translate="label">
+                            <label>Payment from Applicable Countries</label>
+                            <frontend_type>allowspecific</frontend_type>
+                            <sort_order>50</sort_order>
+                            <source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </allowspecific>
+                        <specificcountry translate="label">
+                            <label>Specific Countries</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <sort_order>50</sort_order>
+                            <depends>
+                                <allowspecific>1</allowspecific>
+                            </depends>
+                            <source_model>adminhtml/system_config_source_country</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </specificcountry>
+                        <request_type translate="label">
+                            <label>Authorize-Method</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>payone_core/system_config_authorizeMethod</source_model>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </request_type>
+                        <transmit_ip translate="label">
+                            <label>Transmit IP Address</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>70</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </transmit_ip>
+                        <proxy_mode>
+                            <label>Proxy-Mode</label>
+                            <comment>If your shop is behind a Proxy. Enable this option to transmit the HTTP_X_FORWARDED_FOR</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>80</sort_order>
+                            <depends>
+                                <transmit_ip>1</transmit_ip>
+                            </depends>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </proxy_mode>
+                        <currency_convert translate="label">
+                            <label>Currency</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>payone_core/system_config_currencyUsage</source_model>
+                            <sort_order>90</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </currency_convert>
+                    </fields>
+                </global>
+                <parameter_invoice>
+                    <label>Send Invoicing Information</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>20</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <hint translate="label">
+                            <label>Send Invoicing Information</label>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <hint>
+                                <template>payone/core/system/config/tooltip/general/parameter_invoice.phtml</template>
+                            </hint>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_info</frontend_model>
+                        </hint>
+                        <pdf_download_enabled translate="label">
+                            <label>Enable PDF Download</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>5</sort_order>
+                            <comment>Please note that you can only use this option, if you subscribe to the invoicing module of PAYONE.</comment>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </pdf_download_enabled>
+                        <transmit_enabled translate="label">
+                            <label>Transmit Invoice Information</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <comment>Please note that you can use these options only, if you subscribe to the invoicing module of PAYONE.</comment>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </transmit_enabled>
+                        <invoice_appendix translate="label,comment">
+                            <label>Dynamic Invoice Message</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>20</sort_order>
+                            <comment>Maximum 255 digits. Placeholders: {{order_increment_id}}, {{order_id}}, {{customer_increment_id}}, {{customer_id}}, {{invoice_increment_id}}</comment>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </invoice_appendix>
+                        <invoice_appendix_refund translate="label,comment">
+                            <label>Dynamic Refund Message</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>30</sort_order>
+                            <comment>Maximum 255 digits. Placeholders: {{order_increment_id}}, {{order_id}}, {{customer_increment_id}}, {{customer_id}}, {{creditmemo_increment_id}}, {{invoice_increment_id}}, {{invoice_id}}</comment>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </invoice_appendix_refund>
+
+                    </fields>
+                </parameter_invoice>
+                <status_mapping>
+                    <label>Status Mapping</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>30</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <hint translate="label">
+                            <label>Status Mapping</label>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <hint>
+                                <template>payone/core/system/config/tooltip/general/status_mapping.phtml</template>
+                            </hint>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_info</frontend_model>
+                        </hint>
+                        <creditcard translate="label">
+                            <label>Creditcard</label>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_statusMapping</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </creditcard>
+                        <invoice translate="label">
+                            <label>Invoice</label>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_statusMapping</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </invoice>
+                        <safe_invoice translate="label">
+                            <label>Safe Invoice</label>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_statusMapping</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </safe_invoice>
+                        <debit_payment translate="label">
+                            <label>Debit Payment</label>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_statusMapping</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </debit_payment>
+                        <advance_payment translate="label">
+                            <label>Advance Payment</label>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_statusMapping</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </advance_payment>
+                        <online_bank_transfer translate="label">
+                            <label>Online Bank Transfer</label>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_statusMapping</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </online_bank_transfer>
+                        <cash_on_delivery translate="label">
+                            <label>Cash on Delivery</label>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_statusMapping</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </cash_on_delivery>
+                        <wallet translate="label">
+                            <label>Wallet</label>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_statusMapping</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <sort_order>70</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </wallet>
+                        <barzahlen translate="label">
+                            <label>Barzahlen</label>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_statusMapping</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <sort_order>80</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </barzahlen>
+                        <payolution translate="label">
+                            <label>Payolution</label>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_statusMapping</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <sort_order>90</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </payolution>
+                        <ratepay translate="label">
+                            <label>RatePay</label>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_statusMapping</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </ratepay>
+                        <financing translate="label">
+                            <label>Finanzierung</label>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_statusMapping</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </financing>
+                    </fields>
+                </status_mapping>
+                <payment_creditcard>
+                    <label>Payment Creditcard</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>100</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <hint translate="label">
+                            <label>Payment Creditcard</label>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <hint>
+                                <template>payone/core/system/config/tooltip/general/payment_creditcard.phtml</template>
+                            </hint>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_info</frontend_model>
+                        </hint>
+                        <min_validity_period translate="label,comment">
+                            <label>Minimum Validity Period</label>
+                            <comment>Minimum period a CreditCard has to be valid. (in days)</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </min_validity_period>
+                        <cc_request_type translate="label">
+                            <label>Request-type</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>payone_core/system_config_creditcardRequestType</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </cc_request_type>
+                        <cc_template translate="label">
+                            <label>Input-configuration</label>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_creditcardTemplate</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </cc_template>
+                    </fields>
+                </payment_creditcard>
+                <cc_hosted_translations>
+                    <label>Creditcard - hosted-Iframe translations</label>
+                    <comment>These will be used to replace the default values from PAYONE.</comment>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>105</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <cc_translation_months translate="label">
+                            <label>Translation months</label>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_ccTranslationMonths</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </cc_translation_months>
+                        <cc_translation_errors translate="label,comment">
+                            <label>Translation errors</label>
+                            <comment>Only used when you activated the error-output in the hosted-Iframe configuration.</comment>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_ccTranslationErrors</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </cc_translation_errors>
+                        <cc_translation_placeholders translate="label">
+                            <label>Translation placeholders</label>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_ccTranslationPlaceholders</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </cc_translation_placeholders>
+                    </fields>
+                </cc_hosted_translations>
+                <payment_paypal_express_checkout>
+                    <label>Payment Paypal Express Checkout</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>110</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <paypal_express_checkout_visible_on_cart translate="label">
+                            <label>PayPal Express Checkout Shortcut on Shopping Cart</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </paypal_express_checkout_visible_on_cart>
+                        <paypal_express_checkout_image translate="label">
+                            <label>Paypal Express Image Button</label>
+                            <frontend_type>image</frontend_type>
+                            <backend_model>adminhtml/system_config_backend_image</backend_model>
+                            <upload_dir config="system/filesystem/media" scope_info="1">payone</upload_dir>
+                            <base_url type="media" scope_info="1">payone</base_url>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Allowed file types: jpeg, gif, png.</comment>
+                        </paypal_express_checkout_image>
+                    </fields>
+                </payment_paypal_express_checkout>
+            </groups>
+        </payone_general>
+
+        <payone_payment translate="label" module="payone_core">
+            <label>Payment</label>
+            <tab>payone</tab>
+            <header_css>payone-config-header</header_css>
+            <frontend_type>text</frontend_type>
+            <frontend_model>payone_core/adminhtml_system_config_form_payment</frontend_model>
+            <sort_order>30</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <hint>
+                    <frontend_model>payone_core/adminhtml_system_config_hint</frontend_model>
+                    <hint>
+                        <template>payone/core/system/config/hint/payment.phtml</template>
+                    </hint>
+                    <sort_order>0</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                </hint>
+                <template_default>
+                    <label>Default Data</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                    <fields>
+                        <hint translate="label">
+                            <label>Payment</label>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <hint>
+                                <template>payone/core/system/config/tooltip/payment/method.phtml</template>
+                            </hint>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_info</frontend_model>
+                        </hint>
+                        <enabled translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enabled>
+                        <sort_order translate="label">
+                            <label>Sort order</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sort_order>
+                        <name translate="label">
+                            <label>Name</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </name>
+                        <fee_config translate="label">
+                            <label>Handling Fee</label>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_paymentFee</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </fee_config>
+                        <min_order_total translate="label">
+                            <label>Minimum Order Total</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </min_order_total>
+                        <max_order_total translate="label">
+                            <label>Maximum Order Total</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>70</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </max_order_total>
+                        <narrative_text>
+                            <label>Narrative Text</label>
+                            <comment>Maximum 81 digits. Placeholders: {{order_increment_id}}</comment>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>75</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </narrative_text>
+                        <mode>
+                            <label>Mode</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>payone_core/system_config_mode</source_model>
+                            <sort_order>80</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </mode>
+                        <use_global>
+                            <label>Use Global Settings</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1000</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </use_global>
+                        <allowspecific translate="label">
+                            <label>Payment from Applicable Countries</label>
+                            <frontend_type>allowspecific</frontend_type>
+                            <sort_order>1010</sort_order>
+                            <depends>
+                                <use_global>0</use_global>
+                            </depends>
+                            <source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </allowspecific>
+                        <specificcountry translate="label">
+                            <label>Payment from Specific Countries</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <sort_order>1020</sort_order>
+                            <depends>
+                                <use_global>0</use_global>
+                                <allowspecific>1</allowspecific>
+                            </depends>
+                            <source_model>adminhtml/system_config_source_country</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </specificcountry>
+                        <mid translate="label">
+                            <label>Merchant-ID</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1100</sort_order>
+                            <depends>
+                                <use_global>0</use_global>
+                            </depends>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </mid>
+                        <portalid translate="label">
+                            <label>Portal-ID</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1110</sort_order>
+                            <depends>
+                                <use_global>0</use_global>
+                            </depends>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </portalid>
+                        <aid translate="label">
+                            <label>Sub-Account-ID</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1120</sort_order>
+                            <depends>
+                                <use_global>0</use_global>
+                            </depends>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </aid>
+                        <key translate="label">
+                            <label>Security Key</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1130</sort_order>
+                            <depends>
+                                <use_global>0</use_global>
+                            </depends>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </key>
+                        <request_type translate="label">
+                            <label>Authorize-Method</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>payone_core/system_config_authorizeMethod</source_model>
+                            <sort_order>1140</sort_order>
+                            <depends>
+                                <use_global>0</use_global>
+                            </depends>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </request_type>
+                        <invoice_transmit translate="label">
+                            <label>Transmit Invoice Information</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1150</sort_order>
+                            <depends>
+                                <use_global>0</use_global>
+                            </depends>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </invoice_transmit>
+                    </fields>
+                </template_default>
+                <template_creditcard translate="label" module="payone_core">
+                    <label>Creditcard</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                    <fields>
+                        <types>
+                            <label>Creditcard-Type</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>payone_core/system_config_creditCardType</source_model>
+                            <sort_order>200</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </types>
+                        <check_cvc translate="label">
+                            <label>Check Card Validation Code</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>payone_core/system_config_creditcardCheckCvc</source_model>
+                            <sort_order>250</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </check_cvc>
+                        <customer_form_data_save translate="label,comment">
+                            <label>Save payment data for logged in customer</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>270</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </customer_form_data_save>
+                    </fields>
+                </template_creditcard>
+                <template_debit_payment translate="label" module="payone_core">
+                    <label>Debit Payment</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>2</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <check_bankaccount translate="label,comment">
+                            <label>Validate bank code</label>
+                            <comment>Requires PAYONE API access.</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>200</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </check_bankaccount>
+                        <bankaccountcheck_type translate="label,comment">
+                            <label>Bank code validation type</label>
+                            <depends>
+                                <check_bankaccount>1</check_bankaccount>
+                            </depends>
+                            <frontend_type>select</frontend_type>
+                            <source_model>payone_core/system_config_bankaccountcheckType</source_model>
+                            <sort_order>210</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </bankaccountcheck_type>
+                        <message_response_blocked translate="label,comment">
+                            <label>Message to display for blocked bank accounts</label>
+                            <depends>
+                                <check_bankaccount>1</check_bankaccount>
+                            </depends>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>220</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </message_response_blocked>
+                        <sepa_country translate="label">
+                            <label>List of supported SEPA countries</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>payone_core/system_config_sepaCountry</source_model>
+                            <sort_order>230</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sepa_country>
+                        <sepa_request_bic translate="label">
+                            <label>Request BIC</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>235</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sepa_request_bic>
+                        <sepa_de_show_bank_data translate="label,comment">
+                            <label>Show additional account number/bank code number</label>
+                            <comment>Only for German accounts</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>240</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sepa_de_show_bank_data>
+                        <sepa_mandate_enabled translate="label,comment">
+                            <label>Mandate enabled</label>
+                            <comment>Pay request 'managemandate', includes bankaccountcheck. No query of the POS block list is possible</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>250</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sepa_mandate_enabled>
+                        <sepa_mandate_download_enabled translate="label,comment">
+                            <label>Mandate download enabled</label>
+                            <comment>Can be selected only if the product in PAYONE was posted 'SEPA-Mandate as PDF'</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>260</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sepa_mandate_download_enabled>
+                        <customer_form_data_save translate="label,comment">
+                            <label>Save payment data for logged in customer</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>270</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </customer_form_data_save>
+                    </fields>
+                </template_debit_payment>
+                <template_online_bank_transfer translate="label" module="payone_core">
+                    <label>Online Bank Transfer</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>3</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <types translate="label,comment">
+                            <label>Banktransfer-Type</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>payone_core/system_config_onlinebanktransferType</source_model>
+                            <sort_order>200</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </types>
+                        <customer_form_data_save translate="label,comment">
+                            <label>Save payment data for logged in customer</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>270</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </customer_form_data_save>
+                        <sofortueberweisung_show_iban translate="label">
+                            <label>SOFORT Ueberweisung: Display IBAN/BIC inputs</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>280</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sofortueberweisung_show_iban>
+                    </fields>
+                </template_online_bank_transfer>
+                <template_invoice translate="label" module="payone_core">
+                    <label>Invoice</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>4</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields></fields>
+                </template_invoice>
+                <template_safe_invoice translate="label" module="payone_core">
+                    <label>Safe Invoice</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>5</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <types translate="label,comment">
+                            <label>Type</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>payone_core/system_config_safeInvoiceType</source_model>
+                            <sort_order>200</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </types>
+                        <klarna_config translate="label">
+                            <label>Klarna Store-IDs</label>
+                            <comment>Required when using Klarna</comment>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_klarnaStoreId</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <sort_order>250</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </klarna_config>
+                    </fields>
+                </template_safe_invoice>
+                <template_wallet translate="label" module="payone_core">
+                    <label>Wallet</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>5</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <types translate="label,comment">
+                            <label>Wallet-Type</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>payone_core/system_config_walletType</source_model>
+                            <sort_order>200</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </types>
+                    </fields>
+                </template_wallet>
+                <template_advance_payment translate="label" module="payone_core">
+                    <label>Advance Payment</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>5</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields></fields>
+                </template_advance_payment>
+                <template_cash_on_delivery translate="label" module="payone_core">
+                    <label>Cash on Delivery</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>6</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields></fields>
+                </template_cash_on_delivery>
+                <template_creditcard_iframe translate="label" module="payone_core">
+                    <label>Creditcard Channel Frontend</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>7</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields></fields>
+                </template_creditcard_iframe>
+                <template_barzahlen translate="label" module="payone_core">
+                    <label>Barzahlen</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>7</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields></fields>
+                </template_barzahlen>
+                <template_ratepay translate="label" module="payone_core">
+                    <label>RatePay</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>8</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <types translate="label,comment">
+                            <label>Type</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>payone_core/system_config_ratepayType</source_model>
+                            <sort_order>200</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </types>
+                        <ratepay_config translate="label,comment">
+                            <label>RatePay Shop-IDs</label>
+                            <comment>Required</comment>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_ratePayStoreIds</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <sort_order>250</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </ratepay_config>
+                        <show_customermessage translate="label,tooltip">
+                            <label>Show detailed error-messages</label>
+                            <tooltip>PAYONE_TOOLTIP_CUSTOMERMESSAGE</tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>41</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </show_customermessage>
+                    </fields>
+                </template_ratepay>
+                <template_payolution translate="label" module="payone_core">
+                    <label>Payolution</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>9</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <company_name translate="label, comment">
+                            <label>Company name</label>
+                            <comment>Required</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>52</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </company_name>
+                        <installment_draft_user translate="label,tooltip">
+                            <label>Installment Draft Username</label>
+                            <tooltip>This is needed if you use Payolution installment payments, to offer the download of the Installment-Contract-Draft.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>53</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </installment_draft_user>
+                        <installment_draft_password translate="label,tooltip">
+                            <label>Installment Draft Password</label>
+                            <tooltip>This is needed if you use Payolution installment payments, to offer the download of the Installment-Contract-Draft.</tooltip>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>54</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </installment_draft_password>
+                        <b2b_mode translate="label">
+                            <label>B2B mode</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>55</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </b2b_mode>
+                        <types translate="label,comment">
+                            <label>Type</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>payone_core/system_config_payolutionType</source_model>
+                            <sort_order>56</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </types>
+                    </fields>
+                </template_payolution>
+            </groups>
+        </payone_payment>
+
+        <payone_protect translate="label" module="payone_core">
+            <label>PROTECT</label>
+            <tab>payone</tab>
+            <header_css>payone-config-header</header_css>
+            <frontend_type>text</frontend_type>
+            <sort_order>60</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <hint>
+                    <frontend_model>payone_core/adminhtml_system_config_hint</frontend_model>
+                    <hint>
+                        <template>payone/core/system/config/hint/protect.phtml</template>
+                    </hint>
+                    <sort_order>0</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                </hint>
+                <address_check>
+                    <label>Address checking</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <hint translate="label">
+                            <label>Address checking</label>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <hint>
+                                <template>payone/core/system/config/tooltip/protect/addresscheck.phtml</template>
+                            </hint>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_info</frontend_model>
+                        </hint>
+                        <enabled translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <backend_model>payone_core/system_config_backend_protect</backend_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enabled>
+                        <check_billing translate="label">
+                            <label>Check Billing Address</label>
+                            <frontend_type>select</frontend_type>
+                            <hint>
+                                <template>payone/core/system/config/tooltip/protect/addresscheck_type.phtml</template>
+                            </hint>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field</frontend_model>
+                            <source_model>payone_core/system_config_addressCheckType</source_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </check_billing>
+                        <check_shipping translate="label">
+                            <label>Check Shipping Address</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>payone_core/system_config_addressCheckType</source_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </check_shipping>
+                        <check_billing_for_virtual_order translate="label">
+                            <label>Check Billing Address for virtual orders</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>41</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </check_billing_for_virtual_order>
+                        <confirm_address_correction translate="label,comment">
+                            <label>Confirm Address correction</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <comment>Consumer must confirm corrections to their address</comment>
+                            <sort_order>45</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </confirm_address_correction>
+                        <mode>
+                            <label>Mode</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>payone_core/system_config_mode</source_model>
+                            <sort_order>45</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </mode>
+                        <min_order_total translate="label">
+                            <label>Minimum Order Total</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </min_order_total>
+                        <max_order_total translate="label">
+                            <label>Maximum Order Total</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </max_order_total>
+                        <mapping_personstatus translate="label">
+                            <label>Personstatus Mapping</label>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_personStatusMapping</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <sort_order>70</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </mapping_personstatus>
+                        <message_response_invalid translate="label,comment">
+                            <label>Message to display for invalid data</label>
+                            <comment>Placeholder: {{payone_customermessage}} (Message from Payone-Addresscheck</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>76</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </message_response_invalid>
+                        <handle_response_error translate="label,comment">
+                            <label>Response ERROR Handling</label>
+                            <comment>Action in case Addresscheck responds with ERROR</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>payone_core/system_config_handleResponseError</source_model>
+                            <sort_order>80</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </handle_response_error>
+                        <stop_checkout_message translate="label">
+                            <label>Message for 'Stop-Checkout'</label>
+                            <frontend_type>text</frontend_type>
+                            <depends>
+                                <handle_response_error>stop_checkout</handle_response_error>
+                            </depends>
+                            <sort_order>90</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </stop_checkout_message>
+                        <result_lifetime translate="label,comment">
+                            <label>Lifetime</label>
+                            <frontend_type>text</frontend_type>
+                            <comment>Result lifetime in days</comment>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </result_lifetime>
+                    </fields>
+                </address_check>
+                <creditrating>
+                    <label>Credit rating</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>20</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <hint translate="label">
+                            <label>Credit rating</label>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <hint>
+                                <template>payone/core/system/config/tooltip/protect/creditrating.phtml</template>
+                            </hint>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_info</frontend_model>
+                        </hint>
+                        <enabled translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <backend_model>payone_core/system_config_backend_protect</backend_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enabled>
+                        <integration_event>
+                            <label>Integration Event</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>payone_core/system_config_creditratingIntegrationEvent</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </integration_event>
+                        <enabled_for_payment_methods translate="label">
+                            <label>Enabled for Payment-Methods</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>adminhtml/system_config_source_payment_allowedmethods</source_model>
+                            <sort_order>30</sort_order>
+                            <depends>
+                                <integration_event>after_payment</integration_event>
+                            </depends>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enabled_for_payment_methods>
+                        <payment_hint_enabled translate="label">
+                            <label>Payment hint enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>32</sort_order>
+                            <depends>
+                                <integration_event>after_payment</integration_event>
+                            </depends>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </payment_hint_enabled>
+                        <payment_hint_text translate="label">
+                            <label>Payment hint text</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>33</sort_order>
+                            <depends>
+                                <integration_event>after_payment</integration_event>
+                                <payment_hint_enabled>1</payment_hint_enabled>
+                            </depends>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </payment_hint_text>
+                        <agreement_enabled translate="label">
+                            <label>Agreement enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>35</sort_order>
+                            <depends>
+                                <integration_event>after_payment</integration_event>
+                            </depends>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </agreement_enabled>
+                        <agreement_message translate="label,comment">
+                            <label>Agreement message</label>
+                            <comment>A template for the agreement message can be found under "?"</comment>
+                            <frontend_type>textarea</frontend_type>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field</frontend_model>
+                            <hint>
+                                <template>payone/core/system/config/tooltip/protect/creditrating_agreement_message.phtml</template>
+                            </hint>
+                            <sort_order>36</sort_order>
+                            <depends>
+                                <agreement_enabled>1</agreement_enabled>
+                                <integration_event>after_payment</integration_event>
+                            </depends>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </agreement_message>
+                        <type translate="label">
+                            <label>Creditrating-Checktype</label>
+                            <frontend_type>select</frontend_type>
+                            <hint>
+                                <template>payone/core/system/config/tooltip/protect/creditrating_type.phtml</template>
+                            </hint>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field</frontend_model>
+                            <source_model>payone_core/system_config_creditratingChecktype</source_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </type>
+                        <allow_payment_methods_yellow translate="label">
+                            <label>Allowed Payment-Methods for Result "YELLOW"</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>adminhtml/system_config_source_payment_allowedmethods</source_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </allow_payment_methods_yellow>
+                        <allow_payment_methods_red translate="label">
+                            <label>Allowed Payment-Methods for Result "RED"</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>adminhtml/system_config_source_payment_allowedmethods</source_model>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </allow_payment_methods_red>
+                        <sample_mode_enabled translate="label,comment">
+                            <label>Sample Mode Enabled</label>
+                            <comment>Activate to perform Creditrating check every n-th order</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>65</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sample_mode_enabled>
+                        <sample_mode_frequency translate="label,comment">
+                            <label>Sample Mode Frequency</label>
+                            <comment>Perform creditrating for 1 out of n orders.</comment>
+                            <frontend_type>text</frontend_type>
+                            <depends>
+                                <sample_mode_enabled>1</sample_mode_enabled>
+                            </depends>
+                            <sort_order>66</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sample_mode_frequency>
+
+                        <handle_response_error translate="label,comment">
+                            <label>Response ERROR Handling</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>payone_core/system_config_handleResponseError</source_model>
+                            <comment>Action in case Creditrating check responds with ERROR</comment>
+                            <sort_order>68</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </handle_response_error>
+                        <stop_checkout_message translate="label">
+                            <label>Message for 'Stop-Checkout'</label>
+                            <frontend_type>text</frontend_type>
+                            <depends>
+                                <handle_response_error>stop_checkout</handle_response_error>
+                            </depends>
+                            <sort_order>69</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </stop_checkout_message>
+                        <result_lifetime translate="label">
+                            <label>Lifetime</label>
+                            <hint>
+                                <template>payone/core/system/config/tooltip/protect/creditrating_lifetime.phtml</template>
+                            </hint>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field</frontend_model>
+                            <frontend_type>text</frontend_type>
+                            <comment>Result lifetime in days</comment>
+                            <sort_order>70</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </result_lifetime>
+                        <mode>
+                            <label>Mode</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>payone_core/system_config_mode</source_model>
+                            <sort_order>80</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </mode>
+                        <min_order_total translate="label">
+                            <label>Minimum Order Total</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>90</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </min_order_total>
+                        <max_order_total translate="label">
+                            <label>Maximum Order Total</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </max_order_total>
+                    </fields>
+                </creditrating>
+            </groups>
+        </payone_protect>
+
+        <payone_misc translate="label" module="payone_core">
+            <label>Miscellaneous</label>
+            <tab>payone</tab>
+            <header_css>payone-config-header</header_css>
+            <frontend_type>text</frontend_type>
+            <sort_order>100</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <transactionstatus_processing>
+                    <label>Transaction-Status Processing</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>5</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <hint translate="label">
+                            <label>Transaction-Status Processing</label>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <hint>
+                                <template>payone/core/system/config/tooltip/misc/transactionstatus_processing.phtml</template>
+                            </hint>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_info</frontend_model>
+                        </hint>
+                        <cron_expr translate="label">
+                            <label>Cron Expression</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </cron_expr>
+                        <valid_ips translate="label">
+                            <label>Valid PAYONE IPs</label>
+                            <comment>Enter valid PAYONE IPs (Format xxx.xxx.xxx.xxx). As a Wildcard You can use * </comment>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </valid_ips>
+                        <proxy_mode>
+                            <label>Proxy-Mode</label>
+                            <comment>If your shop is behind a Proxy. Enable this option to validate the HTTP_X_FORWARDED_FOR</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </proxy_mode>
+                    </fields>
+                </transactionstatus_processing>
+                <transactionstatus_forwarding>
+                    <label>Transaction-Status Forwarding</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <hint translate="label">
+                            <label>Transaction-Status Forwarding</label>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <hint>
+                                <template>payone/core/system/config/tooltip/misc/transactionstatus_forwarding.phtml</template>
+                            </hint>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_info</frontend_model>
+                        </hint>
+                        <config translate="label">
+                            <label>Forwarding</label>
+                            <hint>
+                                <template>payone/core/system/config/tooltip/misc/transaction_status_forwarding.phtml</template>
+                            </hint>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_forwarding</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </config>
+                    </fields>
+                </transactionstatus_forwarding>
+                <shipping_costs>
+                    <label>Invoicing Data - Shipping Costs</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>20</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <hint translate="label">
+                            <label>Invoicing Data - Shipping Costs</label>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <hint>
+                                <template>payone/core/system/config/tooltip/misc/shipping_costs.phtml</template>
+                            </hint>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_info</frontend_model>
+                        </hint>
+                        <sku translate="label">
+                            <label>SKU</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sku>
+                    </fields>
+                </shipping_costs>
+                <discount>
+                    <label>Invoicing Data - Discount</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>20</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <hint translate="label">
+                            <label>Invoicing Data - Discount</label>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <hint>
+                                <template>payone/core/system/config/tooltip/misc/discount.phtml</template>
+                            </hint>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_info</frontend_model>
+                        </hint>
+                        <sku translate="label">
+                            <label>SKU</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sku>
+                        <description translate="label">
+                            <label>Description</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </description>
+                    </fields>
+                </discount>
+                <creditmemo>
+                    <label>Invoicing Data - Creditmemo</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>30</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <hint translate="label">
+                            <label>Invoicing Data - Creditmemo</label>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <hint>
+                                <template>payone/core/system/config/tooltip/misc/creditmemo.phtml</template>
+                            </hint>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_info</frontend_model>
+                        </hint>
+                        <adjustment_refund_sku translate="label">
+                            <label>Adjustment Refund SKU</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </adjustment_refund_sku>
+                        <adjustment_refund_name translate="label">
+                            <label>Adjustment Refund Description</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </adjustment_refund_name>
+                        <adjustment_fee_sku translate="label">
+                            <label>Adjustment Fee SKU</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </adjustment_fee_sku>
+                        <adjustment_fee_name translate="label">
+                            <label>Adjustment Fee Description</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </adjustment_fee_name>
+                    </fields>
+                </creditmemo>
+                <email_error>
+                    <label>Email-Configuration for Error</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>40</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <hint translate="label">
+                            <label>Email-Configuration for Error</label>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <hint>
+                                <template>payone/core/system/config/tooltip/misc/email_error.phtml</template>
+                            </hint>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_info</frontend_model>
+                        </hint>
+                        <enabled translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enabled>
+                        <from translate="label">
+                            <label>Sender</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_identity</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </from>
+                        <to translate="label">
+                            <label>Recipient</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_identity</source_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </to>
+                        <bcc translate="label">
+                            <label>Copy to</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </bcc>
+                        <template translate="label">
+                            <label>Template</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_template</source_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </template>
+                    </fields>
+                </email_error>
+                <email_avs>
+                    <label>Email-Configuration for AVS</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>50</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <hint translate="label">
+                            <label>Email-Configuration for AVS</label>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <hint>
+                                <template>payone/core/system/config/tooltip/misc/email_avs.phtml</template>
+                            </hint>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_info</frontend_model>
+                        </hint>
+                        <enabled translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enabled>
+                        <result_avs translate="label">
+                            <label>Send Mail for AVS-Value</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>payone_core/system_config_avsResult</source_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </result_avs>
+                        <from translate="label">
+                            <label>Sender</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_identity</source_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </from>
+                        <to translate="label">
+                            <label>Recipient</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_identity</source_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </to>
+                        <bcc translate="label">
+                            <label>Copy to</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </bcc>
+                        <template translate="label">
+                            <label>Template</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_template</source_model>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </template>
+                    </fields>
+                </email_avs>
+            </groups>
+        </payone_misc>
+    </sections>
+</config>

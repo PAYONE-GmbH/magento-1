@@ -1,0 +1,232 @@
+<?php
+/**
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the GNU General Public License (GPL 3)
+ * that is bundled with this package in the file LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Payone_Core to newer
+ * versions in the future. If you wish to customize Payone_Core for your
+ * needs please refer to http://www.payone.de for more information.
+ *
+ * @category        Payone
+ * @package         design_frontend_base_default
+ * @subpackage      template
+ * @copyright       Copyright (c) 2015 <kontakt@fatchip.de> - www.fatchip.com, Copyright (c) 2016 <support@e3n.de> - www.e3n.de
+ * @author          Robert Müller <robert.mueller@fatchip.de>, Tim Rein <tim.rein@e3n.de>
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.fatchip.com,  http://www.e3n.de
+ */
+
+/** @var $this Payone_Core_Block_Payment_Method_Form_RatePay */
+$code = $this->getMethodCode();
+$configId = $this->getPaymentConfig()->getId();
+$paymentType = '';
+$ratePayShopId = $this->getMatchingRatePayShopId();
+$ratePayCurrency = $this->getRatePayCurrency();
+$types = $this->getTypes();
+
+?>
+<fieldset class="form-list">
+    <ul id="payment_form_<?php echo $code ?>" style="display:none">
+        <?php
+        if (count($types) > 1) : ?>
+            <select id="<?php echo $code ?>_payrate_type_select" name="payment[payone_ratepay_type]"
+                    onchange="payoneSwitchPayRate(this)" class="no-submit required-entry">
+                <option selected="selected" value=""><?php echo $this->__('--Please Select--') ?></option>
+                <?php foreach ($this->getTypes() as $key => $type) : ?>
+                    <option value="<?php echo $type['code']; ?>" <?php  ?>>
+                        <?php echo $type['name'] ?><span><?php echo $type['fee']; ?></span>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+
+        <?php else :
+            $type = array_pop($types);
+            $paymentType = $type['code'];
+            ?>
+            <?php echo $type['name']; ?>&nbsp;<span><?php echo $type['fee']; ?></span>
+            <input type="hidden" id="<?php echo $code ?>_type" name="payment[payone_ratepay_type]" value="<?php echo $paymentType;?>"/>
+            <?php
+        endif;?>
+
+        <?php if ($this->isDobRequired()): ?>
+            <li class="fields">
+                <div class="field">
+                    <label for="<?php echo $code ?>_additional_fields_customer_dob_month"
+                           class="required"><em>*</em><?php echo $this->__('Date of birth (DD MM YYYY)') ?>
+                    </label>
+                    <br class="clear"/>
+                    <select id="<?php echo $code ?>_additional_fields_customer_dob_day" class="required-entry"
+                            style="width: 60px;" onchange="payoneRatepayCustomerDobInput('<?php echo $code ?>')">
+                        <option value="">--</option>
+                        <?php for ($x = 1; $x <= 31; $x++): ?>
+                            <option value="<?php echo sprintf('%02d', $x); ?>">
+                                <?php echo sprintf('%02d', $x); ?>
+                            </option>
+                        <?php endfor; ?>
+                    </select>
+                    <select id="<?php echo $code ?>_additional_fields_customer_dob_month" class="required-entry"
+                            style="width: 60px;" onchange="payoneRatepayCustomerDobInput('<?php echo $code ?>')">
+                        <option value="">--</option>
+                        <?php for ($x = 1; $x <= 12; $x++) : ?>
+                            <option value="<?php echo sprintf('%02d', $x); ?>">
+                                <?php echo sprintf('%02d', $x); ?>
+                            </option>
+                        <?php endfor; ?>
+                    </select>
+                    <select id="<?php echo $code ?>_additional_fields_customer_dob_year" class="required-entry"
+                            style="width: 60px;" onchange="payoneRatepayCustomerDobInput('<?php echo $code ?>')">
+                        <option value="">----</option>
+                        <?php for ($x = date('Y'); $x > (date('Y') - 100); $x--) : ?>
+                            <option value="<?php echo $x; ?>">
+                                <?php echo $x; ?>
+                            </option>
+                        <?php endfor; ?>
+                    </select>
+                    
+                    <input type="hidden" id="<?php echo $code ?>_additional_fields_customer_dob_full"
+                            name="payment[payone_customer_dob]" class="validate-18-years">
+                </div>
+            </li>
+        <?php endif;?>
+        <?php if ($this->isTelephoneRequired()) : ?>
+            <li class="fields">
+                <div class="field">
+                    <label for="<?php echo $code ?>_additional_fields_customer_telephone" class="required">
+                        <em>*</em><?php echo $this->__('Telephone') ?>
+                    </label>
+                    <br class="clear"/>
+                    <input type="text" name="payment[payone_customer_telephone]"
+                           id="<?php echo $code ?>_additional_fields_customer_telephone"
+                           class="input-text required-entry"/>
+                </div>
+            </li>
+        <?php endif;?>
+
+        <li style="display:none;">
+            <input type="hidden" name="payment[payone_config_payment_method_id]"  id="<?php echo $code ?>_config_id" value="<?php echo $configId; ?>"/>
+            <input type="hidden" id="ratePayShopId" name="payment[payone_ratepay_shop_id]" value="<?php echo $ratePayShopId; ?>"/>
+            <input type="hidden" id="ratePayCurrency" name="payment[payone_ratepay_currency]" value="<?php echo $ratePayCurrency; ?>"/>
+            <?php 
+                $sDeviceIdentToken = $this->getRatePayDeviceFingerprint();
+                $sDeviceIdentId = $this->getRatePayDeviceFingerprintSnippetId();
+            ?>
+            <script language="JavaScript">
+                var di = {t:'<?php echo $sDeviceIdentToken; ?>',v:'<?php echo $sDeviceIdentId; ?>',l:'Checkout'};
+            </script>
+            <script type="text/javascript" src="//d.ratepay.com/<?php echo $sDeviceIdentId; ?>/di.js"></script>
+            <noscript>
+                <link rel="stylesheet" type="text/css" href="//d.ratepay.com/di.css?t=<?php echo $sDeviceIdentToken; ?>&v=<?php echo $sDeviceIdentId; ?>&l=Checkout">
+            </noscript>
+            <object  type="application/x-shockwave-flash" data="//d.ratepay.com/<?php echo $sDeviceIdentId; ?>/c.swf" width="0" height="0">
+                <param name="movie" value="//d.ratepay.com/<?php echo $sDeviceIdentId; ?>/c.swf" />
+                <param name="flashvars" value="t=<?php echo $sDeviceIdentToken; ?>&v=<?php echo $sDeviceIdentId; ?>"/>
+                <param name="AllowScriptAccess" value="always"/>
+            </object>
+        </li>
+
+        <li>
+            <div id="cover">
+                <div id="ajaxLoaderId">
+                    <img src="<?php echo Mage::getDesign()->getSkinUrl('/images/payone/ajaxloader.gif') ?>">
+                </div>
+            </div>
+            <div id="ratepay-main-cont" style="<?php echo (count($this->getTypes()) == 1 && $paymentType == 'RPS') ? 'display: block' : 'display: none'; ?>">
+                <div id="ratepay-Header">
+                    <div class="ratepay-FullWidth">
+                        <h2 class="ratepay-H2"><?php echo $this->__('Calculate here your own rate'); ?></h2>
+                        <img class="ratepay-LogoImg" src="<?php echo $this->getSkinUrl('images/payone/ratepay_ratenrechner.png'); ?>" width="150" alt="RatePAY Ratenrechner">
+                     </div>
+                    <br class="ratepay-ClearFix" />
+                </div>
+
+                <div id="ratepay-ContentSwitch">
+                    <div class="ratepay-ChooseRuntime">
+                        <?php echo $this->__('lang_cash_payment_price_part_one'); ?>:
+                        <span><b><?php echo Mage::helper('checkout')->formatPrice($this->getAmount(), true, true); ?></b></span>
+                        <input type="hidden" id="amount" value="<?php echo $this->getAmount() ?>">
+                        <?php echo $this->__('lang_cash_payment_price_part_two'); ?>
+                        <br />
+                        <label for="firstInput" style="width:100%;">
+                            <div class="ratepay-ChooseInput" id="<?php echo $code ?>_ChooseInputRate">
+                                <input id="firstInput" class="ratepay-FloatLeft" type="radio" name="Zahlmethode" value="wishrate"  onClick="switchRateOrRuntime('rate', '<?php echo $code ?>', '<?php echo $this->getSkinUrl('images/ratepay/'); ?>');" checked="checked">
+                            </div>
+                            <div class="ratepay-NintyPercentWidth ratepay-FloatLeft" style="color: black; width: 390px;"><?php echo $this->__('lang_payment_text_wishrate'); ?></div>
+                        </label>
+                        <div id="<?php echo $code ?>_ContentTerm" class="ratepay-Content" style="display: none;">
+
+                            <br class="ratepay-ClearFix" />
+                            <div class="ratepay-MarginTop">
+                                <span class="ratepay-VertAlignMiddle"><?php echo $this->__('lang_please') . " " . $this->__('lang_insert_wishrate'); ?>:</span>
+                                <input id="<?php echo $code ?>-rate" class="ratepay-Input-amount" type="text">
+                                <span class="ratepay-Currency"> &euro;</span>
+                                <input onclick="ratepayRateCalculatorAction('rate', '<?php echo $code ?>', '<?php echo $this->getUrl("payone_core/ratepay/rate", array('_secure' => true)); ?>');" value="<?php echo $this->__('lang_calculate_runtime'); ?>" id="<?php echo $code ?>_Input-button" class="ratepay-Input-button" type="button">
+                            </div>
+                        </div>
+                        <br class="ratepay-ClearFix" />
+                        <label for="secondInput" style="width:100%;">
+                            <div class="ratepay-ChooseInput" id="<?php echo $code ?>_ChooseInputRuntime">
+                                <input id="secondInput" class="ratepay-FloatLeft" type="radio" name="Zahlmethode" value="runtime" onClick="switchRateOrRuntime('runtime', '<?php echo $code ?>', '<?php echo $this->getSkinUrl('images/ratepay/'); ?>');">
+                            </div>
+                            <div class="ratepay-NintyPercentWidth ratepay-FloatLeft" style="color: black;"><?php echo $this->__('lang_choose_runtime'); ?></div>
+                        </label>
+                        <div id="<?php echo $code ?>_ContentRuntime" class="ratepay-Content" style="display: none;">
+
+                                <div id="<?php echo $code ?>_DueDate" class="ratepay-DueDate">
+                                    <div class="ratepay-DueText"><?php echo $this->__('lang_due_date'); ?></div>
+                                    <span style="float: right;">
+
+                                    </span>
+                                </div>
+
+                            <br class="ratepay-ClearFix" />
+                            <div class="ratepay-MarginTop">
+                                <span class="ratepay-VertAlignMiddle" style="float: left;"><?php echo $this->__('lang_please') . " " . $this->__('lang_insert_runtime'); ?>:</span>
+                                <select id="<?php echo $code ?>-runtime">
+                                  <option value="3"><?php echo $this->__('3 month'); ?></option>
+                                  <option value="6"><?php echo $this->__('6 month'); ?></option>
+                                  <option value="9" selected="selected"><?php echo $this->__('9 month'); ?></option>
+                                  <option value="12" selected="selected"><?php echo $this->__('12 month'); ?></option>
+                                  <option value="24" selected="selected"><?php echo $this->__('24 month'); ?></option>
+                                  <option value="36" selected="selected"><?php echo $this->__('36 month'); ?></option>
+                                </select>
+                                <input name="" onclick="ratepayRateCalculatorAction('runtime', '<?php echo $code ?>', '<?php echo $this->getUrl("payone_core/ratepay/runtime", array('_secure' => true)); ?>');" value="<?php echo $this->__('lang_calculate_rate'); ?>" value="<?php echo $this->__('lang_calculate_rate'); ?>" type="button" id="<?php echo $code ?>_Input-buttonRuntime"  class="ratepay-Input-button2">
+                            </div>
+                        </div>
+                        <br class="ratepay-ClearFix" />
+                        <div class="ratepay-ContentSwitchDiv" id="<?php echo $code ?>_SwitchToTerm" class="ratepay-Active" style="display: none">
+                            <span id="<?php echo $code ?>_spanrate">
+                                <?php echo $this->__('lang_insert_wishrate'); ?> <?php echo $this->__('lang_calculate_runtime'); ?>
+                            </span>
+                            <input name="" value="<?php echo $this->__('lang_calculate_runtime'); ?>" type="button" class="ratepay-Input-button ratepay-ContentSwitchInput ">
+                        </div>
+                        <div class="ratepay-ContentSwitchDiv"  id="<?php echo $code ?>_SwitchToRuntime" style="display: none">
+                            <span id="<?php echo $code ?>_spanruntime" class="ratepay-active">
+                                <?php echo $this->__('lang_choose_runtime'); ?> <?php echo $this->__('lang_calculate_rate'); ?>
+                            </span>
+                            <input name="" value="<?php echo $this->__('lang_calculate_rate'); ?>" type="button" class="ratepay-Input-button ratepay-ContentSwitchInput ">
+                        </div>
+                        <div id="<?php echo $code ?>_ResultContainer">
+
+                        </div>
+
+                    </div>
+                </div>
+                <script>
+                    switchRateOrRuntime('rate', '<?php echo $code ?>', '<?php echo $this->getSkinUrl(); ?>');
+                </script>
+
+                <br class="ratepay-ClearFix" />
+            </div>
+        </li>
+    </ul>
+</fieldset>
+
+<script type="text/javascript">
+    //    Add validation messages translation
+    Translator.add('You have to be at least 18 years old to use this payment type!', '<?php echo $this->__('You have to be at least 18 years old to use this payment type!'); ?>');
+</script>

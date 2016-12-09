@@ -1,0 +1,70 @@
+/**
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the GNU General Public License (GPL 3)
+ * that is bundled with this package in the file LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Payone_Core to newer
+ * versions in the future. If you wish to customize Payone_Core for your
+ * needs please refer to http://www.payone.de for more information.
+ *
+ * @category        Payone
+ * @package         js
+ * @subpackage      prototype_windows_themes_payone
+ * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
+ * @author          Matthias Walter <info@noovias.com>
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.noovias.com
+ */
+.dialog { border:1px solid #555; }
+.dialog .bot { display:none !important; }
+.overlay_payone { background-color:#000; filter:alpha(opacity=60); -moz-opacity:.6; opacity:.6; -webkit-opacity:.6; }
+.top.table_window { border-bottom:1px solid #000; background:#FFF; }
+
+.payone_nw { width:6px; height:28px; }
+.payone_n { height:30px; }
+.payone_ne { width:6px; height:28px; }
+
+.payone_w { width:6px; }
+.payone_e { width:6px; }
+.payone_w,
+.payone_e,
+.payone_content { background: #f5f5f5; }
+
+.payone_sw { background:#deebf0; width:5px; height:3px; }
+.payone_s { background:#deebf0; height:3px; }
+.payone_se,
+
+.payone_sizer { background:#deebf0; width:5px; height:3px; }
+.payone_sizer { cursor:se-resize; }
+
+.payone_close { width:16px; height:16px; background:url(payone/window_close.png) no-repeat 0 0; position:absolute; top:7px; right:7px; cursor:pointer; z-index:1000; }
+
+.payone_title {
+    float: left;
+    height: 45px;
+    font: bold 20px/40px Arial, Helvetica, sans-serif;
+    color: #003B59;
+    text-align: left;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-left: 200px;
+    background: url(payone/logoclaim.gif) no-repeat scroll 0 3px white;
+}
+
+.payone_content { overflow:auto; font-size:12px; }
+.payone_content,
+.payone_content label { color:#003B59; font-family:Arial, sans-serif; }
+
+.dialog table.table_window td.payone_content{ padding-top:10px; }
+
+.payone_buttons { padding:10px; text-align:right; }
+.payone_buttons input.button { border-width:1px; border-style:solid; border-color:#ed6502 #a04300 #a04300 #ed6502;  background:#ffac47 url(payone/btn_bg.gif) 0 100% repeat-x; padding:0 7px 1px 7px; font:bold 12px/18px Arial, Helvetica, sans-serif; color:#fff; cursor:pointer; text-align:center; white-space:nowrap; }
+
+/* FOR IE */
+* html .payone_close { background-image:none; filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="../themes/payone/window_maximize.png", sizingMethod="crop"); }
+* html .payone_minimize { background-image:none; filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="../themes/payone/window_close.png", sizingMethod="crop");}
+* html .payone_maximize { background-image:none; filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="../themes/payone/window_minimize.png", sizingMethod="crop"); }

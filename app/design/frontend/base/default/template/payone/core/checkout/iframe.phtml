@@ -1,0 +1,19 @@
+<?php if($this->getIframeHeader()) { ?>
+<div class="page-title title-buttons">
+    <h1><?php echo $this->getIframeHeader(); ?></h1>
+</div>
+<?php } ?>
+
+<?php 
+if($this->getIframeText()) {
+    echo $this->getIframeText();
+} 
+?>
+<div style="clear:both;"></div>
+<iframe 
+    src="<?php echo $this->getIframeUrl(); ?> " 
+    <?php if($this->getIframeHeight()) echo 'height="'.$this->getIframeHeight().'"'; ?>
+    <?php if($this->getIframeWidth()) echo 'width="'.$this->getIframeWidth().'"'; ?>
+    <?php if($this->getIframeStyle()) echo 'style="'.$this->getIframeStyle().'"'; ?>
+    >
+</iframe>

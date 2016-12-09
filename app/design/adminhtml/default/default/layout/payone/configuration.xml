@@ -1,0 +1,184 @@
+<?xml version="1.0"?><!--
+/**
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the GNU General Public License (GPL 3)
+ * that is bundled with this package in the file LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Payone_Core to newer
+ * versions in the future. If you wish to customize Payone_Core for your
+ * needs please refer to http://www.payone.de for more information.
+ *
+ * @category        Payone
+ * @package         design_adminhtml_default_default
+ * @subpackage      layout
+ * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
+ * @author          Matthias Walter <info@noovias.com>
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.noovias.com
+ */
+-->
+<layout>
+
+    <adminhtml_system_config_edit>
+        <reference name="head">
+            <action method="setCanLoadExtJs"><flag>1</flag></action>
+            <action method="addJs"><script>prototype/window.js</script></action>
+            <action method="addItem"><type>js_css</type><name>prototype/windows/themes/default.css</name></action>
+            <action method="addItem"><type>js_css</type><name>prototype/windows/themes/payone.css</name></action>
+        </reference>
+
+        <reference name="content">
+            <block type="core/template" name="payone.config.tooltip"
+                   template="payone/core/system/config/tooltip/window.phtml" />
+        </reference>
+    </adminhtml_system_config_edit>
+
+    <!-- System Config Payment -->
+    <adminhtml_payonecore_system_config_payment_iframe>
+        <update handle="payone_core_iframe" />
+        <reference name="head">
+            <action method="addJs"><script>prototype/window.js</script></action>
+            <action method="addItem"><type>js_css</type><name>prototype/windows/themes/default.css</name></action>
+            <action method="addItem"><type>js_css</type><name>prototype/windows/themes/payone.css</name></action>
+        </reference>
+        <reference name="content">
+            <block type="core/template"
+                   name="payone.config.tooltip"
+                   template="payone/core/system/config/tooltip/window.phtml" />
+        </reference>
+    </adminhtml_payonecore_system_config_payment_iframe>
+
+    <adminhtml_payonecore_system_config_payment_index>
+        <update handle="adminhtml_payonecore_system_config_payment_iframe" />
+        <reference name="content">
+            <block type="payone_core/adminhtml_system_config_payment" name="payone.core.payment"
+                   template="payone/core/system/config/payment/grid/container.phtml" />
+        </reference>
+    </adminhtml_payonecore_system_config_payment_index>
+
+    <adminhtml_payonecore_system_config_payment_edit>
+        <update handle="adminhtml_payonecore_system_config_payment_iframe" />
+        <reference name="content">
+            <block type="payone_core/adminhtml_system_config_payment_edit"
+                   name="payone.core.payment.edit" />
+        </reference>
+    </adminhtml_payonecore_system_config_payment_edit>
+
+    <!-- Wizard -->
+    <adminhtml_payonecore_configuration_wizard_index>
+        <reference name="head">
+            <action method="setCanLoadExtJs"><flag>1</flag></action>
+            <action method="addJs"><script>prototype/window.js</script></action>
+            <action method="addItem"><type>js_css</type><name>prototype/windows/themes/default.css</name></action>
+            <action method="addItem"><type>js_css</type><name>prototype/windows/themes/payone.css</name></action>
+        </reference>
+        <reference name="content">
+            <block type="adminhtml/template"
+                   name="payone.config.wizard.index"
+                   template="payone/core/configuration/wizard/index.phtml" />
+        </reference>
+    </adminhtml_payonecore_configuration_wizard_index>
+
+    <adminhtml_payonecore_configuration_wizard_page_iframe>
+        <update handle="payone_core_iframe" />
+        <reference name="root">
+            <action method="setTemplate">
+                <template>payone/core/configuration/wizard/iframe.phtml</template>
+            </action>
+        </reference>
+        <reference name="head">
+            <action method="addCss"><name>payone/core/wizard.css</name></action>
+            <action method="addJs"><script>prototype/window.js</script></action>
+            <action method="addItem"><type>js_css</type><name>prototype/windows/themes/default.css</name></action>
+            <action method="addItem"><type>js_css</type><name>prototype/windows/themes/payone.css</name></action>
+        </reference>
+        <reference name="content">
+            <block type="core/template"
+                   name="payone.config.tooltip"
+                   template="payone/core/system/config/tooltip/window.phtml" />
+        </reference>
+    </adminhtml_payonecore_configuration_wizard_page_iframe>
+
+    <adminhtml_payonecore_configuration_wizard_page_view>
+        <update handle="adminhtml_payonecore_configuration_wizard_page_iframe" />
+        <reference name="content">
+            <block type="payone_core/adminhtml_configuration_wizard_page_view"
+                   name="payone.config.wizard.page.view"
+                   template="payone/core/configuration/wizard/page/view/container.phtml" />
+        </reference>
+    </adminhtml_payonecore_configuration_wizard_page_view>
+
+    <adminhtml_payonecore_configuration_wizard_page_edit>
+        <update handle="adminhtml_payonecore_configuration_wizard_page_iframe" />
+        <reference name="content">
+            <block type="payone_core/adminhtml_configuration_wizard_page_edit"
+                   name="payone.config.wizard.page.edit"
+                   template="payone/core/configuration/wizard/page/form/container.phtml" >
+                <block type="payone_core/adminhtml_configuration_wizard_config_form"
+                       name="form" >
+                    <!--<action method="initForm"></action>-->
+                </block>
+            </block>
+        </reference>
+    </adminhtml_payonecore_configuration_wizard_page_edit>
+
+    <adminhtml_payonecore_configuration_wizard_page_index>
+        <update handle="adminhtml_payonecore_configuration_wizard_page_view" />
+        <reference name="payone.config.wizard.page.view">
+            <action method="removeButton"><name>back</name></action>
+            <block type="adminhtml/template"
+                   name="payone.config.wizard.page.index"
+                   template="payone/core/configuration/wizard/page/index.phtml">
+                <block type="adminhtml/system_config_switcher"
+                       name="payone.config.wizard.page.switcher"
+                       before="-"
+                       template="payone/core/configuration/wizard/page/store_switcher.phtml" />
+            </block>
+        </reference>
+    </adminhtml_payonecore_configuration_wizard_page_index>
+
+    <adminhtml_payonecore_configuration_wizard_page_payment>
+        <update handle="adminhtml_payonecore_configuration_wizard_page_payment_index" />
+    </adminhtml_payonecore_configuration_wizard_page_payment>
+
+    <adminhtml_payonecore_configuration_wizard_page_payment_index>
+        <update handle="adminhtml_payonecore_configuration_wizard_page_view" />
+        <reference name="payone.config.wizard.page.view">
+            <block type="payone_core/adminhtml_system_config_payment"
+                   name="payone.config.wizard.page.payment"
+                   template="payone/core/configuration/wizard/page/payment/grid/container.phtml"/>
+        </reference>
+    </adminhtml_payonecore_configuration_wizard_page_payment_index>
+
+    <adminhtml_payonecore_configuration_wizard_page_payment_edit>
+        <update handle="adminhtml_payonecore_configuration_wizard_page_iframe" />
+        <reference name="content">
+            <block type="payone_core/adminhtml_system_config_payment_edit"
+                   name="payone.core.payment.edit"
+                   template="payone/core/configuration/wizard/page/form/container.phtml" />
+        </reference>
+    </adminhtml_payonecore_configuration_wizard_page_payment_edit>
+
+    <adminhtml_payonecore_configuration_wizard_page_finish>
+        <update handle="adminhtml_payonecore_configuration_wizard_page_view" />
+        <reference name="payone.config.wizard.page.view">
+            <action method="removeButton"><name>back</name></action>
+            <action method="removeButton"><name>save</name></action>
+            <action method="removeButton"><name>cancel</name></action>
+            <action method="addButton">
+                <name>finish</name>
+                <helper helper="payone_core/wizard/getConfigButtonFinish" />
+            </action>
+            <block type="adminhtml/template"
+                   name="payone.config.wizard.page.finish"
+                   template="payone/core/configuration/wizard/page/finish.phtml">
+            </block>
+        </reference>
+    </adminhtml_payonecore_configuration_wizard_page_finish>
+
+
+</layout>

@@ -1,0 +1,67 @@
+<?php
+/**
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the GNU General Public License (GPL 3)
+ * that is bundled with this package in the file LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Payone_Core to newer
+ * versions in the future. If you wish to customize Payone_Core for your
+ * needs please refer to http://www.payone.de for more information.
+ *
+ * @category        Payone
+ * @package         design_adminhtml_default_default
+ * @subpackage      template
+ * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
+ * @author          Matthias Walter <info@noovias.com>
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.noovias.com
+ */
+/** @var $this Mage_Adminhtml_Block_Template */
+?>
+<?php
+$migrateUrl = $this->getUrl('adminhtml/payonemigrator_migration/migrate');
+?>
+<div class="wizard_welcome" style="margin-bottom: 25px;">
+    <p>Der Konfigurationsassistent transferiert die aktuellen Einstellungen in die Struktur der neuen PAYONE Payment
+        Extension.</p>
+
+    <p>Bitte überprüfen Sie nach Abschluss des Transfers alle Einstellungen im Detail.</p>
+
+    <p>Der Transfer kann je nach Größe und Umfang ihrer Datenbank einige Minuten in Anspruch nehmen.</p>
+</div>
+<div class="payone_migration_wrapper">
+    <div id="payone_migration_config_global_status" class="payone_migration_loading">
+        Schritt 1 von 6: Transferiere Allgemeine Einstellungen
+    </div>
+    <div id="payone_migration_config_payment_status" class="hidden">
+        Schritt 2 von 6: Transferiere Einstellungen Zahlarten
+    </div>
+    <div id="payone_migration_order_payment_status" class="hidden">
+        Schritt 3 von 6: Transferiere Zahlinformationen
+    </div>
+    <div id="payone_migration_payment_finish_status" class="hidden">
+        Schritt 4 von 6: Transferiere Zahlarten
+    </div>
+    <div id="payone_migration_config_protect_status" class="hidden">
+        Schritt 5 von 6: Transferiere Einstellungen PROTECT
+    </div>
+    <div id="payone_migration_finish_status" class="hidden">
+        Schritt 6 von 6: Transfer abgeschlossen
+    </div>
+</div>
+<script type="text/javascript">
+    //<![CDATA[
+    Event.observe(window, 'load', function () {
+        $('payone_wizard_form_buttons').setStyle({display:'none'});
+
+        migration.nextStep('config_global');
+    });
+
+    var migration = new PAYONE.Migrator.Migration('<?php echo $migrateUrl ?>');
+
+    //]]>
+</script>

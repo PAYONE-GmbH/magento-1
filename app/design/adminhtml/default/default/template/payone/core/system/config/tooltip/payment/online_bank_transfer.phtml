@@ -1,0 +1,37 @@
+<?php
+/**
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the GNU General Public License (GPL 3)
+ * that is bundled with this package in the file LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Payone_Core to newer
+ * versions in the future. If you wish to customize Payone_Core for your
+ * needs please refer to http://www.payone.de for more information.
+ *
+ * @category        Payone
+ * @package         design_adminhtml_default_default
+ * @subpackage      template
+ * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
+ * @author          Matthias Walter <info@noovias.com>
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.noovias.com
+ */
+?>
+<div class="field-name"><?php echo $this->__('Type of online bank transfer'); ?></div>
+<div class="field-description">
+	<?php echo $this->__('You can define here which types of online bank transfer are available during checkout.'); ?><br>
+	<?php echo $this->__('The following providers are currently supported'); ?>:<br>
+    <ul>
+        <li><?php echo $this->__('SOFORT Überweisung'); ?></li>
+        <li><?php echo $this->__('giropay'); ?></li>
+        <li><?php echo $this->__('eps'); ?></li>
+        <li><?php echo $this->__('PostFinance E-Finance'); ?></li>
+        <li><?php echo $this->__('PostFinance Card'); ?></li>
+        <li><?php echo $this->__('iDeal'); ?></li>
+    </ul>
+</div>
+<br>
