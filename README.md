@@ -1,3 +1,5 @@
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/PAYONE-GmbH/magento-1/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/PAYONE-GmbH/magento-1/?branch=master)
+
 # PAYMENT FOR YOUR MAGENTO-SHOP
 
 Are you looking for the ideal payment solution for your online shop?
