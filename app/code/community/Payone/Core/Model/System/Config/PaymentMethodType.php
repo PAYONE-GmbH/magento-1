@@ -44,6 +44,7 @@ class Payone_Core_Model_System_Config_PaymentMethodType extends Payone_Core_Mode
     const BARZAHLEN = 'barzahlen';
     const RATEPAY = 'ratepay';
     const PAYOLUTION = 'payolution';
+    const PAYOLUTIONINVOICING = 'payolution_invoicing';
 
     /**
      * @return array
@@ -63,6 +64,7 @@ class Payone_Core_Model_System_Config_PaymentMethodType extends Payone_Core_Mode
             self::BARZAHLEN => 'Barzahlen',
             self::RATEPAY => 'RatePay',
             self::PAYOLUTION => 'Payolution',
+            self::PAYOLUTIONINVOICING => 'Payolution Invoicing',
         );
     }
 }

@@ -239,6 +239,18 @@
                     <!-- Payolution bic -->
                     <to_order_payment>*</to_order_payment>
                 </payone_payolution_bic>
+                <payone_payolution_invoicing>
+                    <!-- Payolution type -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_payolution_invoicing>
+                <payone_payolution_invoicing_iban>
+                    <!-- Payolution iban -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_payolution_invoicing_iban>
+                <payone_payolution_invoicing_bic>
+                    <!-- Payolution bic -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_payolution_invoicing_bic>
                 <payone_isb2b>
                     <!-- B2B mode ? -->
                     <to_order_payment>*</to_order_payment>
@@ -352,7 +364,7 @@
                 <observers>
                     <payone_core_observer>
                         <type>singleton</type>
-                        <class>payone_core/observer_checkout_onepage_debitPayment</class>
+                        <class>payone_core/observer_checkout_onepage_multiplePaymentCheck</class>
                         <method>performChecks</method>
                     </payone_core_observer>
                 </observers>
@@ -361,7 +373,7 @@
                 <observers>
                     <payone_core_observer>
                         <type>singleton</type>
-                        <class>payone_core/observer_checkout_onepage_debitPayment</class>
+                        <class>payone_core/observer_checkout_onepage_multiplePaymentCheck</class>
                         <method>performChecks</method>
                     </payone_core_observer>
                 </observers>
@@ -590,6 +602,11 @@
                 <model>payone_core/payment_method_payolution</model>
                 <group>payone</group>
             </payone_payolution>
+            <payone_payolution_invoicing translate="title" module="payone_core">
+                <title>PAYONE - Payolution Invoicing</title>
+                <model>payone_core/payment_method_payolutionInvoicing</model>
+                <group>payone</group>
+            </payone_payolution_invoicing>
             <payone_cash_on_delivery translate="title" module="payone_core">
                 <title>PAYONE - Cash on Delivery</title>
                 <model>payone_core/payment_method_cashOnDelivery</model>

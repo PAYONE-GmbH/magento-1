@@ -32,5 +32,6 @@ class Payone_Enum_ClearingType
     const BARZAHLEN = 'csh';
     const RATEPAY = 'fnc';
     const PAYOLUTION = 'fnc';
+    const PAYOLUTIONINVOICING = 'fnc';
     const FINANCING = 'fnc';
 }
