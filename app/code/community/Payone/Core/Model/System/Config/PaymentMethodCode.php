@@ -15,8 +15,8 @@
  * @category        Payone
  * @package         Payone_Core_Model
  * @subpackage      System
- * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
- * @author          Matthias Walter <info@noovias.com>
+ * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com,  Copyright (c) 2017 <support@e3n.de> - www.e3n.de
+ * @author          Matthias Walter <info@noovias.com>, Tim Rein <web.it.rein@gmail.com>
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
  * @link            http://www.noovias.com
  */
@@ -46,6 +46,7 @@ class Payone_Core_Model_System_Config_PaymentMethodCode extends Payone_Core_Mode
     const BARZAHLEN = 'payone_barzahlen';
     const RATEPAY = 'payone_ratepay';
     const PAYOLUTION = 'payone_payolution';
+    const PAYOLUTIONINVOICING = 'payone_payolution_invoicing';
 
     /**
      * @return array
@@ -65,6 +66,9 @@ class Payone_Core_Model_System_Config_PaymentMethodCode extends Payone_Core_Mode
             self::BARZAHLEN => 'Barzahlen',
             self::RATEPAY => 'RatePay',
             self::PAYOLUTION => 'Payolution',
+            self::PAYOLUTIONINVOICING => 'Payolution Invoicing',
+
+
         );
     }
 }
