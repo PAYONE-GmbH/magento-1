@@ -33,5 +33,6 @@ class Payone_Enum_ClearingType
     const RATEPAY = 'fnc';
     const PAYOLUTION = 'fnc';
     const PAYOLUTIONINVOICING = 'fnc';
+    const PAYOLUTIONDEBIT = 'fnc';
     const FINANCING = 'fnc';
 }
