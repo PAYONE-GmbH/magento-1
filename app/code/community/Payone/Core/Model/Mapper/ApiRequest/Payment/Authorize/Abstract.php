@@ -142,7 +142,8 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
         }
         
         // Always use PREAUTHORIZATION for Payolution
-        if ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Payolution || $paymentMethod instanceof Payone_Core_Model_Payment_Method_PayolutionInvoicing) {
+        if ($paymentMethod instanceof Payone_Core_Model_Payment_Method_PayolutionDebit ||
+            $paymentMethod instanceof Payone_Core_Model_Payment_Method_PayolutionInvoicing ) {
             $requestType = Payone_Api_Enum_RequestType::PREAUTHORIZATION;
         }
 
@@ -607,12 +608,12 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
             }
 
             $payment->setTelephonenumber($telephone);
-        } elseif($paymentMethod instanceof Payone_Core_Model_Payment_Method_Payolution || $paymentMethod instanceof Payone_Core_Model_Payment_Method_PayolutionInvoicing) {
+        } elseif($paymentMethod instanceof Payone_Core_Model_Payment_Method_PayolutionDebit ||
+                 $paymentMethod instanceof Payone_Core_Model_Payment_Method_PayolutionInvoicing)
+        {
             $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_Payolution();
             $payment->setApiVersion();
             $payment->setFinancingtype($info->getPayonePayolutionType());
-            Mage::helper('firegento/log')->chromephp($payment);
-            Mage::helper('firegento/log')->chromephp($info->getPayonePayolutionType());
 
             $payment->setWorkorderid($info->getPayoneWorkorderid());
             $payment->setIban(strtoupper($info->getPayonePayolutionIban()));
@@ -749,6 +750,9 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
         }
         elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_PayolutionInvoicing) {
             $clearingType = Payone_Enum_ClearingType::PAYOLUTIONINVOICING;
+        }
+        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_PayolutionDebit) {
+            $clearingType = Payone_Enum_ClearingType::PAYOLUTIONDEBIT;
         }
 
         return $clearingType;

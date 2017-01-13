@@ -231,6 +231,10 @@
                     <!-- Payolution type -->
                     <to_order_payment>*</to_order_payment>
                 </payone_payolution_type>
+                <payone_payolution_invoicing>
+                    <!-- Payolution type -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_payolution_invoicing>
                 <payone_payolution_iban>
                     <!-- Payolution iban -->
                     <to_order_payment>*</to_order_payment>
@@ -239,18 +243,18 @@
                     <!-- Payolution bic -->
                     <to_order_payment>*</to_order_payment>
                 </payone_payolution_bic>
-                <payone_payolution_invoicing>
+                <payone_payolution_debit>
                     <!-- Payolution type -->
                     <to_order_payment>*</to_order_payment>
-                </payone_payolution_invoicing>
-                <payone_payolution_invoicing_iban>
+                </payone_payolution_debit>
+                <payone_payolution_debit_iban>
                     <!-- Payolution iban -->
                     <to_order_payment>*</to_order_payment>
-                </payone_payolution_invoicing_iban>
-                <payone_payolution_invoicing_bic>
+                </payone_payolution_debit_iban>
+                <payone_payolution_debit_bic>
                     <!-- Payolution bic -->
                     <to_order_payment>*</to_order_payment>
-                </payone_payolution_invoicing_bic>
+                </payone_payolution_debit_bic>
                 <payone_isb2b>
                     <!-- B2B mode ? -->
                     <to_order_payment>*</to_order_payment>
@@ -607,6 +611,11 @@
                 <model>payone_core/payment_method_payolutionInvoicing</model>
                 <group>payone</group>
             </payone_payolution_invoicing>
+            <payone_payolution_debit translate="title" module="payone_core">
+                <title>PAYONE - Payolution Debit</title>
+                <model>payone_core/payment_method_payolutionDebit</model>
+                <group>payone</group>
+            </payone_payolution_debit>
             <payone_cash_on_delivery translate="title" module="payone_core">
                 <title>PAYONE - Cash on Delivery</title>
                 <model>payone_core/payment_method_cashOnDelivery</model>
@@ -687,6 +696,12 @@
             <template_payolution>
                 <use_global>1</use_global>
             </template_payolution>
+            <template_payolution_invoicing>
+                <use_global>1</use_global>
+            </template_payolution_invoicing>
+            <template_payolution_debit>
+                <use_global>1</use_global>
+            </template_payolution_debit>
         </payone_payment>
         <payone_general>
             <global>
