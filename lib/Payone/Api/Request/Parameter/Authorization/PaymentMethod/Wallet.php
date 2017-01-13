@@ -50,6 +50,8 @@ class Payone_Api_Request_Parameter_Authorization_PaymentMethod_Wallet
      */
     protected $backurl = NULL;
 
+    protected $paydata = NULL;
+    
     /**
      * @param $successurl
      */
@@ -113,4 +115,22 @@ class Payone_Api_Request_Parameter_Authorization_PaymentMethod_Wallet
     {
         return $this->errorurl;
     }
+    
+    /**
+     * @param Payone_Api_Request_Parameter_Paydata_Paydata $paydata
+     */
+    public function setPaydata($paydata) 
+    {
+        $this->paydata = $paydata;
+    }
+
+    /**
+     * 
+     * @return Payone_Api_Request_Parameter_Paydata_Paydata
+     */
+    public function getPaydata() 
+    {
+        return $this->paydata;
+    }
+    
 }

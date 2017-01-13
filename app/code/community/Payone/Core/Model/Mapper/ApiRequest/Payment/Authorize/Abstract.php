@@ -460,8 +460,7 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
         if ($paymentMethod instanceof Payone_Core_Model_Payment_Method_CashOnDelivery) {
             $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_CashOnDelivery();
             $payment->setShippingprovider(Payone_Api_Enum_Shippingprovider::DHL);
-        }
-        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Creditcard) {
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Creditcard) {
             $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_CreditCard();
 
             // check if it is an adminorder and set ecommercemode to moto
@@ -471,8 +470,7 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
 
             $payment->setPseudocardpan($info->getPayonePseudocardpan());
             $isRedirect = true;
-        }
-        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransfer) {
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransfer) {
             $country = $this->getOrder()->getBillingAddress()->getCountry();
             $payoneOnlinebanktransferType = $info->getPayoneOnlinebanktransferType();
             $iban = $info->getPayoneSepaIban();
@@ -506,8 +504,7 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
             }
 
             $isRedirect = true;
-        }
-        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_SafeInvoice) {
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_SafeInvoice) {
             $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_Financing();
             $payment->setFinancingtype($info->getPayoneSafeInvoiceType());
 
@@ -515,13 +512,21 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
                 // BillSAFE is a redirect payment method, Klarna not
                 $isRedirect = true;
             }
-        }
-        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Wallet) {
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Wallet) {
             $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_Wallet();
             $payment->setWallettype($this->_getWalletType());
             $isRedirect = true;
-        }
-        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_DebitPayment) {
+            
+            if ($this->_getWalletType() == 'PDT' && $this->getOrder()->getIsVirtual()) {// is Paydirekt and virtual/download?
+                $payData = new Payone_Api_Request_Parameter_Paydata_Paydata();
+                $payData->addItem(
+                    new Payone_Api_Request_Parameter_Paydata_DataItem(
+                        array('key' => 'shopping_cart_type', 'data' => 'DIGITAL')
+                    )
+                );
+                $payment->setPaydata($payData);
+            }
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_DebitPayment) {
             $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_DebitPayment();
             $payment->setBankcountry($info->getPayoneBankCountry());
             $iban = $info->getPayoneSepaIban();

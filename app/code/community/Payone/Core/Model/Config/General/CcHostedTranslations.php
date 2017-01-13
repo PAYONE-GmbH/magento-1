@@ -16,7 +16,7 @@
  * @package         Payone_Core_Model
  * @subpackage      Config
  * @copyright       Copyright (c) 2016 <kontakt@fatchip.de> - www.fatchip.com
- * @author          Robert Mï¿½ller <robert.mueller@fatchip.de>
+ * @author          Robert Müller <robert.mueller@fatchip.de>
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
  * @link            http://www.fatchip.com
  */
@@ -27,20 +27,9 @@ class Payone_Core_Model_Config_General_CcHostedTranslations extends Payone_Core_
     protected $cc_translation_months = '';
     protected $cc_translation_errors = '';
     protected $cc_translation_placeholders = '';
-
-    /**
-     * @param array $aTranslations
-     * @param string $sType
-     * @return array|string
-     */
+    
     protected function _formatTranslationArray($aTranslations, $sType = '')
     {
-        // if no translations are present, unserialize('') will be called and thus $aTranslations will be false...
-        if ($aTranslations === false) {
-            // ...however, the default value is an empty array
-            $aTranslations = array();
-        }
-
         $aReturn = array();
         foreach ($aTranslations as $aTranslation) {
             $sLanguage = array_shift($aTranslation['translation_language']);
