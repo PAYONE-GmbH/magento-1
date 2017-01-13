@@ -123,7 +123,7 @@ class Payone_Core_Model_Domain_Protocol_Api extends Mage_Core_Model_Abstract
 
         $preparedData = array();
         foreach ($data as $key => $value) {
-            $valuearr = explode('=', $value);
+            $valuearr = explode('=', $value, 2);
             if (isset($valuearr[1]) && $valuearr[1] !=='') {
                 $preparedData[$valuearr[0]] = $valuearr[1];
             }

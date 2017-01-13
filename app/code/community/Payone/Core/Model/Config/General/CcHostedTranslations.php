@@ -28,8 +28,19 @@ class Payone_Core_Model_Config_General_CcHostedTranslations extends Payone_Core_
     protected $cc_translation_errors = '';
     protected $cc_translation_placeholders = '';
     
+    /**
+     * @param array $aTranslations
+     * @param string $sType
+     * @return array|string
+     */
     protected function _formatTranslationArray($aTranslations, $sType = '')
     {
+        // if no translations are present, unserialize('') will be called and thus $aTranslations will be false...
+        if ($aTranslations === false) {
+            // ...however, the default value is an empty array
+            $aTranslations = array();
+        }
+        
         $aReturn = array();
         foreach ($aTranslations as $aTranslation) {
             $sLanguage = array_shift($aTranslation['translation_language']);
