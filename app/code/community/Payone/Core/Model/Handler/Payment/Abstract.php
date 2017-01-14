@@ -26,9 +26,10 @@
  * @category        Payone
  * @package         Payone_Core_Model
  * @subpackage      Handler
- * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
+ * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com, Copyright (c) 2017 <support@e3n.de> - www.e3n.de
+ * @author          Tim Rein <tim.rein@e3n.de>
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
- * @link            http://www.noovias.com
+ * @link            http://www.noovias.com, http://www.e3n.de
  */
 abstract class Payone_Core_Model_Handler_Payment_Abstract
     extends Payone_Core_Model_Handler_Abstract
@@ -192,7 +193,8 @@ abstract class Payone_Core_Model_Handler_Payment_Abstract
         } elseif ($this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_SafeInvoice) {
             $order->setData('payone_payment_method_type', $this->getPayment()->getData('payone_safe_invoice_type'));
         } elseif ($this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_PayolutionInvoicing ||
-                  $this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_PayolutionDebit )
+                  $this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_PayolutionDebit ||
+                  $this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_PayolutionInstallment)
         {
             $order->setData('payone_payment_method_type', $this->getPayment()->getData('payone_payolution_type'));
         } elseif ($this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_Wallet) {
