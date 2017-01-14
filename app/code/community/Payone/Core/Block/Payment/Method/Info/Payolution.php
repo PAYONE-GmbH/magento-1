@@ -15,19 +15,21 @@
  * @category        Payone
  * @package         Payone_Core_Block
  * @subpackage      Payment
- * @copyright       Copyright (c) 2015 <kontakt@fatchip.de> - www.fatchip.com
- * @author          Robert Müller <robert.mueller@fatchip.de>
+ * @copyright       Copyright (c) 2015 <kontakt@fatchip.de> - www.fatchip.com, Copyright (c) 2017 <support@e3n.de> - www.e3n.de
+ * @author          Robert Müller <robert.mueller@fatchip.de>, Tim Rein <tim.rein@e3n.de>
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
- * @link            http://www.fatchip.com
+ * @link            http://www.fatchip.com, http://www.e3n.de
  */
 
+/**
+ * Class Payone_Core_Block_Payment_Method_Info_Payolution
+ */
 class Payone_Core_Block_Payment_Method_Info_Payolution extends Payone_Core_Block_Payment_Method_Info_Abstract
 {
     
     protected function _construct() 
     {
         parent::_construct();
-        $this->setTemplate('payone/core/payment/method/info/payolution.phtml');
     }
     
     /**
