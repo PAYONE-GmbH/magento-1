@@ -15,27 +15,20 @@
  * @category        Payone
  * @package         Payone_Core_Block
  * @subpackage      Payment
- * @copyright       Copyright (c) 2017 <kontakt@fatchip.de> - www.fatchip.com
- * @author          Robert Müller <robert.mueller@fatchip.de>
+ * @copyright       Copyright (c) 2015 <kontakt@fatchip.de> - www.fatchip.com, Copyright (c) 2017 <support@e3n.de> - www.e3n.de
+ * @author          Robert Müller <robert.mueller@fatchip.de>, Tim Rein <tim.rein@e3n.de>
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
- * @link            http://www.fatchip.com
+ * @link            http://www.fatchip.com, http://www.e3n.de
  */
 
-class Payone_Core_Block_Payment_Method_Info_PayolutionDebit extends Payone_Core_Block_Payment_Method_Info_Abstract
+/**
+ * Class Payone_Core_Block_Payment_Method_Info_PayolutionDebit
+ */
+class Payone_Core_Block_Payment_Method_Info_PayolutionDebit extends Payone_Core_Block_Payment_Method_Info_Payolution
 {
-    
+
     protected function _construct() 
     {
-        parent::_construct();
         $this->setTemplate('payone/core/payment/method/info/payolutiondebit.phtml');
     }
-    
-    /**
-     * @return string
-     */
-    public function getPayoneClearingReference()
-    {
-        return $this->getInfo()->getPayoneClearingReference();
-    }
-
 }
