@@ -45,7 +45,7 @@ class Payone_Core_Model_System_Config_PaymentMethodCode extends Payone_Core_Mode
     const WALLET = 'payone_wallet';
     const BARZAHLEN = 'payone_barzahlen';
     const RATEPAY = 'payone_ratepay';
-    const PAYOLUTION = 'payone_payolution';
+    #const PAYOLUTION = 'payone_payolution';
     const PAYOLUTIONINVOICING = 'payone_payolution_invoicing';
     const PAYOLUTIONDEBIT = 'payone_payolution_debit';
     const PAYOLUTIONINSTALLMENT = 'payone_payolution_installment';
@@ -67,7 +67,7 @@ class Payone_Core_Model_System_Config_PaymentMethodCode extends Payone_Core_Mode
             self::WALLET => 'Wallet',
             self::BARZAHLEN => 'Barzahlen',
             self::RATEPAY => 'RatePay',
-            self::PAYOLUTION => 'Payolution',
+            #self::PAYOLUTION => 'Payolution',
             self::PAYOLUTIONINVOICING => 'Payolution Invoicing',
             self::PAYOLUTIONDEBIT => 'Payolution Debit',
             self::PAYOLUTIONINSTALLMENT => 'Payolution Installment'
