@@ -48,6 +48,7 @@ class Payone_Core_Model_System_Config_PaymentMethodCode extends Payone_Core_Mode
     const PAYOLUTION = 'payone_payolution';
     const PAYOLUTIONINVOICING = 'payone_payolution_invoicing';
     const PAYOLUTIONDEBIT = 'payone_payolution_debit';
+    const PAYOLUTIONINSTALLMENT = 'payone_payolution_installment';
 
     /**
      * @return array
@@ -68,7 +69,8 @@ class Payone_Core_Model_System_Config_PaymentMethodCode extends Payone_Core_Mode
             self::RATEPAY => 'RatePay',
             self::PAYOLUTION => 'Payolution',
             self::PAYOLUTIONINVOICING => 'Payolution Invoicing',
-            self::PAYOLUTIONDEBIT => 'Payolution Debit'
+            self::PAYOLUTIONDEBIT => 'Payolution Debit',
+            self::PAYOLUTIONINSTALLMENT => 'Payolution Installment'
         );
     }
 }

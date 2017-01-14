@@ -14,10 +14,10 @@
  *
  * @category        Payone
  * @package         Payone_Enum
- * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
- * @author          Matthias Walter <info@noovias.com>
+ * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com, Copyright (c) 2017 <support@e3n.de> - www.e3n.de
+ * @author          Matthias Walter <info@noovias.com>,  Tim Rein <tim.rein@e3n.de>
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
- * @link            http://www.noovias.com
+ * @link            http://www.noovias.com, http://www.e3n.de
  */
 class Payone_Enum_ClearingType
 {
@@ -34,5 +34,6 @@ class Payone_Enum_ClearingType
     const PAYOLUTION = 'fnc';
     const PAYOLUTIONINVOICING = 'fnc';
     const PAYOLUTIONDEBIT = 'fnc';
+    const PAYOLUTIONINSTALLMENT = 'fnc';
     const FINANCING = 'fnc';
 }

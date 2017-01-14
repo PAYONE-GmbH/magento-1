@@ -22,9 +22,9 @@
  */
 
 /**
- * Class Payone_Core_Model_Payment_Method_PayolutionInvoicing
+ * Class Payone_Core_Model_Payment_Method_PayolutionInstallment
  */
-class Payone_Core_Model_Payment_Method_PayolutionInvoicing extends Payone_Core_Model_Payment_Method_Payolution
+class Payone_Core_Model_Payment_Method_PayolutionInstallment extends Payone_Core_Model_Payment_Method_Abstract
 {
     /**
      * @var bool
@@ -33,19 +33,19 @@ class Payone_Core_Model_Payment_Method_PayolutionInvoicing extends Payone_Core_M
     /**
      * @var string
      */
-    protected $methodType = Payone_Core_Model_System_Config_PaymentMethodType::PAYOLUTIONINVOICING;
+    protected $methodType = Payone_Core_Model_System_Config_PaymentMethodType::PAYOLUTIONINSTALLMENT;
     /**
      * @var string
      */
-    protected $_code = Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTIONINVOICING;
+    protected $_code = Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTIONINSTALLMENT;
     /**
      * @var string
      */
-    protected $_formBlockType = 'payone_core/payment_method_form_payolutionInvoicing';
+    protected $_formBlockType = 'payone_core/payment_method_form_payolutionInstallment';
     /**
      * @var string
      */
-    protected $_infoBlockType = 'payone_core/payment_method_info_payolutionInvoicing';
+    protected $_infoBlockType = 'payone_core/payment_method_info_payolutionInstallment';
     /**
      * @var bool
      */

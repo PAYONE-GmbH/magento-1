@@ -235,6 +235,10 @@
                     <!-- Payolution type -->
                     <to_order_payment>*</to_order_payment>
                 </payone_payolution_invoicing>
+                <payone_payolution_installment>
+                    <!-- Payolution type -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_payolution_installment>
                 <payone_payolution_iban>
                     <!-- Payolution iban -->
                     <to_order_payment>*</to_order_payment>
@@ -616,6 +620,11 @@
                 <model>payone_core/payment_method_payolutionDebit</model>
                 <group>payone</group>
             </payone_payolution_debit>
+            <payone_payolution_installment translate="title" module="payone_core">
+                <title>PAYONE - Payolution Installment</title>
+                <model>payone_core/payment_method_payolutionInstallment</model>
+                <group>payone</group>
+            </payone_payolution_installment>
             <payone_cash_on_delivery translate="title" module="payone_core">
                 <title>PAYONE - Cash on Delivery</title>
                 <model>payone_core/payment_method_cashOnDelivery</model>
@@ -702,6 +711,9 @@
             <template_payolution_debit>
                 <use_global>1</use_global>
             </template_payolution_debit>
+            <template_payolution_installment>
+                <use_global>1</use_global>
+            </template_payolution_installment>
         </payone_payment>
         <payone_general>
             <global>
