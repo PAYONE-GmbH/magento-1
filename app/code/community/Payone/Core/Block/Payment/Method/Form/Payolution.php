@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * NOTICE OF LICENSE
@@ -20,14 +21,13 @@
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
  * @link            http://www.fatchip.com
  */
-
 class Payone_Core_Block_Payment_Method_Form_Payolution extends Payone_Core_Block_Payment_Method_Form_Abstract
 {
-    
+
     protected $_sAcceptanceBaseUrl = 'https://payment.payolution.com/payolution-payment/infoport/dataprivacydeclaration?mId=';
 
     protected $hasTypes = true;
-    
+
     protected $_sFallback = "<header>
   <strong>Zusätzliche Hinweise für die Datenschutzerklärung für Kauf auf Rechnung, Ratenzahlung und Zahlung mittels SEPA-Basis-Lastschrift von **company** (im Folgenden: \"wir\")</strong></br>
   <span><i>(Stand: 17.03.2016)</i></span>
@@ -66,46 +66,36 @@ class Payone_Core_Block_Payment_Method_Form_Payolution extends Payone_Core_Block
 	1120 Wien<br />
 	DVR: 4008655
 </footer>";
-    
+
     protected $_aBackendBlacklist = array(
         Payone_Api_Enum_PayolutionType::PYS
     );
-    
-    protected function _construct() 
-    {
-        parent::_construct();
-        $this->setTemplate('payone/core/payment/method/form/payolution.phtml');
-    }
 
-    public function getPayolutionType() 
-    {
-        if($this->_sType === null) {
-            $aTypes = $this->getMethod()->getConfig()->getTypes();
-            $this->_sType = array_shift($aTypes);
-        }
-
-        return $this->_sType;
-    }
-    
-    public function getPayolutionTypes() 
-    {
-        return $this->getMethod()->getConfig()->getTypes();
-    }
-    
-    public function getPayolutionTypesBackend() 
+    /**
+     * @return array
+     */
+    public function getPayolutionTypesBackend()
     {
         $aTypes = $this->getPayolutionTypes();
-        
+
         $aTypesReturn = array();
         foreach ($aTypes as $sType) {
-            if(array_search($sType, $this->_aBackendBlacklist) === false) {
+            if (array_search($sType, $this->_aBackendBlacklist) === false) {
                 $aTypesReturn[] = $sType;
             }
         }
 
         return $aTypesReturn;
     }
-    
+
+    /**
+     * @return mixed
+     */
+    public function getPayolutionTypes()
+    {
+        return $this->getMethod()->getConfig()->getTypes();
+    }
+
     /**
      * @return bool
      */
@@ -134,29 +124,38 @@ class Payone_Core_Block_Payment_Method_Form_Payolution extends Payone_Core_Block
 
         return false;
     }
-    
-    public function isB2BMode() 
+
+    /**
+     * @return bool
+     */
+    public function showBirthdayFields()
     {
-        if((bool)$this->getMethod()->getConfig()->getB2bMode() === true) {
+        if ($this->isB2BMode() === false) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isB2BMode()
+    {
+        if ((bool)$this->getMethod()->getConfig()->getB2bMode() === true) {
             $sCompany = $this->getQuote()->getBillingAddress()->getCompany();
-            if($sCompany) {
+            if ($sCompany) {
                 return true;
             }
         }
 
         return false;
     }
-    
-    public function showBirthdayFields() 
-    {
-        if($this->isB2BMode() === false) {
-            return true;
-        }
 
-        return false;
-    }
-    
-    public function showDebitFields() 
+    /**
+     * @return bool
+     */
+    public function showDebitFields()
     {
         if ($this->getPayolutionType() == Payone_Api_Enum_PayolutionType::PYD) {
             return true;
@@ -164,14 +163,66 @@ class Payone_Core_Block_Payment_Method_Form_Payolution extends Payone_Core_Block
 
         return false;
     }
-    
-    protected function _getFallbackText($sCompany) 
+
+    /**
+     * @return mixed
+     */
+    public function getPayolutionType()
+    {
+        if ($this->_sType === null) {
+            $aTypes = $this->getMethod()->getConfig()->getTypes();
+            $this->_sType = array_shift($aTypes);
+        }
+
+        return $this->_sType;
+    }
+
+    /**
+     * @return bool|mixed|string
+     */
+    public function getPayolutionAcceptanceText()
+    {
+        $sCompany = $this->getMethod()->getConfig()->getCompanyName();
+        $sUrl = $this->_sAcceptanceBaseUrl . base64_encode($sCompany);
+        $sContent = file_get_contents($sUrl);
+        $sPage = false;
+        if (!empty($sContent) && stripos($sContent, 'payolution') !== false && stripos($sContent, '<header>') !== false) {
+            //Parse content from HTML-body-tag from the given page
+            $sRegex = "#<\s*?body\b[^>]*>(.*?)</body\b[^>]*>#s";
+            preg_match($sRegex, $sContent, $aMatches);
+            if (is_array($aMatches) && count($aMatches) > 1) {
+                $sPage = $aMatches[1];
+                //remove everything bevore the <header> tag ( a window.close link which wouldn't work in the given context )
+                $sPage = substr($sPage, stripos($sPage, '<header>'));
+            }
+        }
+
+        if (!$sPage) {
+            $sPage = $this->_getFallbackText($sCompany);
+        }
+
+        if ($this->_isUtf8EncodingNeeded($sPage)) {
+            $sPage = utf8_encode($sPage);
+        }
+
+        return $sPage;
+    }
+
+    /**
+     * @param $sCompany
+     * @return mixed
+     */
+    protected function _getFallbackText($sCompany)
     {
         $sFallback = str_replace('**company**', $sCompany, $this->_sFallback);
         return $sFallback;
     }
-    
-    protected function _isUtf8EncodingNeeded($sString) 
+
+    /**
+     * @param $sString
+     * @return bool
+     */
+    protected function _isUtf8EncodingNeeded($sString)
     {
         if (preg_match('!!u', $sString)) {
             // this is utf-8
@@ -181,35 +232,23 @@ class Payone_Core_Block_Payment_Method_Form_Payolution extends Payone_Core_Block
             return true;
         }
     }
-    
-    public function getPayolutionAcceptanceText() 
+
+    /**
+     * @return string
+     */
+    public function getHandleInstallmentUrl()
     {
-        $sCompany = $this->getMethod()->getConfig()->getCompanyName();
-        $sUrl = $this->_sAcceptanceBaseUrl.base64_encode($sCompany);
-        $sContent = file_get_contents($sUrl);
-        $sPage = false;
-        if(!empty($sContent) && stripos($sContent, 'payolution') !== false && stripos($sContent, '<header>') !== false) {
-            //Parse content from HTML-body-tag from the given page
-            $sRegex = "#<\s*?body\b[^>]*>(.*?)</body\b[^>]*>#s";
-            preg_match($sRegex, $sContent, $aMatches);
-            if(is_array($aMatches) && count($aMatches) > 1) {
-                $sPage = $aMatches[1];
-                //remove everything bevore the <header> tag ( a window.close link which wouldn't work in the given context )
-                $sPage = substr($sPage, stripos($sPage, '<header>'));
-            }
-        }
-
-        if(!$sPage) {
-            $sPage = $this->_getFallbackText($sCompany);
-        }
-
-        if($this->_isUtf8EncodingNeeded($sPage)) {
-            $sPage = utf8_encode($sPage);
-        }
-
-        return $sPage;
+        // are we in a secure environment?
+        $isSecure = Mage::app()->getStore()->isCurrentlySecure();
+        return $this->getUrl('payone_core/checkout_onepage/handlePayolutionInstallment', array('_secure' => $isSecure));
     }
-    
+
+    protected function _construct()
+    {
+        parent::_construct();
+        $this->setTemplate('payone/core/payment/method/form/payolution.phtml');
+    }
+
     /**
      * @return array
      */
@@ -217,12 +256,5 @@ class Payone_Core_Block_Payment_Method_Form_Payolution extends Payone_Core_Block
     {
         return $this->getFactory()->getModelSystemConfigPayolutionType()->toSelectArray();
     }
-    
-    public function getHandleInstallmentUrl()
-    {
-        // are we in a secure environment?
-        $isSecure = Mage::app()->getStore()->isCurrentlySecure();
-        return $this->getUrl('payone_core/checkout_onepage/handlePayolutionInstallment', array('_secure' => $isSecure));
-    }
-    
+
 }
