@@ -16,7 +16,7 @@
  * @package         Payone_Core_Block
  * @subpackage      Payment
  * @copyright       Copyright (c) 2015 <kontakt@fatchip.de> - www.fatchip.com
- * @author          Robert Müller <robert.mueller@fatchip.de>
+ * @author          Robert Mï¿½ller <robert.mueller@fatchip.de>
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
  * @link            http://www.fatchip.com
  */
@@ -29,37 +29,37 @@ class Payone_Core_Block_Payment_Method_Form_Payolution extends Payone_Core_Block
     protected $hasTypes = true;
     
     protected $_sFallback = "<header>
-  <strong>Zusätzliche Hinweise für die Datenschutzerklärung für Kauf auf Rechnung, Ratenzahlung und Zahlung mittels SEPA-Basis-Lastschrift von **company** (im Folgenden: „wir“)</strong></br>
+  <strong>Zusï¿½tzliche Hinweise fï¿½r die Datenschutzerklï¿½rung fï¿½r Kauf auf Rechnung, Ratenzahlung und Zahlung mittels SEPA-Basis-Lastschrift von **company** (im Folgenden: ï¿½wirï¿½)</strong></br>
   <span><i>(Stand: 17.03.2016)</i></span>
 </header>
 <ol>
-  <li><p>Bei Kauf auf Rechnung oder Ratenzahlung oder SEPA-Basis-Lastschrift wird von Ihnen während des Bestellprozesses eine datenschutzrechtliche Einwilligung eingeholt. Folgend finden Sie eine Wiederholung dieser Bestimmungen, die lediglich informativen Charakter haben.</p></li>
-  <li><p>Bei Auswahl von Kauf auf Rechnung oder Ratenzahlung oder Bezahlung mittels SEPA-Basis-Lastschrift werden für die Abwicklung dieser Zahlarten personenbezogene Daten (Vorname, Nachname, Adresse, Email, Telefonnummer, Geburtsdatum, IP-Adresse, Geschlecht) gemeinsam mit für die Transaktionsabwicklung erforderlichen Daten (Artikel, Rechnungsbetrag, Zinsen, Raten, Fälligkeiten, Gesamtbetrag, Rechnungsnummer, Steuern, Währung, Bestelldatum und Bestellzeitpunkt) an payolution übermittelt werden. payolution hat ein berechtigtes Interesse an den Daten und benötigt bzw. verwendet diese um Risikoüberprüfungen durchzuführen.</p></li>
+  <li><p>Bei Kauf auf Rechnung oder Ratenzahlung oder SEPA-Basis-Lastschrift wird von Ihnen wï¿½hrend des Bestellprozesses eine datenschutzrechtliche Einwilligung eingeholt. Folgend finden Sie eine Wiederholung dieser Bestimmungen, die lediglich informativen Charakter haben.</p></li>
+  <li><p>Bei Auswahl von Kauf auf Rechnung oder Ratenzahlung oder Bezahlung mittels SEPA-Basis-Lastschrift werden fï¿½r die Abwicklung dieser Zahlarten personenbezogene Daten (Vorname, Nachname, Adresse, Email, Telefonnummer, Geburtsdatum, IP-Adresse, Geschlecht) gemeinsam mit fï¿½r die Transaktionsabwicklung erforderlichen Daten (Artikel, Rechnungsbetrag, Zinsen, Raten, Fï¿½lligkeiten, Gesamtbetrag, Rechnungsnummer, Steuern, Wï¿½hrung, Bestelldatum und Bestellzeitpunkt) an payolution ï¿½bermittelt werden. payolution hat ein berechtigtes Interesse an den Daten und benï¿½tigt bzw. verwendet diese um Risikoï¿½berprï¿½fungen durchzufï¿½hren.</p></li>
   <li>
-  	<p>Zur Überprüfung der Identität bzw. Bonität des Kunden werden Abfragen und Auskünfte bei öffentlich zugänglichen Datenbanken sowie Kreditauskunfteien durchgeführt. Bei nachstehenden Anbietern können Auskünfte und gegebenenfalls Bonitätsinformationen auf Basis mathematisch-statistischer Verfahren eingeholt werden:</p>
+  	<p>Zur ï¿½berprï¿½fung der Identitï¿½t bzw. Bonitï¿½t des Kunden werden Abfragen und Auskï¿½nfte bei ï¿½ffentlich zugï¿½nglichen Datenbanken sowie Kreditauskunfteien durchgefï¿½hrt. Bei nachstehenden Anbietern kï¿½nnen Auskï¿½nfte und gegebenenfalls Bonitï¿½tsinformationen auf Basis mathematisch-statistischer Verfahren eingeholt werden:</p>
   	<ul>
 		<li>CRIF GmbH, Diefenbachgasse 35, A-1150 Wien</li>
-		<li>CRIF AG, Hagenholzstrasse 81, CH-8050 Zürich</li>
-		<li>Deltavista GmbH, Dessauerstraße 9, D-80992 München</li>
+		<li>CRIF AG, Hagenholzstrasse 81, CH-8050 Zï¿½rich</li>
+		<li>Deltavista GmbH, Dessauerstraï¿½e 9, D-80992 Mï¿½nchen</li>
 		<li>SCHUFA Holding AG, Kormoranweg 5, D-65201 Wiesbaden</li>
 		<li>KSV1870 Information GmbH, Wagenseilgasse 7, A-1120 Wien</li>
-		<li>Bürgel Wirtschaftsinformationen GmbH & Co. KG, Gasstraße 18, D-22761 Hamburg</li>
+		<li>Bï¿½rgel Wirtschaftsinformationen GmbH & Co. KG, Gasstraï¿½e 18, D-22761 Hamburg</li>
 		<li>Creditreform Boniversum GmbH, Hellersbergstr. 11, D-41460 Neuss</li>
-		<li>infoscore Consumer Data GmbH, Rheinstraße 99, D-76532 Baden-Baden</li>
+		<li>infoscore Consumer Data GmbH, Rheinstraï¿½e 99, D-76532 Baden-Baden</li>
 		<li>ProfileAddress Direktmarketing GmbH, Altmannsdorfer Strasse 311, A-1230 Wien</li>
 		<li>Deutsche Post Direkt GmbH, Junkersring 57, D-53844 Troisdorf</li>
 		<li>payolution GmbH, Am Euro Platz 2, A-1120 Wien</li>
 	</ul>
-	<p>payolution wird Ihre Angaben zur Bankverbindung (insbesondere Bankleitzahl und Kontonummer) zum Zwecke der Kontonummernprüfung an die SCHUFA Holding AG übermitteln. Die SCHUFA prüft anhand dieser Daten zunächst, ob die von Ihnen gemachten Angaben zur Bankverbindung plausibel sind. Die SCHUFA überprüft, ob die zur Prüfung verwendeten Daten ggf. in Ihrem Datenbestand gespeichert sind und übermittelt sodann das Ergebnis der Überprüfung an payolution zurück. Ein weiterer Datenaustausch wie die Bekanntgabe von Bonitätsinformationen oder eine Übermittlung abweichender Bankverbindungsdaten sowie Speicherung Ihrer Daten im SCHUFA-Datenbestand finden im Rahmen der Kontonummernprüfung nicht statt. Es wird aus Nachweisgründen allein die Tatsache der Überprüfung der Bankverbindungsdaten bei der SCHUFA gespeichert.</p>
-	<p>payolution ist berechtigt, auch Daten zu etwaigem nicht-vertragsgemäßen Verhalten (z.B. unbestrittene offene Forderungen) zu speichern, zu verarbeiten, zu nutzen und an oben genannte Auskunfteien zu übermitteln.</p>
+	<p>payolution wird Ihre Angaben zur Bankverbindung (insbesondere Bankleitzahl und Kontonummer) zum Zwecke der Kontonummernprï¿½fung an die SCHUFA Holding AG ï¿½bermitteln. Die SCHUFA prï¿½ft anhand dieser Daten zunï¿½chst, ob die von Ihnen gemachten Angaben zur Bankverbindung plausibel sind. Die SCHUFA ï¿½berprï¿½ft, ob die zur Prï¿½fung verwendeten Daten ggf. in Ihrem Datenbestand gespeichert sind und ï¿½bermittelt sodann das Ergebnis der ï¿½berprï¿½fung an payolution zurï¿½ck. Ein weiterer Datenaustausch wie die Bekanntgabe von Bonitï¿½tsinformationen oder eine ï¿½bermittlung abweichender Bankverbindungsdaten sowie Speicherung Ihrer Daten im SCHUFA-Datenbestand finden im Rahmen der Kontonummernprï¿½fung nicht statt. Es wird aus Nachweisgrï¿½nden allein die Tatsache der ï¿½berprï¿½fung der Bankverbindungsdaten bei der SCHUFA gespeichert.</p>
+	<p>payolution ist berechtigt, auch Daten zu etwaigem nicht-vertragsgemï¿½ï¿½en Verhalten (z.B. unbestrittene offene Forderungen) zu speichern, zu verarbeiten, zu nutzen und an oben genannte Auskunfteien zu ï¿½bermitteln.</p>
   </li>
-  <li><p>Wir sind bereits nach den Bestimmungen des Bürgerlichen Gesetzbuches über Finanzierungshilfen zwischen Unternehmern und Verbrauchern, zu einer Prüfung Ihrer Kreditwürdigkeit gesetzlich verpflichtet.</p></li>
-  <li><p>Im Fall eines Kaufs auf Rechnung oder Ratenkauf oder einer Bezahlung mittels SEPA-Basis-Lastschrift werden der payolution GmbH Daten über die Aufnahme (zu Ihrer Person, Kaufpreis, Laufzeit des Teilzahlungsgeschäfts, Ratenbeginn) und vereinbarungsgemäße Abwicklung (z.B. vorzeitige Rückzahlung, Laufzeitverlängerung, erfolgte Rückzahlungen) dieses Teilzahlungsgeschäfts übermittelt. Nach Abtretung der Kaufpreisforderung wird die forderungsübernehmende Bank die genannten Datenübermittlungen vornehmen. Wir bzw. die Bank, der die Kaufpreisforderung abgetreten wird, werden payolution GmbH auch Daten aufgrund nichtvertragsgemäßer Abwicklung (z.B. Kündigung des Teilzahlungsgeschäfts, Zwangsvollstreckungs-maßnahmen) melden. Diese Meldungen dürfen nach den datenschutzrechtlichen Bestimmungen nur erfolgen, soweit dies zur Wahrung berechtigter Interessen von Vertragspartnern der payolution GmbH oder der Allgemeinheit erforderlich ist und dadurch Ihre schutzwürdigen Belange nicht beeinträchtigt werden. payolution GmbH speichert die Daten, um ihren Vertragspartnern, die gewerbsmäßig Teilzahlungs- und sonstige Kreditgeschäfte an Verbraucher geben, Informationen zur Beurteilung der Kreditwürdigkeit von Kunden geben zu können. An Unternehmen, die gewerbsmäßig Forderungen einziehen und payolution GmbH vertraglich angeschlossen sind, können zum Zwecke der Schuldnerermittlung Adressdaten übermittelt werden. payolution GmbH stellt die Daten ihren Vertragspartnern nur zur Verfügung, wenn diese ein berechtigtes Interesse an der Datenübermittlung glaubhaft darlegen. payolution GmbH übermittelt nur objektive Daten ohne Angabe der Bank; subjektive Werturteile sowie persönliche Einkommens- und Vermögensverhältnisse sind in Auskünften der payolution GmbH nicht enthalten.</p></li>
-  <li><p>Die im Bestellprozess durch Einwilligung erfolgte Zustimmung zur Datenweitergabe kann jederzeit, auch ohne Angabe von Gründen, uns gegenüber widerrufen können. Die oben genannten gesetzlichen Verpflichtungen zur Überprüfung Ihrer Kreditwürdigkeit bleiben von einem allfälligen Widerruf jedoch unberührt. Sie sind verpflichtet ausschließlich wahrheitsgetreue Angaben gegenüber uns zu machen.</p></li>
-  <li><p>Sollten Sie Auskunft über die Erhebung, Nutzung, Verarbeitung oder Übermittlung von Sie betreffenden personenbezogenen Daten erhalten wollen oder Auskünfte, Berichtigungen, Sperrungen oder Löschung dieser Daten wünschen, können Sie sich an den Sachbearbeiter für Datenschutz bei payolution wenden:</p></li>
+  <li><p>Wir sind bereits nach den Bestimmungen des Bï¿½rgerlichen Gesetzbuches ï¿½ber Finanzierungshilfen zwischen Unternehmern und Verbrauchern, zu einer Prï¿½fung Ihrer Kreditwï¿½rdigkeit gesetzlich verpflichtet.</p></li>
+  <li><p>Im Fall eines Kaufs auf Rechnung oder Ratenkauf oder einer Bezahlung mittels SEPA-Basis-Lastschrift werden der payolution GmbH Daten ï¿½ber die Aufnahme (zu Ihrer Person, Kaufpreis, Laufzeit des Teilzahlungsgeschï¿½fts, Ratenbeginn) und vereinbarungsgemï¿½ï¿½e Abwicklung (z.B. vorzeitige Rï¿½ckzahlung, Laufzeitverlï¿½ngerung, erfolgte Rï¿½ckzahlungen) dieses Teilzahlungsgeschï¿½fts ï¿½bermittelt. Nach Abtretung der Kaufpreisforderung wird die forderungsï¿½bernehmende Bank die genannten Datenï¿½bermittlungen vornehmen. Wir bzw. die Bank, der die Kaufpreisforderung abgetreten wird, werden payolution GmbH auch Daten aufgrund nichtvertragsgemï¿½ï¿½er Abwicklung (z.B. Kï¿½ndigung des Teilzahlungsgeschï¿½fts, Zwangsvollstreckungs-maï¿½nahmen) melden. Diese Meldungen dï¿½rfen nach den datenschutzrechtlichen Bestimmungen nur erfolgen, soweit dies zur Wahrung berechtigter Interessen von Vertragspartnern der payolution GmbH oder der Allgemeinheit erforderlich ist und dadurch Ihre schutzwï¿½rdigen Belange nicht beeintrï¿½chtigt werden. payolution GmbH speichert die Daten, um ihren Vertragspartnern, die gewerbsmï¿½ï¿½ig Teilzahlungs- und sonstige Kreditgeschï¿½fte an Verbraucher geben, Informationen zur Beurteilung der Kreditwï¿½rdigkeit von Kunden geben zu kï¿½nnen. An Unternehmen, die gewerbsmï¿½ï¿½ig Forderungen einziehen und payolution GmbH vertraglich angeschlossen sind, kï¿½nnen zum Zwecke der Schuldnerermittlung Adressdaten ï¿½bermittelt werden. payolution GmbH stellt die Daten ihren Vertragspartnern nur zur Verfï¿½gung, wenn diese ein berechtigtes Interesse an der Datenï¿½bermittlung glaubhaft darlegen. payolution GmbH ï¿½bermittelt nur objektive Daten ohne Angabe der Bank; subjektive Werturteile sowie persï¿½nliche Einkommens- und Vermï¿½gensverhï¿½ltnisse sind in Auskï¿½nften der payolution GmbH nicht enthalten.</p></li>
+  <li><p>Die im Bestellprozess durch Einwilligung erfolgte Zustimmung zur Datenweitergabe kann jederzeit, auch ohne Angabe von Grï¿½nden, uns gegenï¿½ber widerrufen kï¿½nnen. Die oben genannten gesetzlichen Verpflichtungen zur ï¿½berprï¿½fung Ihrer Kreditwï¿½rdigkeit bleiben von einem allfï¿½lligen Widerruf jedoch unberï¿½hrt. Sie sind verpflichtet ausschlieï¿½lich wahrheitsgetreue Angaben gegenï¿½ber uns zu machen.</p></li>
+  <li><p>Sollten Sie Auskunft ï¿½ber die Erhebung, Nutzung, Verarbeitung oder ï¿½bermittlung von Sie betreffenden personenbezogenen Daten erhalten wollen oder Auskï¿½nfte, Berichtigungen, Sperrungen oder Lï¿½schung dieser Daten wï¿½nschen, kï¿½nnen Sie sich an den Sachbearbeiter fï¿½r Datenschutz bei payolution wenden:</p></li>
 </ol>
 
-<footer>Sachbearbeiter für Datenschutz<br />
+<footer>Sachbearbeiter fï¿½r Datenschutz<br />
 	datenschutz@payolution.com<br />
 	payolution GmbH<br />
 	Am Euro Platz 2<br />
@@ -220,7 +220,9 @@ class Payone_Core_Block_Payment_Method_Form_Payolution extends Payone_Core_Block
     
     public function getHandleInstallmentUrl()
     {
-        return $this->getUrl('payone_core/checkout_onepage/handlePayolutionInstallment');
+        // are we in a secure environment?
+        $isSecure = Mage::app()->getStore()->isCurrentlySecure();
+        return $this->getUrl('payone_core/checkout_onepage/handlePayolutionInstallment', array('_secure' => $isSecure));
     }
     
 }
