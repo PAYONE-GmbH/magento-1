@@ -77,7 +77,7 @@ class Payone_Core_TransactionStatusController extends Payone_Core_Controller_Abs
 
             // NEW forwarding handling
             $this->_forwardStatus($order);
-            
+
             // Send Confirmation Message
             $this->getResponse()->setBody($response->getStatus());
         }
