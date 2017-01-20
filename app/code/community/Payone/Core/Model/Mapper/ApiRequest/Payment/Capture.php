@@ -64,7 +64,7 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Capture
         $business = $this->mapBusinessParameters();
         $request->setBusiness($business);
 
-        /** Set Invoiceing-Parameter only if enabled in Config */
+        /** Set Invoicing-Parameter only if enabled in Config */
         if ($this->mustTransmitInvoiceData()) {
             $invoicing = $this->mapInvoicingParameters();
             if (!empty($invoicing)) {
@@ -85,7 +85,8 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Capture
             $request->setPaydata($payData);
             $request->setApiVersion('3.10');
         } elseif($paymentMethod instanceof Payone_Core_Model_Payment_Method_PayolutionDebit ||
-                 $paymentMethod instanceof Payone_Core_Model_Payment_Method_PayolutionInvoicing )
+                 $paymentMethod instanceof Payone_Core_Model_Payment_Method_PayolutionInvoicing ||
+                 $paymentMethod instanceof Payone_Core_Model_Payment_Method_PayolutionInstallment)
         {
             $info = $paymentMethod->getInfoInstance();
             if($info->getPayoneIsb2b() == '1') {

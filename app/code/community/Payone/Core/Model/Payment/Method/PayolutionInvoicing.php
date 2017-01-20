@@ -24,7 +24,7 @@
 /**
  * Class Payone_Core_Model_Payment_Method_PayolutionInvoicing
  */
-class Payone_Core_Model_Payment_Method_PayolutionInvoicing extends Payone_Core_Model_Payment_Method_Payolution
+class Payone_Core_Model_Payment_Method_PayolutionInvoicing extends Payone_Core_Model_Payment_Method_Abstract
 {
     /**
      * @var bool
@@ -41,11 +41,11 @@ class Payone_Core_Model_Payment_Method_PayolutionInvoicing extends Payone_Core_M
     /**
      * @var string
      */
-    protected $_formBlockType = 'payone_core/payment_method_form_payolutionInvoicing';
+    protected $_formBlockType = 'payone_core/payment_method_form_payolution';
     /**
      * @var string
      */
-    protected $_infoBlockType = 'payone_core/payment_method_info_payolutionInvoicing';
+    protected $_infoBlockType = 'payone_core/payment_method_info_payolution';
     /**
      * @var bool
      */

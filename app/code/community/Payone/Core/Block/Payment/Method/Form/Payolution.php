@@ -88,6 +88,19 @@ class Payone_Core_Block_Payment_Method_Form_Payolution extends Payone_Core_Block
     protected function _construct()
     {
         parent::_construct();
+        $this->setTemplate('payone/core/payment/method/form/payolution.phtml');
+    }
+
+    /**
+     * @return array
+     */
+    public function payolutionTypeMapping()
+    {
+        return $payolutionPayment = array(
+            Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTIONINVOICING => Payone_Api_Enum_PayolutionType::PYV,
+            Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTIONINSTALLMENT => Payone_Api_Enum_PayolutionType::PYS,
+            Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTIONDEBIT => Payone_Api_Enum_PayolutionType::PYD,
+        );
     }
 
     /**
