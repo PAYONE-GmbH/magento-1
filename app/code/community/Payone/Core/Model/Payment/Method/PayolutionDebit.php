@@ -41,11 +41,11 @@ class Payone_Core_Model_Payment_Method_PayolutionDebit extends Payone_Core_Model
     /**
      * @var string
      */
-    protected $_formBlockType = 'payone_core/payment_method_form_payolutionDebit';
+    protected $_formBlockType = 'payone_core/payment_method_form_payolution';
     /**
      * @var string
      */
-    protected $_infoBlockType = 'payone_core/payment_method_info_payolutionDebit';
+    protected $_infoBlockType = 'payone_core/payment_method_info_payolution';
     /**
      * @var bool
      */

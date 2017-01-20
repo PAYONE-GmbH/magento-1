@@ -41,11 +41,11 @@ class Payone_Core_Model_Payment_Method_PayolutionInstallment extends Payone_Core
     /**
      * @var string
      */
-    protected $_formBlockType = 'payone_core/payment_method_form_payolutionInstallment';
+    protected $_formBlockType = 'payone_core/payment_method_form_payolution';
     /**
      * @var string
      */
-    protected $_infoBlockType = 'payone_core/payment_method_info_payolutionInstallment';
+    protected $_infoBlockType = 'payone_core/payment_method_info_payolution';
     /**
      * @var bool
      */

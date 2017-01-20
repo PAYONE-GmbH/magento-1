@@ -30,6 +30,7 @@ class Payone_Core_Block_Payment_Method_Info_Payolution extends Payone_Core_Block
     protected function _construct() 
     {
         parent::_construct();
+        $this->setTemplate('payone/core/payment/method/info/payolution.phtml');
     }
     
     /**
