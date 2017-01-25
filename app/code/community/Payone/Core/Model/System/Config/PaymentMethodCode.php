@@ -16,7 +16,7 @@
  * @package         Payone_Core_Model
  * @subpackage      System
  * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com,  Copyright (c) 2017 <support@e3n.de> - www.e3n.de
- * @author          Matthias Walter <info@noovias.com>, Tim Rein <web.it.rein@gmail.com>
+ * @author          Matthias Walter <info@noovias.com>, Tim Rein <tim.rein@e3n.de>
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
  * @link            http://www.noovias.com
  */
