@@ -22,23 +22,13 @@
  */
 
 /**
- * Class Payone_Core_Block_Payment_Method_Info_Payolution
+ * Class Payone_Core_Block_Payment_Method_Info_PayolutionDebit
  */
-class Payone_Core_Block_Payment_Method_Info_Payolution extends Payone_Core_Block_Payment_Method_Info_Abstract
+class Payone_Core_Block_Payment_Method_Info_PayolutionDebit extends Payone_Core_Block_Payment_Method_Info_Payolution
 {
-    
+
     protected function _construct() 
     {
-        parent::_construct();
-        $this->setTemplate('payone/core/payment/method/info/payolution.phtml');
+        $this->setTemplate('payone/core/payment/method/info/payolutiondebit.phtml');
     }
-    
-    /**
-     * @return string
-     */
-    public function getPayoneClearingReference()
-    {
-        return $this->getInfo()->getPayoneClearingReference();
-    }
-
 }

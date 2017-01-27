@@ -21,33 +21,17 @@
  * @link            http://www.fatchip.com
  */
 
-/** @var $this Payone_Core_Block_Payment_Method_Form_RatePay */
+/** @var $this Payone_Core_Block_Payment_Method_Form_Payolution */
 $code = $this->getMethodCode();
 $configId = $this->getPaymentConfig()->getId();
-$sType = $this->getPayolutionType();
-$aTypes = $this->getPayolutionTypesBackend();
+$getPayolutionTyp = $this->payolutionTypeMapping();
 
 ?>
 <ul id="payment_form_<?php echo $code ?>" style="display:none">
     <li>
         <div class="field">
-            <?php if(count($aTypes) == 1) { ?>
-                    <input type="hidden" id="<?php echo $code ?>_type_select" name="payment[payone_payolution_type]" 
-                        value="<?php echo $aTypes[0]; ?>">
-            <?php } else { ?>
-                <label for="<?php echo $code; ?>_type_select">
-                    <?php echo $this->__('Payment type'); ?>&nbsp;<span class="required">*</span>
-                </label><br class="clear"/>
-                <select id="<?php echo $code ?>_type_select" name="payment[payone_payolution_type]"
-                        class="required-entry" onchange="payoneSwitchPayolution(this, '<?php echo $code; ?>');">
-                    <option value=""><?php echo $this->__('--Please Select--') ?></option>
-                    <?php foreach ($aTypes as $type): ?>
-                        <option value="<?php echo $type ?>">
-                            <?php echo $this->__($type); ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            <?php } ?>
+            <input type="hidden" id="<?php echo $code ?>_type_select" name="payment[payone_payolution_type]"
+                   value="<?php echo $getPayolutionTyp[$code] ?>">
         </div>
         <div id="<?php echo $code ?>_main_block" style="display:none;">
             <div class="field" id="<?php echo $code; ?>_installment_wrap2" style="display:none;"></div>
@@ -136,7 +120,7 @@ $aTypes = $this->getPayolutionTypesBackend();
             </div>
             <div class="field" style="position:relative;">
                 <input type="hidden" name="payment[payone_config_payment_method_id]" value="<?php echo $configId; ?>"/>
-                <input type="hidden" name="payment[payone_payolution_type]" value="<?php echo $sType; ?>"/>
+                <input type="hidden" name="payment[payone_payolution_type]" value="<?php echo $getPayolutionTyp; ?>"/>
                 <input type="hidden" name="payment[payone_payolution_installment_duration]" value="" id="<?php echo $code ?>_selected_installmentplan" />
                 <div id="payolution_overlay" style="display:none;">
                     <a href="#" onclick="removeOverlay();return false;" style="float:right;font-weight:bold;"><?php echo $this->__('Close window'); ?></a><br><br>

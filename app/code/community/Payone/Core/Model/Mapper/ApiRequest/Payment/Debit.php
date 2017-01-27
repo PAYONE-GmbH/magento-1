@@ -15,10 +15,10 @@
  * @category        Payone
  * @package         Payone_Core_Model
  * @subpackage      Mapper
- * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
- * @author          Matthias Walter <info@noovias.com>
+ * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com, Copyright (c) 2017 <support@e3n.de> - www.e3n.de
+ * @author          Matthias Walter <info@noovias.com>,  Tim Rein <tim.rein@e3n.de>
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
- * @link            http://www.noovias.com
+ * @link            http://www.noovias.com, http://www.e3n.de
  */
 
 /**
@@ -79,7 +79,10 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Debit
             );
             $request->setPaydata($payData);
             $request->setApiVersion('3.10');
-        } elseif($paymentMethod instanceof Payone_Core_Model_Payment_Method_Payolution) {
+        } elseif($paymentMethod instanceof Payone_Core_Model_Payment_Method_PayolutionDebit ||
+                 $paymentMethod instanceof Payone_Core_Model_Payment_Method_PayolutionInvoicing ||
+                 $paymentMethod instanceof Payone_Core_Model_Payment_Method_PayolutionInstallment)
+        {
             $info = $paymentMethod->getInfoInstance();
             if($info->getPayoneIsb2b() == '1') {
                 $payData = new Payone_Api_Request_Parameter_Paydata_Paydata();

@@ -15,25 +15,46 @@
  * @category        Payone
  * @package         Payone_Core_Model
  * @subpackage      Payment
- * @copyright       Copyright (c) 2015 <kontakt@fatchip.de> - www.fatchip.com
- * @author          Robert Müller <robert.mueller@fatchip.de>
+ * @copyright       Copyright (c) 2017 <support@e3n.de> - www.e3n.de
+ * @author          Tim Rein <tim.rein@e3n.de>
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
- * @link            http://www.fatchip.com
+ * @link            http://www.e3n.de
  */
 
-class Payone_Core_Model_Payment_Method_Payolution extends Payone_Core_Model_Payment_Method_Abstract
+/**
+ * Class Payone_Core_Model_Payment_Method_PayolutionInvoicing
+ */
+class Payone_Core_Model_Payment_Method_PayolutionInvoicing extends Payone_Core_Model_Payment_Method_Abstract
 {
+    /**
+     * @var bool
+     */
     protected $_canUseForMultishipping = true;
-
-    protected $methodType = Payone_Core_Model_System_Config_PaymentMethodType::PAYOLUTION;
-
-    protected $_code = Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTION;
-
+    /**
+     * @var string
+     */
+    protected $methodType = Payone_Core_Model_System_Config_PaymentMethodType::PAYOLUTIONINVOICING;
+    /**
+     * @var string
+     */
+    protected $_code = Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTIONINVOICING;
+    /**
+     * @var string
+     */
     protected $_formBlockType = 'payone_core/payment_method_form_payolution';
+    /**
+     * @var string
+     */
     protected $_infoBlockType = 'payone_core/payment_method_info_payolution';
-    
+    /**
+     * @var bool
+     */
     protected $_blIpMandatory = true;
-    
+
+    /**
+     * @param $response
+     * @return string
+     */
     public function getApiResponseErrorMessage($response)
     {
         return $this->helper()->__('PAYONE_PAYOLUTION_API_ERRORMESSAGE');
