@@ -27,7 +27,7 @@
             new PAYONE.Handler.CreditCardCheck.OnepageCheckout()
     );
 
-    Event.observe(window, 'load', function () {
+    document.observe('dom:loaded', function () {
         payone.form = payment.form;
         payment.save = payment.save.wrap(
                 function (origMethod) {
