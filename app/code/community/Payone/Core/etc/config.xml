@@ -605,11 +605,6 @@
                 <model>payone_core/payment_method_ratepay</model>
                 <group>payone</group>
             </payone_ratepay>
-            <payone_payolution translate="title" module="payone_core">
-                <title>PAYONE - Payolution</title>
-                <model>payone_core/payment_method_payolution</model>
-                <group>payone</group>
-            </payone_payolution>
             <payone_payolution_invoicing translate="title" module="payone_core">
                 <title>PAYONE - Payolution Invoicing</title>
                 <model>payone_core/payment_method_payolutionInvoicing</model>
