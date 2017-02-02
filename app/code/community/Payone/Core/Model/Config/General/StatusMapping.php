@@ -68,10 +68,27 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
      * @var null
      */
     protected $wallet = null;
-    
+    /**
+     * @var null
+     */
     protected $ratepay = null;
-    protected $payolution = null;
 
+    /**
+     * @var null
+     */
+    protected $payolution_invoicing = null;
+    /**
+     * @var null
+     */
+    protected $payolution_installment = null;
+    /**
+     * @var null
+     */
+    protected $payolution_debit = null;
+
+    /**
+     * @param array $data
+     */
     public function init(array $data)
     {
         foreach ($data as $key => $value) {
@@ -283,15 +300,6 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
         $this->ratepay = $ratepay;
     }
     
-    public function setPayolution($payolution)
-    {
-        if (is_string($payolution)) {
-            $payolution = $this->initValue($payolution);
-        }
-
-        $this->payolution = $payolution;
-    }
-
     /**
      * @return null
      */
@@ -304,10 +312,53 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
     {
         return $this->ratepay;
     }
-    
-    public function getPayolution()
+
+    /**
+     * @return null
+     */
+    public function getPayolutionInvoicing()
     {
-        return $this->payolution;
+        return $this->payolution_invoicing;
+    }
+
+    /**
+     * @return null
+     */
+    public function getPayolutionInstallment()
+    {
+        return $this->payolution_installment;
+    }
+
+    /**
+     * @return null
+     */
+    public function getPayolutionDebit()
+    {
+        return $this->payolution_debit;
+    }
+
+    /**
+     * @param $payolutionInvoicing
+     */
+    public function setPayolutionInvoicing($payolutionInvoicing)
+    {
+        $this->payolution_invoicing = $payolutionInvoicing;
+    }
+
+    /**
+     * @param $payolutionInstallment
+     */
+    public function setPayolutionInstallment($payolutionInstallment)
+    {
+        $this->payolution_installment = $payolutionInstallment;
+    }
+
+    /**
+     * @param $payolutionDebit
+     */
+    public function setPayolutionDebit($payolutionDebit)
+    {
+        $this->payolution_debit = $payolutionDebit;
     }
 
     /**
