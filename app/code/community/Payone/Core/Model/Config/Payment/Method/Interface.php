@@ -538,5 +538,16 @@ interface Payone_Core_Model_Config_Payment_Method_Interface
      * @return bool
      */
     public function getSepaRequestBic();
+
+    /**
+     * @param bool $currency_convert
+     */
+    public function setCurrencyConvert($currency_convert);
+
+
+    /**
+     * @return bool
+     */
+    public function getCurrencyConvert();
     
 }
