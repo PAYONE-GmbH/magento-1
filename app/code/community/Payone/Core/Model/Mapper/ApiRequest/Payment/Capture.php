@@ -111,6 +111,8 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Capture
      */
     protected function mapDefaultCaptureParameters(Payone_Api_Request_Capture $request)
     {
+        $blCurrencyConvert = (bool)$this->getConfigPayment()->getCurrencyConvert();
+
         $order = $this->getOrder();
         $invoice = $this->getInvoice();
 
@@ -120,8 +122,14 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Capture
         $request->setTxid($order->getPayment()->getLastTransId());
         $request->setSequencenumber($transaction->getNextSequenceNumber());
         $request->setCurrency($order->getOrderCurrencyCode());
+        if($blCurrencyConvert) {
+            $request->setCurrency($order->getBaseCurrencyCode());
+        }
         if(!empty($invoice) && $invoice->hasData()) {
             $request->setAmount($invoice->getGrandTotal());
+            if($blCurrencyConvert) {
+                $request->setAmount($order->getBaseGrandTotal());
+            }
         } else {
             $request->setAmount($this->getAmount());
         }
