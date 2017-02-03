@@ -81,10 +81,8 @@ class Payone_Core_Model_Observer_Checkout_Onepage_MultiplePaymentCheck extends P
                  $selectedMethod == Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTIONINSTALLMENT)
         {
             $controllerAction = $this->_performPayolutionChecks($controllerAction);
-
-        } elseif($selectedMethod == Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTION) {
-                $controllerAction = $this->_performPayolutionChecks($controllerAction);
-        } elseif($selectedMethod == Payone_Core_Model_System_Config_PaymentMethodCode::CREDITCARD) {
+        }
+        elseif($selectedMethod == Payone_Core_Model_System_Config_PaymentMethodCode::CREDITCARD) {
             $controllerAction = $this->_performHostedCreditcardChecks($controllerAction);
         }
 
