@@ -15,55 +15,42 @@
  * @category        Payone
  * @package         design_frontend_base_default
  * @subpackage      template
- * @copyright       Copyright (c) 2015 <kontakt@fatchip.de> - www.fatchip.com
- * @author          Robert Müller <robert.mueller@fatchip.de>
+ * @copyright       Copyright (c) 2015 <kontakt@fatchip.de> - www.fatchip.com,  Copyright (c) 2017 <support@e3n.de> - www.e3n.de
+ * @author          Robert Müller <robert.mueller@fatchip.de>, Tim Rein <tim.rein@e3n.de>
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
- * @link            http://www.fatchip.com
+ * @link            http://www.fatchip.com, http://www.e3n.de
  */
 
-/** @var $this Payone_Core_Block_Payment_Method_Form_RatePay */
+/** @var $this Payone_Core_Block_Payment_Method_Form_Payolution */
 $code = $this->getMethodCode();
 $configId = $this->getPaymentConfig()->getId();
-$aTypes = $this->getPayolutionTypes();
+$getPayolutionTyp = $this->payolutionTypeMapping();
 
 ?>
 <fieldset class="form-list">
     <ul id="payment_form_<?php echo $code ?>" style="display:none">
         <li class="fields">
             <div class="field">
-                <?php if(count($aTypes) == 1) { ?>
-                        <input type="hidden" id="<?php echo $code ?>_type_select" name="payment[payone_payolution_type]" 
-                            value="<?php echo $aTypes[0]; ?>">
-                <?php } else { ?>
-                    <label for="<?php echo $code; ?>_type_select">
-                        <?php echo $this->__('Payment type'); ?>&nbsp;<span class="required">*</span>
-                    </label><br class="clear"/>
-                    <select id="<?php echo $code ?>_type_select" name="payment[payone_payolution_type]"
-                            class="required-entry" onchange="payoneSwitchPayolution(this, '<?php echo $code; ?>');">
-                        <option value=""><?php echo $this->__('--Please Select--') ?></option>
-                        <?php foreach ($aTypes as $type): ?>
-                            <option value="<?php echo $type ?>">
-                                <?php echo $this->__($type); ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                <?php } ?>
+                <input type="hidden" id="<?php echo $code ?>_type_select" name="payment[payone_payolution_type]"
+                       value="<?php echo $getPayolutionTyp[$code] ?>">
             </div>
-            <div id="<?php echo $code ?>_main_block" style="display:none;">
-                <div class="field" id="<?php echo $code; ?>_installment_wrap2" style="display:none;"></div>
+            <div id="<?php echo $code ?>_main_block">
+                <div class="field" id="<?php echo $code; ?>_installment_wrap2"></div>
                 <?php if ($this->isB2BMode()) { ?>
                     <div id="<?php echo $code; ?>_b2b_wrap" class="field">
                         <div class="input-box">
-                            <label for="<?php echo $code ?>_trade_registry_number"><?php echo $this->__('Company trade registry number') ?>
+                            <label
+                                for="<?php echo $code ?>_trade_registry_number"><?php echo $this->__('Company trade registry number') ?>
                                 <span class="required">*</span>
                             </label>
                             <br class="clear"/>
-                            <input type="text" id="<?php echo $code ?>_trade_registry_number" name="payment[payone_trade_registry_number]"
+                            <input type="text" id="<?php echo $code ?>_trade_registry_number"
+                                   name="payment[payone_trade_registry_number]"
                                    value="" title="" class="required-entry input-text no-submit"/>
                         </div>
                     </div>
                 <?php } ?>
-                <?php if ($this->showBirthdayFields()){ ?>
+                <?php if ($this->showBirthdayFields()) { ?>
                     <div id="<?php echo $code; ?>_birthday_wrap" class="field">
                         <label for="<?php echo $code ?>_additional_fields_customer_dob_month"
                                class="required"><em>*</em><?php echo $this->__('Date of birth (DD MM YYYY)') ?>
@@ -98,7 +85,7 @@ $aTypes = $this->getPayolutionTypes();
                         </select>
 
                         <input type="hidden" id="<?php echo $code ?>_additional_fields_customer_dob_full"
-                                name="payment[payone_customer_dob]" class="validate-18-years">
+                               name="payment[payone_customer_dob]" class="validate-18-years">
                     </div>
                 <?php } ?>
                 <div id="<?php echo $code; ?>_debit_wrap" class="field" style="display:none;">
@@ -145,36 +132,45 @@ $aTypes = $this->getPayolutionTypes();
                     </div>
                 </div>
                 <div id="<?php echo $code; ?>_acceptance_wrap" class="field" style="position:relative;">
-                    <input type="checkbox" id="<?php echo $code ?>_additional_fields_agreement_checkbox" class="checkbox required-entry"/>
-                    <label for="<?php echo $code ?>_additional_fields_agreement_checkbox" class="required" style="float:none;">
+                    <input type="checkbox" id="<?php echo $code ?>_additional_fields_agreement_checkbox"
+                           class="checkbox required-entry"/>
+                    <label for="<?php echo $code ?>_additional_fields_agreement_checkbox" class="required"
+                           style="float:none;">
                         <?php echo $this->__('PAYOLUTION_ACCEPTANCE_1'); ?><br>
                         <?php echo $this->__('PAYOLUTION_ACCEPTANCE_2'); ?>
-                        <a href="#" style="float:none; margin:0;" onclick="displayPayolutionOverlay();return false;"><?php echo $this->__('acceptance'); ?></a>
+                        <a href="#" style="float:none; margin:0;"
+                           onclick="displayPayolutionOverlay();return false;"><?php echo $this->__('acceptance'); ?></a>
                         <?php echo $this->__('PAYOLUTION_ACCEPTANCE_3'); ?>
                         <em style="float:none; position:relative;">*</em>
                     </label>
-                    <input type="hidden" name="payment[payone_config_payment_method_id]" value="<?php echo $configId; ?>" id="<?php echo $code ?>_payment_method_id" />
+                    <input type="hidden" name="payment[payone_config_payment_method_id]"
+                           value="<?php echo $configId; ?>" id="<?php echo $code ?>_payment_method_id"/>
                     <input type="hidden" name="payment[payone_isb2b]" value="<?php echo (int)$this->isB2BMode(); ?>"/>
-                    <input type="hidden" name="payment[payone_payolution_installment_duration]" value="" id="<?php echo $code ?>_selected_installmentplan" />
+                    <input type="hidden" name="payment[payone_payolution_installment_duration]" value=""
+                           id="<?php echo $code ?>_selected_installmentplan"/>
+
                     <div id="payolution_overlay" style="display:none;">
-                        <a href="#" onclick="removePayolutionOverlay();return false;" style="float:right;font-weight:bold;"><?php echo $this->__('Close window'); ?></a><br><br>
+                        <a href="#" onclick="removePayolutionOverlay();return false;"
+                           style="float:right;font-weight:bold;"><?php echo $this->__('Close window'); ?></a><br><br>
                         <?php echo $this->getPayolutionAcceptanceText(); ?>
                     </div>
-                </div>
-                <div id="<?php echo $code; ?>_debit_wrap2" class="field" style="display:none;">
-                    <input type="checkbox" id="<?php echo $code ?>_payolution_sepa_mandate" class="checkbox required-entry"/>
-                    <label for="<?php echo $code ?>_payolution_sepa_mandate" class="required" style="float:none;">
-                        <?php echo $this->__('Hereby I grant the'); ?>
-                        <a href="https://payment.payolution.com/payolution-payment/infoport/sepa/mandate.pdf" target="_blank" style="float:none; margin:0;"><?php echo $this->__('SEPA-Mandate'); ?></a>.
-                        <em style="float:none; position:relative;">*</em>
-                    </label>
-                </div>
-                <div id="<?php echo $code; ?>_installment_wrap1" class="field" style="display:none;">
-                    <button onclick="handleInstallment('<?php echo $code ?>', '<?php echo $this->getHandleInstallmentUrl(); ?>');" class="button" type="button">
+                    <div id="<?php echo $code; ?>_debit_wrap2" class="field" style="display:none;">
+                        <input type="checkbox" id="<?php echo $code ?>_payolution_sepa_mandate" class="checkbox required-entry"/>
+                        <label for="<?php echo $code ?>_payolution_sepa_mandate" class="required" style="float:none;">
+                            <?php echo $this->__('Hereby I grant the'); ?>
+                            <a href="https://payment.payolution.com/payolution-payment/infoport/sepa/mandate.pdf" target="_blank" style="float:none; margin:0;"><?php echo $this->__('SEPA-Mandate'); ?></a>.
+                            <em style="float:none; position:relative;">*</em>
+                        </label>
+                    </div>
+                    <div id="<?php echo $code; ?>_installment_wrap1" class="field">
+                        <button
+                            onclick="handleInstallment('<?php echo $code ?>', '<?php echo $this->getHandleInstallmentUrl(); ?>');"
+                            class="button" type="button">
                         <span>
                             <span><?php echo $this->__('Check installment availability'); ?></span>
                         </span>
-                    </button>
+                        </button>
+                    </div>
                 </div>
             </div>
         </li>
@@ -191,22 +187,23 @@ $aTypes = $this->getPayolutionTypes();
     Event.observe(document, "dom:ready", function () {
         payoneSwitchPayolution($(code + '_type_select'), code);
     });
-
     // we need to call the switch method after refreshing payment section via ajax
     // unfortunately there is no specific property to identify the needed ajax request
     Ajax.Responders.register({
-        onComplete: function(transport, element)Â {
+        onComplete: function (transport, element) {
+
             var typeSelect = $(code + '_type_select');
+
             if (typeSelect == undefined) {
                 return;
             }
             var url = element.request.url;
+
             if (url.indexOf('checkout/onepage/saveShippingMethod') !== -1 || url.indexOf('checkout/onepage/progress') !== 1) {
                 payoneSwitchPayolution(typeSelect, code);
             }
         }
     });
-    
     //    Add validation messages translation
     Translator.add('You have to be at least 18 years old to use this payment type!', '<?php echo $this->__('You have to be at least 18 years old to use this payment type!'); ?>');
     Translator.add('The installment calculation failed. Please choose another payment type.', '<?php echo $this->__('The installment calculation failed. Please choose another payment type.'); ?>');

@@ -231,6 +231,14 @@
                     <!-- Payolution type -->
                     <to_order_payment>*</to_order_payment>
                 </payone_payolution_type>
+                <payone_payolution_invoicing>
+                    <!-- Payolution type -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_payolution_invoicing>
+                <payone_payolution_installment>
+                    <!-- Payolution type -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_payolution_installment>
                 <payone_payolution_iban>
                     <!-- Payolution iban -->
                     <to_order_payment>*</to_order_payment>
@@ -239,6 +247,18 @@
                     <!-- Payolution bic -->
                     <to_order_payment>*</to_order_payment>
                 </payone_payolution_bic>
+                <payone_payolution_debit>
+                    <!-- Payolution type -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_payolution_debit>
+                <payone_payolution_debit_iban>
+                    <!-- Payolution iban -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_payolution_debit_iban>
+                <payone_payolution_debit_bic>
+                    <!-- Payolution bic -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_payolution_debit_bic>
                 <payone_isb2b>
                     <!-- B2B mode ? -->
                     <to_order_payment>*</to_order_payment>
@@ -352,7 +372,7 @@
                 <observers>
                     <payone_core_observer>
                         <type>singleton</type>
-                        <class>payone_core/observer_checkout_onepage_debitPayment</class>
+                        <class>payone_core/observer_checkout_onepage_multiplePaymentCheck</class>
                         <method>performChecks</method>
                     </payone_core_observer>
                 </observers>
@@ -361,7 +381,7 @@
                 <observers>
                     <payone_core_observer>
                         <type>singleton</type>
-                        <class>payone_core/observer_checkout_onepage_debitPayment</class>
+                        <class>payone_core/observer_checkout_onepage_multiplePaymentCheck</class>
                         <method>performChecks</method>
                     </payone_core_observer>
                 </observers>
@@ -585,11 +605,21 @@
                 <model>payone_core/payment_method_ratepay</model>
                 <group>payone</group>
             </payone_ratepay>
-            <payone_payolution translate="title" module="payone_core">
-                <title>PAYONE - Payolution</title>
-                <model>payone_core/payment_method_payolution</model>
+            <payone_payolution_invoicing translate="title" module="payone_core">
+                <title>PAYONE - Payolution Invoicing</title>
+                <model>payone_core/payment_method_payolutionInvoicing</model>
                 <group>payone</group>
-            </payone_payolution>
+            </payone_payolution_invoicing>
+            <payone_payolution_debit translate="title" module="payone_core">
+                <title>PAYONE - Payolution Debit</title>
+                <model>payone_core/payment_method_payolutionDebit</model>
+                <group>payone</group>
+            </payone_payolution_debit>
+            <payone_payolution_installment translate="title" module="payone_core">
+                <title>PAYONE - Payolution Installment</title>
+                <model>payone_core/payment_method_payolutionInstallment</model>
+                <group>payone</group>
+            </payone_payolution_installment>
             <payone_cash_on_delivery translate="title" module="payone_core">
                 <title>PAYONE - Cash on Delivery</title>
                 <model>payone_core/payment_method_cashOnDelivery</model>
@@ -670,6 +700,15 @@
             <template_payolution>
                 <use_global>1</use_global>
             </template_payolution>
+            <template_payolution_invoicing>
+                <use_global>1</use_global>
+            </template_payolution_invoicing>
+            <template_payolution_debit>
+                <use_global>1</use_global>
+            </template_payolution_debit>
+            <template_payolution_installment>
+                <use_global>1</use_global>
+            </template_payolution_installment>
         </payone_payment>
         <payone_general>
             <global>
@@ -693,7 +732,9 @@
                 <wallet>a:1:{s:18:"_1343137411652_652";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</wallet>
                 <barzahlen>a:1:{s:23:"_payone_status_mapping4";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</barzahlen>
                 <ratepay>a:1:{s:17:"_1468417699073_73";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</ratepay>
-                <payolution>a:1:{s:18:"_1468430772551_551";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</payolution>
+                <payolution_debit>a:1:{s:18:"_1486042141_511";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</payolution_debit>
+                <payolution_invoicing>a:1:{s:18:"_1486042141_541";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</payolution_invoicing>
+                <payolution_installment>a:1:{s:18:"_1486042141_591";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</payolution_installment>
                 <financing>a:1:{s:18:"_1468430123551_512";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</financing>
             </status_mapping>
         </payone_general>

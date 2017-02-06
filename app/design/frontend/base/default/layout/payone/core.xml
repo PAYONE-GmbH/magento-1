@@ -149,8 +149,8 @@
             <action method="setTemplate"><template>page/1column.phtml</template></action>
         </reference>
     </payone_core_iframe_show>
-    
-    
+
+
     <payone_core_payolution_installmentplan>
         <!-- Mage_Checkout -->
         <remove name="right"/>

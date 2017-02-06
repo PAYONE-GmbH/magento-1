@@ -184,7 +184,7 @@ class Payone_Core_Checkout_OnepageController extends Mage_Checkout_OnepageContro
         $oMapper = $oService->getMapper();
         $oRequest = $oMapper->addPayolutionPreCheckParameters($this->getOnepage()->getQuote(), $this->getRequest()->getPost());
         $oResponse = $this->getFactory()->getServiceApiPaymentGenericpayment()->request($oRequest);
-        
+
         if($oResponse instanceof Payone_Api_Response_Genericpayment_Ok) {
             $checkoutSession = $this->getFactory()->getSingletonCheckoutSession();
             $checkoutSession->setPayoneWorkorderId($oResponse->getWorkorderId());
