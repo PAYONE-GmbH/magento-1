@@ -50,4 +50,6 @@ class Payone_Api_Enum_CreditcardType
     const DISCOVER = 'C';
     //B: Carte Bleue
     const CARTE_BLEUE = 'B';
+    //P: China Union Pay
+    const CHINA_UNION_PAY = 'P';
 }
