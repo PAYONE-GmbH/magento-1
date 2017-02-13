@@ -62,7 +62,8 @@ class Payone_Migrator_Model_Mapper_Config_Payment extends Payone_Migrator_Model_
         'AE' => Payone_Api_Enum_CreditcardType::AMEX,
         'MCI' => Payone_Api_Enum_CreditcardType::MAESTRO_INTERNATIONAL,
         'JCB' => Payone_Api_Enum_CreditcardType::JCB,
-        'DI' => Payone_Api_Enum_CreditcardType::DISCOVER
+        'DI' => Payone_Api_Enum_CreditcardType::DISCOVER,
+        'CUP' => Payone_Api_Enum_CreditcardType::CHINA_UNION_PAY
     );
 
     public function map($methodCode, array $config)

@@ -15,10 +15,10 @@
  * @category        Payone
  * @package         Payone_Core_Model
  * @subpackage      Mapper
- * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
- * @author          Matthias Walter <info@noovias.com>
+ * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com, Copyright (c) 2017 <support@e3n.de> - www.e3n.de
+ * @author          Matthias Walter <info@noovias.com>,  Tim Rein <tim.rein@e3n.de>
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
- * @link            http://www.noovias.com
+ * @link            http://www.noovias.com, http://www.e3n.de
  */
 
 /**
@@ -141,9 +141,17 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
             $requestType = Payone_Api_Enum_RequestType::PREAUTHORIZATION;
         }
         
-        // Always use PREAUTHORIZATION for Payolution
-        if ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Payolution) {
+        // Always use PREAUTHORIZATION for Payolution Debit and Invoicing
+        if ($paymentMethod instanceof Payone_Core_Model_Payment_Method_PayolutionDebit ||
+            $paymentMethod instanceof Payone_Core_Model_Payment_Method_PayolutionInvoicing)
+        {
             $requestType = Payone_Api_Enum_RequestType::PREAUTHORIZATION;
+        }
+
+        // Always use AUTHORIZATION for Payolution Installment
+        if ($paymentMethod instanceof Payone_Core_Model_Payment_Method_PayolutionInstallment)
+        {
+            $requestType = Payone_Api_Enum_RequestType::AUTHORIZATION;
         }
 
         $request->setRequest($requestType);
@@ -460,8 +468,7 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
         if ($paymentMethod instanceof Payone_Core_Model_Payment_Method_CashOnDelivery) {
             $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_CashOnDelivery();
             $payment->setShippingprovider(Payone_Api_Enum_Shippingprovider::DHL);
-        }
-        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Creditcard) {
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Creditcard) {
             $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_CreditCard();
 
             // check if it is an adminorder and set ecommercemode to moto
@@ -471,8 +478,7 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
 
             $payment->setPseudocardpan($info->getPayonePseudocardpan());
             $isRedirect = true;
-        }
-        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransfer) {
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransfer) {
             $country = $this->getOrder()->getBillingAddress()->getCountry();
             $payoneOnlinebanktransferType = $info->getPayoneOnlinebanktransferType();
             $iban = $info->getPayoneSepaIban();
@@ -506,8 +512,7 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
             }
 
             $isRedirect = true;
-        }
-        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_SafeInvoice) {
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_SafeInvoice) {
             $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_Financing();
             $payment->setFinancingtype($info->getPayoneSafeInvoiceType());
 
@@ -515,13 +520,21 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
                 // BillSAFE is a redirect payment method, Klarna not
                 $isRedirect = true;
             }
-        }
-        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Wallet) {
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Wallet) {
             $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_Wallet();
             $payment->setWallettype($this->_getWalletType());
             $isRedirect = true;
-        }
-        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_DebitPayment) {
+            
+            if ($this->_getWalletType() == 'PDT' && $this->getOrder()->getIsVirtual()) {// is Paydirekt and virtual/download?
+                $payData = new Payone_Api_Request_Parameter_Paydata_Paydata();
+                $payData->addItem(
+                    new Payone_Api_Request_Parameter_Paydata_DataItem(
+                        array('key' => 'shopping_cart_type', 'data' => 'DIGITAL')
+                    )
+                );
+                $payment->setPaydata($payData);
+            }
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_DebitPayment) {
             $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_DebitPayment();
             $payment->setBankcountry($info->getPayoneBankCountry());
             $iban = $info->getPayoneSepaIban();
@@ -607,10 +620,14 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
             }
 
             $payment->setTelephonenumber($telephone);
-        } elseif($paymentMethod instanceof Payone_Core_Model_Payment_Method_Payolution) {
+        } elseif($paymentMethod instanceof Payone_Core_Model_Payment_Method_PayolutionDebit ||
+                 $paymentMethod instanceof Payone_Core_Model_Payment_Method_PayolutionInvoicing ||
+                 $paymentMethod instanceof Payone_Core_Model_Payment_Method_PayolutionInstallment)
+        {
             $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_Payolution();
             $payment->setApiVersion();
             $payment->setFinancingtype($info->getPayonePayolutionType());
+
             $payment->setWorkorderid($info->getPayoneWorkorderid());
             $payment->setIban(strtoupper($info->getPayonePayolutionIban()));
             $payment->setBic(strtoupper($info->getPayonePayolutionBic()));
@@ -741,8 +758,14 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
         elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Ratepay) {
             $clearingType = Payone_Enum_ClearingType::RATEPAY;
         }
-        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Payolution) {
-            $clearingType = Payone_Enum_ClearingType::PAYOLUTION;
+        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_PayolutionInvoicing) {
+            $clearingType = Payone_Enum_ClearingType::PAYOLUTIONINVOICING;
+        }
+        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_PayolutionDebit) {
+            $clearingType = Payone_Enum_ClearingType::PAYOLUTIONDEBIT;
+        }
+        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_PayolutionInstallment) {
+            $clearingType = Payone_Enum_ClearingType::PAYOLUTIONINSTALLMENT;
         }
 
         return $clearingType;

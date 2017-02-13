@@ -20,17 +20,22 @@
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
  * @link            http://www.fatchip.com
  */
-class Payone_Settings_Data_ConfigFile_PaymentMethod_Payolution
+class Payone_Settings_Data_ConfigFile_PaymentMethod_PayolutionInstallment
     extends Payone_Settings_Data_ConfigFile_PaymentMethod_Abstract
     implements Payone_Settings_Data_ConfigFile_Interface
 {
     /** @var string */
-    protected $key = Payone_Enum_ClearingType::PAYOLUTION;
+    protected $key = Payone_Enum_ClearingType::PAYOLUTIONINSTALLMENT;
 
     /**
      * @return string
      */
     public function getKey()
+    {
+        return $this->key;
+    }
+
+    public function getClearingType()
     {
         return $this->key;
     }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * NOTICE OF LICENSE
@@ -15,68 +16,107 @@
  * @category        Payone
  * @package         Payone_Core_Block
  * @subpackage      Payment
- * @copyright       Copyright (c) 2015 <kontakt@fatchip.de> - www.fatchip.com
- * @author          Robert Müller <robert.mueller@fatchip.de>
+ * @copyright       Copyright (c) 2015 <kontakt@fatchip.de> - www.fatchip.com, Copyright (c) 2017 <support@e3n.de> - www.e3n.de
+ * @author          Robert MÃ¼ller <robert.mueller@fatchip.de>, Tim Rein <tim.rein@e3n.de>
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
- * @link            http://www.fatchip.com
+ * @link            http://www.fatchip.com, http://www.e3n.de
  */
 
+/**
+ * Class Payone_Core_Block_Payment_Method_Form_Payolution
+ */
 class Payone_Core_Block_Payment_Method_Form_Payolution extends Payone_Core_Block_Payment_Method_Form_Abstract
 {
-    
+    /**
+     * @var string
+     */
     protected $_sAcceptanceBaseUrl = 'https://payment.payolution.com/payolution-payment/infoport/dataprivacydeclaration?mId=';
 
+    /**
+     * @var bool
+     */
     protected $hasTypes = true;
-    
-    protected $_sFallback = "<header>
-  <strong>Zusätzliche Hinweise für die Datenschutzerklärung für Kauf auf Rechnung, Ratenzahlung und Zahlung mittels SEPA-Basis-Lastschrift von **company** (im Folgenden: „wir“)</strong></br>
-  <span><i>(Stand: 17.03.2016)</i></span>
-</header>
-<ol>
-  <li><p>Bei Kauf auf Rechnung oder Ratenzahlung oder SEPA-Basis-Lastschrift wird von Ihnen während des Bestellprozesses eine datenschutzrechtliche Einwilligung eingeholt. Folgend finden Sie eine Wiederholung dieser Bestimmungen, die lediglich informativen Charakter haben.</p></li>
-  <li><p>Bei Auswahl von Kauf auf Rechnung oder Ratenzahlung oder Bezahlung mittels SEPA-Basis-Lastschrift werden für die Abwicklung dieser Zahlarten personenbezogene Daten (Vorname, Nachname, Adresse, Email, Telefonnummer, Geburtsdatum, IP-Adresse, Geschlecht) gemeinsam mit für die Transaktionsabwicklung erforderlichen Daten (Artikel, Rechnungsbetrag, Zinsen, Raten, Fälligkeiten, Gesamtbetrag, Rechnungsnummer, Steuern, Währung, Bestelldatum und Bestellzeitpunkt) an payolution übermittelt werden. payolution hat ein berechtigtes Interesse an den Daten und benötigt bzw. verwendet diese um Risikoüberprüfungen durchzuführen.</p></li>
-  <li>
-  	<p>Zur Überprüfung der Identität bzw. Bonität des Kunden werden Abfragen und Auskünfte bei öffentlich zugänglichen Datenbanken sowie Kreditauskunfteien durchgeführt. Bei nachstehenden Anbietern können Auskünfte und gegebenenfalls Bonitätsinformationen auf Basis mathematisch-statistischer Verfahren eingeholt werden:</p>
-  	<ul>
-		<li>CRIF GmbH, Diefenbachgasse 35, A-1150 Wien</li>
-		<li>CRIF AG, Hagenholzstrasse 81, CH-8050 Zürich</li>
-		<li>Deltavista GmbH, Dessauerstraße 9, D-80992 München</li>
-		<li>SCHUFA Holding AG, Kormoranweg 5, D-65201 Wiesbaden</li>
-		<li>KSV1870 Information GmbH, Wagenseilgasse 7, A-1120 Wien</li>
-		<li>Bürgel Wirtschaftsinformationen GmbH & Co. KG, Gasstraße 18, D-22761 Hamburg</li>
-		<li>Creditreform Boniversum GmbH, Hellersbergstr. 11, D-41460 Neuss</li>
-		<li>infoscore Consumer Data GmbH, Rheinstraße 99, D-76532 Baden-Baden</li>
-		<li>ProfileAddress Direktmarketing GmbH, Altmannsdorfer Strasse 311, A-1230 Wien</li>
-		<li>Deutsche Post Direkt GmbH, Junkersring 57, D-53844 Troisdorf</li>
-		<li>payolution GmbH, Am Euro Platz 2, A-1120 Wien</li>
-	</ul>
-	<p>payolution wird Ihre Angaben zur Bankverbindung (insbesondere Bankleitzahl und Kontonummer) zum Zwecke der Kontonummernprüfung an die SCHUFA Holding AG übermitteln. Die SCHUFA prüft anhand dieser Daten zunächst, ob die von Ihnen gemachten Angaben zur Bankverbindung plausibel sind. Die SCHUFA überprüft, ob die zur Prüfung verwendeten Daten ggf. in Ihrem Datenbestand gespeichert sind und übermittelt sodann das Ergebnis der Überprüfung an payolution zurück. Ein weiterer Datenaustausch wie die Bekanntgabe von Bonitätsinformationen oder eine Übermittlung abweichender Bankverbindungsdaten sowie Speicherung Ihrer Daten im SCHUFA-Datenbestand finden im Rahmen der Kontonummernprüfung nicht statt. Es wird aus Nachweisgründen allein die Tatsache der Überprüfung der Bankverbindungsdaten bei der SCHUFA gespeichert.</p>
-	<p>payolution ist berechtigt, auch Daten zu etwaigem nicht-vertragsgemäßen Verhalten (z.B. unbestrittene offene Forderungen) zu speichern, zu verarbeiten, zu nutzen und an oben genannte Auskunfteien zu übermitteln.</p>
-  </li>
-  <li><p>Wir sind bereits nach den Bestimmungen des Bürgerlichen Gesetzbuches über Finanzierungshilfen zwischen Unternehmern und Verbrauchern, zu einer Prüfung Ihrer Kreditwürdigkeit gesetzlich verpflichtet.</p></li>
-  <li><p>Im Fall eines Kaufs auf Rechnung oder Ratenkauf oder einer Bezahlung mittels SEPA-Basis-Lastschrift werden der payolution GmbH Daten über die Aufnahme (zu Ihrer Person, Kaufpreis, Laufzeit des Teilzahlungsgeschäfts, Ratenbeginn) und vereinbarungsgemäße Abwicklung (z.B. vorzeitige Rückzahlung, Laufzeitverlängerung, erfolgte Rückzahlungen) dieses Teilzahlungsgeschäfts übermittelt. Nach Abtretung der Kaufpreisforderung wird die forderungsübernehmende Bank die genannten Datenübermittlungen vornehmen. Wir bzw. die Bank, der die Kaufpreisforderung abgetreten wird, werden payolution GmbH auch Daten aufgrund nichtvertragsgemäßer Abwicklung (z.B. Kündigung des Teilzahlungsgeschäfts, Zwangsvollstreckungs-maßnahmen) melden. Diese Meldungen dürfen nach den datenschutzrechtlichen Bestimmungen nur erfolgen, soweit dies zur Wahrung berechtigter Interessen von Vertragspartnern der payolution GmbH oder der Allgemeinheit erforderlich ist und dadurch Ihre schutzwürdigen Belange nicht beeinträchtigt werden. payolution GmbH speichert die Daten, um ihren Vertragspartnern, die gewerbsmäßig Teilzahlungs- und sonstige Kreditgeschäfte an Verbraucher geben, Informationen zur Beurteilung der Kreditwürdigkeit von Kunden geben zu können. An Unternehmen, die gewerbsmäßig Forderungen einziehen und payolution GmbH vertraglich angeschlossen sind, können zum Zwecke der Schuldnerermittlung Adressdaten übermittelt werden. payolution GmbH stellt die Daten ihren Vertragspartnern nur zur Verfügung, wenn diese ein berechtigtes Interesse an der Datenübermittlung glaubhaft darlegen. payolution GmbH übermittelt nur objektive Daten ohne Angabe der Bank; subjektive Werturteile sowie persönliche Einkommens- und Vermögensverhältnisse sind in Auskünften der payolution GmbH nicht enthalten.</p></li>
-  <li><p>Die im Bestellprozess durch Einwilligung erfolgte Zustimmung zur Datenweitergabe kann jederzeit, auch ohne Angabe von Gründen, uns gegenüber widerrufen können. Die oben genannten gesetzlichen Verpflichtungen zur Überprüfung Ihrer Kreditwürdigkeit bleiben von einem allfälligen Widerruf jedoch unberührt. Sie sind verpflichtet ausschließlich wahrheitsgetreue Angaben gegenüber uns zu machen.</p></li>
-  <li><p>Sollten Sie Auskunft über die Erhebung, Nutzung, Verarbeitung oder Übermittlung von Sie betreffenden personenbezogenen Daten erhalten wollen oder Auskünfte, Berichtigungen, Sperrungen oder Löschung dieser Daten wünschen, können Sie sich an den Sachbearbeiter für Datenschutz bei payolution wenden:</p></li>
-</ol>
 
-<footer>Sachbearbeiter für Datenschutz<br />
-	datenschutz@payolution.com<br />
-	payolution GmbH<br />
-	Am Euro Platz 2<br />
-	1120 Wien<br />
-	DVR: 4008655
-</footer>";
-    
+    /**
+     * @var string
+     */
+    protected $_sFallback = "
+        <header>
+            <strong>ZusÃ¤tzliche Hinweise fÃ¼r die DatenschutzerklÃ¤rung fÃ¼r Kauf auf Rechnung, Ratenzahlung und Zahlung mittels SEPA-Basis-Lastschrift von **company** (im Folgenden: \"wir\")</strong></br>
+            <span><i>(Stand: 17.03.2016)</i></span>
+        </header>
+        <ol>
+          <li><p>Bei Kauf auf Rechnung oder Ratenzahlung oder SEPA-Basis-Lastschrift wird von Ihnen wÃ¤hrend des Bestellprozesses eine datenschutzrechtliche Einwilligung eingeholt. Folgend finden Sie eine Wiederholung dieser Bestimmungen, die lediglich informativen Charakter haben.</p></li>
+          <li><p>Bei Auswahl von Kauf auf Rechnung oder Ratenzahlung oder Bezahlung mittels SEPA-Basis-Lastschrift werden fÃ¼r die Abwicklung dieser Zahlarten personenbezogene Daten (Vorname, Nachname, Adresse, Email, Telefonnummer, Geburtsdatum, IP-Adresse, Geschlecht) gemeinsam mit fÃ¼r die Transaktionsabwicklung erforderlichen Daten (Artikel, Rechnungsbetrag, Zinsen, Raten, FÃ¤lligkeiten, Gesamtbetrag, Rechnungsnummer, Steuern, WÃ¤hrung, Bestelldatum und Bestellzeitpunkt) an payolution Ã¼bermittelt werden. payolution hat ein berechtigtes Interesse an den Daten und benÃ¶tigt bzw. verwendet diese um RisikoÃ¼berprÃ¼fungen durchzufÃ¼hren.</p></li>
+          <li>
+            <p>Zur ÃœberprÃ¼fung der IdentitÃ¤t bzw. BonitÃ¤t des Kunden werden Abfragen und AuskÃ¼nfte bei Ã¶ffentlich zugÃ¤nglichen Datenbanken sowie Kreditauskunfteien durchgefÃ¼hrt. Bei nachstehenden Anbietern kÃ¶nnen AuskÃ¼nfte und gegebenenfalls BonitÃ¤tsinformationen auf Basis mathematisch-statistischer Verfahren eingeholt werden:</p>
+            <ul>
+                <li>CRIF GmbH, Diefenbachgasse 35, A-1150 Wien</li>
+                <li>CRIF AG, Hagenholzstrasse 81, CH-8050 ZÃ¼rich</li>
+                <li>Deltavista GmbH, DessauerstraÃŸe 9, D-80992 MÃ¼nchen</li>
+                <li>SCHUFA Holding AG, Kormoranweg 5, D-65201 Wiesbaden</li>
+                <li>KSV1870 Information GmbH, Wagenseilgasse 7, A-1120 Wien</li>
+                <li>BÃ¼rgel Wirtschaftsinformationen GmbH & Co. KG, GasstraÃŸe 18, D-22761 Hamburg</li>
+                <li>Creditreform Boniversum GmbH, Hellersbergstr. 11, D-41460 Neuss</li>
+                <li>infoscore Consumer Data GmbH, RheinstraÃŸe 99, D-76532 Baden-Baden</li>
+                <li>ProfileAddress Direktmarketing GmbH, Altmannsdorfer Strasse 311, A-1230 Wien</li>
+                <li>Deutsche Post Direkt GmbH, Junkersring 57, D-53844 Troisdorf</li>
+                <li>payolution GmbH, Am Euro Platz 2, A-1120 Wien</li>
+            </ul>
+            <p>payolution wird Ihre Angaben zur Bankverbindung (insbesondere Bankleitzahl und Kontonummer) zum Zwecke der KontonummernprÃ¼fung an die SCHUFA Holding AG Ã¼bermitteln. Die SCHUFA prÃ¼ft anhand dieser Daten zunÃ¤chst, ob die von Ihnen gemachten Angaben zur Bankverbindung plausibel sind. Die SCHUFA Ã¼berprÃ¼ft, ob die zur PrÃ¼fung verwendeten Daten ggf. in Ihrem Datenbestand gespeichert sind und Ã¼bermittelt sodann das Ergebnis der ÃœberprÃ¼fung an payolution zurÃ¼ck. Ein weiterer Datenaustausch wie die Bekanntgabe von BonitÃ¤tsinformationen oder eine Ãœbermittlung abweichender Bankverbindungsdaten sowie Speicherung Ihrer Daten im SCHUFA-Datenbestand finden im Rahmen der KontonummernprÃ¼fung nicht statt. Es wird aus NachweisgrÃ¼nden allein die Tatsache der ÃœberprÃ¼fung der Bankverbindungsdaten bei der SCHUFA gespeichert.</p>
+            <p>payolution ist berechtigt, auch Daten zu etwaigem nicht-vertragsgemÃ¤ÃŸen Verhalten (z.B. unbestrittene offene Forderungen) zu speichern, zu verarbeiten, zu nutzen und an oben genannte Auskunfteien zu Ã¼bermitteln.</p>
+          </li>
+          <li><p>Wir sind bereits nach den Bestimmungen des BÃ¼rgerlichen Gesetzbuches Ã¼ber Finanzierungshilfen zwischen Unternehmern und Verbrauchern, zu einer PrÃ¼fung Ihrer KreditwÃ¼rdigkeit gesetzlich verpflichtet.</p></li>
+          <li><p>Im Fall eines Kaufs auf Rechnung oder Ratenkauf oder einer Bezahlung mittels SEPA-Basis-Lastschrift werden der payolution GmbH Daten Ã¼ber die Aufnahme (zu Ihrer Person, Kaufpreis, Laufzeit des TeilzahlungsgeschÃ¤fts, Ratenbeginn) und vereinbarungsgemÃ¤ÃŸe Abwicklung (z.B. vorzeitige RÃ¼ckzahlung, LaufzeitverlÃ¤ngerung, erfolgte RÃ¼ckzahlungen) dieses TeilzahlungsgeschÃ¤fts Ã¼bermittelt. Nach Abtretung der Kaufpreisforderung wird die forderungsÃ¼bernehmende Bank die genannten DatenÃ¼bermittlungen vornehmen. Wir bzw. die Bank, der die Kaufpreisforderung abgetreten wird, werden payolution GmbH auch Daten aufgrund nichtvertragsgemÃ¤ÃŸer Abwicklung (z.B. KÃ¼ndigung des TeilzahlungsgeschÃ¤fts, Zwangsvollstreckungs-maÃŸnahmen) melden. Diese Meldungen dÃ¼rfen nach den datenschutzrechtlichen Bestimmungen nur erfolgen, soweit dies zur Wahrung berechtigter Interessen von Vertragspartnern der payolution GmbH oder der Allgemeinheit erforderlich ist und dadurch Ihre schutzwÃ¼rdigen Belange nicht beeintrÃ¤chtigt werden. payolution GmbH speichert die Daten, um ihren Vertragspartnern, die gewerbsmÃ¤ÃŸig Teilzahlungs- und sonstige KreditgeschÃ¤fte an Verbraucher geben, Informationen zur Beurteilung der KreditwÃ¼rdigkeit von Kunden geben zu kÃ¶nnen. An Unternehmen, die gewerbsmÃ¤ÃŸig Forderungen einziehen und payolution GmbH vertraglich angeschlossen sind, kÃ¶nnen zum Zwecke der Schuldnerermittlung Adressdaten Ã¼bermittelt werden. payolution GmbH stellt die Daten ihren Vertragspartnern nur zur VerfÃ¼gung, wenn diese ein berechtigtes Interesse an der DatenÃ¼bermittlung glaubhaft darlegen. payolution GmbH Ã¼bermittelt nur objektive Daten ohne Angabe der Bank; subjektive Werturteile sowie persÃ¶nliche Einkommens- und VermÃ¶gensverhÃ¤ltnisse sind in AuskÃ¼nften der payolution GmbH nicht enthalten.</p></li>
+          <li><p>Die im Bestellprozess durch Einwilligung erfolgte Zustimmung zur Datenweitergabe kann jederzeit, auch ohne Angabe von GrÃ¼nden, uns gegenÃ¼ber widerrufen kÃ¶nnen. Die oben genannten gesetzlichen Verpflichtungen zur ÃœberprÃ¼fung Ihrer KreditwÃ¼rdigkeit bleiben von einem allfÃ¤lligen Widerruf jedoch unberÃ¼hrt. Sie sind verpflichtet ausschlieÃŸlich wahrheitsgetreue Angaben gegenÃ¼ber uns zu machen.</p></li>
+          <li><p>Sollten Sie Auskunft Ã¼ber die Erhebung, Nutzung, Verarbeitung oder Ãœbermittlung von Sie betreffenden personenbezogenen Daten erhalten wollen oder AuskÃ¼nfte, Berichtigungen, Sperrungen oder LÃ¶schung dieser Daten wÃ¼nschen, kÃ¶nnen Sie sich an den Sachbearbeiter fÃ¼r Datenschutz bei payolution wenden:</p></li>
+        </ol>
+
+        <footer>Sachbearbeiter fÃ¼r Datenschutz<br />
+            datenschutz@payolution.com<br />
+            payolution GmbH<br />
+            Am Euro Platz 2<br />
+            1120 Wien<br />
+            DVR: 4008655
+        </footer>
+    ";
+
+    /**
+     * @var array
+     */
     protected $_aBackendBlacklist = array(
         Payone_Api_Enum_PayolutionType::PYS
     );
-    
-    protected function _construct() 
+
+    protected function _construct()
     {
         parent::_construct();
         $this->setTemplate('payone/core/payment/method/form/payolution.phtml');
     }
 
+    /**
+     * @return array
+     */
+    public function payolutionTypeMapping()
+    {
+        return $payolutionPayment = array(
+            Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTIONINVOICING => Payone_Api_Enum_PayolutionType::PYV,
+            Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTIONINSTALLMENT => Payone_Api_Enum_PayolutionType::PYS,
+            Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTIONDEBIT => Payone_Api_Enum_PayolutionType::PYD,
+        );
+    }
+    
+    /**
+     * @return mixed
+     */
+    public function getPayolutionTypes()
+    {
+        return $this->getMethod()->getConfig()->getTypes();
+    }
+
+    /**
+     * @return mixed
+     */
     public function getPayolutionType() 
     {
         if($this->_sType === null) {
@@ -86,26 +126,24 @@ class Payone_Core_Block_Payment_Method_Form_Payolution extends Payone_Core_Block
 
         return $this->_sType;
     }
-    
-    public function getPayolutionTypes() 
-    {
-        return $this->getMethod()->getConfig()->getTypes();
-    }
-    
+
+    /**
+     * @return array
+     */
     public function getPayolutionTypesBackend() 
     {
         $aTypes = $this->getPayolutionTypes();
-        
+
         $aTypesReturn = array();
         foreach ($aTypes as $sType) {
-            if(array_search($sType, $this->_aBackendBlacklist) === false) {
+            if (array_search($sType, $this->_aBackendBlacklist) === false) {
                 $aTypesReturn[] = $sType;
             }
         }
 
         return $aTypesReturn;
     }
-    
+
     /**
      * @return bool
      */
@@ -134,29 +172,38 @@ class Payone_Core_Block_Payment_Method_Form_Payolution extends Payone_Core_Block
 
         return false;
     }
-    
-    public function isB2BMode() 
+
+    /**
+     * @return bool
+     */
+    public function isB2BMode()
     {
-        if((bool)$this->getMethod()->getConfig()->getB2bMode() === true) {
+        if ((bool)$this->getMethod()->getConfig()->getB2bMode() === true) {
             $sCompany = $this->getQuote()->getBillingAddress()->getCompany();
-            if($sCompany) {
+            if ($sCompany) {
                 return true;
             }
         }
 
         return false;
     }
-    
-    public function showBirthdayFields() 
+
+    /**
+     * @return bool
+     */
+    public function showBirthdayFields()
     {
-        if($this->isB2BMode() === false) {
+        if ($this->isB2BMode() === false) {
             return true;
         }
 
         return false;
     }
-    
-    public function showDebitFields() 
+
+    /**
+     * @return bool
+     */
+    public function showDebitFields()
     {
         if ($this->getPayolutionType() == Payone_Api_Enum_PayolutionType::PYD) {
             return true;
@@ -164,14 +211,53 @@ class Payone_Core_Block_Payment_Method_Form_Payolution extends Payone_Core_Block
 
         return false;
     }
-    
-    protected function _getFallbackText($sCompany) 
+
+    /**
+     * @return bool|mixed|string
+     */
+    public function getPayolutionAcceptanceText() 
+    {
+        $sCompany = $this->getMethod()->getConfig()->getCompanyName();
+        $sUrl = $this->_sAcceptanceBaseUrl . base64_encode($sCompany);
+        $sContent = file_get_contents($sUrl);
+        $sPage = false;
+        if (!empty($sContent) && stripos($sContent, 'payolution') !== false && stripos($sContent, '<header>') !== false) {
+            //Parse content from HTML-body-tag from the given page
+            $sRegex = "#<\s*?body\b[^>]*>(.*?)</body\b[^>]*>#s";
+            preg_match($sRegex, $sContent, $aMatches);
+            if (is_array($aMatches) && count($aMatches) > 1) {
+                $sPage = $aMatches[1];
+                //remove everything bevore the <header> tag ( a window.close link which wouldn't work in the given context )
+                $sPage = substr($sPage, stripos($sPage, '<header>'));
+            }
+        }
+
+        if (!$sPage) {
+            $sPage = $this->_getFallbackText($sCompany);
+        }
+
+        if ($this->_isUtf8EncodingNeeded($sPage)) {
+            $sPage = utf8_encode($sPage);
+        }
+
+        return $sPage;
+    }
+
+    /**
+     * @param $sCompany
+     * @return mixed
+     */
+    protected function _getFallbackText($sCompany)
     {
         $sFallback = str_replace('**company**', $sCompany, $this->_sFallback);
         return $sFallback;
     }
-    
-    protected function _isUtf8EncodingNeeded($sString) 
+
+    /**
+     * @param $sString
+     * @return bool
+     */
+    protected function _isUtf8EncodingNeeded($sString)
     {
         if (preg_match('!!u', $sString)) {
             // this is utf-8
@@ -181,35 +267,17 @@ class Payone_Core_Block_Payment_Method_Form_Payolution extends Payone_Core_Block
             return true;
         }
     }
-    
-    public function getPayolutionAcceptanceText() 
+
+    /**
+     * @return string
+     */
+    public function getHandleInstallmentUrl()
     {
-        $sCompany = $this->getMethod()->getConfig()->getCompanyName();
-        $sUrl = $this->_sAcceptanceBaseUrl.base64_encode($sCompany);
-        $sContent = file_get_contents($sUrl);
-        $sPage = false;
-        if(!empty($sContent) && stripos($sContent, 'payolution') !== false && stripos($sContent, '<header>') !== false) {
-            //Parse content from HTML-body-tag from the given page
-            $sRegex = "#<\s*?body\b[^>]*>(.*?)</body\b[^>]*>#s";
-            preg_match($sRegex, $sContent, $aMatches);
-            if(is_array($aMatches) && count($aMatches) > 1) {
-                $sPage = $aMatches[1];
-                //remove everything bevore the <header> tag ( a window.close link which wouldn't work in the given context )
-                $sPage = substr($sPage, stripos($sPage, '<header>'));
-            }
-        }
-
-        if(!$sPage) {
-            $sPage = $this->_getFallbackText($sCompany);
-        }
-
-        if($this->_isUtf8EncodingNeeded($sPage)) {
-            $sPage = utf8_encode($sPage);
-        }
-
-        return $sPage;
+        // are we in a secure environment?
+        $isSecure = Mage::app()->getStore()->isCurrentlySecure();
+        return $this->getUrl('payone_core/checkout_onepage/handlePayolutionInstallment', array('_secure' => $isSecure));
     }
-    
+
     /**
      * @return array
      */
@@ -217,10 +285,4 @@ class Payone_Core_Block_Payment_Method_Form_Payolution extends Payone_Core_Block
     {
         return $this->getFactory()->getModelSystemConfigPayolutionType()->toSelectArray();
     }
-    
-    public function getHandleInstallmentUrl()
-    {
-        return $this->getUrl('payone_core/checkout_onepage/handlePayolutionInstallment');
-    }
-    
 }

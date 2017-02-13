@@ -75,7 +75,9 @@ class Payone_Core_Model_Observer_TransactionStatus_InvoiceCreate
     }
 
     /**
-     * @param Varien_Event_Observer $observer
+     * @param  Varien_Event_Observer $observer
+     * @return void
+     * @throws Payone_Core_Exception_InvoiceSave
      */
     public function onPaid(Varien_Event_Observer $observer)
     {
@@ -95,7 +97,9 @@ class Payone_Core_Model_Observer_TransactionStatus_InvoiceCreate
             }
 
             if ($invoice) {
-                $invoice->pay();
+                if ($invoice->getState() != Mage_Sales_Model_Order_Invoice::STATE_PAID) {
+                    $invoice->pay();
+                }
 
                 if ($isAdvancePayment) {
                     $this->sendInvoiceEmail($invoice);

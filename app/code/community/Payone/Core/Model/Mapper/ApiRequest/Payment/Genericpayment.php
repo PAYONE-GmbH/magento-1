@@ -296,7 +296,7 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment
         $request->setEmail($oQuote->getCustomerEmail());
         $request->setIp(Mage::helper('core/http')->getRemoteAddr());
         $request->setLanguage($this->helper()->getDefaultLanguage());
-        
+
         $paydata = new Payone_Api_Request_Parameter_Paydata_Paydata();
         $paydata->addItem(
             new Payone_Api_Request_Parameter_Paydata_DataItem(

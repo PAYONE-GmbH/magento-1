@@ -26,11 +26,11 @@
  * @category        Payone
  * @package         Payone_Core_Model
  * @subpackage      Observer
- * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
+ * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com,  Copyright (c) 2017 <support@e3n.de> - www.e3n.de
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
- * @link            http://www.noovias.com
+ * @link            http://www.noovias.com, http://www.e3n.de
  */
-class Payone_Core_Model_Observer_Checkout_Onepage_DebitPayment extends Payone_Core_Model_Observer_Abstract
+class Payone_Core_Model_Observer_Checkout_Onepage_MultiplePaymentCheck extends Payone_Core_Model_Observer_Abstract
 {
     /** @var array */
     protected $paymentData = array();
@@ -53,7 +53,8 @@ class Payone_Core_Model_Observer_Checkout_Onepage_DebitPayment extends Payone_Co
         $selectedMethod = $paymentData['method'];
 
         if ($selectedMethod != Payone_Core_Model_System_Config_PaymentMethodCode::DEBITPAYMENT && 
-            $selectedMethod != Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTION &&
+            $selectedMethod != Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTIONINVOICING &&
+            $selectedMethod != Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTIONDEBIT &&
             $selectedMethod != Payone_Core_Model_System_Config_PaymentMethodCode::CREDITCARD
             ) {
             return;
@@ -75,9 +76,13 @@ class Payone_Core_Model_Observer_Checkout_Onepage_DebitPayment extends Payone_Co
 
         if ($selectedMethod == Payone_Core_Model_System_Config_PaymentMethodCode::DEBITPAYMENT) {
             $controllerAction = $this->_performDebitChecks($controllerAction);
-        } elseif($selectedMethod == Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTION) {
+        } elseif($selectedMethod == Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTIONINVOICING ||
+                 $selectedMethod == Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTIONDEBIT ||
+                 $selectedMethod == Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTIONINSTALLMENT)
+        {
             $controllerAction = $this->_performPayolutionChecks($controllerAction);
-        } elseif($selectedMethod == Payone_Core_Model_System_Config_PaymentMethodCode::CREDITCARD) {
+        }
+        elseif($selectedMethod == Payone_Core_Model_System_Config_PaymentMethodCode::CREDITCARD) {
             $controllerAction = $this->_performHostedCreditcardChecks($controllerAction);
         }
 
