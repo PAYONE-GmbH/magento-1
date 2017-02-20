@@ -96,7 +96,9 @@ class Payone_Core_Model_Domain_Customer
     {
         $plain_customer_data = Mage::helper('core')->decrypt($this->customer_data);
 //        $plain_customer_data = $this->customer_data;
-        $result = Mage::helper('core')->jsonDecode($plain_customer_data);
+        if (!empty($plain_customer_data)) {
+            $result = Mage::helper('core')->jsonDecode($plain_customer_data);
+        }
         if(!is_null($key) && is_array($result) && isset($result[$key])) {
             return $result[$key];
         }
