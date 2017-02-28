@@ -25,17 +25,21 @@
 $code = $this->getMethodCode();
 $configId = $this->getPaymentConfig()->getId();
 $getPayolutionTyp = $this->payolutionTypeMapping();
-
 ?>
+<?php
+/*no payolution installment payment in backend orders*/
+if($getPayolutionTyp[$code] === 'PYS') {
+    return false;
+}?>
 <ul id="payment_form_<?php echo $code ?>" style="display:none">
     <li>
         <div class="field">
-            <input type="hidden" id="<?php echo $code ?>_type_select" name="payment[payone_payolution_type]"
-                   value="<?php echo $getPayolutionTyp[$code] ?>">
+           <input type="hidden" id="<?php echo $code ?>_type_select" name="payment[payone_payolution_type]"
+                       value="<?php echo $getPayolutionTyp[$code]; ?>">
         </div>
         <div id="<?php echo $code ?>_main_block" style="display:none;">
             <div class="field" id="<?php echo $code; ?>_installment_wrap2" style="display:none;"></div>
-            <?php if ($this->isB2BMode()) { ?> 
+            <?php if ($this->isB2BMode()) { ?>
                 <div id="<?php echo $code; ?>_b2b_wrap" class="field">
                     <div class="input-box">
                         <label for="<?php echo $code ?>_trade_registry_number"><?php echo $this->__('Company trade registry number') ?>
@@ -85,7 +89,7 @@ $getPayolutionTyp = $this->payolutionTypeMapping();
                     </select>
 
                     <input type="hidden" id="<?php echo $code ?>_additional_fields_customer_dob_full"
-                            name="payment[payone_customer_dob]" class="validate-18-years">
+                           name="payment[payone_customer_dob]" class="validate-18-years">
                 </div>
             <?php } ?>
             <div id="<?php echo $code; ?>_debit_wrap" class="field" style="display:none;">
@@ -120,7 +124,7 @@ $getPayolutionTyp = $this->payolutionTypeMapping();
             </div>
             <div class="field" style="position:relative;">
                 <input type="hidden" name="payment[payone_config_payment_method_id]" value="<?php echo $configId; ?>"/>
-                <input type="hidden" name="payment[payone_payolution_type]" value="<?php echo $getPayolutionTyp; ?>"/>
+                <input type="hidden" name="payment[payone_payolution_type]" value="<?php echo $getPayolutionTyp[$code]; ?>"/>
                 <input type="hidden" name="payment[payone_payolution_installment_duration]" value="" id="<?php echo $code ?>_selected_installmentplan" />
                 <div id="payolution_overlay" style="display:none;">
                     <a href="#" onclick="removeOverlay();return false;" style="float:right;font-weight:bold;"><?php echo $this->__('Close window'); ?></a><br><br>
@@ -141,7 +145,7 @@ $getPayolutionTyp = $this->payolutionTypeMapping();
     Event.observe(document, "dom:ready", function () {
         payoneSwitchPayolution($(code + '_type_select'), code);
     });
-    
+
     //    Add validation messages translation
     Translator.add('You have to be at least 18 years old to use this payment type!', '<?php echo $this->__('You have to be at least 18 years old to use this payment type!'); ?>');
 </script>

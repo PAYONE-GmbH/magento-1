@@ -81,7 +81,8 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Debit
             $request->setApiVersion('3.10');
         } elseif($paymentMethod instanceof Payone_Core_Model_Payment_Method_PayolutionDebit ||
                  $paymentMethod instanceof Payone_Core_Model_Payment_Method_PayolutionInvoicing ||
-                 $paymentMethod instanceof Payone_Core_Model_Payment_Method_PayolutionInstallment)
+                 $paymentMethod instanceof Payone_Core_Model_Payment_Method_PayolutionInstallment ||
+                 $paymentMethod instanceof Payone_Core_Model_Payment_Method_Payolution)
         {
             $info = $paymentMethod->getInfoInstance();
             if($info->getPayoneIsb2b() == '1') {

@@ -105,7 +105,7 @@ class Payone_Core_Block_Payment_Method_Form_Payolution extends Payone_Core_Block
             Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTIONDEBIT => Payone_Api_Enum_PayolutionType::PYD,
         );
     }
-    
+
     /**
      * @return mixed
      */

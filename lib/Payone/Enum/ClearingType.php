@@ -31,6 +31,7 @@ class Payone_Enum_ClearingType
     const WALLET = 'wlt';
     const BARZAHLEN = 'csh';
     const RATEPAY = 'fnc';
+    const PAYOLUTION = 'fnc';
     const PAYOLUTIONINVOICING = 'fnc';
     const PAYOLUTIONDEBIT = 'fnc';
     const PAYOLUTIONINSTALLMENT = 'fnc';
