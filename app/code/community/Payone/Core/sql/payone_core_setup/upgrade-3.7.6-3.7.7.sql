@@ -1,5 +1,5 @@
 #-----------------------------------------------------------------
-#-- delete old payoltion vales from payone_config_payment_method
+#-- delete old payolution vales from payone_config_payment_method
 #-----------------------------------------------------------------
 
 
