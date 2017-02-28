@@ -25,6 +25,9 @@
 /** @var $installer Mage_Core_Model_Resource_Setup */
 
 $installer = $this;
+if(false === Mage::getConfig()->getModuleConfig('Mage_AdminNotification')->is('active', 'true')){
+    return $this;
+}
 $installer->startSetup();
 
 // German Description
