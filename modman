@@ -12,6 +12,7 @@ app/locale/de_DE/*.csv                                  app/locale/de_DE/
 app/locale/de_DE/template/email/payone/*                app/locale/de_DE/template/email/payone/
 app/locale/en_US/*.csv                                  app/locale/en_US/
 app/locale/en_US/template/email/payone/*                app/locale/en_US/template/email/payone/
+app/locale/nl_NL/*.csv                                  app/locale/nl_NL/
 
 js/payone/*                                             js/payone/
 js/prototype/windows/themes/payone/*                    js/prototype/windows/themes/payone/
