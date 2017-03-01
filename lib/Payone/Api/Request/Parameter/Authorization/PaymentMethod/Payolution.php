@@ -16,7 +16,7 @@
  * @package         Payone_Api
  * @subpackage      Request
  * @copyright       Copyright (c) 2015 <kontakt@fatchip.de> - www.fatchip.com
- * @author          Robert Müller <robert.mueller@fatchip.de>
+ * @author          Robert Mï¿½ller <robert.mueller@fatchip.de>
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
  * @link            http://www.fatchip.com
  */
@@ -30,11 +30,11 @@ class Payone_Api_Request_Parameter_Authorization_PaymentMethod_Payolution
      * @var string
      */
     protected $financingtype = NULL;
-    
+
     protected $paydata = NULL;
-    
+
     protected $birthday = NULL;
-    
+
     /**
      * @var string
      */
@@ -43,9 +43,11 @@ class Payone_Api_Request_Parameter_Authorization_PaymentMethod_Payolution
      * @var string
      */
     protected $bic = NULL;
-    
+
     protected $workorderid = NULL;
-    
+
+    protected $telephonenumber = null;
+
     /**
      * @var string
      */
@@ -63,7 +65,7 @@ class Payone_Api_Request_Parameter_Authorization_PaymentMethod_Payolution
     {
         return $this->api_version;
     }
-    
+
     /**
      * @param string $financingtype
      */
@@ -79,24 +81,24 @@ class Payone_Api_Request_Parameter_Authorization_PaymentMethod_Payolution
     {
         return $this->financingtype;
     }
-    
+
     /**
      * @param Payone_Api_Request_Parameter_Paydata_Paydata $paydata
      */
-    public function setPaydata($paydata) 
+    public function setPaydata($paydata)
     {
         $this->paydata = $paydata;
     }
 
     /**
-     * 
+     *
      * @return Payone_Api_Request_Parameter_Paydata_Paydata
      */
-    public function getPaydata() 
+    public function getPaydata()
     {
         return $this->paydata;
     }
-    
+
     /**
      * @param string $birthday
      */
@@ -112,7 +114,7 @@ class Payone_Api_Request_Parameter_Authorization_PaymentMethod_Payolution
     {
         return $this->birthday;
     }
-    
+
 
     /**
      * @param string $iban
@@ -145,15 +147,24 @@ class Payone_Api_Request_Parameter_Authorization_PaymentMethod_Payolution
     {
         return $this->bic;
     }
-    
+
     public function setWorkorderid($workorderid)
     {
         $this->workorderid = $workorderid;
     }
-    
+
     public function getWorkorderid()
     {
         return $this->workorderid;
     }
-    
+
+    public function setTelephonenumber($telephonenumber)
+    {
+        $this->telephonenumber = $telephonenumber;
+    }
+
+    public function getTelephonenumber()
+    {
+        return $this->telephonenumber;
+    }
 }
