@@ -672,6 +672,15 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
             }
 
             $payment->setPaydata($payData);
+
+            if ($this->getOrder()->getBillingAddress()->getCountryId() == 'NL') {
+                $telephone = $this->getOrder()->getBillingAddress()->getTelephone();
+                if (empty($telephone)) {
+                    $telephone = $info->getPayoneCustomerTelephone();
+                }
+
+                $payment->setTelephonenumber($telephone);
+            }
         }
 
         if ($isRedirect === true) {
