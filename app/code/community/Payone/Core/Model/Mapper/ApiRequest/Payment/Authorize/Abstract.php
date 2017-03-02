@@ -330,7 +330,7 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
 
         // Multiple Ips could be included, we only send the last one.
         $remoteIps = explode(',', $remoteIp);
-        $ip = array_pop($remoteIps);
+        $ip = array_shift($remoteIps);
         return $ip;
     }
 
