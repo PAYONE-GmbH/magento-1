@@ -1,5 +1,4 @@
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/fjbender/magento-1/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/fjbender/magento-1/?branch=master)
-[![Build Status](https://travis-ci.org/fjbender/magento-1.svg?branch=master)](https://travis-ci.org/fjbender/magento-1)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/PAYONE-GmbH/magento-1/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/PAYONE-GmbH/magento-1/?branch=master)
 
 # PAYMENT FOR YOUR MAGENTO-SHOP
 
