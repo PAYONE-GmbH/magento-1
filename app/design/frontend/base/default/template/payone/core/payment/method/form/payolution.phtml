@@ -16,7 +16,7 @@
  * @package         design_frontend_base_default
  * @subpackage      template
  * @copyright       Copyright (c) 2015 <kontakt@fatchip.de> - www.fatchip.com,  Copyright (c) 2017 <support@e3n.de> - www.e3n.de
- * @author          Robert Müller <robert.mueller@fatchip.de>, Tim Rein <tim.rein@e3n.de>
+ * @author          Robert Mï¿½ller <robert.mueller@fatchip.de>, Tim Rein <tim.rein@e3n.de>
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
  * @link            http://www.fatchip.com, http://www.e3n.de
  */
@@ -50,6 +50,19 @@ $getPayolutionTyp = $this->payolutionTypeMapping();
                         </div>
                     </div>
                 <?php } ?>
+                <?php if ($this->isTelephoneRequired()) : ?>
+                    <div id="<?php echo $code; ?>_telephone_wrap" class="field">
+                        <div class="input-box">
+                            <label for="<?php echo $code ?>_additional_fields_customer_telephone" class="required">
+                                <em>*</em><?php echo $this->__('Telephone') ?>
+                            </label>
+                            <br class="clear"/>
+                            <input type="text" name="payment[payone_customer_telephone]"
+                                   id="<?php echo $code ?>_additional_fields_customer_telephone"
+                                   class="input-text required-entry"/>
+                        </div>
+                    </div>
+                <?php endif;?>
                 <?php if ($this->showBirthdayFields()) { ?>
                     <div id="<?php echo $code; ?>_birthday_wrap" class="field">
                         <label for="<?php echo $code ?>_additional_fields_customer_dob_month"

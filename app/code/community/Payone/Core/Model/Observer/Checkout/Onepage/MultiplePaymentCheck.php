@@ -52,7 +52,8 @@ class Payone_Core_Model_Observer_Checkout_Onepage_MultiplePaymentCheck extends P
         $paymentData = $controllerAction->getRequest()->getPost('payment', array());
         $selectedMethod = $paymentData['method'];
 
-        if ($selectedMethod != Payone_Core_Model_System_Config_PaymentMethodCode::DEBITPAYMENT && 
+        if ($selectedMethod != Payone_Core_Model_System_Config_PaymentMethodCode::DEBITPAYMENT &&
+            $selectedMethod != Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTION &&
             $selectedMethod != Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTIONINVOICING &&
             $selectedMethod != Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTIONDEBIT &&
             $selectedMethod != Payone_Core_Model_System_Config_PaymentMethodCode::CREDITCARD
@@ -78,7 +79,8 @@ class Payone_Core_Model_Observer_Checkout_Onepage_MultiplePaymentCheck extends P
             $controllerAction = $this->_performDebitChecks($controllerAction);
         } elseif($selectedMethod == Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTIONINVOICING ||
                  $selectedMethod == Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTIONDEBIT ||
-                 $selectedMethod == Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTIONINSTALLMENT)
+                 $selectedMethod == Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTIONINSTALLMENT ||
+                 $selectedMethod == Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTION)
         {
             $controllerAction = $this->_performPayolutionChecks($controllerAction);
         }

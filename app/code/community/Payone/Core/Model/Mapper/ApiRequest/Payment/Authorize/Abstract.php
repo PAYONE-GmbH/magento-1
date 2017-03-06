@@ -143,7 +143,8 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
         
         // Always use PREAUTHORIZATION for Payolution Debit and Invoicing
         if ($paymentMethod instanceof Payone_Core_Model_Payment_Method_PayolutionDebit ||
-            $paymentMethod instanceof Payone_Core_Model_Payment_Method_PayolutionInvoicing)
+            $paymentMethod instanceof Payone_Core_Model_Payment_Method_PayolutionInvoicing ||
+            $paymentMethod instanceof Payone_Core_Model_Payment_Method_Payolution)
         {
             $requestType = Payone_Api_Enum_RequestType::PREAUTHORIZATION;
         }
@@ -622,7 +623,8 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
             $payment->setTelephonenumber($telephone);
         } elseif($paymentMethod instanceof Payone_Core_Model_Payment_Method_PayolutionDebit ||
                  $paymentMethod instanceof Payone_Core_Model_Payment_Method_PayolutionInvoicing ||
-                 $paymentMethod instanceof Payone_Core_Model_Payment_Method_PayolutionInstallment)
+                 $paymentMethod instanceof Payone_Core_Model_Payment_Method_PayolutionInstallment
+                || $paymentMethod instanceof Payone_Core_Model_Payment_Method_Payolution )
         {
             $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_Payolution();
             $payment->setApiVersion();
@@ -670,6 +672,15 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
             }
 
             $payment->setPaydata($payData);
+
+            if ($this->getOrder()->getBillingAddress()->getCountryId() == 'NL') {
+                $telephone = $this->getOrder()->getBillingAddress()->getTelephone();
+                if (empty($telephone)) {
+                    $telephone = $info->getPayoneCustomerTelephone();
+                }
+
+                $payment->setTelephonenumber($telephone);
+            }
         }
 
         if ($isRedirect === true) {
@@ -766,6 +777,9 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
         }
         elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_PayolutionInstallment) {
             $clearingType = Payone_Enum_ClearingType::PAYOLUTIONINSTALLMENT;
+        }
+        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Payolution) {
+            $clearingType = Payone_Enum_ClearingType::PAYOLUTION;
         }
 
         return $clearingType;

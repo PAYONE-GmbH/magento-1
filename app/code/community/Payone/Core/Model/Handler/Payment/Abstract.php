@@ -192,11 +192,16 @@ abstract class Payone_Core_Model_Handler_Payment_Abstract
             $order->setData('payone_payment_method_type', $this->getPayment()->getData('payone_onlinebanktransfer_type'));
         } elseif ($this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_SafeInvoice) {
             $order->setData('payone_payment_method_type', $this->getPayment()->getData('payone_safe_invoice_type'));
+
         } elseif ($this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_PayolutionInvoicing ||
                   $this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_PayolutionDebit ||
-                  $this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_PayolutionInstallment)
+                  $this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_PayolutionInstallment ||
+                  $this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_Payolution
+            )
         {
-            $order->setData('payone_payment_method_type', $this->getPayment()->getData('payone_payolution_type'));
+            $order->setData('payone_payment_method_type',
+                            $this->getPayment()->getData('payone_payolution_type')
+            );
         } elseif ($this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_Wallet) {
             $order->setData('payone_payment_method_type', $this->getPayment()->getData('payone_wallet_type'));
         } elseif ($this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_Ratepay) {

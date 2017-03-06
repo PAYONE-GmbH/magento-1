@@ -108,6 +108,7 @@ class Payone_Api_Request_Genericpayment extends Payone_Api_Request_Abstract
     protected $email = null;
     protected $ip = null;
     protected $language = null;
+    protected $telephonenumber = null;
     
     /**
      * @param array $data
@@ -418,6 +419,16 @@ class Payone_Api_Request_Genericpayment extends Payone_Api_Request_Abstract
     public function getLanguage()
     {
         return $this->language;
+    }
+
+    public function setTelephonenumber($telephonenumber)
+    {
+        $this->telephonenumber = $telephonenumber;
+    }
+
+    public function getTelephonenumber()
+    {
+        return $this->telephonenumber;
     }
 
 }

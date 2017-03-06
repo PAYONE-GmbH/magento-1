@@ -321,6 +321,14 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment
             );
         }
 
+        if ($oAddress->getCountry() == 'NL') {
+            $sTelephone = $oAddress->getTelephone();
+            if (empty($sTelephone)) {
+                $sTelephone = $aRequestParams['payone_customer_telephone'];
+            }
+            $request->setTelephonenumber($sTelephone);
+        }
+
         $request->setPaydata($paydata);
         $request->setAid($this->getConfigPayment()->getAid());
         $request->setCurrency($oQuote->getQuoteCurrencyCode());

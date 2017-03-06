@@ -105,7 +105,7 @@ class Payone_Core_Block_Payment_Method_Form_Payolution extends Payone_Core_Block
             Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTIONDEBIT => Payone_Api_Enum_PayolutionType::PYD,
         );
     }
-    
+
     /**
      * @return mixed
      */
@@ -164,9 +164,10 @@ class Payone_Core_Block_Payment_Method_Form_Payolution extends Payone_Core_Block
      */
     public function isTelephoneRequired()
     {
-        // telephone is mandatory for any country in case of Klarna
-        $telephone = $this->getQuote()->getBillingAddress()->getTelephone();
-        if (empty($telephone)) {
+        // telephone is mandatory for Payolution orders with a billing address in the netherlands
+        $sTelephone = $this->getQuote()->getBillingAddress()->getTelephone();
+        $sBillingCountry = $this->getQuote()->getBillingAddress()->getCountryId();
+        if (empty($sTelephone) && $sBillingCountry == 'NL') {
             return true;
         }
 

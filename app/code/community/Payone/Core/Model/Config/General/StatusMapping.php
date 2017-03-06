@@ -85,6 +85,10 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
      * @var null
      */
     protected $payolution_debit = null;
+    /**
+     * @var null
+     */
+    protected $payolution = null;
 
     /**
      * @param array $data
@@ -311,6 +315,25 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
     public function getRatepay()
     {
         return $this->ratepay;
+    }
+
+    /**
+     * @return null
+     */
+    public function getPayolution(){
+        return $this->payolution;
+    }
+
+    /**
+     * @param $payolution
+     */
+    public function setPayolution($payolution)
+     {
+         if (is_string($payolution)) {
+            $payolution = $this->initValue($payolution);
+         }
+
+       $this->payolution = $payolution;
     }
 
     /**
