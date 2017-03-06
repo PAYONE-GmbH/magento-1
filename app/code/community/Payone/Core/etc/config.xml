@@ -504,6 +504,14 @@
                     </downloadable_observer>
                 </observers>
             </sales_order_save_commit_after>
+            <sales_model_service_quote_submit_failure>
+                <observers>
+                    <payone_service_quote_submit_failure>
+                        <class>payone_core/observer_sales_quote_submit_failure</class>
+                        <method>protocol</method>
+                    </payone_service_quote_submit_failure>
+                </observers>
+            </sales_model_service_quote_submit_failure>
         </events>
     </global>
 
