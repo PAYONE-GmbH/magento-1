@@ -177,6 +177,21 @@ class Payone_Core_Block_Payment_Method_Form_Payolution extends Payone_Core_Block
     /**
      * @return bool
      */
+    public function isSepaDataRequired()
+    {
+        $sBillingCountry = $this->getQuote()->getBillingAddress()->getCountryId();
+        $sCurrency = Mage::app()->getStore()->getCurrentCurrencyCode();
+
+        if (in_array($sBillingCountry, array('GB', 'UK', 'CH')) && in_array($sCurrency, array('GBP', 'CHF'))) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @return bool
+     */
     public function isB2BMode()
     {
         if ((bool)$this->getMethod()->getConfig()->getB2bMode() === true) {
