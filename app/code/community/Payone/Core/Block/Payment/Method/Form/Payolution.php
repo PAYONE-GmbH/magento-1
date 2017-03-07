@@ -179,11 +179,13 @@ class Payone_Core_Block_Payment_Method_Form_Payolution extends Payone_Core_Block
      */
     public function isSepaDataRequired()
     {
-        $sBillingCountry = $this->getQuote()->getBillingAddress()->getCountryId();
-        $sCurrency = Mage::app()->getStore()->getCurrentCurrencyCode();
+        if ($this->getMethodCode() == Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTIONINSTALLMENT) {
+            $sBillingCountry = $this->getQuote()->getBillingAddress()->getCountryId();
+            $sCurrency = Mage::app()->getStore()->getCurrentCurrencyCode();
 
-        if (in_array($sBillingCountry, array('GB', 'UK', 'CH')) && in_array($sCurrency, array('GBP', 'CHF'))) {
-            return false;
+            if (in_array($sBillingCountry, array('GB', 'UK', 'CH')) && in_array($sCurrency, array('GBP', 'CHF'))) {
+                return false;
+            }
         }
 
         return true;
