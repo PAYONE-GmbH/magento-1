@@ -102,47 +102,51 @@ $getPayolutionTyp = $this->payolutionTypeMapping();
                     </div>
                 <?php } ?>
                 <div id="<?php echo $code; ?>_debit_wrap" class="field" style="display:none;">
-                    <div id="<?php echo $code; ?>_debit_subwrap" style="display:none;"><br>
-                        <strong><?php echo $this->__('Account Information'); ?></strong><br>
+                    <?php if ($this->isSepaDataRequired()) { ?>
+                        <div id="<?php echo $code; ?>_debit_subwrap" style="display:none;"><br>
+                            <strong><?php echo $this->__('Account Information'); ?></strong><br>
+                            <div class="input-box">
+                                <label for="<?php echo $code ?>_payolution_accountholder">
+                                    <?php echo $this->__('Accountholder') ?><span class="required">*</span>
+                                </label>
+                                <br class="clear"/>
+                                <input type="text" id="<?php echo $code ?>_payolution_accountholder"
+                                       title="<?php echo $this->__('Accountholder') ?>"
+                                       class="required-entry input-text"
+                                       value=""/>
+                            </div>
+                        </div>
                         <div class="input-box">
-                            <label for="<?php echo $code ?>_payolution_accountholder">
-                                <?php echo $this->__('Accountholder') ?><span class="required">*</span>
+                            <label for="<?php echo $code ?>_sepa_iban_xxx">
+                                <?php echo $this->__('IBAN') ?><span class="required">*</span>
                             </label>
                             <br class="clear"/>
-                            <input type="text" id="<?php echo $code ?>_payolution_accountholder"
-                                   title="<?php echo $this->__('Accountholder') ?>"
-                                   class="required-entry input-text"
-                                   value=""/>
+                            <input type="text" id="<?php echo $code ?>_sepa_iban_xxx"
+                                   title="<?php echo $this->__('IBAN') ?>"
+                                   class="validate-sepa-iban required-entry input-text"
+                                   value=""
+                                   autocomplete="off" maxlength="34"
+                                   onchange="inputToUppaerCaseAndNumbers(this); copyDebitPaymentSepaIban('<?php echo $code ?>');"
+                                   oninput="inputToUppaerCaseAndNumbers(this); copyDebitPaymentSepaIban('<?php echo $code ?>');"/>
+                            <input type="hidden" id="<?php echo $code ?>_sepa_iban" name="payment[payone_payolution_iban]"
+                                   value="">
                         </div>
-                    </div>
-                    <div class="input-box">
-                        <label for="<?php echo $code ?>_sepa_iban_xxx">
-                            <?php echo $this->__('IBAN') ?><span class="required">*</span>
-                        </label>
-                        <br class="clear"/>
-                        <input type="text" id="<?php echo $code ?>_sepa_iban_xxx"
-                               title="<?php echo $this->__('IBAN') ?>"
-                               class="validate-sepa-iban required-entry input-text"
-                               value=""
-                               autocomplete="off" maxlength="34"
-                               onchange="inputToUppaerCaseAndNumbers(this); copyDebitPaymentSepaIban('<?php echo $code ?>');"
-                               oninput="inputToUppaerCaseAndNumbers(this); copyDebitPaymentSepaIban('<?php echo $code ?>');"/>
-                        <input type="hidden" id="<?php echo $code ?>_sepa_iban" name="payment[payone_payolution_iban]"
-                               value="">
-                    </div>
-                    <div class="input-box">
-                        <label for="<?php echo $code ?>_payolution_bic">
-                            <?php echo $this->__('BIC') ?><span class="required">*</span>
-                        </label>
-                        <br class="clear"/>
-                        <input type="text" id="<?php echo $code ?>_payolution_bic" name="payment[payone_payolution_bic]"
-                               title="<?php echo $this->__('BIC') ?>"
-                               class="validate-sepa-bic required-entry input-text"
-                               value=""
-                               autocomplete="off" maxlength="11"
-                               onchange="inputToUppaerCaseAndNumbers(this);"
-                               oninput="inputToUppaerCaseAndNumbers(this);"/>
-                    </div>
+                        <div class="input-box">
+                            <label for="<?php echo $code ?>_payolution_bic">
+                                <?php echo $this->__('BIC') ?><span class="required">*</span>
+                            </label>
+                            <br class="clear"/>
+                            <input type="text" id="<?php echo $code ?>_payolution_bic" name="payment[payone_payolution_bic]"
+                                   title="<?php echo $this->__('BIC') ?>"
+                                   class="validate-sepa-bic required-entry input-text"
+                                   value=""
+                                   autocomplete="off" maxlength="11"
+                                   onchange="inputToUppaerCaseAndNumbers(this);"
+                                   oninput="inputToUppaerCaseAndNumbers(this);"/>
+                        </div>
+                    <?php } else { ?>
+                        <span id="<?php echo $code; ?>_debit_subwrap"></span>
+                    <?php } ?>
                 </div>
                 <div id="<?php echo $code; ?>_acceptance_wrap" class="field" style="position:relative;">
                     <input type="checkbox" id="<?php echo $code ?>_additional_fields_agreement_checkbox"
