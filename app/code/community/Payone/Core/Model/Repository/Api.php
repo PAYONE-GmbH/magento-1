@@ -57,23 +57,18 @@ class Payone_Core_Model_Repository_Api
     public function save(
         Payone_Api_Request_Interface $request,
         Payone_Api_Response_Interface $response
-) 
-    { 
-     
-     
-     
-     
-     
-     
-     
-     
-    
-    
+    ) {
         $domainObject = $this->getFactory()->getModelApi();
         $domainObject->setData($request->toArray());
         $domainObject->setRawRequest($request->__toString());
         $domainObject->setRawResponse($response->getRawResponseToString());
         $domainObject->setResponse($response->getStatus());
+
+        if ($response instanceof Payone_Api_Response_Error) {
+            $oSession = Mage::getSingleton('checkout/session');
+            $oSession->setPayoneApiLogEntry(clone $domainObject);
+        }
+
         $domainObject->save();
     }
 
