@@ -1,10 +1,10 @@
-function displayPayolutionOverlay() 
+function displayPayolutionOverlay(sCode)
 {
-    document.getElementById('payolution_overlay').style.display = "";
+    document.getElementById(sCode + '_overlay').style.display = "";
 }
-function removePayolutionOverlay() 
+function removePayolutionOverlay(sCode)
 {
-    document.getElementById('payolution_overlay').style.display = "none";
+    document.getElementById(sCode + '_overlay').style.display = "none";
 }
 
 function switchVisibility(aIds, blShow) 
