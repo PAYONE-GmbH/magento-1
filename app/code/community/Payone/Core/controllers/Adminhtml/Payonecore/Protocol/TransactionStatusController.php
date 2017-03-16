@@ -33,7 +33,7 @@
 class Payone_Core_Adminhtml_Payonecore_Protocol_TransactionStatusController
     extends Payone_Core_Controller_Adminhtml_Abstract
 {
-    protected $acl_resource = 'payone/protocol/transactionStatus';
+    protected $acl_resource = 'payone/protocol/transaction_status';
     
     /**
      * @return Payone_Core_Adminhtml_Protocol_TransactionStatusController

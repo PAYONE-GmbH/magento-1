@@ -41,11 +41,11 @@
                     <title>Logs</title>
                     <sort_order>30</sort_order>
                     <children>
-                        <transactionStatus module="payone_core">
+                        <transaction_status module="payone_core">
                             <title>Transactionstatus</title>
                             <sort_order>10</sort_order>
                             <action>adminhtml/payonecore_protocol_transactionStatus</action>
-                        </transactionStatus>
+                        </transaction_status>
                         <api module="payone_core">
                             <title>API</title>
                             <sort_order>20</sort_order>
@@ -147,7 +147,7 @@
                                 <title>Logs</title>
                                 <sort_order>30</sort_order>
                                 <children>
-                                    <transactionStatus>
+                                    <transaction_status>
                                         <title>Transactionstatus</title>
                                         <sort_order>10</sort_order>
                                         <children>
@@ -160,7 +160,7 @@
                                                 <sort_order>20</sort_order>
                                             </export>
                                         </children>
-                                    </transactionStatus>
+                                    </transaction_status>
                                     <api>
                                         <title>Api</title>
                                         <sort_order>20</sort_order>
