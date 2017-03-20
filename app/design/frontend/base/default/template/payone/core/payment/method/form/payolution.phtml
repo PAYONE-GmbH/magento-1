@@ -156,7 +156,7 @@ $getPayolutionTyp = $this->payolutionTypeMapping();
                         <?php echo $this->__('PAYOLUTION_ACCEPTANCE_1'); ?><br>
                         <?php echo $this->__('PAYOLUTION_ACCEPTANCE_2'); ?>
                         <a href="#" style="float:none; margin:0;"
-                           onclick="displayPayolutionOverlay();return false;"><?php echo $this->__('acceptance'); ?></a>
+                           onclick="displayPayolutionOverlay('<?php echo $code ?>');return false;"><?php echo $this->__('acceptance'); ?></a>
                         <?php echo $this->__('PAYOLUTION_ACCEPTANCE_3'); ?>
                         <em style="float:none; position:relative;">*</em>
                     </label>
@@ -166,8 +166,8 @@ $getPayolutionTyp = $this->payolutionTypeMapping();
                     <input type="hidden" name="payment[payone_payolution_installment_duration]" value=""
                            id="<?php echo $code ?>_selected_installmentplan"/>
 
-                    <div id="payolution_overlay" style="display:none;">
-                        <a href="#" onclick="removePayolutionOverlay();return false;"
+                    <div id="<?php echo $code ?>_overlay" style="display:none;" class="payolution_overlay">
+                        <a href="#" onclick="removePayolutionOverlay('<?php echo $code ?>');return false;"
                            style="float:right;font-weight:bold;"><?php echo $this->__('Close window'); ?></a><br><br>
                         <?php echo $this->getPayolutionAcceptanceText(); ?>
                     </div>
@@ -180,7 +180,7 @@ $getPayolutionTyp = $this->payolutionTypeMapping();
                         </label>
                     </div>
                     <div id="<?php echo $code; ?>_installment_wrap1" class="field">
-                        <button
+                        <br><button
                             onclick="handleInstallment('<?php echo $code ?>', '<?php echo $this->getHandleInstallmentUrl(); ?>');"
                             class="button" type="button">
                         <span>
