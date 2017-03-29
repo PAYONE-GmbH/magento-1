@@ -14,7 +14,9 @@ The PAYONE payment extension for MAGENTO is with 50,000 downloads already a succ
 
 ## More information
 Documentation for Magento: http://www.payone.de/uploads/media/PAYONE_Documentation_Magento-Payment-Extension.pdf
+
 Videoguide: Installation and configuration: https://www.youtube.com/playlist?list=PLlzKa20PSzukaPBvUhxxpo3oqNs0mUkpa
+
 More information about Magento on https://www.payone.de/magento
 
 ## Contact
