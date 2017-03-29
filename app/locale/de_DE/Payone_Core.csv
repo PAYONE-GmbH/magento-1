@@ -1120,3 +1120,6 @@
 
 "Only used when you activated the error-output in the hosted-Iframe configuration.","Wird nur verwendet, wenn die Fehlerausgabe in der hosted-Iframe Konfiguration aktiviert ist."
 "These will be used to replace the default values from PAYONE.","Diese Werte werden verwendet, um die Standard-Werte von PAYONE zu ueberschreiben."
+
+"Logging active","Logging aktiv"
+"Cronjob progress will be logged in /var/log/payone_cron.log","Cronjob Fortschritt wird in /var/log/payone_cron.log geloggt."
