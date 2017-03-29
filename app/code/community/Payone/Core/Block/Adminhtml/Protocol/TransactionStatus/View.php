@@ -82,7 +82,7 @@ class Payone_Core_Block_Adminhtml_Protocol_TransactionStatus_View
     {
         $transaction = $this->getTransaction();
         $params = array('id' => $transaction->getId());
-        return $this->getUrl('*/adminhtml_transaction/view', $params);
+        return $this->getUrl('*/payonecore_transaction/view', $params);
     }
 
     /**
