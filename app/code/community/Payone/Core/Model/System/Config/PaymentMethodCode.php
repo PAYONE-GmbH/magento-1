@@ -49,6 +49,7 @@ class Payone_Core_Model_System_Config_PaymentMethodCode extends Payone_Core_Mode
     const PAYOLUTIONINVOICING = 'payone_payolution_invoicing';
     const PAYOLUTIONDEBIT = 'payone_payolution_debit';
     const PAYOLUTIONINSTALLMENT = 'payone_payolution_installment';
+    const PAYMENTGUARANTEEINVOICE = 'payone_payment_guarantee_invoice';
 
     /**
      * @return array
@@ -70,7 +71,8 @@ class Payone_Core_Model_System_Config_PaymentMethodCode extends Payone_Core_Mode
             //self::PAYOLUTION => 'Payolution',
             self::PAYOLUTIONINVOICING => 'Payolution Invoicing',
             self::PAYOLUTIONDEBIT => 'Payolution Debit',
-            self::PAYOLUTIONINSTALLMENT => 'Payolution Installment'
+            self::PAYOLUTIONINSTALLMENT => 'Payolution Installment',
+            self::PAYMENTGUARANTEEINVOICE => 'Invoice with Payment Guarantee'
         );
     }
 }
