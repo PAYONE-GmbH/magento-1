@@ -186,6 +186,19 @@ class Payone_Core_Helper_Data
         return true;
     }
 
+    /**
+     * @param  string $sMessage
+     * @param  int $iStoreId
+     * @param  int $iLogLevel
+     * @return void
+     */
+    public function logCronjobMessage($sMessage, $iStoreId = null, $iLogLevel = Zend_Log::INFO)
+    {
+        $oConfig = $this->helperConfig()->getConfigMisc($iStoreId)->getTransactionstatusProcessing();
+        if ($oConfig->getLoggingActive()) {
+            Mage::log($sMessage, $iLogLevel, 'payone_cron.log', true);
+        }
+    }
 
     /**
      * Format Magento Adress "street" into one string.
