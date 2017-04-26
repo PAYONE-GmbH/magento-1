@@ -3,4 +3,4 @@
 #-----------------------------------------------------------------
 
 
-UPDATE  `payone_config_payment_method` SET is_deleted = 1 WHERE code = 'payolution';
+UPDATE  `{{payone_config_payment_method}}` SET is_deleted = 1 WHERE code = 'payolution';

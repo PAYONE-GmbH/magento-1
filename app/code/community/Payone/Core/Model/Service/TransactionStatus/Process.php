@@ -38,6 +38,7 @@ class Payone_Core_Model_Service_TransactionStatus_Process extends Payone_Core_Mo
     const EVENT_PARAMETER_TRANSACTION = 'transaction';
     const EVENT_PARAMETER_TRANSACTIONSTATUS = 'transaction_status';
     const EVENT_PARAMETER_CONFIG = 'config';
+    const EVENT_PARAMETER_ORDER = 'order';
 
     /**
      * @var Payone_Core_Model_Service_Transaction_Update
@@ -110,7 +111,7 @@ class Payone_Core_Model_Service_TransactionStatus_Process extends Payone_Core_Mo
             self::EVENT_PARAMETER_TRANSACTIONSTATUS => $transactionStatus,
             self::EVENT_PARAMETER_TRANSACTION => $transaction,
             self::EVENT_PARAMETER_CONFIG => $config,
-            // @todo we should add order as param  cause observers may need it
+            self::EVENT_PARAMETER_ORDER => $order,
         );
 
         $this->dispatchEvent(self::EVENT_NAME_PREFIX . self::EVENT_NAME_ALL, $params);
