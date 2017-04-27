@@ -29,6 +29,8 @@ class Payone_Enum_ClearingType
     const ONLINEBANKTRANSFER = 'sb';
     const CASHONDELIVERY = 'cod';
     const WALLET = 'wlt';
+    const WALLETPAYDIREKT = 'wlt';
+    const WALLETPAYPALEXPRESS = 'wlt';
     const BARZAHLEN = 'csh';
     const RATEPAY = 'fnc';
     const PAYOLUTION = 'fnc';

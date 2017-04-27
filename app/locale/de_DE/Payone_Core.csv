@@ -86,6 +86,12 @@
 "New Wallet","Wallet"
 "Add Wallet","Wallet hinzufügen"
 "Edit Wallet","Wallet bearbeiten"
+"New Paydirekt","Wallet Paydirekt"
+"Add Paydirekt","Wallet Paydirekt hinzufügen"
+"Edit Paydirekt","Wallet Paydirekt bearbeiten"
+"New Paypal Express","Wallet Paypal Express"
+"Add Paypal Express","Wallet Paypal Express hinzufügen"
+"Edit Paypal Express","Wallet Paypal Express bearbeiten"
 "New Safe Invoice","Sicherer Rechnungskauf"
 "Add Safe Invoice","Sicheren Rechnungskauf hinzufügen"
 "Edit Safe Invoice","Sicheren Rechnungskauf bearbeiten"
@@ -375,7 +381,7 @@
 
 ">>>SDK TRANSLATIONS<<<",">>>SDK TRANSLATIONS<<<"
 "PAYPAL_EXPRESS","Paypal Express"
-"PAYDIREKT","Paydirekt"
+"WALLETPAYDIREKT","Paydirekt"
 
 "YES","Ja"
 "NO","Nein"

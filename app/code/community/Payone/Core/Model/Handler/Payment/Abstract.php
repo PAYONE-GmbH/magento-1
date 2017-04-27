@@ -66,43 +66,43 @@ abstract class Payone_Core_Model_Handler_Payment_Abstract
      */
     protected $request = null;
 
-    protected function _isIframePaymentOrder($oRequest) 
+    protected function _isIframePaymentOrder($oRequest)
     {
-        if($this->_isYapitalOrder($oRequest) || $this->_isCreditcardIframe($oRequest)) {
+        if ($this->_isYapitalOrder($oRequest) || $this->_isCreditcardIframe($oRequest)) {
             return true;
         }
 
         return false;
     }
-    
-    protected function _getPaymentMethod() 
+
+    protected function _getPaymentMethod()
     {
         $oOrder = Mage::getSingleton('checkout/session')->getQuote();
         $oPayment = $oOrder->getPayment();
         return $oPayment->getMethod();
     }
-    
-    protected function _isCreditcardIframe($oRequest) 
+
+    protected function _isCreditcardIframe($oRequest)
     {
-        if($this->_getPaymentMethod() == 'payone_creditcard_iframe') {
+        if ($this->_getPaymentMethod() == 'payone_creditcard_iframe') {
             return true;
         }
 
         return false;
     }
-    
-    protected function _isYapitalOrder($oRequest) 
+
+    protected function _isYapitalOrder($oRequest)
     {
-        if($oRequest->getClearingtype() == 'wlt') {
+        if ($oRequest->getClearingtype() == 'wlt') {
             $oPayment = $oRequest->getPayment();
-            if($oPayment->getWallettype() == 'YPL') {
+            if ($oPayment->getWallettype() == 'YPL') {
                 return true;
             }
         }
 
         return false;
     }
-    
+
     /**
      * @param Payone_Api_Response_Interface $response
      * @return Payone_Core_Model_Handler_Payment_Abstract
@@ -121,13 +121,13 @@ abstract class Payone_Core_Model_Handler_Payment_Abstract
             $this->sendAvsMail($response);
         } elseif ($response->isRedirect()) {
             $sRedirectUrl = $response->getRedirecturl();
-            if($this->_isIframePaymentOrder($request)) {
+            if ($this->_isIframePaymentOrder($request)) {
                 $oSession = Mage::getSingleton('checkout/session');
                 $oSession->setPayoneIframeUrl($sRedirectUrl);
                 $oSession->setPayonePaymentType($this->_getPaymentMethod());
                 $sRedirectUrl = Mage::helper('payone_core/url')->getMagentoUrl('payone_core/iframe/show');
             }
-            
+
             // Magento is url-encoding the redirect url in the javascript since 1.9.3.0.......
             // decoding the already url encoded url to make it work again
             if (version_compare(Mage::getVersion(), '1.9.3', '>=')) {
@@ -143,7 +143,8 @@ abstract class Payone_Core_Model_Handler_Payment_Abstract
         $this->updatePaymentByOrder($order);
 
         if ($response instanceof Payone_Api_Response_Authorization_Abstract ||
-            $response instanceof Payone_Api_Response_Authorization_Redirect) {
+            $response instanceof Payone_Api_Response_Authorization_Redirect
+        ) {
             // Create Transaction
             $this->getServiceTransactionCreate()->createByApiResponse($order, $response, $request);
         } else {
@@ -160,11 +161,11 @@ abstract class Payone_Core_Model_Handler_Payment_Abstract
         // Update Order
         $this->updateOrder($order);
 
-        if(method_exists($response, 'getAddPaydataInstructionNotes') && $response->getAddPaydataInstructionNotes()) {
+        if (method_exists($response, 'getAddPaydataInstructionNotes') && $response->getAddPaydataInstructionNotes()) {
             $oSession = Mage::getSingleton('checkout/session');
             $oSession->setPayoneBarzahlenHtml(urldecode($response->getAddPaydataInstructionNotes()));
         }
-        
+
         // Update Customer
         $this->updateCustomerByResponse($response);
 
@@ -194,20 +195,21 @@ abstract class Payone_Core_Model_Handler_Payment_Abstract
             $order->setData('payone_payment_method_type', $this->getPayment()->getData('payone_safe_invoice_type'));
 
         } elseif ($this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_PayolutionInvoicing ||
-                  $this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_PayolutionDebit ||
-                  $this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_PayolutionInstallment ||
-                  $this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_Payolution
-            )
-        {
-            $order->setData('payone_payment_method_type',
-                            $this->getPayment()->getData('payone_payolution_type')
+            $this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_PayolutionDebit ||
+            $this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_PayolutionInstallment ||
+            $this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_Payolution
+        ) {
+            $order->setData('payone_payment_method_type', $this->getPayment()->getData('payone_payolution_type')
             );
-        } elseif ($this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_Wallet) {
+        } elseif ($this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_Wallet ||
+            $this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_WalletPaydirekt ||
+            $this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_WalletPaypalExpress
+        ) {
             $order->setData('payone_payment_method_type', $this->getPayment()->getData('payone_wallet_type'));
         } elseif ($this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_Ratepay) {
             $order->setData('payone_payment_method_type', $this->getPayment()->getData('payone_ratepay_type'));
         }
-        
+
         $oQuote = Mage::getSingleton('checkout/session')->getQuote();
         $oAddress = $oQuote->getShippingAddress();
         $order->setData('payone_payment_fee', $oAddress->getData('payone_payment_fee'));
@@ -238,22 +240,21 @@ abstract class Payone_Core_Model_Handler_Payment_Abstract
             $payment->setPayoneClearingBankCity($response->getClearingBankcity());
             $payment->setPayoneClearingBankName($response->getClearingBankname());
 
-            if($response instanceof Payone_Api_Response_Capture_Approved)
-            {
+            if ($response instanceof Payone_Api_Response_Capture_Approved) {
                 $payment->setPayoneClearingReference($response->getClearingReference());
                 $payment->setPayoneClearingInstructionnote($response->getClearingInstructionnote());
                 $payment->setPayoneClearingLegalnote($response->getClearingLegalnote());
                 $payment->setPayoneClearingDuedate($response->getClearingDuedate());
             }
-        } elseif($paymentMethod instanceof Payone_Core_Model_Payment_Method_Ratepay) {
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Ratepay) {
             $oSession = Mage::getSingleton('checkout/session');
             $oSession->unsRatePayFingerprint();
         }
-        
-        if($response instanceof Payone_Api_Response_Authorization_Abstract) {
-            if($response->getAddPaydataClearingReference()) {
+
+        if ($response instanceof Payone_Api_Response_Authorization_Abstract) {
+            if ($response->getAddPaydataClearingReference()) {
                 $payment->setPayoneClearingReference($response->getAddPaydataClearingReference());
-            } elseif($response->getClearingReference()) {
+            } elseif ($response->getClearingReference()) {
                 $payment->setPayoneClearingReference($response->getClearingReference());
             }
         }
