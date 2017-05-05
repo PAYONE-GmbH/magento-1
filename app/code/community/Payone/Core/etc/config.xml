@@ -287,6 +287,10 @@
                     <!-- Paypal Express Type -->
                     <to_order_payment>*</to_order_payment>
                 </payone_wallet_paypal_express_type>
+                <payone_wallet_alipay_type>
+                    <!-- Ali Pay Type -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_wallet_alipay_type>
                 <payone_ratepay_type>
                     <!-- Ratepay Type -->
                     <to_order_payment>*</to_order_payment>
@@ -686,6 +690,11 @@
                 <model>payone_core/payment_method_walletPaypalExpress</model>
                 <group>payone</group>
             </payone_wallet_paypal_express>
+            <payone_wallet_alipay translate="title" module="payone_core">
+                <title>PAYONE - AliPay</title>
+                <model>payone_core/payment_method_walletAliPay</model>
+                <group>payone</group>
+            </payone_wallet_alipay>
         </payment>
         <payone_payment>
             <template_creditcard>
@@ -719,6 +728,9 @@
             <template_wallet_paypal_express>
                 <use_global>1</use_global>
             </template_wallet_paypal_express>
+            <template_wallet_alipay>
+                <use_global>1</use_global>
+            </template_wallet_alipay>
             <template_advance_payment>
                 <use_global>1</use_global>
             </template_advance_payment>
@@ -769,6 +781,7 @@
                 <wallet>a:1:{s:18:"_1343137411652_652";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</wallet>
                 <wallet_paydirekt>a:1:{s:18:"_1343137411652_652";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</wallet_paydirekt>
                 <wallet_paypal_express>a:1:{s:18:"_1343137411652_652";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</wallet_paypal_express>
+                <wallet_alipay>a:1:{s:18:"_1343137411652_652";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</wallet_alipay>
                 <barzahlen>a:1:{s:23:"_payone_status_mapping4";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</barzahlen>
                 <ratepay>a:1:{s:17:"_1468417699073_73";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</ratepay>
                 <payolution>a:1:{s:18:"_1468430772551_551";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</payolution>

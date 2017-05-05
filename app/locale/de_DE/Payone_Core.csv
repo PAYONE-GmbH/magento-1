@@ -92,6 +92,9 @@
 "New Paypal Express","Wallet Paypal Express"
 "Add Paypal Express","Wallet Paypal Express hinzufügen"
 "Edit Paypal Express","Wallet Paypal Express bearbeiten"
+"New AliPay","Wallet AliPay"
+"Add AliPay","Wallet AliPay hinzufügen"
+"Edit AliPay","Wallet AliPay bearbeiten"
 "New Safe Invoice","Sicherer Rechnungskauf"
 "Add Safe Invoice","Sicheren Rechnungskauf hinzufügen"
 "Edit Safe Invoice","Sicheren Rechnungskauf bearbeiten"
@@ -381,7 +384,7 @@
 
 ">>>SDK TRANSLATIONS<<<",">>>SDK TRANSLATIONS<<<"
 "PAYPAL_EXPRESS","Paypal Express"
-"WALLETPAYDIREKT","Paydirekt"
+"PAYDIREKT","Paydirekt"
 
 "YES","Ja"
 "NO","Nein"
@@ -489,6 +492,9 @@
 "ONLINEBANKTRANSFER","Onlineüberweisung"
 "CASHONDELIVERY","Nachnahme"
 "WALLET","Wallet"
+"WALLETPAYDIREKT", "Paydirekt"
+"WALLETPAYPALEXPRESS", "Paypal Express"
+"WALLETALIPAY", "AliPay"
 
 "TEST","Test"
 "LIVE","Live"

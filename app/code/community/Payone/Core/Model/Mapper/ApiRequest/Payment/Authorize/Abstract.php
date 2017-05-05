@@ -116,10 +116,9 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
     protected function _getReferenceNumber($oPayment, $oOrder)
     {
         $sRefNr = $oOrder->getIncrementId();
-        if (($oPayment instanceof Payone_Core_Model_Payment_Method_Wallet ||
-             $oPayment instanceof Payone_Core_Model_Payment_Method_WalletPaydirekt ||
-             $oPayment instanceof Payone_Core_Model_Payment_Method_WalletPaypalExpress)
-            && ($this->_getWalletType() == 'PDT')
+        if (($oPayment instanceof Payone_Core_Model_Payment_Method_Wallet
+             || $oPayment instanceof Payone_Core_Model_Payment_Method_WalletPaydirekt)
+             && ($this->_getWalletType() == 'PDT')
         ) {
             $sRefNr = str_replace('_', '-', $sRefNr);
         }
@@ -530,6 +529,7 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
                 $isRedirect = true;
             }
         }
+        //Wallet PayDirekt
         elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_WalletPaydirekt) {
             $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_Wallet();
 
@@ -546,22 +546,21 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
                 $payment->setPaydata($payData);
             }
         }
+        //Wallet PayPal Express
         elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_WalletPaypalExpress) {
             $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_Wallet();
 
             $payment->setWallettype(Payone_Api_Enum_WalletType::PAYPAL_EXPRESS);
             $isRedirect = true;
-
-            if ($this->_getWalletType() == 'PDT' && $this->getOrder()->getIsVirtual()) { // is Paydirekt and virtual/download?
-                $payData = new Payone_Api_Request_Parameter_Paydata_Paydata();
-                $payData->addItem(
-                    new Payone_Api_Request_Parameter_Paydata_DataItem(
-                        array('key' => 'shopping_cart_type', 'data' => 'DIGITAL')
-                    )
-                );
-                $payment->setPaydata($payData);
-            }
         }
+        //Wallet AliPay
+        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_WalletAliPay) {
+            $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_Wallet();
+
+            $payment->setWallettype(Payone_Api_Enum_WalletType::ALIPAY);
+            $isRedirect = true;
+        }
+        //Old Wallet Payment
         elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Wallet) {
             $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_Wallet();
             $payment->setWallettype($this->_getWalletType());
@@ -742,6 +741,7 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
         $sType = false;
 
         $aPostPayment = Mage::app()->getRequest()->getPost('payment');
+
         if($aPostPayment && array_key_exists('payone_wallet_type', $aPostPayment)) {
             $sType = $aPostPayment['payone_wallet_type'];
         } else {
@@ -803,6 +803,9 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
         }
         elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_WalletPaypalExpress) {
             $clearingType = Payone_Enum_ClearingType::WALLETPAYPALEXPRESS;
+        }
+        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_WalletAliPay) {
+            $clearingType = Payone_Enum_ClearingType::WALLETALIPAY;
         }
         elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Invoice) {
             $clearingType = Payone_Enum_ClearingType::INVOICE;

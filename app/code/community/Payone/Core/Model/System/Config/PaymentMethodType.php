@@ -49,6 +49,7 @@ class Payone_Core_Model_System_Config_PaymentMethodType extends Payone_Core_Mode
     const PAYOLUTIONINSTALLMENT = 'payolution_installment';
     const WALLETPAYDIREKT = 'wallet_paydirekt';
     const WALLETPAYPALEXPRESS = 'wallet_paypal_express';
+    const WALLETALIPAY = 'wallet_alipay';
 
 
     /**
@@ -73,7 +74,8 @@ class Payone_Core_Model_System_Config_PaymentMethodType extends Payone_Core_Mode
             self::PAYOLUTIONDEBIT => 'Payolution Debit',
             self::PAYOLUTIONINSTALLMENT => 'Payolution Installment',
             self::WALLETPAYDIREKT => 'Paydirekt',
-            self::WALLETPAYPALEXPRESS => 'Paypal Express'
+            self::WALLETPAYPALEXPRESS => 'Paypal Express',
+            self::WALLETALIPAY => 'AliPay'
         );
     }
 }

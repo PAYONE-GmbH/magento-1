@@ -328,6 +328,15 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </wallet_paydirekt>
+                        <wallet_alipay translate="label">
+                            <label>Wallet AliPay</label>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_statusMapping</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <sort_order>70</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </wallet_alipay>
                         <wallet_paypal_express translate="label">
                             <label>Wallet Paypal Express</label>
                             <frontend_model>payone_core/adminhtml_system_config_form_field_statusMapping</frontend_model>
@@ -986,6 +995,15 @@
                     <show_in_store>1</show_in_store>
                     <fields></fields>
                 </template_wallet_paypal_express>
+                <template_wallet_alipay translate="label" module="payone_core">
+                    <label>AliPay</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>5</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields></fields>
+                </template_wallet_alipay>
                 <template_advance_payment translate="label" module="payone_core">
                     <label>Advance Payment</label>
                     <frontend_type>text</frontend_type>
