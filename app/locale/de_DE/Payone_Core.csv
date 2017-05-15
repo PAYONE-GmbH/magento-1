@@ -477,6 +477,7 @@
 "INFOSCORE_HARD","Infoscore (Harte Merkmale)"
 "INFOSCORE_ALL","Infoscore (Alle Merkmale)"
 "INFOSCORE_ALL_BONI","Infoscore (Alle Merkmale + Boniscore)"
+"BONIVERSUM_VERITA","Boniversum VERITA Score"
 
 "GREEN","Grün"
 "YELLOW","Gelb"
@@ -493,6 +494,8 @@
 
 "BASIC","Basic"
 "PERSON","Person"
+"BONIVERSUM_BASIC","Boniversum Basic"
+"BONIVERSUM_PERSON","Boniversum Person"
 
 "ADDRESS_CORRECT","Adresse korrekt"
 "ADDRESS_CORRECTABLE","Adresse korigierbar"

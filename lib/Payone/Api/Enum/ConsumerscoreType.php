@@ -35,4 +35,5 @@ class Payone_Api_Enum_ConsumerscoreType
     const INFOSCORE_HARD = 'IH';
     const INFOSCORE_ALL = 'IA';
     const INFOSCORE_ALL_BONI = 'IB';
+    const BONIVERSUM_VERITA = 'CE';
 }
