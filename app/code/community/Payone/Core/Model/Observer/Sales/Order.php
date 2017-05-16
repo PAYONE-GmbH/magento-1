@@ -110,7 +110,12 @@ class Payone_Core_Model_Observer_Sales_Order
                 $customerSavedData['payone_bank_country']   = $payment->getPayoneBankCountry();
             }
 
-            if($payment->getMethodInstance()->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::ONLINEBANKTRANSFER) {
+            if($payment->getMethodInstance()->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::ONLINEBANKTRANSFER ||
+               $payment->getMethodInstance()->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::ONLINEBANKTRANSFERSOFORT ||
+               $payment->getMethodInstance()->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::ONLINEBANKTRANSFERGIROPAY ||
+               $payment->getMethodInstance()->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::ONLINEBANKTRANSFEREPS ||
+               $payment->getMethodInstance()->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::ONLINEBANKTRANSFERIDL)
+            {
                 $paymentMethodCode = $payment->getMethodInstance()->getCode();
                 $customerSavedData['payone_onlinebanktransfer_type'] = $payment->getPayoneOnlinebanktransferType();
                 $customerSavedData['payone_account_number'] = $payment->getPayoneAccountNumber()?$payment->getPayoneAccountNumber():'';
@@ -118,6 +123,8 @@ class Payone_Core_Model_Observer_Sales_Order
                 $customerSavedData['payone_sepa_iban']      = $payment->getPayoneSepaIban()?$payment->getPayoneSepaIban():'';
                 $customerSavedData['payone_sepa_bic']       = $payment->getPayoneSepaBic()?$payment->getPayoneSepaBic():'';
                 $customerSavedData['payone_bank_group']     = $payment->getPayoneBankGroup();
+
+                Mage::log($customerSavedData, null, 'test.log', true);
             }
 
             if($payment->getMethodInstance()->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::CREDITCARD) {
@@ -129,6 +136,8 @@ class Payone_Core_Model_Observer_Sales_Order
                 $customerSavedData['cc_number_enc'] = $payment->getCcNumberEnc();
                 $customerSavedData['payone_pseudocardpan'] = $payment->getPayonePseudocardpan();
                 $customerSavedData['payone_config_payment_method_id'] = $payment->getPayoneConfigPaymentMethodId();
+
+                Mage::log($customerSavedData, null, 'test.log', true);
             }
 
             if(!empty($paymentMethodCode)) {

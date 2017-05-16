@@ -301,6 +301,42 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </online_bank_transfer>
+                        <online_bank_transfer_sofortueberweisung translate="label">
+                            <label>Sofortueberweisung</label>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_statusMapping</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </online_bank_transfer_sofortueberweisung>
+                        <online_bank_transfer_giropay translate="label">
+                            <label>Giropay</label>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_statusMapping</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </online_bank_transfer_giropay>
+                        <online_bank_transfer_eps translate="label">
+                            <label>eps Online Ueberweisung</label>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_statusMapping</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </online_bank_transfer_eps>
+                        <online_bank_transfer_idl translate="label">
+                            <label>Ideal</label>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_statusMapping</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </online_bank_transfer_idl>
                         <cash_on_delivery translate="label">
                             <label>Cash on Delivery</label>
                             <frontend_model>payone_core/adminhtml_system_config_form_field_statusMapping</frontend_model>
@@ -920,6 +956,91 @@
                         </sofortueberweisung_show_iban>
                     </fields>
                 </template_online_bank_transfer>
+                <template_online_bank_transfer_sofortueberweisung translate="label" module="payone_core">
+                    <label>Sofortueberweisung</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>3</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <customer_form_data_save translate="label,comment">
+                            <label>Save payment data for logged in customer</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>270</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </customer_form_data_save>
+                        <sofortueberweisung_show_iban translate="label">
+                            <label>SOFORT Ueberweisung: Display IBAN/BIC inputs</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>280</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sofortueberweisung_show_iban>
+                    </fields>
+                </template_online_bank_transfer_sofortueberweisung>
+                <template_online_bank_transfer_giropay translate="label" module="payone_core">
+                    <label>Giropay</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>3</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <customer_form_data_save translate="label,comment">
+                            <label>Save payment data for logged in customer</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>270</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </customer_form_data_save>
+                    </fields>
+                </template_online_bank_transfer_giropay>
+                <template_online_bank_transfer_eps translate="label" module="payone_core">
+                    <label>eps Online Ueberweisung</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>3</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <customer_form_data_save translate="label,comment">
+                            <label>Save payment data for logged in customer</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>270</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </customer_form_data_save>
+                    </fields>
+                </template_online_bank_transfer_eps>
+                <template_online_bank_transfer_idl translate="label" module="payone_core">
+                    <label>Ideal</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>3</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <customer_form_data_save translate="label,comment">
+                            <label>Save payment data for logged in customer</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>270</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </customer_form_data_save>
+                    </fields>
+                </template_online_bank_transfer_idl>
                 <template_invoice translate="label" module="payone_core">
                     <label>Invoice</label>
                     <frontend_type>text</frontend_type>

@@ -39,6 +39,10 @@ class Payone_Core_Model_System_Config_PaymentMethodType extends Payone_Core_Mode
     const DEBITPAYMENT = 'debit_payment';
     const SAFEINVOICE = 'safe_invoice';
     const INVOICE = 'invoice';
+    const ONLINEBANKTRANSFERGIROPAY = 'online_bank_transfer_giropay';
+    const ONLINEBANKTRANSFEREPS = 'online_bank_transfer_eps';
+    const ONLINEBANKTRANSFERIDL = 'online_bank_transfer_idl';
+    const ONLINEBANKTRANSFERSOFORT = 'online_bank_transfer_sofortueberweisung';
     const ONLINEBANKTRANSFER = 'online_bank_transfer';
     const WALLET = 'wallet';
     const BARZAHLEN = 'barzahlen';
@@ -75,7 +79,11 @@ class Payone_Core_Model_System_Config_PaymentMethodType extends Payone_Core_Mode
             self::PAYOLUTIONINSTALLMENT => 'Payolution Installment',
             self::WALLETPAYDIREKT => 'Paydirekt',
             self::WALLETPAYPALEXPRESS => 'Paypal Express',
-            self::WALLETALIPAY => 'AliPay'
+            self::WALLETALIPAY => 'AliPay',
+            self::ONLINEBANKTRANSFERSOFORT => 'Sofortueberweisung',
+            self::ONLINEBANKTRANSFERGIROPAY => 'Giropay',
+            self::ONLINEBANKTRANSFEREPS => 'eps Online Ueberweisung',
+            self::ONLINEBANKTRANSFERIDL => 'Ideal'
         );
     }
 }

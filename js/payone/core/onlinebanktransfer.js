@@ -14,31 +14,21 @@
  * @category        Payone
  * @package         js
  * @subpackage      payone
- * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
- * @author          Matthias Walter <info@noovias.com>
+ * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com, Copyright (c) 2017 <info@e3n.de> - www.e3n.de
+ * @author          Matthias Walter <info@noovias.com>, Tim Rein <web.it.rein@gmail.com>
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
- * @link            http://www.noovias.com
+ * @link            http://www.noovias.com, http://www.e3n.de
  */
 
 /**
  *
+ * @param typeCode
+ * @param methodCode
  * @param element
  * @param country
  * @param currency
  */
-function payoneSwitchOnlineBankTransfer(element, country, currency) 
-{
-    if (element == undefined) {
-        return;
-    }
-
-    var ElementValue = element.value;
-    var ElementValueSplit = ElementValue.split('_');
-    var typeId = ElementValueSplit[0];
-    var typeCode = ElementValueSplit[1];
-
-    $("payone_online_bank_transfer_obt_type").setValue(typeCode);
-    $("payone_online_bank_transfer_config_id").setValue(typeId);
+function payoneSwitchOnlineBankTransfer(typeCode, methodCode, element, country, currency) {
 
     var accountNumberWrap = $('account_number_wrap');
     var bankCodeWrap = $('bank_code_wrap');
@@ -46,18 +36,54 @@ function payoneSwitchOnlineBankTransfer(element, country, currency)
     var sepaBicWrap = $('sepa_bic_wrap');
     var bankGroupWrapAt = $('bank_group_wrap_at');
     var bankGroupWrapNl = $('bank_group_wrap_nl');
+    var accountNumberInput = $(methodCode + '_account_number');
+    var bankCodeInput = $(methodCode + '_bank_code');
+    var sepaIbanInput = $(methodCode + '_sepa_iban');
+    var sepaBicInput = $(methodCode + '_sepa_bic');
+    var bankGroupSelectAt = $(methodCode + '_bank_group_at');
+    var bankGroupSelectNl = $(methodCode + '_bank_group_nl');
+    var sofortueberweisungShowIban = $(methodCode + '_pnt_show_iban');
 
-    var accountNumberInput = $('payone_online_bank_transfer_account_number');
-    var bankCodeInput = $('payone_online_bank_transfer_bank_code');
-    var sepaIbanInput = $('payone_online_bank_transfer_sepa_iban');
-    var sepaBicInput = $('payone_online_bank_transfer_sepa_bic');
-    var bankGroupSelectAt = $('payone_online_bank_transfer_bank_group_at');
-    var bankGroupSelectNl = $('payone_online_bank_transfer_bank_group_nl');
-    var sofortueberweisungShowIban = $('payone_online_bank_transfer_pnt_show_iban');
+    function enableBankGroupNl() {
+        if (bankGroupWrapNl) {
+            bankGroupWrapNl.show();
+            bankGroupSelectNl.removeAttribute("disabled");
+        }
+    }
 
-    if (ElementValue == '' || typeCode == 'PFF' || typeCode == 'PFC' || typeCode == 'P24') {
+    function enableBankGroupAt() {
+        if (bankGroupWrapAt) {
+            bankGroupWrapAt.show();
+            bankGroupSelectAt.removeAttribute("disabled");
+        }
+    }
+
+    if (typeCode == 'EPS') {
+        $("dt_method_payone_online_bank_transfer_eps").on("click", function (event) {
+            disableAll();
+            enableBankGroupAt();
+
+        });
+    }
+    if (typeCode == 'IDL') {
+        $("dt_method_payone_online_bank_transfer_idl").on("click", function (event) {
+            disableAll();
+            enableBankGroupNl();
+        });
+    }
+    if (typeCode == 'GPY') {
+        $("dt_method_payone_online_bank_transfer_giropay").on("click", function (event) {
+            disableAll();
+            enableSepaIban();
+            enableSepaBic();
+        });
+    }
+
+    if (typeCode == 'PFF' || typeCode == 'PFC' || typeCode == 'P24') {
         disableAll();
-    } else if (typeCode == 'PNT') {
+    }
+
+    if (typeCode == 'PNT') {
         disableAll();
         if (country == 'CH' && currency == 'CHF') {
             enableAccountNumber();
@@ -70,102 +96,66 @@ function payoneSwitchOnlineBankTransfer(element, country, currency)
                 disableAll();
             }
         }
-    } else if (typeCode == 'GPY') {
-        disableAll();
-        enableSepaIban();
-        enableSepaBic();
-    } else if (typeCode == 'EPS') {
-        disableAll();
-        enableBankGroupAt();
-    } else if (typeCode == 'IDL') {
-        disableAll();
-        enableBankGroupNl();
     }
 
-    function disableAll() 
-    {
-        if(accountNumberWrap) {
+    function disableAll() {
+        if (accountNumberWrap && accountNumberInput) {
             accountNumberWrap.hide();
             accountNumberInput.setAttribute("disabled", "disabled");
         }
 
-        if(bankCodeWrap) {
+        if (bankCodeWrap && bankCodeInput) {
             bankCodeWrap.hide();
             bankCodeInput.setAttribute("disabled", "disabled");
         }
 
-        if(sepaIbanWrap) {
+        if (sepaIbanWrap && sepaIbanInput) {
             sepaIbanWrap.hide();
             sepaIbanInput.setAttribute("disabled", "disabled");
         }
 
-        if(sepaBicWrap) {
+        if (sepaBicWrap && sepaBicInput) {
             sepaBicWrap.hide();
             sepaBicInput.setAttribute("disabled", "disabled");
         }
 
-        if(bankGroupWrapAt) {
-            bankGroupWrapAt.hide();
-            bankGroupSelectAt.setAttribute("disabled", "disabled");
-        }
-
-        if(bankGroupWrapNl) {
+        if (bankGroupWrapNl && bankGroupSelectNl) {
             bankGroupWrapNl.hide();
             bankGroupSelectNl.setAttribute("disabled", "disabled");
         }
     }
 
-    function enableAccountNumber() 
-    {
-        if(accountNumberWrap) {
+
+    function enableAccountNumber() {
+        if (accountNumberWrap) {
             accountNumberWrap.show();
             accountNumberInput.removeAttribute("disabled");
         }
     }
 
-    function enableBankCode() 
-    {
-        if(bankCodeWrap) {
+    function enableBankCode() {
+        if (bankCodeWrap) {
             bankCodeWrap.show();
             bankCodeInput.removeAttribute("disabled");
         }
     }
 
-    function enableSepaIban() 
-    {
-        if(sepaIbanWrap) {
+    function enableSepaIban() {
+        if (sepaIbanWrap) {
             sepaIbanWrap.show();
             sepaIbanInput.removeAttribute("disabled");
         }
     }
 
-    function enableSepaBic() 
-    {
-        if(sepaBicWrap) {
+    function enableSepaBic() {
+        if (sepaBicWrap) {
             sepaBicWrap.show();
             sepaBicInput.removeAttribute("disabled");
         }
     }
-
-    function enableBankGroupAt() 
-    {
-        if(bankGroupWrapAt) {
-            bankGroupWrapAt.show();
-            bankGroupSelectAt.removeAttribute("disabled");
-        }
-    }
-
-    function enableBankGroupNl() 
-    {
-        if(bankGroupWrapNl) {
-            bankGroupWrapNl.show();
-            bankGroupSelectNl.removeAttribute("disabled");
-        }
-    }
 }
 
-function copyOnlineBankTransferSepaIban(code) 
-{
+function copyOnlineBankTransferSepaIban(code) {
     var input_sepa_iban_xxx_el = $(code + '_sepa_iban_xxx');
     var input_sepa_iban_el = $(code + '_sepa_iban');
     input_sepa_iban_el.value = input_sepa_iban_xxx_el.value;

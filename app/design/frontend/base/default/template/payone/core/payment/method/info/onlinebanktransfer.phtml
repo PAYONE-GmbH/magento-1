@@ -23,7 +23,7 @@
 
 /** @var $this Payone_Core_Block_Payment_Method_Info_OnlineBankTransfer */
 ?>
-<?php echo $this->escapeHtml($this->getMethodTitle()) ?>
+<?php echo $this->escapeHtml($this->getOnlinebanktransferType()) ?>
 <br/>
 <?php if ($this->getOnlinebanktransferType()): ?>
     <?php echo $this->__('Transfer Type: %s', $this->escapeHtml($this->getOnlinebanktransferType())) ?><br/>
