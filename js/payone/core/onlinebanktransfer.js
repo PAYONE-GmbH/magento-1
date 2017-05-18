@@ -58,6 +58,36 @@ function payoneSwitchOnlineBankTransfer(typeCode, methodCode, element, country, 
         }
     }
 
+    function enableAccountNumber() {
+        if (accountNumberWrap) {
+            accountNumberWrap.show();
+            accountNumberInput.removeAttribute("disabled");
+        }
+    }
+
+    function enableBankCode() {
+        if (bankCodeWrap) {
+            bankCodeWrap.show();
+            bankCodeInput.removeAttribute("disabled");
+        }
+    }
+
+    function enableSepaIban() {
+
+        if (sepaIbanWrap) {
+            sepaIbanWrap.show();
+            sepaIbanInput.removeAttribute("disabled");
+        }
+    }
+
+    function enableSepaBic() {
+
+        if (sepaBicWrap) {
+            sepaBicWrap.show();
+            sepaBicInput.removeAttribute("disabled");
+        }
+    }
+
     if (typeCode == 'EPS') {
         $("dt_method_payone_online_bank_transfer_eps").on("click", function (event) {
             disableAll();
@@ -79,23 +109,29 @@ function payoneSwitchOnlineBankTransfer(typeCode, methodCode, element, country, 
         });
     }
 
-    if (typeCode == 'PFF' || typeCode == 'PFC' || typeCode == 'P24') {
-        disableAll();
+    if (typeCode == 'PFF') {
+        $("dt_method_payone_online_bank_transfer_pff").on("click", function (event) {
+            disableAll();
+        });
     }
 
     if (typeCode == 'PNT') {
-        disableAll();
-        if (country == 'CH' && currency == 'CHF') {
-            enableAccountNumber();
-            enableBankCode();
-        } else {
+        $("dt_method_payone_online_bank_transfer_sofortueberweisung").on("click", function (event) {
+            disableAll();
             if (sofortueberweisungShowIban.value == 1) {
                 enableSepaIban();
                 enableSepaBic();
-            } else {
-                disableAll();
             }
-        }
+
+            if (country == 'CH' && currency == 'CHF') {
+                enableAccountNumber();
+                enableBankCode();
+            }
+        });
+    }
+
+    if (typeCode == 'PFC' || typeCode == 'P24') {
+        disableAll();
     }
 
     function disableAll() {
@@ -125,34 +161,6 @@ function payoneSwitchOnlineBankTransfer(typeCode, methodCode, element, country, 
         }
     }
 
-
-    function enableAccountNumber() {
-        if (accountNumberWrap) {
-            accountNumberWrap.show();
-            accountNumberInput.removeAttribute("disabled");
-        }
-    }
-
-    function enableBankCode() {
-        if (bankCodeWrap) {
-            bankCodeWrap.show();
-            bankCodeInput.removeAttribute("disabled");
-        }
-    }
-
-    function enableSepaIban() {
-        if (sepaIbanWrap) {
-            sepaIbanWrap.show();
-            sepaIbanInput.removeAttribute("disabled");
-        }
-    }
-
-    function enableSepaBic() {
-        if (sepaBicWrap) {
-            sepaBicWrap.show();
-            sepaBicInput.removeAttribute("disabled");
-        }
-    }
 }
 
 function copyOnlineBankTransferSepaIban(code) {

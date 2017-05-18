@@ -61,7 +61,7 @@ $getOnlineBankTransferType = $this->onlineBankTransferTypeMapping();
                    value="<?php echo $this->showSofortUeberweisungBankDataFields(); ?>"/>
         </li>
 
-        <?php if ($getOnlineBankTransferType[$code] == 'GPY') {
+        <?php if ($getOnlineBankTransferType[$code] == 'GPY' || ($getOnlineBankTransferType[$code] == 'PNT' && $this->showSofortUeberweisungBankDataFields() == true)) {
             $displayIbanOrBic = 'block';
         } ?>
         <li id="sepa_iban_wrap" style="display: <?php echo $displayIbanOrBic ? $displayIbanOrBic : 'none' ?>">
@@ -151,6 +151,10 @@ $getOnlineBankTransferType = $this->onlineBankTransferTypeMapping();
     Ajax.Responders.register({
         onComplete: function (transport, element) {
 
+            var typeSelect = $(code + '_obt_type_select');
+            if (typeSelect == undefined) {
+                return;
+            }
             var url = element.request.url;
             if (url.indexOf('checkout/onepage/saveShippingMethod') !== -1 || url.indexOf('checkout/onepage/progress') !== 1) {
                 payoneSwitchOnlineBankTransfer(code, methodCode, typeSelect, country, currency);

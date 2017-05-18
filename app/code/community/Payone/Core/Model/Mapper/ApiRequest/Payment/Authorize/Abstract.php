@@ -490,7 +490,10 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
                   $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferSofortueberweisung ||
                   $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferGiropay ||
                   $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferEps ||
-                  $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferIdl)
+                  $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferIdl ||
+                  $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferPostFinanceEfinance ||
+                  $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferPostFinanceCard ||
+                  $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferP24)
         {
             $country = $this->getOrder()->getBillingAddress()->getCountry();
             $payoneOnlinebanktransferType = $info->getPayoneOnlinebanktransferType();
@@ -807,6 +810,15 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
         }
         elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferIdl) {
             $clearingType = Payone_Enum_ClearingType::ONLINEBANKTRANSFERIDL;
+        }
+        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferPostFinanceCard) {
+            $clearingType = Payone_Enum_ClearingType::ONLINEBANKTRANSFERPFC;
+        }
+        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferp24) {
+            $clearingType = Payone_Enum_ClearingType::ONLINEBANKTRANSFERP24;
+        }
+        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferPostFinanceEfinance) {
+            $clearingType = Payone_Enum_ClearingType::ONLINEBANKTRANSFERPFF;
         }
         elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferGiropay) {
             $clearingType = Payone_Enum_ClearingType::ONLINEBANKTRANSFERGIROPAY;

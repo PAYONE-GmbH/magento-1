@@ -690,6 +690,21 @@
                 <model>payone_core/payment_method_onlineBankTransferIdl</model>
                 <group>payone</group>
             </payone_online_bank_transfer_idl>
+            <payone_online_bank_transfer_pff translate="title" module="payone_core">
+                <title>PAYONE - PostFinance E-Finance</title>
+                <model>payone_core/payment_method_onlineBankTransferPostFinanceEfinance</model>
+                <group>payone</group>
+            </payone_online_bank_transfer_pff>
+            <payone_online_bank_transfer_pfc translate="title" module="payone_core">
+                <title>PAYONE - PostFinance Card</title>
+                <model>payone_core/payment_method_onlineBankTransferPostFinanceCard</model>
+                <group>payone</group>
+            </payone_online_bank_transfer_pfc>
+            <payone_online_bank_transfer_p24 translate="title" module="payone_core">
+                <title>PAYONE - Przelewy24</title>
+                <model>payone_core/payment_method_onlineBankTransferP24</model>
+                <group>payone</group>
+            </payone_online_bank_transfer_p24>
             <payone_advance_payment translate="title" module="payone_core">
                 <title>PAYONE - AdvancePayment</title>
                 <model>payone_core/payment_method_advancePayment</model>
@@ -745,6 +760,15 @@
             <template_online_bank_transfer_idl>
                 <use_global>1</use_global>
             </template_online_bank_transfer_idl>
+            <template_online_bank_transfer_pff>
+                <use_global>1</use_global>
+            </template_online_bank_transfer_pff>
+            <template_online_bank_transfer_pfc>
+                <use_global>1</use_global>
+            </template_online_bank_transfer_pfc>
+            <template_online_bank_transfer_p24>
+                <use_global>1</use_global>
+            </template_online_bank_transfer_p24>
             <template_safe_invoice>
                 <types>BSV</types>
                 <use_global>1</use_global>

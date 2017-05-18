@@ -28,7 +28,7 @@ $currency = $this->getCurrency();
 
 $paymentConfigId = $this->getPaymentMethodConfigId();
 
-if($paymentConfigId == 0){
+if ($paymentConfigId == 0) {
     $paymentConfigId = $this->getPaymentConfig()->getId();
 }
 
@@ -45,15 +45,12 @@ $getOnlineBankTransferType = $this->onlineBankTransferTypeMapping();
         <li>
             <div class="input-box">
                 <label for="<?php echo $code; ?>_account_number">
-<!--                    --><?php //echo $this->__('Online bank transfer type'); ?><!--&nbsp;<span class="required">*</span>-->
                 </label><br class="clear"/>
                 <input type="hidden" id="<?php echo $code ?>_type_select" name="<?php echo $code ?>_obt_type_select"
                        value="<?php echo $getOnlineBankTransferType[$code] ?>">
 
                 <input type="hidden" name="payment[payone_config_payment_method_id]"
                        id="<?php echo $code ?>_config_id" value="<?php echo $paymentConfigId; ?>"/>
-
-               <span><?php echo $this->getFormattedFeeConfigForOnlineBankTransfer(); ?></span>
             </div>
 
             <input type="hidden" id="<?php echo $code ?>_obt_type" name="payment[payone_onlinebanktransfer_type]"
@@ -64,7 +61,7 @@ $getOnlineBankTransferType = $this->onlineBankTransferTypeMapping();
                    value="<?php echo $this->showSofortUeberweisungBankDataFields(); ?>"/>
         </li>
 
-       <?php  echo $this->getBlockHtmlBankGroupIdl(); ?>
+        <?php echo $this->getBlockHtmlBankGroupIdl(); ?>
     </ul>
 </fieldset>
 
@@ -74,5 +71,5 @@ $getOnlineBankTransferType = $this->onlineBankTransferTypeMapping();
     var code = '<?php echo $getOnlineBankTransferType[$code] ?>';
     var methodCode = '<?php echo $code ?>';
 
-    payoneSwitchOnlineBankTransfer(code,methodCode, $(code + '_obt_type_select'), country, currency);
+    payoneSwitchOnlineBankTransfer(code, methodCode, $(code + '_obt_type_select'), country, currency);
 </script>
