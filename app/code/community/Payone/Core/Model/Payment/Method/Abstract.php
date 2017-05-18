@@ -287,6 +287,10 @@ abstract class Payone_Core_Model_Payment_Method_Abstract
             $config = $this->getConfigByOrder($order);
             $service = $this->getFactory()->getServicePaymentDebit($config);
             $service->setConfigStore($this->getConfigStore($order->getStoreId()));
+
+            if($order->getBaseCurrencyCode() != $order->getOrderCurrencyCode()) {
+                $amount = Mage::app()->getStore()->roundPrice($order->getGrandTotal()); // MAGE-306
+            }
             $service->execute($payment, $amount);
         }
 
