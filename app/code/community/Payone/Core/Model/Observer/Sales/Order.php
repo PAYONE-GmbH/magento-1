@@ -124,7 +124,7 @@ class Payone_Core_Model_Observer_Sales_Order
                 $customerSavedData['payone_sepa_bic']       = $payment->getPayoneSepaBic()?$payment->getPayoneSepaBic():'';
                 $customerSavedData['payone_bank_group']     = $payment->getPayoneBankGroup();
 
-                Mage::log($customerSavedData, null, 'test.log', true);
+                //Mage::log($customerSavedData, null, 'test.log', true);
             }
 
             if($payment->getMethodInstance()->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::CREDITCARD) {
@@ -137,7 +137,7 @@ class Payone_Core_Model_Observer_Sales_Order
                 $customerSavedData['payone_pseudocardpan'] = $payment->getPayonePseudocardpan();
                 $customerSavedData['payone_config_payment_method_id'] = $payment->getPayoneConfigPaymentMethodId();
 
-                Mage::log($customerSavedData, null, 'test.log', true);
+                //Mage::log($customerSavedData, null, 'test.log', true);
             }
 
             if(!empty($paymentMethodCode)) {
