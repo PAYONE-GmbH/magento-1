@@ -114,7 +114,10 @@ class Payone_Core_Model_Observer_Sales_Order
                $payment->getMethodInstance()->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::ONLINEBANKTRANSFERSOFORT ||
                $payment->getMethodInstance()->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::ONLINEBANKTRANSFERGIROPAY ||
                $payment->getMethodInstance()->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::ONLINEBANKTRANSFEREPS ||
-               $payment->getMethodInstance()->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::ONLINEBANKTRANSFERIDL)
+               $payment->getMethodInstance()->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::ONLINEBANKTRANSFERIDL ||
+               $payment->getMethodInstance()->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::ONLINEBANKTRANSFERPFC ||
+               $payment->getMethodInstance()->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::ONLINEBANKTRANSFERPFF ||
+               $payment->getMethodInstance()->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::ONLINEBANKTRANSFERP24)
             {
                 $paymentMethodCode = $payment->getMethodInstance()->getCode();
                 $customerSavedData['payone_onlinebanktransfer_type'] = $payment->getPayoneOnlinebanktransferType();
