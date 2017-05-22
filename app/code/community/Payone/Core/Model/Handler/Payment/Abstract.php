@@ -189,8 +189,17 @@ abstract class Payone_Core_Model_Handler_Payment_Abstract
     {
         if ($this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_Creditcard) {
             $order->setData('payone_payment_method_type', $this->getPayment()->getData('cc_type'));
-        } elseif ($this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_OnlineBankTransfer) {
+        } elseif ($this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_OnlineBankTransfer ||
+                  $this->getConfigPaymentMethod() instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferSofortueberweisung ||
+                  $this->getConfigPaymentMethod() instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferGiropay ||
+                  $this->getConfigPaymentMethod() instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferEps ||
+                  $this->getConfigPaymentMethod() instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferIdl ||
+                  $this->getConfigPaymentMethod() instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferPostFinanceEfinance ||
+                  $this->getConfigPaymentMethod() instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferPostFinanceCard ||
+                  $this->getConfigPaymentMethod() instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferP24)
+        {
             $order->setData('payone_payment_method_type', $this->getPayment()->getData('payone_onlinebanktransfer_type'));
+
         } elseif ($this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_SafeInvoice) {
             $order->setData('payone_payment_method_type', $this->getPayment()->getData('payone_safe_invoice_type'));
 

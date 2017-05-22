@@ -39,6 +39,13 @@ class Payone_Core_Model_System_Config_PaymentMethodType extends Payone_Core_Mode
     const DEBITPAYMENT = 'debit_payment';
     const SAFEINVOICE = 'safe_invoice';
     const INVOICE = 'invoice';
+    const ONLINEBANKTRANSFERPFC = 'online_bank_transfer_pfc';
+    const ONLINEBANKTRANSFERGIROPAY = 'online_bank_transfer_giropay';
+    const ONLINEBANKTRANSFERPFF = 'online_bank_transfer_pff';
+    const ONLINEBANKTRANSFEREPS = 'online_bank_transfer_eps';
+    const ONLINEBANKTRANSFERP24 = 'online_bank_transfer_p24';
+    const ONLINEBANKTRANSFERIDL = 'online_bank_transfer_idl';
+    const ONLINEBANKTRANSFERSOFORT = 'online_bank_transfer_sofortueberweisung';
     const ONLINEBANKTRANSFER = 'online_bank_transfer';
     const WALLET = 'wallet';
     const BARZAHLEN = 'barzahlen';
@@ -75,7 +82,14 @@ class Payone_Core_Model_System_Config_PaymentMethodType extends Payone_Core_Mode
             self::PAYOLUTIONINSTALLMENT => 'Payolution Installment',
             self::WALLETPAYDIREKT => 'Paydirekt',
             self::WALLETPAYPALEXPRESS => 'Paypal Express',
-            self::WALLETALIPAY => 'AliPay'
+            self::WALLETALIPAY => 'AliPay',
+            self::ONLINEBANKTRANSFERSOFORT => 'Sofortueberweisung',
+            self::ONLINEBANKTRANSFERGIROPAY => 'Giropay',
+            self::ONLINEBANKTRANSFEREPS => 'eps Online Ueberweisung',
+            self::ONLINEBANKTRANSFERIDL => 'Ideal',
+            self::ONLINEBANKTRANSFERPFF => 'PostFinance E-Finance',
+            self::ONLINEBANKTRANSFERPFC => 'PostFinance Card',
+            self::ONLINEBANKTRANSFERP24 => 'Przelewy24'
         );
     }
 }

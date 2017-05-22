@@ -152,7 +152,14 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Capture
 
         // settleaccount possibilities depend on payment method:
         if ($paymentMethod instanceof Payone_Core_Model_Payment_Method_AdvancePayment
-                or $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransfer
+                || $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransfer
+                || $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferSofortueberweisung
+                || $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferGiropay
+                || $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferEps
+                || $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferIdl
+                || $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferPostFinanceEfinance
+                || $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferPostFinanceCard
+                || $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferP24
         ) {
             $payment = $paymentMethod->getInfoInstance();
             // Advancepayment and OnlineBankTransfer use NO/AUTO

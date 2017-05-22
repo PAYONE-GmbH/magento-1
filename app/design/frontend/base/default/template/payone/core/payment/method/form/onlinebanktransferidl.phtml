@@ -1,0 +1,75 @@
+<?php
+/**
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the GNU General Public License (GPL 3)
+ * that is bundled with this package in the file LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Payone_Core to newer
+ * versions in the future. If you wish to customize Payone_Core for your
+ * needs please refer to http://www.payone.de for more information.
+ *
+ * @category        Payone
+ * @package         design_frontend_base_default
+ * @subpackage      template
+ * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
+ * @author          Matthias Walter <info@noovias.com>
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.noovias.com
+ */
+
+/** @var $this Payone_Core_Block_Payment_Method_Form_OnlineBankTransferIdl */
+$code = $this->getMethodCode();
+$country = $this->getCountry();
+$currency = $this->getCurrency();
+
+$paymentConfigId = $this->getPaymentMethodConfigId();
+
+if ($paymentConfigId == 0) {
+    $paymentConfigId = $this->getPaymentConfig()->getId();
+}
+
+$displayBlockAccountOrBankCode = 'none';
+$displayIbanOrBic = 'none';
+
+$getOnlineBankTransferType = $this->onlineBankTransferTypeMapping();
+
+?>
+
+<fieldset class="form-list">
+    <ul id="payment_form_<?php echo $code; ?>" style="display:none">
+
+        <li>
+            <div class="input-box">
+                <label for="<?php echo $code; ?>_account_number">
+                </label><br class="clear"/>
+                <input type="hidden" id="<?php echo $code ?>_type_select" name="<?php echo $code ?>_obt_type_select"
+                       value="<?php echo $getOnlineBankTransferType[$code] ?>">
+
+                <input type="hidden" name="payment[payone_config_payment_method_id]"
+                       id="<?php echo $code ?>_config_id" value="<?php echo $paymentConfigId; ?>"/>
+            </div>
+
+            <input type="hidden" id="<?php echo $code ?>_obt_type" name="payment[payone_onlinebanktransfer_type]"
+                   value="<?php echo $getOnlineBankTransferType[$code]; ?>" class=""/>
+            <input type="hidden" name="payment[payone_config_payment_method_id]"
+                   id="<?php echo $code ?>_config_id" value="<?php echo $paymentConfigId; ?>"/>
+            <input type="hidden" id="<?php echo $code ?>_pnt_show_iban"
+                   value="<?php echo $this->showSofortUeberweisungBankDataFields(); ?>"/>
+        </li>
+
+        <?php echo $this->getBlockHtmlBankGroupIdl(); ?>
+    </ul>
+</fieldset>
+
+<script type="text/javascript">
+    var country = '<?php echo 'NL' ?>';
+    var currency = '<?php echo $currency ?>';
+    var code = '<?php echo $getOnlineBankTransferType[$code] ?>';
+    var methodCode = '<?php echo $code ?>';
+
+    payoneSwitchOnlineBankTransfer(code, methodCode, $(code + '_obt_type_select'), country, currency);
+</script>
