@@ -504,6 +504,14 @@
                     </downloadable_observer>
                 </observers>
             </sales_order_save_commit_after>
+            <sales_model_service_quote_submit_failure>
+                <observers>
+                    <payone_service_quote_submit_failure>
+                        <class>payone_core/observer_sales_quote_submit_failure</class>
+                        <method>protocol</method>
+                    </payone_service_quote_submit_failure>
+                </observers>
+            </sales_model_service_quote_submit_failure>
         </events>
     </global>
 
@@ -776,6 +784,19 @@ Detaillierte Informationen zur Arbeitsweise der ABC finde ich unter www.abc.de/f
                 <enabled>0</enabled>
                 <template>payone_misc_email_avs_template</template>
             </email_avs>
+            <discount>
+                <sku>discount</sku>
+                <description>Discount</description>
+            </discount>
+            <creditmemo>
+                <adjustment_refund_sku>adjustment-refund</adjustment_refund_sku>
+                <adjustment_refund_name>Adjustment Refund</adjustment_refund_name>
+                <adjustment_fee_sku>adjustment-fee</adjustment_fee_sku>
+                <adjustment_fee_name>Adjustment Fee</adjustment_fee_name>
+            </creditmemo>
+            <shipping_costs>
+                <sku>shipping</sku>
+            </shipping_costs>
         </payone_misc>
     </default>
 
