@@ -246,8 +246,9 @@ class Payone_Core_PexpressController extends Payone_Core_Controller_Abstract
 
     /**
      * Set and get $workOrderId to the session
-     *
-     * @param int $workOrderId
+     * @param null $workOrderId
+     * @return $this
+     * @throws Mage_Core_Exception
      */
     private function _initWorkOrderId($workOrderId = null)
     {

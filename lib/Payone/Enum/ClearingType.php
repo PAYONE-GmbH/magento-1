@@ -28,12 +28,15 @@ class Payone_Enum_ClearingType
     const INVOICE = 'rec';
     const ONLINEBANKTRANSFER = 'sb';
     const CASHONDELIVERY = 'cod';
+    const WALLETPAYDIREKT = 'wlt';
+    const WALLETPAYPALEXPRESS = 'wlt';
+    const WALLETALIPAY = 'wlt';
     const WALLET = 'wlt';
     const BARZAHLEN = 'csh';
     const RATEPAY = 'fnc';
-    const PAYOLUTION = 'fnc';
     const PAYOLUTIONINVOICING = 'fnc';
     const PAYOLUTIONDEBIT = 'fnc';
     const PAYOLUTIONINSTALLMENT = 'fnc';
+    const PAYOLUTION = 'fnc';
     const FINANCING = 'fnc';
 }
