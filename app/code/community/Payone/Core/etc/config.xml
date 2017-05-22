@@ -660,6 +660,11 @@
                 <model>payone_core/payment_method_wallet</model>
                 <group>payone</group>
             </payone_wallet>
+            <payone_payment_guarantee_invoice translate="title" module="payone_core">
+                <title>PAYONE - Invoice with Payment Guarantee</title>
+                <model>payone_core/payment_method_paymentGuaranteeInvoice</model>
+                <group>payone</group>
+            </payone_payment_guarantee_invoice>
         </payment>
         <payone_payment>
             <template_creditcard>

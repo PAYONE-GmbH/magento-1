@@ -681,6 +681,9 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
 
                 $payment->setTelephonenumber($telephone);
             }
+        } elseif($paymentMethod instanceof Payone_Core_Model_Payment_Method_PaymentGuaranteeInvoice) {
+            $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_PaymentGuaranteeInvoice();
+            $payment->setClearingsubtype();
         }
 
         if ($isRedirect === true) {
@@ -780,6 +783,9 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
         }
         elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Payolution) {
             $clearingType = Payone_Enum_ClearingType::PAYOLUTION;
+        }
+        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_PaymentGuaranteeInvoice) {
+            $clearingType = Payone_Enum_ClearingType::PAYMENTGUARANTEEINVOICE;
         }
 
         return $clearingType;
