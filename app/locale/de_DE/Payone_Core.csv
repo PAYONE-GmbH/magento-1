@@ -185,6 +185,7 @@
 "Infoscore (hard criteria)","Infoscore (Harte Merkmale)"
 "Infoscore (all criteria)","Infoscore (Alle Merkmale)"
 "Infoscore (all criteria with boni-score)","Infoscore (Alle Merkmale + Boniscore)"
+"Default value for unknown scores (Boniversum)","Standardwert für unbekannte Scores (Boniversum)"
 "Allowed Payment-Methods for Result ""YELLOW""","Erlaubte Zahlarten bei Ampelwert ""GELB"""
 "Allowed Payment-Methods for Result ""RED""","Erlaubte Zahlarten bei Ampelwert ""ROT"""
 "Lifetime","Gültigkeit"
