@@ -41,6 +41,15 @@ class Payone_Core_Model_Observer_Checkout_Onepage_MultiplePaymentCheck extends P
     /** @var Payone_Core_Model_Config_Payment_Method_Interface */
     protected $paymentConfig = null;
 
+    protected $paymentMethodChecks = [
+        Payone_Core_Model_System_Config_PaymentMethodCode::CREDITCARD => '_performHostedCreditcardChecks',
+        Payone_Core_Model_System_Config_PaymentMethodCode::DEBITPAYMENT => '_performDebitChecks',
+        Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTION => '_performPayolutionChecks',
+        Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTIONDEBIT => '_performPayolutionChecks',
+        Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTIONINSTALLMENT => '_performPayolutionChecks',
+        Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTIONINVOICING => '_performPayolutionChecks',
+    ];
+
     /**
      * @param Varien_Event_Observer $observer
      * @return void
@@ -49,25 +58,22 @@ class Payone_Core_Model_Observer_Checkout_Onepage_MultiplePaymentCheck extends P
     {
         /** @var Mage_Checkout_OnepageController|Payone_Core_Checkout_OnepageController $controllerAction */
         $controllerAction = $observer->getEvent()->getControllerAction();
-        $paymentData = $controllerAction->getRequest()->getPost('payment', array());
-        $selectedMethod = $paymentData['method'];
+        $paymentData = $controllerAction->getRequest()->getPost('payment', []);
+        $selectedPaymentMethod = $paymentData['method'];
 
-        if ($selectedMethod != Payone_Core_Model_System_Config_PaymentMethodCode::DEBITPAYMENT &&
-            $selectedMethod != Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTION &&
-            $selectedMethod != Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTIONINVOICING &&
-            $selectedMethod != Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTIONDEBIT &&
-            $selectedMethod != Payone_Core_Model_System_Config_PaymentMethodCode::CREDITCARD
-            ) {
+        if (!array_key_exists($selectedPaymentMethod, $this->paymentMethodChecks) ||
+            !method_exists($this, $this->paymentMethodChecks[$selectedPaymentMethod])
+        ) {
             return;
         }
 
         if (!$controllerAction instanceof Payone_Core_Checkout_OnepageController) {
-            // for Core controller action check if there was a forward from Payone Controller to
-            // avoid double execution
+            // For the core controller action check if the request was
+            // forwarded from Payone controller to avoid double execution
             $request = $controllerAction->getRequest();
-            if ($request->getBeforeForwardInfo('module_name') == 'payone_core'
-                    and $request->getBeforeForwardInfo('controller_name') == 'checkout_onepage'
-                    and $request->getBeforeForwardInfo('action_name') == 'verifyPayment'
+            if ($request->getBeforeForwardInfo('module_name') == 'payone_core' &&
+                $request->getBeforeForwardInfo('controller_name') == 'checkout_onepage' &&
+                $request->getBeforeForwardInfo('action_name') == 'verifyPayment'
             ) {
                 return;
             }
@@ -75,18 +81,10 @@ class Payone_Core_Model_Observer_Checkout_Onepage_MultiplePaymentCheck extends P
 
         $this->init($observer);
 
-        if ($selectedMethod == Payone_Core_Model_System_Config_PaymentMethodCode::DEBITPAYMENT) {
-            $controllerAction = $this->_performDebitChecks($controllerAction);
-        } elseif($selectedMethod == Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTIONINVOICING ||
-                 $selectedMethod == Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTIONDEBIT ||
-                 $selectedMethod == Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTIONINSTALLMENT ||
-                 $selectedMethod == Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTION)
-        {
-            $controllerAction = $this->_performPayolutionChecks($controllerAction);
-        }
-        elseif($selectedMethod == Payone_Core_Model_System_Config_PaymentMethodCode::CREDITCARD) {
-            $controllerAction = $this->_performHostedCreditcardChecks($controllerAction);
-        }
+        $controllerAction = call_user_func_array(
+            [$this, $this->paymentMethodChecks[$selectedPaymentMethod]],
+            [$controllerAction]
+        );
 
         return $controllerAction;
     }
