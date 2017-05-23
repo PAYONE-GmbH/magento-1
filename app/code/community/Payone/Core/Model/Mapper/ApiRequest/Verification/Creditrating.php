@@ -55,8 +55,8 @@ class Payone_Core_Model_Mapper_ApiRequest_Verification_Creditrating
         $request->setConsumerscoretype($config->getType());
         $request->setAddresschecktype(
             ($config->getType() === Payone_Api_Enum_ConsumerscoreType::BONIVERSUM_VERITA) ?
-                Payone_Api_Enum_AddressCheckType::NONE :
-                Payone_Api_Enum_AddressCheckType::BONIVERSUM_PERSON
+                Payone_Api_Enum_AddressCheckType::BONIVERSUM_PERSON :
+                Payone_Api_Enum_AddressCheckType::NONE
         );
 
         $request->setAid($configGlobal->getAid());
