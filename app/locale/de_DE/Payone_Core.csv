@@ -185,6 +185,7 @@
 "Infoscore (hard criteria)","Infoscore (Harte Merkmale)"
 "Infoscore (all criteria)","Infoscore (Alle Merkmale)"
 "Infoscore (all criteria with boni-score)","Infoscore (Alle Merkmale + Boniscore)"
+"Default value for unknown scores (Boniversum)","Standardwert für unbekannte Scores (Boniversum)"
 "Allowed Payment-Methods for Result ""YELLOW""","Erlaubte Zahlarten bei Ampelwert ""GELB"""
 "Allowed Payment-Methods for Result ""RED""","Erlaubte Zahlarten bei Ampelwert ""ROT"""
 "Lifetime","Gültigkeit"
@@ -477,6 +478,7 @@
 "INFOSCORE_HARD","Infoscore (Harte Merkmale)"
 "INFOSCORE_ALL","Infoscore (Alle Merkmale)"
 "INFOSCORE_ALL_BONI","Infoscore (Alle Merkmale + Boniscore)"
+"BONIVERSUM_VERITA","Boniversum VERITA Score"
 
 "GREEN","Grün"
 "YELLOW","Gelb"
@@ -493,6 +495,8 @@
 
 "BASIC","Basic"
 "PERSON","Person"
+"BONIVERSUM_BASIC","Boniversum Basic"
+"BONIVERSUM_PERSON","Boniversum Person"
 
 "ADDRESS_CORRECT","Adresse korrekt"
 "ADDRESS_CORRECTABLE","Adresse korigierbar"

@@ -1725,6 +1725,16 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </type>
+                        <unknown_default translate="label">
+                            <label>Default value for unknown scores (Boniversum)</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field</frontend_model>
+                            <source_model>payone_core/system_config_CreditScore</source_model>
+                            <sort_order>45</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </unknown_default>
                         <allow_payment_methods_yellow translate="label">
                             <label>Allowed Payment-Methods for Result "YELLOW"</label>
                             <frontend_type>multiselect</frontend_type>

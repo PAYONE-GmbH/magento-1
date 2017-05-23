@@ -45,6 +45,8 @@ class Payone_Core_Model_Config_Protect_Creditrating
     /** @var string */
     protected $mode = '';
 
+    protected $unknown_default = 'G';
+
     /** @var int */
     protected $payment_hint_enabled = 0;
     /** @var string */
@@ -512,5 +514,21 @@ class Payone_Core_Model_Config_Protect_Creditrating
     public function getPaymentHintText()
     {
         return $this->payment_hint_text;
+    }
+
+    /**
+     * @param string $unknown_default
+     */
+    public function setUnknownDefault($unknown_default)
+    {
+        $this->unknown_default = $unknown_default;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUnknownDefault()
+    {
+        return $this->unknown_default;
     }
 }
