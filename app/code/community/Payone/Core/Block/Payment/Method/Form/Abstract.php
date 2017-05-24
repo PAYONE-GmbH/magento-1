@@ -104,36 +104,68 @@ class Payone_Core_Block_Payment_Method_Form_Abstract
         return $this->getPaymentConfig()->getFeeConfigForQuote($this->getQuote());
     }
 
-    protected function _calcFeePrice() 
+    protected function _calcNetFeePrice()
     {
         $oQuote = $this->getQuote();
         
         $feeConfig = $this->getFeeConfig();
 
-        $price = 0.0;
+        $fee = 0.0;
         if (is_array($feeConfig) and array_key_exists('fee_config', $feeConfig) and !empty($feeConfig['fee_config'])) {
-            $price = $feeConfig['fee_config'];
+            $fee = $feeConfig['fee_config'];
             if(isset($feeConfig['fee_type'][0]) && $feeConfig['fee_type'][0] == 'percent') {
-                $price = $oQuote->getSubtotal() * $price / 100;
+                $fee = $oQuote->getSubtotal() * $fee / 100; // net price
             }
 
             #$oQuote->getSubtotal();
             #$oQuote->getGrandTotal();
         }
 
-        return $price;
+        return $fee;
+    }
+
+    /**
+     * @param Mage_Sales_Model_Quote $oQuote
+     * @param double $dPrice
+     * @return double
+     */
+    protected function _calcBrutFeePrice($oQuote, $dPrice)
+    {
+        $dPercent = $this->getFactory()->helper()->getShippingTaxRate($oQuote);
+        $dTaxAmount = Mage::helper('tax')->getCalculator()->calcTaxAmount($dPrice, $dPercent, false, false);
+        $dPrice = $dPrice + $dTaxAmount;
+        return $dPrice;
     }
     
     /**
      * Formatted Fee price e.g. '2,50 €' or '$11.50'
      * @return string
      */
-    public function getFeePrice()
+    public function getFormattedFeePrice()
     {
-        $price = $this->_calcFeePrice();
-        
-        $formattedPrice = $this->getQuote()->getStore()->formatPrice($price);
-        return $formattedPrice;
+        $dNetPrice = $this->_calcNetFeePrice();
+        $dBrutPrice = $this->_calcBrutFeePrice($this->getQuote(), $dNetPrice);
+
+        // Emulating how magento calculates the tax amount and the prices incl and excl tax
+        $dTax = $dBrutPrice - $dNetPrice;
+        $dTax = $this->getQuote()->getStore()->roundPrice($dTax);
+
+        $dBrutPrice = $this->getQuote()->getStore()->roundPrice($dBrutPrice);
+        $dNetPrice = $dBrutPrice - $dTax;
+
+        $dFNetPrice = $this->getQuote()->getStore()->formatPrice($dNetPrice);
+        $dFBrutPrice = $this->getQuote()->getStore()->formatPrice($dBrutPrice);
+
+        if (Mage::helper('tax')->displayShippingPriceIncludingTax()) {
+            $sFormattedPrice = $dFBrutPrice;
+        } else {
+            $sFormattedPrice = $dFNetPrice;
+        }
+        if (Mage::helper('tax')->displayShippingBothPrices() && $dFNetPrice != $dFBrutPrice) {
+            $sFormattedPrice .= ' ('.$this->__('Incl. Tax').' '.$dFBrutPrice.')';
+        }
+
+        return $sFormattedPrice;
     }
 
     /**
@@ -177,9 +209,8 @@ class Payone_Core_Block_Payment_Method_Form_Abstract
                 $feeConfig = $config->getFeeConfigForQuote($quote);
 
                 if (is_array($feeConfig) and array_key_exists('fee_config', $feeConfig) and !empty($feeConfig['fee_config'])) {
-                    $formattedFeePrice = $this->getFormattedFeePriceLabel($this->_calcFeePrice());
-                }
-                else {
+                    $formattedFeePrice = $this->getFormattedFeePriceLabel($this->_calcNetFeePrice());
+                } else {
                     $formattedFeePrice = '';
                 }
 
@@ -197,8 +228,7 @@ class Payone_Core_Block_Payment_Method_Form_Abstract
 
                     if (array_key_exists($typeCode, $systemTypes)) {
                         $typeName = $this->__($systemTypes[$typeCode]);
-                    }
-                    else {
+                    } else {
                         $typeName = $this->__($this->getMethodCode() . '_type_'. $typeCode);
                     }
 
@@ -236,7 +266,7 @@ class Payone_Core_Block_Payment_Method_Form_Abstract
         }
 
         $text = '(+ %s)';
-        $text = $this->__($text, $this->getFeePrice());
+        $text = $this->__($text, $this->getFormattedFeePrice());
 
         $id = 'payone_payment_fee_' . $this->getMethodCode();
 

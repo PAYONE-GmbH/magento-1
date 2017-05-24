@@ -79,17 +79,30 @@ class Payone_Core_Model_Sales_Quote_Address_Total_Fee
         $aTotals = $quote->getTotals();
         $dSubTotal = 0;
         if(isset($aTotals['subtotal'])) {
-            $dSubTotal = $aTotals['subtotal']->getValue();
+            $dSubTotal = $aTotals['subtotal']->getValueExclTax();
         }
         
         $paymentFee = $feeConfig['fee_config'];
         if(isset($feeConfig['fee_type'][0]) && $feeConfig['fee_type'][0] == 'percent') {
-            $paymentFee = $dSubTotal * $paymentFee / 100;
+            $paymentFee = $dSubTotal * $paymentFee / 100; // subtotal is excl tax, so fee is too
+            error_log('Netto: '.$paymentFee);
+            if (Mage::helper('tax')->shippingPriceIncludesTax(Mage::app()->getStore())) {
+                $paymentFee = $this->_getPaymentFeeInclTax($quote, $paymentFee);
+                error_log('Brutto: '.$paymentFee);
+            }
         }
 
         $this->_setNewPayonePaymentAmount($quote, $address, $paymentFee);
 
         return parent::collect($address);
+    }
+
+    protected function _getPaymentFeeInclTax($quote, $paymentFee)
+    {
+        $dTaxRate = $this->getFactory()->helper()->getShippingTaxRate($quote);
+        $dTaxAmount = Mage::helper('tax')->getCalculator()->calcTaxAmount($paymentFee, $dTaxRate, false, false);
+        $paymentFee = $paymentFee + $dTaxAmount;
+        return $paymentFee;
     }
     
     protected function _setNewPayonePaymentAmount($oQuote, $oAddress, $dPaymentFee) 
@@ -97,7 +110,9 @@ class Payone_Core_Model_Sales_Quote_Address_Total_Fee
         $dOldShippingAmount = $oAddress->getBaseShippingAmount();
         $dNewShippingAmount = $dOldShippingAmount + $dPaymentFee;
 
-        $oAddress->setData('payone_payment_fee', $dPaymentFee);
+        #$dNewShippingAmount = $oQuote->getStore()->roundPrice($dNewShippingAmount);
+
+        $oAddress->setData('payone_payment_fee', $oQuote->getStore()->roundPrice($dPaymentFee));
         
         $oAddress->setBaseShippingAmount($dNewShippingAmount);
         $oAddress->setShippingAmount(
