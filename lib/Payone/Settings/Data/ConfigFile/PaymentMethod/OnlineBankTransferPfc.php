@@ -30,7 +30,7 @@
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
  * @link            http://www.noovias.com
  */
-class Payone_Settings_Data_ConfigFile_PaymentMethod_OnlineBankTransferPostFinanceCard
+class Payone_Settings_Data_ConfigFile_PaymentMethod_OnlineBankTransferPfc
     extends Payone_Settings_Data_ConfigFile_PaymentMethod_Abstract
     implements Payone_Settings_Data_ConfigFile_Interface
 {
