@@ -808,6 +808,15 @@
                         </invoice_transmit>
                     </fields>
                 </template_default>
+                <template_amazon_pay translate="label" module="payone_core">
+                    <label>Amazon Pay</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields></fields>
+                </template_amazon_pay>
                 <template_creditcard translate="label" module="payone_core">
                     <label>Creditcard</label>
                     <frontend_type>text</frontend_type>
