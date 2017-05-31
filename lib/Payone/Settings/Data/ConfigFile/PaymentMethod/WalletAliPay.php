@@ -31,7 +31,7 @@
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
  * @link            http://www.e3n.de
  */
-class Payone_Settings_Data_ConfigFile_PaymentMethod_WalletAliPay
+class Payone_Settings_Data_ConfigFile_PaymentMethod_WalletAlipay
     extends Payone_Settings_Data_ConfigFile_PaymentMethod_Abstract
     implements Payone_Settings_Data_ConfigFile_Interface
 {

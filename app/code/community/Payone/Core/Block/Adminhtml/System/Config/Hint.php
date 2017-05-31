@@ -69,6 +69,8 @@ class Payone_Core_Block_Adminhtml_System_Config_Hint
             $tooltipHtml = $tooltip->toHtml();
 
             $html .= '<table class="payone-config-info"><tr><td>' . $tooltipHtml . '</td></tr></table>';
+            $html .= '<div class="success-msg update-message-container">'.$this->helper('payone_core')
+                    ->__('PAYONE Plugin: The wallet and online bank transfer payment methods have been split up. Please delete the Payone Wallet and Payone Online Bank Transfer payment method and add the individual wallets and online bank transfer services. This significantly improves conversion with these payment types.').'  </div>';
         }
 
         return $html;
