@@ -15,21 +15,28 @@
  * @category        Payone
  * @package         Payone_Settings
  * @subpackage      Data
- * @copyright       Copyright (c) 2015 <kontakt@fatchip.de> - www.fatchip.com
- * @author          Robert Müller <robert.mueller@fatchip.de>
+ * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
+ * @author          Matthias Walter <info@noovias.com>
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
- * @link            http://www.fatchip.com
+ * @link            http://www.noovias.com
  */
-class Payone_Settings_Data_ConfigFile_PaymentMethod_CreditcardIframe
+
+/**
+ *
+ * @category        Payone
+ * @package         Payone_Settings
+ * @subpackage      Data
+ * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.noovias.com
+ */
+class Payone_Settings_Data_ConfigFile_PaymentMethod_OnlineBankTransferPfc
     extends Payone_Settings_Data_ConfigFile_PaymentMethod_Abstract
     implements Payone_Settings_Data_ConfigFile_Interface
 {
     /** @var string */
-    protected $key = Payone_Enum_ClearingType::CREDITCARD_IFRAME;
+    protected $key = Payone_Enum_ClearingType::ONLINEBANKTRANSFERPFC;
 
-    /**
-     * @return string
-     */
     public function getKey()
     {
         return $this->key;

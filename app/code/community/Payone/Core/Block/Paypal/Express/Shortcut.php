@@ -54,14 +54,7 @@ class Payone_Core_Block_Paypal_Express_Shortcut extends Mage_Core_Block_Template
      *
      * @var string
      */
-    protected $_paymentMethodCode = Payone_Core_Model_System_Config_PaymentMethodCode::WALLET;
-
-    /**
-     * Payment method type for Paypal Express
-     *
-     * @var string
-     */
-    protected $_paymentMethodType = Payone_Api_Enum_WalletType::PAYPAL_EXPRESS;
+    protected $_paymentMethodCode = Payone_Core_Model_System_Config_PaymentMethodCode::WALLETPAYPALEXPRESS;
 
     /**
      * Start express action
@@ -78,14 +71,6 @@ class Payone_Core_Block_Paypal_Express_Shortcut extends Mage_Core_Block_Template
         // check payment method availability
         $methodInstance = Mage::helper('payment')->getMethodInstance($this->_paymentMethodCode);
         if (!$methodInstance || !$methodInstance->isAvailable($quote)) {
-            $this->_shouldRender = false;
-            return $result;
-        }
-
-        // check payment method type availability
-        $configMethod = $methodInstance->getConfigForQuote($quote);
-        $methodTypes = $configMethod->getTypes();
-        if(!in_array($this->_paymentMethodType, $methodTypes)) {
             $this->_shouldRender = false;
             return $result;
         }
@@ -107,7 +92,7 @@ class Payone_Core_Block_Paypal_Express_Shortcut extends Mage_Core_Block_Template
             Mage::getModel(
                 'payone_core/service_paypal_express_checkout', array(
                 'quote'  => $quote,
-                'config' => $configMethod
+                'config' => $methodInstance->getConfigForQuote($quote)
                 )
             )->getCheckoutShortcutImageUrl()
         );
