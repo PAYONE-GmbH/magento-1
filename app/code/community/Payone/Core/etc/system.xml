@@ -815,7 +815,49 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    <fields></fields>
+                    <fields>
+                        <amz_client_id translate="label,tooltip">
+                            <label>Client-ID</label>
+                            <tooltip>
+                                This field is read-only and can be initialized by
+                                clicking the button below. ("Get configuration")
+                            </tooltip>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>
+                                payone_core/adminhtml_system_config_form_field_amazonConfig
+                            </frontend_model>
+                            <sort_order>15</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </amz_client_id>
+                        <amz_seller_id translate="label,tooltip">
+                            <label>Seller-ID</label>
+                            <tooltip>
+                                This field is read-only and can be initialized by
+                                clicking the button below. ("Get configuration")
+                            </tooltip>
+                            <frontend_type>text</frontend_type>
+                            <frontend_model>
+                                payone_core/adminhtml_system_config_form_field_amazonConfig
+                            </frontend_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </amz_seller_id>
+                        <get_configuration translate="label,button_label">
+                            <label>Initialization</label>
+                            <button_label>Get configuration</button_label>
+                            <route>adminhtml/payonecore_system_config_payment/initAmazon</route>
+                            <frontend_type>button</frontend_type>
+                            <frontend_model>payone_core/adminhtml_system_config_form_button</frontend_model>
+                            <sort_order>25</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </get_configuration>
+                    </fields>
                 </template_amazon_pay>
                 <template_creditcard translate="label" module="payone_core">
                     <label>Creditcard</label>

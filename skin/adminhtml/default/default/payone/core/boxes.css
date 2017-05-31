@@ -20,6 +20,11 @@
  * @link            http://www.noovias.com
  */
 
+input.input-text:read-only,
+textarea:read-only {
+    background: #eee !important;
+}
+
 /* menu */
 .menu-payone {
     background: url(images/favicon.png) no-repeat scroll 0 5px;

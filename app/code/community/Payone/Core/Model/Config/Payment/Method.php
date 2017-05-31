@@ -246,6 +246,16 @@ class Payone_Core_Model_Config_Payment_Method
      * @var string
      */
     protected $narrative_text = '';
+
+    /**
+     * @var string
+     */
+    protected $amz_client_id = '';
+
+    /**
+     * @var string
+     */
+    protected $amz_seller_id = '';
     
     /**
      * Check if Method can be used in Country
@@ -1189,5 +1199,36 @@ class Payone_Core_Model_Config_Payment_Method
     {
         return $this->narrative_text;
     }
-    
+
+    /**
+     * @param string $sAmzClientId
+     */
+    public function setAmzClientId($sAmzClientId)
+    {
+        $this->amz_client_id = $sAmzClientId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAmzClientId()
+    {
+        return $this->amz_client_id;
+    }
+
+    /**
+     * @param string $sAmzSellerId
+     */
+    public function setAmzSellerId($sAmzSellerId)
+    {
+        $this->amz_seller_id = $sAmzSellerId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAmzSellerId()
+    {
+        return $this->amz_seller_id;
+    }
 }
