@@ -21,6 +21,10 @@
 class Payone_Api_Enum_GenericpaymentAction
 {
     /**
+     * initialize configuration parameters for Amazon Pay
+     */
+    const AMAZONPAY_GETCONFIGURATION = 'getconfiguration';
+    /**
      * initalize paypal express checkout process
      */
     const PAYPAL_ECS_SET_EXPRESSCHECKOUT='setexpresscheckout';

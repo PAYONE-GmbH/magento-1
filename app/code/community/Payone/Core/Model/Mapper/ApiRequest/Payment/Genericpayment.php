@@ -363,6 +363,33 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment
     }
 
     /**
+     * @return Payone_Api_Request_Genericpayment
+     */
+    public function requestAmazonPayConfiguration()
+    {
+        /** @var Payone_Core_Helper_Url $helper */
+        $helper = Mage::helper('payone_core/url');
+        $request = $this->getRequest();
+        $this->mapDefaultParameters($request);
+        $request->setApiVersion('3.10');
+        $request->setAid($this->getConfigPayment()->getAid());
+        $request->setClearingtype(Payone_Enum_ClearingType::AMAZONPAY);
+        $request->setCurrency('EUR');
+        $request->setWallet(new Payone_Api_Request_Parameter_Authorization_PaymentMethod_Wallet([
+            'wallettype' => Payone_Api_Enum_WalletType::AMAZONPAY,
+            'successurl' => $helper->getMagentoUrl('*/*/return'),
+            'errorurl'   => $helper->getMagentoUrl('*/*/error'),
+            'backurl'    => $helper->getMagentoUrl('*/*/cancel'),
+        ]));
+        $request->setPaydata(new Payone_Api_Request_Parameter_Paydata_Paydata(['items' => [
+            new Payone_Api_Request_Parameter_Paydata_DataItem([
+                'key' => 'action', 'data' => Payone_Api_Enum_GenericpaymentAction::AMAZONPAY_GETCONFIGURATION
+            ]),
+        ]]));
+        return $request;
+    }
+
+    /**
      * @return string
      */
     public function getEventType()
