@@ -52,6 +52,13 @@
 
     <checkout_cart_index>
         <reference name="checkout.cart.top_methods">
+            <block type="payone_core/amazon_pay_shortcut" name="payone.checkout.cart.methods.amazon_pay.top" before="-" template="payone/core/amazon/pay/shortcut.phtml">
+                <action method="setIsQuoteAllowed"><value>1</value></action>
+                <action method="setShowOrPosition"><value>after</value></action>
+            </block>
+        </reference>
+
+        <reference name="checkout.cart.top_methods">
             <block type="payone_core/paypal_express_shortcut" name="payone.checkout.cart.methods.paypal_express.top" before="-" template="payone/core/paypal/express/shortcut.phtml">
                 <action method="setIsQuoteAllowed"><value>1</value></action>
                 <action method="setShowOrPosition"><value>after</value></action>

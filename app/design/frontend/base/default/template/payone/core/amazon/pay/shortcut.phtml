@@ -1,0 +1,58 @@
+<?php
+/**
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the GNU General Public License (GPL 3)
+ * that is bundled with this package in the file LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Payone_Core to newer
+ * versions in the future. If you wish to customize Payone_Core for your
+ * needs please refer to http://www.payone.de for more information.
+ *
+ * @category        Payone
+ * @package         design_frontend_base_default
+ * @subpackage      template
+ * @copyright       Copyright (c) 2017 <kontakt@fatchip.de> - www.fatchip.de
+ * @author          FATCHIP GmbH <kontakt@fatchip.de>
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.fatchip.de
+ */
+?>
+<?php
+/**
+ * @var $this Payone_Core_Block_Amazon_Pay_Shortcut
+ */
+?>
+<div id="LoginWithAmazon"></div>
+<!-- In an appropriate script section -->
+<script>
+    window.onAmazonLoginReady = function () {
+        amazon.Login.setClientId('CLIENT_ID');
+    };
+    window.onAmazonPaymentsReady = function () {
+        // render the button here
+        var authRequest;
+        OffAmazonPayments.Button('LoginWithAmazon', 'SELLER_ID', {
+            type: 'PwA',
+            color: 'Gold',
+            size: 'medium', // type, color and size of the button are configureable inthe backend
+            language: 'de-DE', // may change when the shop language changes, supported:
+            // en-GB, de-DE, fr-FR, it-IT, es-ES
+            // if this parameter is empty, the language will be auto-detected
+            authorization: function () {
+                loginOptions = {
+                    scope: 'profile payments:widget payments:shipping_address payments:billing_address',
+                    popup: true
+                };
+                authRequest = amazon.Login.authorize(loginOptions, 'REDIRECT_URL');
+            }
+        });
+    }
+</script>
+<!-- Load script Widgets.js from Amazon -->
+<!-- URL changes to https://static-eu.payments-amazon.com/OffAmazonPayments/eur/lpa/js/Widgets.js when mode=live -->
+<script async="async" src='https://static-eu.payments-amazon.com/OffAmazonPayments/eur/sandbox/lpa/js/Widgets.js'
+></script>
