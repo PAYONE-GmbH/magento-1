@@ -228,13 +228,20 @@ class Payone_Core_Adminhtml_Payonecore_System_Config_PaymentController
         $response = $this->getFactory()->getServiceApiPaymentGenericpayment()->request($request);
 
         if ($response instanceof Payone_Api_Response_Genericpayment_Ok) {
-            $result = $response->getWorkorderId();
+            $result = (array) $response->getPayDataArray();
+            if (count(array_intersect(['client_id', 'seller_id'], array_keys($result))) !== 2) {
+                $this->getResponse()->setBody('{"result":"ERROR"}');
+                return;
+            }
             $this->getResponse()->setBody('{"result":"OK"}');
+            /** @var $model Payone_Core_Model_Domain_Config_PaymentMethod */
+            $model = $this->getModelDomainConfigPaymentMethod()->load($id);
+            $model->setData('amz_client_id', $result['client_id']);
+            $model->setData('amz_seller_id', $result['seller_id']);
+            $model->save();
+        } else {
+            $this->getResponse()->setBody('{"result":"ERROR"}');
         }
-        $this->getResponse()->setBody('{"result":"ERROR"}');
-
-        /** @var $model Payone_Core_Model_Domain_Config_PaymentMethod */
-        $model = $this->getModelDomainConfigPaymentMethod()->load($id);
     }
 
     /**

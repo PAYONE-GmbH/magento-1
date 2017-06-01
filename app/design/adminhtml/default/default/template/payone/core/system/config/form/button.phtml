@@ -32,7 +32,11 @@
             method: 'get',
             onSuccess: function (transport) {
                 if (transport.responseText) {
-                    alert(JSON.parse(transport.responseText).result)
+                    if (JSON.parse(transport.responseText).result === 'OK') {
+                        location.reload();
+                    } else {
+                        alert('An error occurred while fetching parameters for Amazon Pay!');
+                    }
                 }
             }
         });

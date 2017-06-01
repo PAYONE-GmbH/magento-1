@@ -377,9 +377,9 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment
         $request->setCurrency('EUR');
         $request->setWallet(new Payone_Api_Request_Parameter_Authorization_PaymentMethod_Wallet([
             'wallettype' => Payone_Api_Enum_WalletType::AMAZONPAY,
-            'successurl' => $helper->getMagentoUrl('*/*/return'),
-            'errorurl'   => $helper->getMagentoUrl('*/*/error'),
-            'backurl'    => $helper->getMagentoUrl('*/*/cancel'),
+            'successurl' => str_replace('localhost', '127.0.0.1', $helper->getMagentoUrl('*/*/return')),
+            'errorurl'   => str_replace('localhost', '127.0.0.1', $helper->getMagentoUrl('*/*/error')),
+            'backurl'    => str_replace('localhost', '127.0.0.1', $helper->getMagentoUrl('*/*/cancel')),
         ]));
         $request->setPaydata(new Payone_Api_Request_Parameter_Paydata_Paydata(['items' => [
             new Payone_Api_Request_Parameter_Paydata_DataItem([
