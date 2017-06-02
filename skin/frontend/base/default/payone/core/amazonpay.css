@@ -1,0 +1,28 @@
+/* Mobile optimized and small window */
+
+#addressBookWidgetDiv {
+    width: 100%;
+    height: 228px;
+}
+
+#walletWidgetDiv {
+    width: 100%;
+    height: 228px;
+}
+
+/* Desktop and tablet */
+
+@media only screen and (min-width: 768px) {
+
+    #addressBookWidgetDiv {
+        width: 480px;
+        height: 228px;
+        margin-bottom: 36px;
+    }
+
+    #walletWidgetDiv {
+        width: 480px;
+        height: 228px;
+        margin-bottom: 36px;
+    }
+}

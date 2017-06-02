@@ -22,6 +22,15 @@
  */
 -->
 <layout>
+    <payone_core_amazonpay_checkout>
+        <reference name="head">
+            <action method="addCss"><name>payone/core/amazonpay.css</name></action>
+        </reference>
+        <reference name="content">
+            <block type="payone_core/amazon_pay_checkout" name="amazon.pay.checkout" template="payone/core/amazon/pay/checkout.phtml"/>
+        </reference>
+    </payone_core_amazonpay_checkout>
+
     <payone_core_pexpress_review translate="label">
         <label>Payone PayPal Express Order Review Form</label>
         <remove name="right"/>

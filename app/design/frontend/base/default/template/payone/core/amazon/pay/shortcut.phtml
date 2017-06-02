@@ -25,17 +25,19 @@
 /**
  * @var $this Payone_Core_Block_Amazon_Pay_Shortcut
  */
+$config = $this->getConfiguration();
+$returnUrl = 'https://tunnel.forgefire.net/magento1ce/payone_core/amazonpay/checkout/';
 ?>
 <div id="LoginWithAmazon"></div>
 <!-- In an appropriate script section -->
 <script>
     window.onAmazonLoginReady = function () {
-        amazon.Login.setClientId('CLIENT_ID');
+        amazon.Login.setClientId('<?php echo $config->getAmzClientId(); ?>');
     };
     window.onAmazonPaymentsReady = function () {
         // render the button here
         var authRequest;
-        OffAmazonPayments.Button('LoginWithAmazon', 'SELLER_ID', {
+        OffAmazonPayments.Button('LoginWithAmazon', '<?php echo $config->getAmzSellerId(); ?>', {
             type: 'PwA',
             color: 'Gold',
             size: 'medium', // type, color and size of the button are configureable inthe backend
@@ -47,7 +49,7 @@
                     scope: 'profile payments:widget payments:shipping_address payments:billing_address',
                     popup: true
                 };
-                authRequest = amazon.Login.authorize(loginOptions, 'REDIRECT_URL');
+                authRequest = amazon.Login.authorize(loginOptions, '<?php echo $returnUrl; ?>');
             }
         });
     }

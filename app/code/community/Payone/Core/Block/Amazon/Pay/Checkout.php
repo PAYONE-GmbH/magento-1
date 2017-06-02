@@ -20,7 +20,7 @@
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
  * @link            http://www.fatchip.de
  */
-class Payone_Core_Block_Amazon_Pay_Shortcut extends Mage_Core_Block_Template
+class Payone_Core_Block_Amazon_Pay_Checkout extends Mage_Core_Block_Template
 {
     /**
      * @return \Payone_Core_Model_Config_Payment_Method
