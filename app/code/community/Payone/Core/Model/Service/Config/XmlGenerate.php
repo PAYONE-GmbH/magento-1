@@ -247,10 +247,10 @@ class Payone_Core_Model_Service_Config_XmlGenerate
 
                     if ($paymentMethodConfig->getHideCvc() !== NULL && $paymentMethodConfig->getHideCvc() !== false) {
                         $hideCvcTypes = $paymentMethodConfig->getHideCvc();
-                        var_dump($hideCvcTypes);
+
                         if (is_array($hideCvcTypes)) {
                             $hideCvcTypes = implode(',', $hideCvcTypes);
-                            var_dump($hideCvcTypes);
+
                         }
                         $paymentMethodConfig->setHideCvc($hideCvcTypes);
                     }
