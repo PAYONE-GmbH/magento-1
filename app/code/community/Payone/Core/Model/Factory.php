@@ -1582,6 +1582,14 @@ class Payone_Core_Model_Factory
     }
 
     /**
+     * @return Payone_Core_Model_System_Config_CreditCardType
+     */
+    public function getModelSystemConfigHideCvc()
+    {
+        return Mage::getSingleton('payone_core/system_config_creditCardHideCvc');
+    }
+
+    /**
      * @return Payone_Core_Model_System_Config_OnlinebanktransferType
      */
     public function getModelSystemConfigOnlinebanktransferType()

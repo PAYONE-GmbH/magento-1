@@ -22,6 +22,11 @@
  */
 
 /** @var $this Payone_Core_Block_Payment_Method_Form_Creditcard */
+
+ $hideCvcTypes = $this->getHideCvcTypes();
+
+
+
 $code = $this->getMethodCode();
 $iCheckValidation = (int)$this->showCvcInput();
 ?>
@@ -49,7 +54,7 @@ $iCheckValidation = (int)$this->showCvcInput();
                         <span class="required">*</span>
                     </label><br class="clear"/>
                     <select id="<?php echo $code ?>_cc_type_select" name="<?php echo $code ?>_cc_type_select"
-                            onchange="payone.displayCheckCvc(this);payoneChangedCreditCardInfo();" class="no-submit required-entry">
+                            onchange=" payone.displayCheckCvc(this);payoneChangedCreditCardInfo();" class="no-submit required-entry">
                         <option value=""><?php echo $this->__('--Please Select--') ?></option>
                         <?php
                         foreach ($this->getTypes() as $key => $type) :
@@ -114,7 +119,7 @@ $iCheckValidation = (int)$this->showCvcInput();
             <!-- Credit card cvc : -->
             <li style="clear:both;">
                 <div class="input-box" id="<?php echo $code ?>_cc_cid_div"
-                     style="<?php echo $iCheckValidation == '0' ? 'display: none; ' : '';?>">
+                     style="display: none">
                     <label for="<?php echo $code ?>_cc_cid">
                         <?php echo $this->__('Card Verification Number') ?>&nbsp;<span class="required">*</span>
                     </label><br class="clear"/>
@@ -138,6 +143,7 @@ $iCheckValidation = (int)$this->showCvcInput();
                 <input type="hidden" id="<?php echo $code ?>_config_cvc" name="payment[payone_config_cvc]"
                        value="<?php echo $this->escapeHtml($this->getCvcJson()); ?>" class=""/>
                 <input type="hidden" id="payone_cc_check_validation" value="<?php echo $iCheckValidation; ?>"/>
+                <input type="hidden" id="payone_cc_check_validation_types" value="<?php echo $this->escapeHtml(($hideCvcTypes)); ?>"/>
             </li>
         </ul>
     <?php } else { ?>
@@ -316,7 +322,7 @@ $iCheckValidation = (int)$this->showCvcInput();
                 echo $sVarname." = '".$sValue."';";
             }
             ?>
-                
+
             var iframes = payone.initHosted(fieldconfig, '<?php echo $code ?>_cc_type_select');
         </script>
     <?php } ?>

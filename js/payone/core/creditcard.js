@@ -95,14 +95,19 @@ PAYONE.Service.CreditCardCheck = function (handler, form, config) {
     this.displayCheckCvc = function (element) {
         config = $('payone_creditcard_config_cvc').value.evalJSON();
         ccKey = element.value;
+
+        var selectedValue = element.value.substring(element.value.indexOf("_") + 1);
+
         var cvcDiv = $("payone_creditcard_cc_cid_div");
         if (cvcDiv != undefined && cvcDiv != null) {
             configCcKey = config[ccKey];
-            if (configCcKey != undefined && (configCcKey == 'always' || (configCcKey == 'only_first' && $('payone_cc_check_validation').value == 1))) {
-                cvcDiv.show();
+            //check if selected creditcard is in hideCvcTypes
+            if($('payone_cc_check_validation_types').value.indexOf(selectedValue) != -1){
+                cvcDiv.hide();
                 $('payone_cc_check_validation').value = 1;
             } else {
-                cvcDiv.hide();
+                cvcDiv.show();
+
             }
         }
     };

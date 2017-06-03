@@ -68,6 +68,7 @@
  * @method setKlarnaConfig($klarnaConfig)
  * @method setCheckCvc($checkCvc)
  * @method string getCheckCvc()
+ * @method setHideCvc($hideCvc)
  * @method setCheckBankAccount($checkBankaccount)
  * @method int getCheckBankAccount()
  * @method setSepaCountry($sepaCountry)
@@ -600,6 +601,7 @@ class Payone_Core_Model_Domain_Config_PaymentMethod
         // prepare ratepay config
         $this->unserializeData('ratepay_config');
         $this->explodeData('types');
+        $this->explodeData('hide_cvc');
         $this->explodeData('specificcountry');
         $this->explodeData('sepa_country');
     }
@@ -620,6 +622,8 @@ class Payone_Core_Model_Domain_Config_PaymentMethod
     {
         // prepare types
         $this->implodeData('types');
+
+        $this->implodeData('hide_cvc');
 
         // prepare specificcountry
         $this->implodeData('specificcountry');
@@ -681,6 +685,15 @@ class Payone_Core_Model_Domain_Config_PaymentMethod
         if ($data !== null && !is_array($data)) {
             $this->setData($key, empty($data) ? false : explode(',', $data));
         }
+    }
+
+    /**
+     * @return array
+     */
+    public function getHideCvc()
+    {
+        $this->explodeData('hide_cvc');
+        return $this->getData('hide_cvc');
     }
 
     /**
