@@ -22,24 +22,4 @@
  */
 class Payone_Core_Block_Amazon_Pay_Checkout extends Mage_Core_Block_Template
 {
-    /**
-     * @return \Payone_Core_Model_Config_Payment_Method
-     */
-    protected function getConfiguration()
-    {
-        /** @var \Mage_Checkout_Model_Session $session */
-        $session = Mage::getSingleton('checkout/session');
-        /** @var \Mage_Sales_Model_Quote $quote */
-        $quote = $session->getQuote();
-        /** @var \Mage_Payment_Helper_Data $paymentHelper */
-        $paymentHelper = Mage::helper('payment');
-        /** @var \Payone_Core_Model_Payment_Method_AmazonPay $paymentMethod */
-        $paymentMethod = $paymentHelper->getMethodInstance(
-            Payone_Core_Model_System_Config_PaymentMethodCode::AMAZONPAY
-        );
-        /** @var \Payone_Core_Model_Config_Payment_Method $paymentConfig */
-        $paymentConfig = $paymentMethod->getConfigForQuote($quote);
-
-        return $paymentConfig;
-    }
 }

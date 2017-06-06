@@ -1,28 +1,103 @@
-/* Mobile optimized and small window */
 
-#addressBookWidgetDiv {
-    width: 100%;
-    height: 228px;
-}
-
+#addressBookWidgetDiv,
 #walletWidgetDiv {
     width: 100%;
-    height: 228px;
+    height: 272px;
 }
 
-/* Desktop and tablet */
+#amazonCheckoutSteps .section .step {
+    padding: 20px 20px 12px 20px;
+}
 
-@media only screen and (min-width: 768px) {
+#amazonCheckoutSteps .section .step:after,
+#amazonCheckoutSteps .section .step-title:after {
+    content: '';
+    display: table;
+    clear: both;
+}
 
-    #addressBookWidgetDiv {
-        width: 480px;
-        height: 228px;
-        margin-bottom: 36px;
-    }
+#amazonCheckoutSteps .section:not(.active) .step {
+    display: none;
+}
 
+#amazonCheckoutSteps .section .step-title {
+    width: 100%;
+    border-top: 1px solid #ECECEC;
+    position: relative;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+#amazonCheckoutSteps .section.active .step-title {
+    border-bottom: 1px solid #ECECEC;
+}
+
+#amazonCheckoutSteps .section.allow:not(.active) .step-title {
+    cursor: pointer;
+}
+
+#amazonCheckoutSteps .section.allow:not(.active) .step-title:hover {
+    background-color: #F4F4F4;
+}
+
+#amazonCheckoutSteps .section .step-title .number {
+    width: 26px;
+    height: 26px;
+    text-align: center;
+    color: #FFFFFF;
+    line-height: 26px;
+    background-color: #3399CC;
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    margin-top: -13px;
+}
+
+#amazonCheckoutSteps .section.allow:not(.active) .step-title .number {
+    background-color: #99CCE5;
+}
+
+#amazonCheckoutSteps .section .step-title h2 {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 40px;
+    height: 40px;
+    float: left;
+    margin: 0 4px 0 45px;
+}
+
+#amazonCheckoutSteps .section .step-title a {
+    display: none;
+    float: right;
+    line-height: 40px;
+    height: 40px;
+    padding: 0 10px;
+}
+
+#amazonCheckoutSteps .section.allow:not(.active) .step-title a {
+    display: block;
+}
+
+#amazonCheckoutSteps .section .buttons-set {
+    text-align: left;
+    padding: 12px 0 20px 20px;
+    margin: 0;
+}
+
+#amazonCheckoutSteps .section .buttons-set button {
+    float: left;
+    margin: 0 10px 0 0;
+}
+
+@media only screen and (min-width: 1024px) {
+
+    #addressBookWidgetDiv,
     #walletWidgetDiv {
-        width: 480px;
-        height: 228px;
-        margin-bottom: 36px;
+        width: 512px;
+        height: 320px;
     }
 }

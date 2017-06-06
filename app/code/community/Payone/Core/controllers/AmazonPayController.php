@@ -23,127 +23,96 @@
 class Payone_Core_AmazonPayController extends Payone_Core_Controller_Abstract
 {
     /**
-     * @var \Mage_Customer_Model_Session
+     * @var \Payone_Core_Model_Service_Amazon_Pay_Checkout|null
      */
-    protected $_customerSession = null;
+    protected $_checkout = null;
 
     /**
-     * @var \Payone_Core_Model_Config_Payment_Method
+     * @var \Payone_Core_Model_Config_Payment_Method|null
      */
     protected $_config = null;
 
     /**
-     * @var \Mage_Sales_Model_Quote
+     * @var \Mage_Sales_Model_Quote|null
      */
-    protected $_quote = false;
+    protected $_quote = null;
 
     public function checkoutAction()
     {
-        //$this->getResponse()->setHeader('Content-Type', 'application/json');
-        //$this->getResponse()->setBody('{"result":"OK"}');
-
         try {
             $this->_initCheckout();
-
-            $this->loadLayout();
-            $this->_initLayoutMessages('payone_core/session');
-            $reviewBlock = $this->getLayout()->getBlock('amazon.pay.checkout');
-            $reviewBlock->setQuote($this->_getQuote());
-            /*
-            $reviewBlock->getChild('details')->setQuote($this->_getQuote());
-            if ($reviewBlock->getChild('shipping_method')) {
-                $reviewBlock->getChild('shipping_method')->setQuote($this->_getQuote());
-            }
-            */
-
+            $this->loadLayout()->_initLayoutMessages('payone_core/session');
+            $this->getLayout()->getBlock('amazon.pay.checkout')->setData([
+                'config' => $this->_getConfig(),
+                'quote' => $this->_getQuote(),
+            ]);
             $this->renderLayout();
             return;
         } catch (Mage_Core_Exception $e) {
-            Mage::getSingleton('checkout/session')->addError($e->getMessage());
+            $this->_getCheckoutSession()->addError($e->getMessage());
         } catch (Exception $e) {
-            Mage::getSingleton('checkout/session')->addError(
-                $this->__('Unable to initialize Payone Amazon Checkout foo.')
-            );
+            $this->_getCheckoutSession()->addError($this->__('Unable to initialize PAYONE Amazon Checkout.'));
             Mage::logException($e);
         }
-
         $this->_redirect('checkout/cart');
     }
 
     /**
      * Instantiate quote and checkout
+     * @return \Payone_Core_AmazonPayController
      * @throws \Mage_Core_Exception
      */
     private function _initCheckout()
     {
-        $quote = $this->_getQuote();
-        if (!$quote->hasItems() || $quote->getData('has_error')) {
-            $this->getResponse()->setHeader('HTTP/1.1', '403 Forbidden');
-            Mage::throwException(Mage::helper('payone_core')->__('Unable to initialize Payone Amazon Checkout.'));
+        $this->_quote = $this->_getCheckoutSession()->getQuote();
+        if (!$this->_quote->hasItems() || $this->_quote->getData('has_error')) {
+            $this->getResponse()->setHeader('HTTP/1.1', '500 Internal Server Error');
+            Mage::throwException(Mage::helper('payone_core')->__('Unable to initialize PAYONE Amazon Checkout.'));
         }
-        $this->_customerSession = Mage::getSingleton('customer/session');
         /** @var \Mage_Payment_Helper_Data $paymentHelper */
         $paymentHelper = Mage::helper('payment');
         /** @var \Payone_Core_Model_Payment_Method_AmazonPay $paymentMethod */
         $paymentMethod = $paymentHelper->getMethodInstance(
             Payone_Core_Model_System_Config_PaymentMethodCode::AMAZONPAY
         );
-        $this->_config = $paymentMethod->getConfigForQuote($quote);
+        $this->_config = $paymentMethod->getConfigForQuote($this->_quote);
+        $this->_checkout = Mage::getModel(
+            'payone_core/service_amazon_pay_checkout',
+            [
+                'quote'  => $this->_quote,
+                'config' => $this->_config,
+            ]
+        );
+        return $this;
     }
 
     /**
-     * Set and get $workOrderId to the session
-     * @param null $workOrderId
-     * @return $this
-     * @throws \Mage_Core_Exception
-     */
-    private function _initWorkOrderId($workOrderId = null)
-    {
-        if (null !== $workOrderId) {
-            if (false === $workOrderId) {
-                // security measure for avoid unsetting token twice
-                if (!$this->_getSession()->getWorkOrderId()) {
-                    Mage::throwException($this->__('PayPal Express Checkout Token does not exist.'));
-                }
-
-                $this->_getSession()->unsWorkOrderId();
-            } else {
-                $this->_getSession()->setWorkOrderId($workOrderId);
-            }
-
-            return $this;
-        } else {
-            return $this->_getSession()->getWorkOrderId();
-        }
-    }
-
-    /**
-     * Return checkout session object
-     *
      * @return \Mage_Checkout_Model_Session
      */
     private function _getCheckoutSession()
     {
-        return Mage::getSingleton('checkout/session');
+        /** @var \Mage_Checkout_Model_Session $session */
+        $session = Mage::getSingleton('checkout/session');
+        return $session;
     }
 
     /**
-     * Return checkout quote object
-     *
+     * @return \Payone_Core_Model_Config_Payment_Method
+     */
+    private function _getConfig()
+    {
+        return $this->_config;
+    }
+
+    /**
      * @return \Mage_Sales_Model_Quote
      */
     private function _getQuote()
     {
-        if (!$this->_quote) {
-            $this->_quote = $this->_getCheckoutSession()->getQuote();
-        }
-
         return $this->_quote;
     }
 
     /**
-     * Payone session instance getter
-     *
      * @return \Payone_Core_Model_Session
      */
     private function _getSession()

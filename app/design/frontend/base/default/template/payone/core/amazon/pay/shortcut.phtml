@@ -36,17 +36,16 @@ $returnUrl = 'https://tunnel.forgefire.net/magento1ce/payone_core/amazonpay/chec
     };
     window.onAmazonPaymentsReady = function () {
         // render the button here
-        var authRequest;
+        var authRequest, loginOptions;
         OffAmazonPayments.Button('LoginWithAmazon', '<?php echo $config->getAmzSellerId(); ?>', {
             type: 'PwA',
             color: 'Gold',
-            size: 'medium', // type, color and size of the button are configureable inthe backend
-            language: 'de-DE', // may change when the shop language changes, supported:
-            // en-GB, de-DE, fr-FR, it-IT, es-ES
-            // if this parameter is empty, the language will be auto-detected
+            size: 'medium', // type, color and size of the button are configureable in the backend
+            language: 'de-DE', // this may change when the shop language changes, supported:
+            // en-GB, de-DE, fr-FR, it-IT, es-ES -- if empty, the locale will be auto-detected
             authorization: function () {
                 loginOptions = {
-                    scope: 'profile payments:widget payments:shipping_address payments:billing_address',
+                    scope: 'payments:billing_address payments:shipping_address payments:widget profile',
                     popup: true
                 };
                 authRequest = amazon.Login.authorize(loginOptions, '<?php echo $returnUrl; ?>');

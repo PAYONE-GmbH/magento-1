@@ -25,24 +25,72 @@
 /**
  * @var $this Payone_Core_Block_Amazon_Pay_Checkout
  */
-$config = $this->getConfiguration();
+$config = $this->getData('config');
+$quote = $this->getData('quote');
 ?>
-<div id="addressBookWidgetDiv"></div>
-
-<div id="walletWidgetDiv"></div>
+<div class="page-title"><h1>Checkout</h1></div>
+<ol id="amazonCheckoutSteps">
+    <li class="section allow">
+        <div class="step-title">
+            <span class="number">1</span>
+            <h2>Review shopping cart</h2>
+            <a href="#">Edit</a>
+        </div>
+        <div class="step"></div>
+    </li>
+    <li class="section allow active" id="amazonCheckoutShipping">
+        <div class="step-title">
+            <span class="number">2</span>
+            <h2>Shipping information</h2>
+            <a href="#">Edit</a>
+        </div>
+        <div class="step" id="addressBookWidgetDiv"></div>
+        <div class="buttons-set">
+            <button type="button" title="Continue" class="button" onclick="">
+                <span><span>Continue</span></span>
+            </button>
+        </div>
+    </li>
+    <li class="section">
+        <div class="step-title">
+            <span class="number">3</span>
+            <h2>Shipping method</h2>
+            <a href="#">Edit</a>
+        </div>
+        <div class="step"></div>
+    </li>
+    <li class="section" id="amazonCheckoutPayment">
+        <div class="step-title">
+            <span class="number">4</span>
+            <h2>Payment information</h2>
+            <a href="#">Edit</a>
+        </div>
+        <div class="step" id="walletWidgetDiv"></div>
+    </li>
+    <li class="section">
+        <div class="step-title">
+            <span class="number">5</span>
+            <h2>Order review</h2>
+            <a href="#">Edit</a>
+        </div>
+        <div class="step"></div>
+    </li>
+</ol>
 
 <!-- In an appropriate script section -->
 <script>
-    window.onAmazonLoginReady = function() {amazon.Login.setClientId('<?php echo $config->getAmzClientId(); ?>'); };
-    window.onAmazonPaymentsReady = function() {
+    window.onAmazonLoginReady = function () {
+        amazon.Login.setClientId('<?php echo $config->getAmzClientId(); ?>');
+    };
+    window.onAmazonPaymentsReady = function () {
         new OffAmazonPayments.Widgets.AddressBook({
             sellerId: '<?php echo $config->getAmzSellerId(); ?>',
-            scope: 'profile payments:widget payments:shipping_address payments:billing_address',
-            onOrderReferenceCreate: function(orderReference) {
+            scope: 'payments:billing_address payments:shipping_address payments:widget profile',
+            onOrderReferenceCreate: function (orderReference) {
                 // Here is where you can grab the Order Reference ID.
                 orderReference.getAmazonOrderReferenceId();
             },
-            onAddressSelect: function(orderReference) {
+            onAddressSelect: function (orderReference) {
                 // Replace the following code with the action that you want
                 // to perform after the address is selected. The
                 // amazonOrderReferenceId can be used to retrieve the address
@@ -58,11 +106,11 @@ $config = $this->getConfiguration();
             design: {
                 designMode: 'responsive'
             },
-            onReady: function(orderReference) {
+            onReady: function (orderReference) {
                 // Enter code here you want to be executed
                 // when the address widget has been rendered.
             },
-            onError: function(error) {
+            onError: function (error) {
                 // Your error handling code.
                 // During development you can use the following
                 // code to view error messages:
@@ -73,8 +121,8 @@ $config = $this->getConfiguration();
 
         new OffAmazonPayments.Widgets.Wallet({
             sellerId: '<?php echo $config->getAmzSellerId(); ?>',
-            scope: 'profile payments:widget payments:shipping_address payments:billing_address',
-            onPaymentSelect: function(orderReference) {
+            scope: 'payments:billing_address payments:shipping_address payments:widget profile',
+            onPaymentSelect: function (orderReference) {
                 // Replace this code with the action that you want to perform
                 // after the payment method is selected.
 
@@ -84,7 +132,7 @@ $config = $this->getConfiguration();
             design: {
                 designMode: 'responsive'
             },
-            onError: function(error) {
+            onError: function (error) {
                 // Your error handling code.
                 // During development you can use the following
                 // code to view error messages:
