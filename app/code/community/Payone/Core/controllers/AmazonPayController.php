@@ -57,8 +57,24 @@ class Payone_Core_AmazonPayController extends Payone_Core_Controller_Abstract
         $this->_redirect('checkout/cart');
     }
 
+    public function progressAction()
+    {
+        $params = $this->getRequest()->getParams();
+        try {
+            $this->_initCheckout();
+            $this->_initWorkOrder();
+        } catch (Mage_Core_Exception $e) {
+            $this->_getCheckoutSession()->addError($e->getMessage());
+        } catch (Exception $e) {
+            $this->_getCheckoutSession()->addError($this->__('Unable to initialize PAYONE Amazon Checkout.'));
+            Mage::logException($e);
+        }
+
+        $this->getResponse()->setHeader('Content-Type', 'application/json');
+        $this->getResponse()->setBody('{"result":"OK"}');
+    }
+
     /**
-     * Instantiate quote and checkout
      * @return \Payone_Core_AmazonPayController
      * @throws \Mage_Core_Exception
      */
@@ -67,7 +83,7 @@ class Payone_Core_AmazonPayController extends Payone_Core_Controller_Abstract
         $this->_quote = $this->_getCheckoutSession()->getQuote();
         if (!$this->_quote->hasItems() || $this->_quote->getData('has_error')) {
             $this->getResponse()->setHeader('HTTP/1.1', '500 Internal Server Error');
-            Mage::throwException(Mage::helper('payone_core')->__('Unable to initialize PAYONE Amazon Checkout.'));
+            Mage::throwException($this->__('Unable to initialize PAYONE Amazon Checkout.'));
         }
         /** @var \Mage_Payment_Helper_Data $paymentHelper */
         $paymentHelper = Mage::helper('payment');
@@ -84,6 +100,14 @@ class Payone_Core_AmazonPayController extends Payone_Core_Controller_Abstract
             ]
         );
         return $this;
+    }
+
+    private function _initWorkOrder()
+    {
+        $workOrderId = $this->_getSession()->getData('WorkOrderId');
+        $workOrderId = $this->_checkout->initWorkOrder($workOrderId);
+        $this->_getSession()->setData('WorkOrderId', $workOrderId);
+        return $workOrderId;
     }
 
     /**

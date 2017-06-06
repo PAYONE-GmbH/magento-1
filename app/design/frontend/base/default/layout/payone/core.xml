@@ -29,6 +29,7 @@
             <action method="setTemplate"><template>page/1column.phtml</template></action>
         </reference>
         <reference name="head">
+            <action method="addJs"><script>payone/core/amazonpay.js</script></action>
             <action method="addCss"><name>payone/core/amazonpay.css</name></action>
         </reference>
         <reference name="content">

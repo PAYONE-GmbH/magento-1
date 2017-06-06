@@ -224,7 +224,7 @@ class Payone_Core_Adminhtml_Payonecore_System_Config_PaymentController
         $service = $this->getFactory()->getServicePaymentGenericpayment($config);
         /** @var Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment $mapper */
         $mapper = $service->getMapper();
-        $request = $mapper->requestAmazonPayConfiguration();
+        $request = $mapper->requestAmazonPayGetConfiguration();
         $response = $this->getFactory()->getServiceApiPaymentGenericpayment()->request($request);
 
         if ($response instanceof Payone_Api_Response_Genericpayment_Ok) {

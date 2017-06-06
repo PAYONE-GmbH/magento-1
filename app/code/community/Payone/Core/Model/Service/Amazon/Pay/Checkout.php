@@ -37,6 +37,13 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
      */
     protected $_quote = null;
 
+    protected $_workOrderId = null;
+
+    /**
+     * @var \Payone_Core_Model_Factory|null
+     */
+    protected $factory = null;
+
     /**
      * @param array $params
      * @throws \Exception
@@ -54,5 +61,42 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
             throw new \Exception('Configuration object is required.');
         }
         $this->_customerSession = Mage::getSingleton('customer/session');
+    }
+
+    /**
+     * @param string|null $fromSession
+     * @return string
+     */
+    public function initWorkOrder($fromSession = null)
+    {
+        if (!empty($fromSession)) {
+            $this->_workOrderId = $fromSession;
+        }
+        if (!empty($this->_workOrderId)) {
+            return $this->_workOrderId;
+        }
+        $service = $this->getFactory()->getServicePaymentGenericpayment($this->_config);
+        /** @var \Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment $mapper */
+        $mapper = $service->getMapper();
+        $request = $mapper->requestAmazonPayGetConfiguration();
+        $response = $this->getFactory()->getServiceApiPaymentGenericpayment()->request($request);
+
+        if ($response instanceof \Payone_Api_Response_Genericpayment_Ok) {
+            $this->_workOrderId = $response->getWorkorderId();
+        } else {
+            Mage::throwException(Mage::helper('payone_core')->__('Unable to initialize PAYONE Amazon Checkout.'));
+        }
+        return $this->_workOrderId;
+    }
+
+    /**
+     * @return \Payone_Core_Model_Factory
+     */
+    private function getFactory()
+    {
+        if ($this->factory === null) {
+            $this->factory = Mage::getModel('payone_core/factory');
+        }
+        return $this->factory;
     }
 }

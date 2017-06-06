@@ -83,9 +83,14 @@
 }
 
 #amazonCheckoutSteps .section .buttons-set {
+    display: none;
     text-align: left;
     padding: 12px 0 20px 20px;
     margin: 0;
+}
+
+#amazonCheckoutSteps .section.active .buttons-set {
+    display: block;
 }
 
 #amazonCheckoutSteps .section .buttons-set button {
