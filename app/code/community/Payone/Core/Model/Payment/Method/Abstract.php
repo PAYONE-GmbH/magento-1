@@ -402,11 +402,11 @@ abstract class Payone_Core_Model_Payment_Method_Abstract
      * @param int $storeId
      * @return mixed
      */
-    public function getConfigData($field, $storeId = null)
+    public function getConfigData($field, $storeId = null, Mage_Sales_Model_Quote $quote = null)
     {
         if ($field == 'sort_order') {
             try {
-                $data = $this->getConfigForQuote(null, $storeId)->getSortOrder();
+                $data = $this->getConfigForQuote($quote, $storeId)->getSortOrder();
             }
             catch (Payone_Core_Exception_PaymentMethodConfigNotFound $e) {
                 return 0;
