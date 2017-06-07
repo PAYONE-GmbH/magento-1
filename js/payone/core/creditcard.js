@@ -60,7 +60,9 @@ PAYONE.Service.CreditCardCheck = function (handler, form, config) {
     this.initHosted = function (fieldconfig, type_id) {
         var configId = false;
         var elementCcType = $('payone_creditcard_cc_type_select');
+        var iFrameCvc = $("payone_creditcard_cc_cid_div");
         if (elementCcType != undefined) {
+            iFrameCvc.hide();
             var ccTypeConfigKey = elementCcType.value;
             var ccTypeSplit = ccTypeConfigKey.split('_');
             configId = ccTypeSplit[0];
@@ -76,10 +78,18 @@ PAYONE.Service.CreditCardCheck = function (handler, form, config) {
 
         document.getElementById(type_id).onchange = function () {
             var elementCcType = $('payone_creditcard_cc_type_select');
+
             if (elementCcType != undefined) {
+
                 var ccTypeConfigKey = elementCcType.value;
                 var ccTypeSplit = ccTypeConfigKey.split('_');
                 var ccType = ccTypeSplit[1];
+                var selectedValueIFrame = ccTypeConfigKey.substring(ccTypeConfigKey.indexOf("_") + 1);
+                if($('payone_cc_check_validation_types').value.indexOf(selectedValueIFrame) != -1){
+                    iFrameCvc.hide();
+                } else {
+                    iFrameCvc.show();
+                }
                 iframes.setCardType(ccType); // on change: set new type of credit card to process
             }
         };
