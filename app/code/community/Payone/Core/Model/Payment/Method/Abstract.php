@@ -400,6 +400,7 @@ abstract class Payone_Core_Model_Payment_Method_Abstract
     /**
      * @param string $field
      * @param int $storeId
+     * @param Mage_Sales_Model_Quote $quote
      * @return mixed
      */
     public function getConfigData($field, $storeId = null, Mage_Sales_Model_Quote $quote = null)
