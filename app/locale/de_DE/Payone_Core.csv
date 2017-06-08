@@ -132,6 +132,7 @@
 "Use Global Settings","Nutze Globale-Einstellungen"
 "Creditcard-Type","Kartentyp"
 "Check Card Validation Code","Prüfe Kartenprüfnummer"
+"Hide Card Validation Code","Kartenprüfnummer verstecken"
 "Validate bank code","Prüfe Bankverbindung"
 "List of supported SEPA countries","Liste der unterstützten Kontoländer"
 "Request BIC","BIC abfragen"

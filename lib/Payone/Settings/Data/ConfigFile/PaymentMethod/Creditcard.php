@@ -40,6 +40,9 @@ class Payone_Settings_Data_ConfigFile_PaymentMethod_Creditcard
     /** @var string */
     protected $cvc2 = '';
 
+    /** @var string */
+    protected $hide_cvc = '';
+
     /**
      * @return string
      */
@@ -71,4 +74,30 @@ class Payone_Settings_Data_ConfigFile_PaymentMethod_Creditcard
     {
         return $this->cvc2;
     }
+
+    /**
+     * @param $hide_cvc
+     */
+    public function setHideCvc($hide_cvc)
+    {
+        $this->hide_cvc = $hide_cvc;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHideCvc()
+    {
+        return $this->hide_cvc;
+    }
+
+    /**
+     * @param $value
+     */
+    public function addHideCvc($value)
+    {
+        $this->hide_cvc[] = $value;
+    }
+
+
 }
