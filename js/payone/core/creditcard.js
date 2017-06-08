@@ -62,12 +62,16 @@ PAYONE.Service.CreditCardCheck = function (handler, form, config) {
         var elementCcType = $('payone_creditcard_cc_type_select');
         var iFrameCvc = $("payone_creditcard_cc_cid_div");
         if (elementCcType != undefined) {
-            iFrameCvc.hide();
+
             var ccTypeConfigKey = elementCcType.value;
             var ccTypeSplit = ccTypeConfigKey.split('_');
             configId = ccTypeSplit[0];
             var ccType = ccTypeSplit[1];
             $("payone_creditcard_cc_type").setValue(ccType);
+
+            if(elementCcType.length > 1 && $('payone_cc_check_validation_types').value.indexOf(ccType) != -1){
+                iFrameCvc.hide();
+             }
         }
 
         aConfig = this.getConfig();

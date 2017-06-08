@@ -51,7 +51,7 @@ if ($useSqlInstaller) {
     $connection = $installer->getConnection();
 
 
-    // Update table sales_flat_order_payment
+    // Update table payone_config_payment_method
     $connection->addColumn(
         $tablePaymentMethod, 'hide_cvc',
         'TEXT COMMENT \'hide_cvc\' AFTER `check_cvc`'
