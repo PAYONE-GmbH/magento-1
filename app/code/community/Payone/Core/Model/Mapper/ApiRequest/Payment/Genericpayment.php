@@ -410,11 +410,19 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment
             'errorurl'   => str_replace('localhost', '127.0.0.1', $helper->getMagentoUrl('*/*/error')),
             'backurl'    => str_replace('localhost', '127.0.0.1', $helper->getMagentoUrl('*/*/cancel')),
         ]));
-        $request->setPaydata(new Payone_Api_Request_Parameter_Paydata_Paydata(['items' => array_merge($data, [
+        $items = [
             new Payone_Api_Request_Parameter_Paydata_DataItem([
-                'key' => 'action', 'data' => Payone_Api_Enum_GenericpaymentAction::AMAZONPAY_SETORDERREFERENCEDETAILS
+                'key'  => 'action',
+                'data' => Payone_Api_Enum_GenericpaymentAction::AMAZONPAY_SETORDERREFERENCEDETAILS,
             ]),
-        ])]));
+        ];
+        foreach ($data as $index => $value) {
+            array_push($items, new Payone_Api_Request_Parameter_Paydata_DataItem([
+                'key'  => $index,
+                'data' => $value,
+            ]));
+        }
+        $request->setPaydata(new Payone_Api_Request_Parameter_Paydata_Paydata(['items' => $items]));
         $request->setWorkorderId($workOrderId);
         return $request;
     }
@@ -440,11 +448,19 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment
             'errorurl'   => str_replace('localhost', '127.0.0.1', $helper->getMagentoUrl('*/*/error')),
             'backurl'    => str_replace('localhost', '127.0.0.1', $helper->getMagentoUrl('*/*/cancel')),
         ]));
-        $request->setPaydata(new Payone_Api_Request_Parameter_Paydata_Paydata(['items' => array_merge($data, [
+        $items = [
             new Payone_Api_Request_Parameter_Paydata_DataItem([
-                'key' => 'action', 'data' => Payone_Api_Enum_GenericpaymentAction::AMAZONPAY_GETORDERREFERENCEDETAILS
+                'key'  => 'action',
+                'data' => Payone_Api_Enum_GenericpaymentAction::AMAZONPAY_GETORDERREFERENCEDETAILS,
             ]),
-        ])]));
+        ];
+        foreach ($data as $index => $value) {
+            array_push($items, new Payone_Api_Request_Parameter_Paydata_DataItem([
+                'key'  => $index,
+                'data' => $value,
+            ]));
+        }
+        $request->setPaydata(new Payone_Api_Request_Parameter_Paydata_Paydata(['items' => $items]));
         $request->setWorkorderId($workOrderId);
         return $request;
     }

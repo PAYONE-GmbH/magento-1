@@ -92,9 +92,11 @@ $helper = Mage::helper('payone_core/url');
 </ol>
 
 <script>
-    window.amazonClientId = '<?php echo $config->getAmzClientId(); ?>';
-    window.amazonSellerId = '<?php echo $config->getAmzSellerId(); ?>';
-    window.progressUrl = '<?php echo $helper->getMagentoUrl('*/*/progress'); ?>'
+    window.PayoneCheckout = {
+        amazonClientId: '<?php echo $config->getAmzClientId(); ?>',
+        amazonSellerId: '<?php echo $config->getAmzSellerId(); ?>',
+        progressAction: '<?php echo $helper->getMagentoUrl('*/*/progress'); ?>'
+    };
 </script>
 
 <!-- Load script Widgets.js from Amazon -->

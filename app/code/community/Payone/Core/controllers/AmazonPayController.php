@@ -59,19 +59,36 @@ class Payone_Core_AmazonPayController extends Payone_Core_Controller_Abstract
 
     public function progressAction()
     {
+        $response = $this->getResponse();
+        $response->setHeader('Content-Type', 'application/json');
         $params = $this->getRequest()->getParams();
+        $checkoutSteps = [
+            'selectAddress',
+            'selectMethod',
+            'selectWallet',
+            'submitOrder',
+        ];
         try {
+            if (!in_array($params['currentStep'], $checkoutSteps)) {
+                Mage::throwException(
+                    "Invalid value for parameter `currentStep`" .
+                    " -> \"{$params['currentStep']}\"."
+                );
+            }
             $this->_initCheckout();
             $this->_initWorkOrder();
+            $object = $this->_checkout;
+            $method = $params['currentStep'];
+            $response->setBody(call_user_func([$object, $method], $params));
         } catch (Mage_Core_Exception $e) {
-            $this->_getCheckoutSession()->addError($e->getMessage());
+            $response->setBody(json_encode(['errorMessage' => $e->getMessage(), 'successful' => false]));
+            return;
         } catch (Exception $e) {
-            $this->_getCheckoutSession()->addError($this->__('Unable to initialize PAYONE Amazon Checkout.'));
+            $errorMessage = $this->__('Unable to initialize PAYONE Amazon Checkout.');
+            $response->setBody(json_encode(['errorMessage' => $errorMessage, 'successful' => false]));
             Mage::logException($e);
+            return;
         }
-
-        $this->getResponse()->setHeader('Content-Type', 'application/json');
-        $this->getResponse()->setBody('{"result":"OK"}');
     }
 
     /**

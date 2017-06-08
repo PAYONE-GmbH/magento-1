@@ -26,15 +26,21 @@ var PayoneCheckout = {
 };
 
 jQuery(document).on('ready', function () {
+    jQuery.extend(PayoneCheckout, window.PayoneCheckout);
     jQuery('button.amz').on('click', function (event) {
         event.preventDefault();
-        var action = event.currentTarget.getAttribute('id');
-        new Ajax.Request(window.progressUrl, {
+        var Progress = {currentStep: event.currentTarget.getAttribute('id')};
+        new Ajax.Request(PayoneCheckout.progressAction, {
             method: 'get',
-            parameters: {checkoutAction: action},
+            parameters: jQuery.extend({}, PayoneCheckout, Progress),
             onSuccess: function (transport) {
                 if (transport.responseText) {
-                    alert(JSON.parse(transport.responseText).result)
+                    var result = JSON.parse(transport.responseText);
+                    if (result['successful'] === true) {
+                        alert('OK');
+                    } else {
+                        alert('ERROR');
+                    }
                 }
             }
         });
@@ -57,12 +63,12 @@ window.onAmazonOrderReady = function (orderReference) {
 };
 
 window.onAmazonLoginReady = function () {
-    amazon.Login.setClientId(window.amazonClientId);
+    amazon.Login.setClientId(PayoneCheckout.amazonClientId);
 };
 
 window.onAmazonPaymentsReady = function () {
     new OffAmazonPayments.Widgets.AddressBook({
-        sellerId: window.amazonSellerId,
+        sellerId: PayoneCheckout.amazonSellerId,
         scope: 'payments:billing_address payments:shipping_address payments:widget profile',
         onAddressSelect: function () {
             console.log('AddressBook->onAddressSelect' + ': ' + 'Event triggered.');
@@ -77,7 +83,7 @@ window.onAmazonPaymentsReady = function () {
     }).bind("addressBookWidgetDiv");
 
     new OffAmazonPayments.Widgets.Wallet({
-        sellerId: window.amazonSellerId,
+        sellerId: PayoneCheckout.amazonSellerId,
         scope: 'payments:billing_address payments:shipping_address payments:widget profile',
         onPaymentSelect: function () {
             console.log('Wallet->onPaymentSelect' + ': ' + 'Event triggered.');

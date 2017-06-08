@@ -37,6 +37,9 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
      */
     protected $_quote = null;
 
+    /**
+     * @var string|null
+     */
     protected $_workOrderId = null;
 
     /**
@@ -90,6 +93,34 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
     }
 
     /**
+     * @param array $params
+     * @return string
+     */
+    public function selectAddress($params)
+    {
+        $data = [];
+        $result = [
+            'successful' => true,
+        ];
+        $service = $this->getFactory()->getServicePaymentGenericpayment($this->_config);
+        /** @var \Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment $mapper */
+        $mapper = $service->getMapper();
+        $request = $mapper->requestAmazonPayGetOrderReferenceDetails($this->_workOrderId, [
+            'amazon_reference_id' => $params['amazonOrderReferenceId'],
+            'amazon_address_token' => $params['addressConsentToken'],
+        ]);
+        $response = $this->getFactory()->getServiceApiPaymentGenericpayment()->request($request);
+        if ($response instanceof \Payone_Api_Response_Genericpayment_Ok) {
+            $data = $response->getPayDataArray();
+        } else {
+            Mage::throwException(Mage::helper('payone_core')->__('Unable to initialize PAYONE Amazon Checkout.'));
+        }
+        $shippingAddress = $this->fillAddressFields('shipping', $this->_quote->getShippingAddress(), $data);
+
+        return json_encode($result);
+    }
+
+    /**
      * @return \Payone_Core_Model_Factory
      */
     private function getFactory()
@@ -98,5 +129,34 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
             $this->factory = Mage::getModel('payone_core/factory');
         }
         return $this->factory;
+    }
+
+    /**
+     * @param string                           $type
+     * @param \Mage_Sales_Model_Quote_Address  $address
+     * @param array                            $data
+     * @return \Mage_Sales_Model_Quote_Address
+     */
+    private function fillAddressFields($type, $address, $data)
+    {
+        $mapping = [
+            'email' => 'email',
+            'zip' => 'postcode',
+            'country' => 'country_id',
+            'state' => 'region',
+            'city' => 'city',
+            'street' => 'street',
+            'firstname' => 'firstname',
+            'lastname' => 'lastname',
+            'telephonenumber' => 'telephone',
+        ];
+        foreach ($data as $key => $value) {
+            $key = array_key_exists($key, $mapping) ?
+                $key : str_replace("{$type}_", "", $key);
+            if (array_key_exists($key, $mapping)) {
+                $address->setData($mapping[$key], $value);
+            }
+        }
+        return $address;
     }
 }
