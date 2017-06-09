@@ -79,7 +79,10 @@ class Payone_Core_AmazonPayController extends Payone_Core_Controller_Abstract
             $this->_initWorkOrder();
             $object = $this->_checkout;
             $method = $params['currentStep'];
-            $response->setBody(call_user_func([$object, $method], $params));
+            $params['controller'] = $this;
+            $result = call_user_func([$object, $method], $params);
+            $response->setBody(json_encode($result));
+            return;
         } catch (Mage_Core_Exception $e) {
             $response->setBody(json_encode(['errorMessage' => $e->getMessage(), 'successful' => false]));
             return;
@@ -91,6 +94,20 @@ class Payone_Core_AmazonPayController extends Payone_Core_Controller_Abstract
         }
     }
 
+    public function getAdditionalAction()
+    {
+        $layout = $this->getLayout();
+        $update = $layout->getUpdate();
+        $update->load('checkout_onepage_additional');
+        $layout->generateXml();
+        $layout->generateBlocks();
+        $output = $layout->getOutput();
+        /** @var \Mage_Core_Model_Translate_Inline $translator */
+        $translator = Mage::getSingleton('core/translate_inline');
+        $translator->processResponseBody($output);
+        $this->getResponse()->setBody($output);
+    }
+
     /**
      * @return \Payone_Core_AmazonPayController
      * @throws \Mage_Core_Exception
@@ -99,8 +116,7 @@ class Payone_Core_AmazonPayController extends Payone_Core_Controller_Abstract
     {
         $this->_quote = $this->_getCheckoutSession()->getQuote();
         if (!$this->_quote->hasItems() || $this->_quote->getData('has_error')) {
-            $this->getResponse()->setHeader('HTTP/1.1', '500 Internal Server Error');
-            Mage::throwException($this->__('Unable to initialize PAYONE Amazon Checkout.'));
+            Mage::throwException($this->__('Your basket is empty or has become invalid.'));
         }
         /** @var \Mage_Payment_Helper_Data $paymentHelper */
         $paymentHelper = Mage::helper('payment');

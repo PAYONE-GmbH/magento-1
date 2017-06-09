@@ -23,6 +23,11 @@
 class Payone_Core_Model_Service_Amazon_Pay_Checkout
 {
     /**
+     * @var \Mage_Checkout_Model_Session|null
+     */
+    protected $_checkoutSession = null;
+
+    /**
      * @var \Mage_Customer_Model_Session|null
      */
     protected $_customerSession = null;
@@ -63,6 +68,7 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
         } else {
             throw new \Exception('Configuration object is required.');
         }
+        $this->_checkoutSession = Mage::getSingleton('checkout/session');
         $this->_customerSession = Mage::getSingleton('customer/session');
     }
 
@@ -89,35 +95,76 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
         } else {
             Mage::throwException(Mage::helper('payone_core')->__('Unable to initialize PAYONE Amazon Checkout.'));
         }
+
         return $this->_workOrderId;
     }
 
     /**
      * @param array $params
-     * @return string
+     * @return array
      */
     public function selectAddress($params)
     {
         $data = [];
-        $result = [
-            'successful' => true,
-        ];
         $service = $this->getFactory()->getServicePaymentGenericpayment($this->_config);
         /** @var \Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment $mapper */
         $mapper = $service->getMapper();
         $request = $mapper->requestAmazonPayGetOrderReferenceDetails($this->_workOrderId, [
-            'amazon_reference_id' => $params['amazonOrderReferenceId'],
+            'amazon_reference_id'  => $params['amazonOrderReferenceId'],
             'amazon_address_token' => $params['addressConsentToken'],
         ]);
         $response = $this->getFactory()->getServiceApiPaymentGenericpayment()->request($request);
         if ($response instanceof \Payone_Api_Response_Genericpayment_Ok) {
             $data = $response->getPayDataArray();
         } else {
-            Mage::throwException(Mage::helper('payone_core')->__('Unable to initialize PAYONE Amazon Checkout.'));
+            Mage::throwException(
+                Mage::helper('payone_core')->__('Unable to proceed with PAYONE Amazon Checkout.')
+            );
         }
-        $shippingAddress = $this->fillAddressFields('shipping', $this->_quote->getShippingAddress(), $data);
+        $paymentMethodCode = \Payone_Core_Model_System_Config_PaymentMethodCode::AMAZONPAY;
+        $this->_quote->getPayment()->importData([
+            'method'                          => $paymentMethodCode,
+            'payone_config_payment_method_id' => $this->_config->getId(),
+            'checks'                          => [],
+        ]);
+        $this->_quote->getShippingAddress()
+            ->setSameAsBilling(false)
+            ->setCollectShippingRates(true)
+            ->setData('should_ignore_validation', true)
+            ->setData('payment_method', $paymentMethodCode);
+        $this->fillAddressFields('shipping', $this->_quote->getShippingAddress(), $data);
+        $coupon = $this->_checkoutSession->getData('cart_coupon_code');
+        if (!empty($coupon)) {
+            $this->_quote->setCouponCode($coupon);
+        }
+        $this->_quote->collectTotals()->save();
+        $this->_quote->getShippingAddress()->collectShippingRates();
+        $shippingRates = $this->_quote->getShippingAddress()->getGroupedAllShippingRates();
+        if (empty($shippingRates)) {
+            Mage::throwException(
+                Mage::helper('payone_core')->__('Unfortunately shipping to this destination is not available.')
+            );
+        }
+        foreach ($shippingRates as $carrier => $methods) {
+            foreach ($methods as $index => $method) {
+                /** @var \Mage_Sales_Model_Quote_Address_Rate $method */
+                $shippingRates[$carrier][$index] = $method->getData();
+            }
+        }
+        /** @var \Payone_Core_AmazonPayController $controller */
+        $controller = $params['controller'];
+        $layout = $controller->getLayout();
+        $update = $layout->getUpdate();
+        $update->load('checkout_onepage_shippingmethod');
+        $layout->generateXml();
+        $layout->generateBlocks();
+        $output = $layout->getOutput();
 
-        return json_encode($result);
+        return [
+            'successful'             => true,
+            'shippingRates'          => $shippingRates,
+            'shippingRatesHtml'      => $output,
+        ];
     }
 
     /**
@@ -128,6 +175,7 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
         if ($this->factory === null) {
             $this->factory = Mage::getModel('payone_core/factory');
         }
+
         return $this->factory;
     }
 
@@ -140,14 +188,14 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
     private function fillAddressFields($type, $address, $data)
     {
         $mapping = [
-            'email' => 'email',
-            'zip' => 'postcode',
-            'country' => 'country_id',
-            'state' => 'region',
-            'city' => 'city',
-            'street' => 'street',
-            'firstname' => 'firstname',
-            'lastname' => 'lastname',
+            'email'           => 'email',
+            'zip'             => 'postcode',
+            'country'         => 'country_id',
+            'state'           => 'region',
+            'city'            => 'city',
+            'street'          => 'street',
+            'firstname'       => 'firstname',
+            'lastname'        => 'lastname',
             'telephonenumber' => 'telephone',
         ];
         foreach ($data as $key => $value) {
@@ -157,6 +205,7 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
                 $address->setData($mapping[$key], $value);
             }
         }
+
         return $address;
     }
 }

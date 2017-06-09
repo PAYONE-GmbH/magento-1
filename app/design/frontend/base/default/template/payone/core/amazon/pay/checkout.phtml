@@ -56,7 +56,12 @@ $helper = Mage::helper('payone_core/url');
             <h2>Shipping method</h2>
             <a href="#">Edit</a>
         </div>
-        <div class="step" id="shippingMethodDiv"></div>
+        <div class="step" id="shippingMethodDiv">
+            <form id="shippingMethodForm" action="">
+                <div id="shippingMethodsList"></div>
+                <div id="shippingMethodsAdditional"></div>
+            </form>
+        </div>
         <div class="buttons-set">
             <button title="Continue" type="button" class="button amz" id="selectMethod">
                 Continue
@@ -82,7 +87,7 @@ $helper = Mage::helper('payone_core/url');
             <h2>Order review</h2>
             <a href="#">Edit</a>
         </div>
-        <div class="step"></div>
+        <div class="step" id="orderReviewDiv"></div>
         <div class="buttons-set">
             <button title="Continue" type="button" class="button amz" id="submitOrder">
                 Continue
@@ -90,15 +95,17 @@ $helper = Mage::helper('payone_core/url');
         </div>
     </li>
 </ol>
-
+<!--suppress JSUnusedLocalSymbols -->
 <script>
-    window.PayoneCheckout = {
+    var PayoneCheckoutParams = {
         amazonClientId: '<?php echo $config->getAmzClientId(); ?>',
         amazonSellerId: '<?php echo $config->getAmzSellerId(); ?>',
-        progressAction: '<?php echo $helper->getMagentoUrl('*/*/progress'); ?>'
+        progressAction: '<?php echo $helper->getMagentoUrl('*/*/progress'); ?>',
+        optionalAction: '<?php echo $helper->getMagentoUrl('*/*/getAdditional'); ?>'
     };
+    var quoteBaseGrandTotal, lastPrice, checkQuoteBaseGrandTotal;
+    // TODO: Integrate dependencies from the original Onepage Checkout
 </script>
-
 <!-- Load script Widgets.js from Amazon -->
 <!-- URL changes to https://static-eu.payments-amazon.com/OffAmazonPayments/eur/lpa/js/Widgets.js when mode=live -->
 <script async="async" src='https://static-eu.payments-amazon.com/OffAmazonPayments/eur/sandbox/lpa/js/Widgets.js'

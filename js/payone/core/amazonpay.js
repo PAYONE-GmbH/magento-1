@@ -22,11 +22,24 @@
 
 var PayoneCheckout = {
     amazonOrderReferenceId: null,
-    addressConsentToken: null
+    addressConsentToken: null,
+    selectAddress: function (result) {
+        jQuery('#shippingMethodsList').html(result['shippingRatesHtml']);
+        new Ajax.Request(PayoneCheckout.optionalAction, {
+            method: 'get',
+            onSuccess: function (transport) {
+                if (transport.responseText) {
+                    jQuery('#shippingMethodsAdditional').html(transport.responseText);
+                    jQuery('#amazonCheckoutSelectAddress').removeClass('active');
+                    jQuery('#amazonCheckoutSelectMethod').addClass('allow active');
+                }
+            }
+        });
+    }
 };
 
 jQuery(document).on('ready', function () {
-    jQuery.extend(PayoneCheckout, window.PayoneCheckout);
+    jQuery.extend(PayoneCheckout, PayoneCheckoutParams);
     jQuery('button.amz').on('click', function (event) {
         event.preventDefault();
         var Progress = {currentStep: event.currentTarget.getAttribute('id')};
@@ -35,11 +48,11 @@ jQuery(document).on('ready', function () {
             parameters: jQuery.extend({}, PayoneCheckout, Progress),
             onSuccess: function (transport) {
                 if (transport.responseText) {
-                    var result = JSON.parse(transport.responseText);
-                    if (result['successful'] === true) {
-                        alert('OK');
+                    var Result = JSON.parse(transport.responseText);
+                    if (Result['successful'] === true) {
+                        PayoneCheckout[Progress.currentStep](Result);
                     } else {
-                        alert('ERROR');
+                        alert(Result['errorMessage']);
                     }
                 }
             }
