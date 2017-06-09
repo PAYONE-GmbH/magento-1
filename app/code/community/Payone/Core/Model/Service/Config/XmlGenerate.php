@@ -233,17 +233,28 @@ class Payone_Core_Model_Service_Config_XmlGenerate
 
             $paymentMethodConfig->setTitle($paymentMethod->getName());
 
+
             if ($paymentMethod->getTypes() !== NULL && $paymentMethod->getTypes() !== false) {
                 $types = $paymentMethod->getTypes();
                 if (is_array($types)) {
                     $types = implode(',', $types);
                 }
 
+
                 if ($paymentMethodConfig instanceof Payone_Settings_Data_ConfigFile_PaymentMethod_Creditcard) {
                     /**@var $paymentMethodConfig Payone_Settings_Data_ConfigFile_PaymentMethod_Creditcard */
                     $paymentMethodConfig->setCvc2($paymentMethod->getCheckCvc());
-                }
 
+                    if ($paymentMethodConfig->getHideCvc() !== NULL && $paymentMethodConfig->getHideCvc() !== false) {
+                        $hideCvcTypes = $paymentMethodConfig->getHideCvc();
+
+                        if (is_array($hideCvcTypes)) {
+                            $hideCvcTypes = implode(',', $hideCvcTypes);
+
+                        }
+                        $paymentMethodConfig->setHideCvc($hideCvcTypes);
+                    }
+                }
                 $paymentMethodConfig->setTypes($types);
             }
 

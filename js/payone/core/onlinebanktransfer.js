@@ -43,6 +43,14 @@ function payoneSwitchOnlineBankTransfer(typeCode, methodCode, element, country, 
     var bankGroupSelectAt = $(methodCode + '_bank_group_at');
     var bankGroupSelectNl = $(methodCode + '_bank_group_nl');
     var sofortueberweisungShowIban = $(methodCode + '_pnt_show_iban');
+    //
+    var epsPaymentMethodContainer =  $("dt_method_payone_online_bank_transfer_eps") || $('p_method_payone_online_bank_transfer_eps');
+    var idlPaymentMethodContainer =  $("dt_method_payone_online_bank_transfer_idl") || $('p_method_payone_online_bank_transfer_idl');
+    var giropayPaymentMethodContainer =  $("dt_method_payone_online_bank_transfer_giropay") || $('p_method_payone_online_bank_transfer_giropay');
+    var pffPaymentMethodContainer =  $("dt_method_payone_online_bank_transfer_pff") || $('p_method_payone_online_bank_transfer_pff');
+    var sofortPaymentMethodContainer =  $("dt_method_payone_online_bank_transfer_sofortueberweisung") || $('p_method_payone_online_bank_transfer_sofortueberweisung');
+
+
 
     function enableBankGroupNl() {
         if (bankGroupWrapNl) {
@@ -89,45 +97,56 @@ function payoneSwitchOnlineBankTransfer(typeCode, methodCode, element, country, 
     }
 
     if (typeCode == 'EPS') {
-        $("dt_method_payone_online_bank_transfer_eps").on("click", function (event) {
-            disableAll();
-            enableBankGroupAt();
-
-        });
+        if(epsPaymentMethodContainer) {
+            epsPaymentMethodContainer.on("click", function (event) {
+                disableAll();
+                enableBankGroupAt();
+                alert('dsfsddf');
+            });
+        }
     }
     if (typeCode == 'IDL') {
-        $("dt_method_payone_online_bank_transfer_idl").on("click", function (event) {
-            disableAll();
-            enableBankGroupNl();
-        });
+        if (idlPaymentMethodContainer) {
+            idlPaymentMethodContainer.on("click", function (event) {
+                disableAll();
+                enableBankGroupNl();
+            });
+        }
     }
     if (typeCode == 'GPY') {
-        $("dt_method_payone_online_bank_transfer_giropay").on("click", function (event) {
-            disableAll();
-            enableSepaIban();
-            enableSepaBic();
-        });
+        if (giropayPaymentMethodContainer) {
+            giropayPaymentMethodContainer.on("click", function (event) {
+                disableAll();
+                enableSepaIban();
+                enableSepaBic();
+            });
+        }
     }
 
+
     if (typeCode == 'PFF') {
-        $("dt_method_payone_online_bank_transfer_pff").on("click", function (event) {
-            disableAll();
-        });
+        if(pffPaymentMethodContainer){
+            pffPaymentMethodContainer.on("click", function (event) {
+                disableAll();
+            });
+        }
     }
 
     if (typeCode == 'PNT') {
-        $("dt_method_payone_online_bank_transfer_sofortueberweisung").on("click", function (event) {
-            disableAll();
-            if (sofortueberweisungShowIban.value == 1) {
-                enableSepaIban();
-                enableSepaBic();
-            }
+        if(sofortPaymentMethodContainer){
+            sofortPaymentMethodContainer.on("click", function (event) {
+                disableAll();
+                if (sofortueberweisungShowIban.value == 1) {
+                    enableSepaIban();
+                    enableSepaBic();
+                }
 
-            if (country == 'CH' && currency == 'CHF') {
-                enableAccountNumber();
-                enableBankCode();
-            }
-        });
+                if (country == 'CH' && currency == 'CHF') {
+                    enableAccountNumber();
+                    enableBankCode();
+                }
+            });
+        }
     }
 
     if (typeCode == 'PFC' || typeCode == 'P24') {
