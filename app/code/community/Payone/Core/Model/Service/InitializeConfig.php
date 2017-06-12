@@ -224,8 +224,8 @@ class Payone_Core_Model_Service_InitializeConfig
             $storeId = $this->getStoreId();
         }
 
-        if ($storeId === null) {
-            $storeId = 0;
+        if ($storeId === null) { // storeId = null is translated to *current store id* by magento
+            $storeId = Mage::app()->getStore()->getId();
         }
 
         $cacheId = sprintf(self::CONIG_REGISTRY_KEY, $storeId);
@@ -242,8 +242,8 @@ class Payone_Core_Model_Service_InitializeConfig
             $storeId = $this->getStoreId();
         }
 
-        if ($storeId === null) {
-            $storeId = 0;
+        if ($storeId === null) { // storeId = null is translated to *current store id* by magento
+            $storeId = Mage::app()->getStore()->getId();
         }
 
         $cacheId = sprintf(self::CONFIG_CACHE_ID, $storeId);

@@ -44,6 +44,9 @@ class Payone_Core_Model_Config_Misc_TransactionstatusProcessing
     /** @var int */
     protected $proxy_mode = 0;
 
+    /** @var int */
+    protected $logging_active = 0;
+
     public function init(array $data)
     {
         foreach ($data as $key => $value) {
@@ -121,6 +124,22 @@ class Payone_Core_Model_Config_Misc_TransactionstatusProcessing
     public function getProxyMode()
     {
         return $this->proxy_mode;
+    }
+
+    /**
+     * @param int $logging_active
+     */
+    public function setLoggingActive($logging_active)
+    {
+        $this->logging_active = $logging_active;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLoggingActive()
+    {
+        return $this->logging_active;
     }
 
 }

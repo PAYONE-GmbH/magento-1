@@ -119,6 +119,10 @@ class Payone_Core_Model_Config_Payment_Method
     /**
      * @var array
      */
+    protected $hide_cvc = array();
+    /**
+     * @var array
+     */
     protected $klarna_config = array();
 
     /**
@@ -773,6 +777,25 @@ class Payone_Core_Model_Config_Payment_Method
     {
         return $this->types;
     }
+
+    /**
+     * @param $hide_cvc
+*/
+    public function setHideCvc($hide_cvc)
+    {
+        $this->hide_cvc = $hide_cvc;
+    }
+
+    /**
+     * @return array
+*/
+    public function getHideCvc()
+    {
+        return $this->hide_cvc;
+    }
+
+
+
 
     /**
      * @param int $use_global

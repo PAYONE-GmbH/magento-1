@@ -357,6 +357,7 @@ class Payone_Settings_Service_XmlGenerate
             if ($valueClearingType instanceof Payone_Settings_Data_ConfigFile_PaymentMethod_Creditcard) {
                 /** @var $valueClearingType Payone_Settings_Data_ConfigFile_PaymentMethod_Creditcard */
                 $this->addChild($cleatringTypeNode, $valueClearingType, 'cvc2');
+                $this->addChild($cleatringTypeNode, $valueClearingType, 'hideCvc');
             }
 
             $this->addChild($cleatringTypeNode, $valueClearingType, 'types');

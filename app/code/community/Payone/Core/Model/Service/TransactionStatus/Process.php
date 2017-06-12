@@ -38,6 +38,7 @@ class Payone_Core_Model_Service_TransactionStatus_Process extends Payone_Core_Mo
     const EVENT_PARAMETER_TRANSACTION = 'transaction';
     const EVENT_PARAMETER_TRANSACTIONSTATUS = 'transaction_status';
     const EVENT_PARAMETER_CONFIG = 'config';
+    const EVENT_PARAMETER_ORDER = 'order';
 
     /**
      * @var Payone_Core_Model_Service_Transaction_Update
@@ -67,8 +68,10 @@ class Payone_Core_Model_Service_TransactionStatus_Process extends Payone_Core_Mo
     {
         $order = $this->getFactory()->getModelSalesOrder();
         $order->loadByIncrementId($transactionStatus->getReference());
-        
+        $this->helper()->logCronjobMessage("ID: {$transactionStatus->getId()} - Process - Got order id: {$order->getId()} store-id: {$order->getStoreId()}", $order->getStoreId());
+
         if (!$order->hasData()) {
+            $this->helper()->logCronjobMessage("ID: {$transactionStatus->getId()} - Process - Error Order has no data", $order->getStoreId(), Zend_Log::ERR);
             throw new Payone_Core_Exception_OrderNotFound('Reference "'.$transactionStatus->getReference().'"."');
         }
 
@@ -77,11 +80,12 @@ class Payone_Core_Model_Service_TransactionStatus_Process extends Payone_Core_Mo
         $lastTxId = $payment->getLastTransId();
         if($lastTxId != $transactionStatus->getTxid())
         {
+            $this->helper()->logCronjobMessage("ID: {$transactionStatus->getId()} - Process - Error TransactionStatus mismatch: payment-lastTransId: {$lastTxId} - TS-txid: {$transactionStatus->getTxid()}", $order->getStoreId(), Zend_Log::ERR);
             return; // Don´t throw an exception, just abort processing.
         }
-
         $config = $this->helperConfig()->getConfigStore($order->getStoreId());
 
+        $this->helper()->logCronjobMessage("ID: {$transactionStatus->getId()} - Process - Update TransactionStatus", $order->getStoreId());
         $transactionStatus->setStoreId($order->getStoreId());
         $transactionStatus->setOrderId($order->getId());
 
@@ -89,32 +93,40 @@ class Payone_Core_Model_Service_TransactionStatus_Process extends Payone_Core_Mo
         $transaction = $this->getServiceTransaction()->updateByTransactionStatus($transactionStatus);
 
         // Update Order Status
+        $this->helper()->logCronjobMessage("ID: {$transactionStatus->getId()} - Process - Update order status", $order->getStoreId());
         $this->getServiceOrderStatus()->setConfigStore($config);
         $this->getServiceOrderStatus()->updateByTransactionStatus($order, $transactionStatus);
 
         // Add Order Comment
+        $this->helper()->logCronjobMessage("ID: {$transactionStatus->getId()} - Process - Add order comment", $order->getStoreId());
         $this->getServiceOrderComment()->addByTransactionStatus($order, $transactionStatus);
 
         // Store Clearing Parameters (needs to be done before the events get triggered)
+        $this->helper()->logCronjobMessage("ID: {$transactionStatus->getId()} - Process - Store clearing parameters", $order->getStoreId());
         $this->getServiceStoreClearingParams()->execute($transactionStatus, $order);
 
         // Save before Event is triggerd
+        $this->helper()->logCronjobMessage("ID: {$transactionStatus->getId()} - Process - Save before events", $order->getStoreId());
         $resouce = $this->getFactory()->getModelResourceTransaction();
         $resouce->addObject($order);
         $resouce->addObject($transactionStatus);
         $resouce->save();
-
 
         // Trigger Event
         $params = array(
             self::EVENT_PARAMETER_TRANSACTIONSTATUS => $transactionStatus,
             self::EVENT_PARAMETER_TRANSACTION => $transaction,
             self::EVENT_PARAMETER_CONFIG => $config,
-            // @todo we should add order as param  cause observers may need it
+            self::EVENT_PARAMETER_ORDER => $order,
         );
 
+        $this->helper()->logCronjobMessage("ID: {$transactionStatus->getId()} - Process - Trigger event ".self::EVENT_NAME_PREFIX.self::EVENT_NAME_ALL, $order->getStoreId());
         $this->dispatchEvent(self::EVENT_NAME_PREFIX . self::EVENT_NAME_ALL, $params);
+
+        $this->helper()->logCronjobMessage("ID: {$transactionStatus->getId()} - Process - Trigger event ".self::EVENT_NAME_PREFIX.$transactionStatus->getTxaction(), $order->getStoreId());
         $this->dispatchEvent(self::EVENT_NAME_PREFIX . $transactionStatus->getTxaction(), $params);
+
+        $this->helper()->logCronjobMessage("ID: {$transactionStatus->getId()} - Process - Finished", $order->getStoreId());
     }
 
     /**

@@ -15,8 +15,8 @@
  * @category        Payone
  * @package         design_frontend_base_default
  * @subpackage      template
- * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
- * @author          Matthias Walter <info@noovias.com>
+ * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com, Copyright (c) 2017 <info@e3n.com> - www.e3n.de
+ * @author          Matthias Walter <info@noovias.com>, Tim Rein <web.it.rein@gmail.com>
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
  * @link            http://www.noovias.com
  */
@@ -24,48 +24,20 @@
 /** @var $this Payone_Core_Block_Payment_Method_Form_Wallet */
 $code = $this->getMethodCode();
 $paymentConfigId = $this->getPaymentMethodConfigId();
-$paymentType = '';
+
+if($paymentConfigId == 0){
+    $paymentConfigId = $this->getPaymentConfig()->getId();
+}
+$getWalletTyp = $this->walletTypeMapping();
+
 ?>
 <fieldset class="form-list">
     <ul id="payment_form_<?php echo $code ?>" style="display:none">
         <!-- Wallet type : -->
         <li>
-            <div class="input-box">
-                <label for="<?php echo $code; ?>_wlt_type">
-                    <?php echo $this->__('Wallet Type'); ?>&nbsp;<span class="required">*</span>
-                </label><br class="clear"/>
-
-                <?php
-                $types = $this->getTypes();
-                if (count($types) > 1) : ?>
-                    <select id="<?php echo $code ?>_wlt_type_select" name="<?php echo $code ?>_wlt_type_select"
-                            onchange="payoneSwitchWallet(this);" class="no-submit required-entry">
-                        <option value=""><?php echo $this->__('--Please Select--') ?></option>
-                        <?php
-                        foreach ($this->getTypes() as $key => $type) :
-                            $isChosen = $type['config_id'] == $paymentConfigId ? true : false;
-                            $selected = $isChosen ? 'selected="selected"' : '';
-                            if (empty($paymentConfigId) or $isChosen) {
-                                $paymentConfigId = $type['config_id'];
-                                $paymentType = $type['code'];
-                            }
-                            ?>
-                            <option value="<?php echo $key ?>" <?php echo $selected; ?>>
-                                <?php echo $type['name'] ?><span><?php echo $type['fee']; ?></span>
-                            </option>
-                            <?php endforeach; ?>
-                    </select>
-                    <input type="hidden" id="<?php echo $code ?>_wlt_type" name="payment[payone_wallet_type]" value="<?php echo $paymentType;?>"/>
-                    <?php
-                else :
-                    $type = array_pop($types);
-                    $paymentConfigId = $type['config_id'];
-                    ?>
-                    <?php echo $type['name']; ?>&nbsp;<span><?php echo $type['fee']; ?></span>
-                    <input type="hidden" id="<?php echo $code ?>_wlt_type" name="payment[payone_wallet_type]"
-                           value="<?php echo $type['code']; ?>"/>
-                    <?php
-                endif;?>
+            <div class="field">
+                <input type="hidden" id="<?php echo $code ?>_type_select" name="payment[payone_wallet_type]"
+                       value="<?php echo $getWalletTyp[$code] ?>">
 
                 <input type="hidden" name="payment[payone_config_payment_method_id]"
                        id="<?php echo $code ?>_config_id" value="<?php echo $paymentConfigId; ?>"/>

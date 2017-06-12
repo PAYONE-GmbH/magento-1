@@ -42,11 +42,15 @@ class Payone_Core_Model_Cronjob_TransactionStatus_Worker
      */
     public function execute(Mage_Cron_Model_Schedule $schedule)
     {
+        Mage::helper('payone_core')->logCronjobMessage("Started cronjob");
+
         $service = $this->getFactory()->getServiceTransactionStatusExecute();
 
         $count = $service->executePending();
 
         $schedule->setMessages($count . ' Transaction-Status processed');
+
+        Mage::helper('payone_core')->logCronjobMessage("Finished cronjob");
     }
 
 }

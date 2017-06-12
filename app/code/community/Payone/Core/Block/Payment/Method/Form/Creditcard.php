@@ -79,11 +79,32 @@ class Payone_Core_Block_Payment_Method_Form_Creditcard
     }
 
     /**
-     * @return array
-     */
+ * @return array
+ */
     protected function getSystemConfigMethodTypes()
     {
         return $this->getFactory()->getModelSystemConfigCreditCardType()->toSelectArray();
+    }
+
+    /**
+     * @return array
+     */
+    protected function getSystemConfigHideCvc()
+    {
+        return $this->getFactory()->getModelSystemConfigHideCvc()->toSelectArray();
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getHideCvcTypes(){
+
+        $hideTypes = $this->getPaymentConfig()->getHideCvc();
+        if(!empty($hideTypes)){
+            return Mage::helper('core')->jsonEncode(($hideTypes));
+        }
+
+        return null;
     }
 
     /**
