@@ -241,6 +241,14 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
                 Mage::helper('payone_core')->__('Unable to proceed with PAYONE Amazon Checkout.')
             );
         }
+        $paymentMethodCode = \Payone_Core_Model_System_Config_PaymentMethodCode::AMAZONPAY;
+        $this->fillAddressFields('billing', $this->_quote->getBillingAddress(), $data)
+            ->setSameAsBilling(false)
+            ->setData('should_ignore_validation', true)
+            ->setData('payment_method', $paymentMethodCode);
+        $this->_quote->save();
+
+        // TODO: Render and return the order review
 
         return [
             'successful'   => true,
