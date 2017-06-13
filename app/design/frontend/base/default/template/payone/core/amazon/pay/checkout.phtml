@@ -24,6 +24,7 @@
 <?php
 /** @var \Payone_Core_Block_Amazon_Pay_Checkout $this */
 $config = $this->getData('config');
+/** @var \Mage_Sales_Model_Quote $quote */
 $quote = $this->getData('quote');
 /** @var \Payone_Core_Helper_Url $helper */
 $helper = Mage::helper('payone_core/url');
@@ -34,7 +35,7 @@ $helper = Mage::helper('payone_core/url');
         <div class="step-title">
             <span class="number">1</span>
             <h2>Review shopping cart</h2>
-            <a href="#">Edit</a>
+            <a href="#">View</a>
         </div>
     </li>
     <li class="section allow active" id="amazonCheckoutSelectAddress">
@@ -95,16 +96,16 @@ $helper = Mage::helper('payone_core/url');
         </div>
     </li>
 </ol>
-<!--suppress JSUnusedLocalSymbols -->
+<!--suppress JSUnusedLocalSymbols, JSUnusedAssignment -->
 <script>
     var PayoneCheckoutParams = {
         amazonClientId: '<?php echo $config->getAmzClientId(); ?>',
         amazonSellerId: '<?php echo $config->getAmzSellerId(); ?>',
         progressAction: '<?php echo $helper->getMagentoUrl('*/*/progress'); ?>',
-        optionalAction: '<?php echo $helper->getMagentoUrl('*/*/getAdditional'); ?>'
     };
-    var quoteBaseGrandTotal, lastPrice, checkQuoteBaseGrandTotal;
-    // TODO: Integrate dependencies from the original Onepage Checkout
+    var quoteBaseGrandTotal = <?php echo $quote->getBaseGrandTotal(); ?>;
+    var checkQuoteBaseGrandTotal = quoteBaseGrandTotal;
+    var lastPrice;
 </script>
 <!-- Load script Widgets.js from Amazon -->
 <!-- URL changes to https://static-eu.payments-amazon.com/OffAmazonPayments/eur/lpa/js/Widgets.js when mode=live -->

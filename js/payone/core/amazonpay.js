@@ -20,21 +20,34 @@
  * @link            http://www.fatchip.de
  */
 
+//noinspection JSUnusedGlobalSymbols
+/**
+ * Container with properties and helper methods for
+ * the interactive Onepage Checkout with Amazon Pay
+ */
 var PayoneCheckout = {
     amazonOrderReferenceId: null,
     addressConsentToken: null,
-    selectAddress: function (result) {
+    shippingMethodCode: null,
+    afterSelectAddress: function (result) {
+        quoteBaseGrandTotal = result['quoteBaseGrandTotal'];
+        checkQuoteBaseGrandTotal = quoteBaseGrandTotal;
         jQuery('#shippingMethodsList').html(result['shippingRatesHtml']);
-        new Ajax.Request(PayoneCheckout.optionalAction, {
-            method: 'get',
-            onSuccess: function (transport) {
-                if (transport.responseText) {
-                    jQuery('#shippingMethodsAdditional').html(transport.responseText);
-                    jQuery('#amazonCheckoutSelectAddress').removeClass('active');
-                    jQuery('#amazonCheckoutSelectMethod').addClass('allow active');
-                }
+        jQuery('input[type="radio"][name="shipping_method"]').on('click', function (event) {
+            if (event.currentTarget.checked === true) {
+                PayoneCheckout.shippingMethodCode = event.currentTarget.getValue();
             }
         });
+        jQuery('#amazonCheckoutSelectAddress').removeClass('active');
+        jQuery('#amazonCheckoutSelectMethod').addClass('allow active');
+    },
+    afterSelectMethod: function (result) {
+        jQuery('#amazonCheckoutSelectMethod').removeClass('active');
+        jQuery('#amazonCheckoutSelectWallet').addClass('allow active');
+    },
+    afterSelectWallet: function (result) {
+        jQuery('#amazonCheckoutSelectWallet').removeClass('active');
+        jQuery('#amazonCheckoutSubmitOrder').addClass('allow active');
     }
 };
 
@@ -50,7 +63,10 @@ jQuery(document).on('ready', function () {
                 if (transport.responseText) {
                     var Result = JSON.parse(transport.responseText);
                     if (Result['successful'] === true) {
-                        PayoneCheckout[Progress.currentStep](Result);
+                        var Callback = "after"
+                            + Progress.currentStep.charAt(0).toUpperCase()
+                            + Progress.currentStep.slice(1);
+                        PayoneCheckout[Callback](Result);
                     } else {
                         alert(Result['errorMessage']);
                     }
@@ -104,7 +120,6 @@ window.onAmazonPaymentsReady = function () {
         design: {
             designMode: 'responsive'
         },
-        onReady: window.onAmazonOrderReady,
         onError: function (error) {
             console.log(error.getErrorCode() + ': ' + error.getErrorMessage());
         }

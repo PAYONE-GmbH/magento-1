@@ -363,27 +363,23 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment
     }
 
     /**
-     * @return Payone_Api_Request_Genericpayment
+     * @param string $currency
+     * @return \Payone_Api_Request_Genericpayment
      */
-    public function requestAmazonPayGetConfiguration()
+    public function requestAmazonPayGetConfiguration($currency = 'EUR')
     {
-        /** @var Payone_Core_Helper_Url $helper */
-        $helper = Mage::helper('payone_core/url');
         $request = $this->getRequest();
         $this->mapDefaultParameters($request);
         $request->setApiVersion('3.10');
         $request->setAid($this->getConfigPayment()->getAid());
-        $request->setClearingtype(Payone_Enum_ClearingType::AMAZONPAY);
-        $request->setCurrency('EUR');
-        $request->setWallet(new Payone_Api_Request_Parameter_Authorization_PaymentMethod_Wallet([
-            'wallettype' => Payone_Api_Enum_WalletType::AMAZONPAY,
-            'successurl' => str_replace('localhost', '127.0.0.1', $helper->getMagentoUrl('*/*/return')),
-            'errorurl'   => str_replace('localhost', '127.0.0.1', $helper->getMagentoUrl('*/*/error')),
-            'backurl'    => str_replace('localhost', '127.0.0.1', $helper->getMagentoUrl('*/*/cancel')),
+        $request->setClearingtype(\Payone_Enum_ClearingType::AMAZONPAY);
+        $request->setCurrency($currency);
+        $request->setWallet(new \Payone_Api_Request_Parameter_Authorization_PaymentMethod_Wallet([
+            'wallettype' => \Payone_Api_Enum_WalletType::AMAZONPAY,
         ]));
-        $request->setPaydata(new Payone_Api_Request_Parameter_Paydata_Paydata(['items' => [
-            new Payone_Api_Request_Parameter_Paydata_DataItem([
-                'key' => 'action', 'data' => Payone_Api_Enum_GenericpaymentAction::AMAZONPAY_GETCONFIGURATION
+        $request->setPaydata(new \Payone_Api_Request_Parameter_Paydata_Paydata(['items' => [
+            new \Payone_Api_Request_Parameter_Paydata_DataItem([
+                'key' => 'action', 'data' => \Payone_Api_Enum_GenericpaymentAction::AMAZONPAY_GETCONFIGURATION
             ]),
         ]]));
         return $request;
@@ -392,75 +388,30 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment
     /**
      * @param string $workOrderId
      * @param array $data
-     * @return Payone_Api_Request_Genericpayment
+     * @param string $currency
+     * @param integer $amount
+     * @return \Payone_Api_Request_Genericpayment
      */
-    public function requestAmazonPaySetOrderReferenceDetails($workOrderId, $data = [])
+    public function requestAmazonPayOrderReferenceDetails($workOrderId, $data = [], $currency = 'EUR', $amount = null)
     {
-        /** @var Payone_Core_Helper_Url $helper */
-        $helper = Mage::helper('payone_core/url');
         $request = $this->getRequest();
         $this->mapDefaultParameters($request);
         $request->setApiVersion('3.10');
         $request->setAid($this->getConfigPayment()->getAid());
-        $request->setClearingtype(Payone_Enum_ClearingType::AMAZONPAY);
-        $request->setCurrency('EUR');
-        $request->setWallet(new Payone_Api_Request_Parameter_Authorization_PaymentMethod_Wallet([
-            'wallettype' => Payone_Api_Enum_WalletType::AMAZONPAY,
-            'successurl' => str_replace('localhost', '127.0.0.1', $helper->getMagentoUrl('*/*/return')),
-            'errorurl'   => str_replace('localhost', '127.0.0.1', $helper->getMagentoUrl('*/*/error')),
-            'backurl'    => str_replace('localhost', '127.0.0.1', $helper->getMagentoUrl('*/*/cancel')),
+        $request->setClearingtype(\Payone_Enum_ClearingType::AMAZONPAY);
+        $request->setCurrency($currency);
+        $request->setAmount($amount);
+        $request->setWallet(new \Payone_Api_Request_Parameter_Authorization_PaymentMethod_Wallet([
+            'wallettype' => \Payone_Api_Enum_WalletType::AMAZONPAY,
         ]));
-        $items = [
-            new Payone_Api_Request_Parameter_Paydata_DataItem([
-                'key'  => 'action',
-                'data' => Payone_Api_Enum_GenericpaymentAction::AMAZONPAY_SETORDERREFERENCEDETAILS,
-            ]),
-        ];
+        $items = [];
         foreach ($data as $index => $value) {
-            array_push($items, new Payone_Api_Request_Parameter_Paydata_DataItem([
+            array_push($items, new \Payone_Api_Request_Parameter_Paydata_DataItem([
                 'key'  => $index,
                 'data' => $value,
             ]));
         }
-        $request->setPaydata(new Payone_Api_Request_Parameter_Paydata_Paydata(['items' => $items]));
-        $request->setWorkorderId($workOrderId);
-        return $request;
-    }
-
-    /**
-     * @param string $workOrderId
-     * @param array $data
-     * @return Payone_Api_Request_Genericpayment
-     */
-    public function requestAmazonPayGetOrderReferenceDetails($workOrderId, $data = [])
-    {
-        /** @var Payone_Core_Helper_Url $helper */
-        $helper = Mage::helper('payone_core/url');
-        $request = $this->getRequest();
-        $this->mapDefaultParameters($request);
-        $request->setApiVersion('3.10');
-        $request->setAid($this->getConfigPayment()->getAid());
-        $request->setClearingtype(Payone_Enum_ClearingType::AMAZONPAY);
-        $request->setCurrency('EUR');
-        $request->setWallet(new Payone_Api_Request_Parameter_Authorization_PaymentMethod_Wallet([
-            'wallettype' => Payone_Api_Enum_WalletType::AMAZONPAY,
-            'successurl' => str_replace('localhost', '127.0.0.1', $helper->getMagentoUrl('*/*/return')),
-            'errorurl'   => str_replace('localhost', '127.0.0.1', $helper->getMagentoUrl('*/*/error')),
-            'backurl'    => str_replace('localhost', '127.0.0.1', $helper->getMagentoUrl('*/*/cancel')),
-        ]));
-        $items = [
-            new Payone_Api_Request_Parameter_Paydata_DataItem([
-                'key'  => 'action',
-                'data' => Payone_Api_Enum_GenericpaymentAction::AMAZONPAY_GETORDERREFERENCEDETAILS,
-            ]),
-        ];
-        foreach ($data as $index => $value) {
-            array_push($items, new Payone_Api_Request_Parameter_Paydata_DataItem([
-                'key'  => $index,
-                'data' => $value,
-            ]));
-        }
-        $request->setPaydata(new Payone_Api_Request_Parameter_Paydata_Paydata(['items' => $items]));
+        $request->setPaydata(new \Payone_Api_Request_Parameter_Paydata_Paydata(['items' => $items]));
         $request->setWorkorderId($workOrderId);
         return $request;
     }
