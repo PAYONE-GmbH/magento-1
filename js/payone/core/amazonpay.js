@@ -36,16 +36,23 @@ var PayoneCheckout = {
         jQuery('input[type="radio"][name="shipping_method"]').on('click', function (event) {
             if (event.currentTarget.checked === true) {
                 PayoneCheckout.shippingMethodCode = event.currentTarget.getValue();
+                jQuery('#selectMethod').attr('disabled', false);
             }
         });
+        var checkedMethod = jQuery('input[type="radio"][name="shipping_method"]:checked');
+        if (checkedMethod.length === 1) {
+            PayoneCheckout.shippingMethodCode = checkedMethod[0].getValue();
+            jQuery('#selectMethod').attr('disabled', false);
+        }
         jQuery('#amazonCheckoutSelectAddress').removeClass('active');
         jQuery('#amazonCheckoutSelectMethod').addClass('allow active');
     },
-    afterSelectMethod: function (result) {
+    afterSelectMethod: function () {
         jQuery('#amazonCheckoutSelectMethod').removeClass('active');
         jQuery('#amazonCheckoutSelectWallet').addClass('allow active');
     },
     afterSelectWallet: function (result) {
+        jQuery('#orderReviewDiv').html(jQuery(result['orderReviewHtml'])[0]);
         jQuery('#amazonCheckoutSelectWallet').removeClass('active');
         jQuery('#amazonCheckoutSubmitOrder').addClass('allow active');
     }
@@ -55,6 +62,8 @@ jQuery(document).on('ready', function () {
     jQuery.extend(PayoneCheckout, PayoneCheckoutParams);
     jQuery('button.amz').on('click', function (event) {
         event.preventDefault();
+        event.currentTarget.disabled = true;
+        event.currentTarget.parentElement.addClassName('disabled');
         var Progress = {currentStep: event.currentTarget.getAttribute('id')};
         new Ajax.Request(PayoneCheckout.progressAction, {
             method: 'get',
@@ -71,9 +80,20 @@ jQuery(document).on('ready', function () {
                         alert(Result['errorMessage']);
                     }
                 }
+                event.currentTarget.parentElement.removeClassName('disabled');
+                event.currentTarget.disabled = false;
             }
         });
     });
+    jQuery('li.section').on('click', function (event) {
+        if (event.currentTarget.hasClassName('allow') &&
+            !event.currentTarget.hasClassName('active') &&
+            event.currentTarget.getAttribute('id') !== null
+        ) {
+            jQuery(event.currentTarget).nextAll().removeClass('allow active');
+            jQuery(event.currentTarget).addClass('allow active');
+        }
+    })
 });
 
 window.onAmazonOrderReady = function (orderReference) {
@@ -100,7 +120,7 @@ window.onAmazonPaymentsReady = function () {
         sellerId: PayoneCheckout.amazonSellerId,
         scope: 'payments:billing_address payments:shipping_address payments:widget profile',
         onAddressSelect: function () {
-            console.log('AddressBook->onAddressSelect' + ': ' + 'Event triggered.');
+            jQuery('#selectAddress').attr('disabled', false);
         },
         design: {
             designMode: 'responsive'
@@ -115,7 +135,7 @@ window.onAmazonPaymentsReady = function () {
         sellerId: PayoneCheckout.amazonSellerId,
         scope: 'payments:billing_address payments:shipping_address payments:widget profile',
         onPaymentSelect: function () {
-            console.log('Wallet->onPaymentSelect' + ': ' + 'Event triggered.');
+            jQuery('#selectWallet').attr('disabled', false);
         },
         design: {
             designMode: 'responsive'

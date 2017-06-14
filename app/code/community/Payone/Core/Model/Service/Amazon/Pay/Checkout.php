@@ -153,7 +153,7 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
         $this->_quote->save();
         if (empty($shippingRates)) {
             Mage::throwException(
-                Mage::helper('payone_core')->__('Unfortunately shipping to this destination is not available.')
+                Mage::helper('payone_core')->__('Shipping to this destination is not available.')
             );
         }
         foreach ($shippingRates as $carrier => $methods) {
@@ -185,6 +185,11 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
      */
     public function selectMethod($params)
     {
+        if (empty($params['shippingMethodCode'])) {
+            Mage::throwException(
+                Mage::helper('payone_core')->__('Please select a shipping method.')
+            );
+        }
         $this->_quote->getShippingAddress()->setShippingMethod($params['shippingMethodCode']);
         $this->_quote->setTotalsCollectedFlag(false)->collectTotals()->save();
         $action = \Payone_Api_Enum_GenericpaymentAction::AMAZONPAY_SETORDERREFERENCEDETAILS;
@@ -247,11 +252,19 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
             ->setData('should_ignore_validation', true)
             ->setData('payment_method', $paymentMethodCode);
         $this->_quote->save();
-
-        // TODO: Render and return the order review
+        /** @var \Payone_Core_AmazonPayController $controller */
+        $controller = $params['controller'];
+        $layout = $controller->getLayout();
+        $update = $layout->getUpdate();
+        $update->load('checkout_onepage_review');
+        $layout->removeOutputBlock('checkout_review_submit');
+        $layout->generateXml();
+        $layout->generateBlocks();
+        $output = $layout->getOutput();
 
         return [
-            'successful'   => true,
+            'successful'      => true,
+            'orderReviewHtml' => $output,
         ];
     }
 

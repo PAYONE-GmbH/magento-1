@@ -22,16 +22,20 @@
  */
 ?>
 <?php
+/** @var \Mage_Core_Helper_Data $core */
+$core = Mage::helper('core');
 /** @var \Payone_Core_Block_Amazon_Pay_Checkout $this */
 $config = $this->getData('config');
 /** @var \Mage_Sales_Model_Quote $quote */
 $quote = $this->getData('quote');
 /** @var \Payone_Core_Helper_Url $helper */
 $helper = Mage::helper('payone_core/url');
+/** @var string $cartAction */
+$cartAction = $helper->getMagentoUrl('checkout/cart');
 ?>
-<div class="page-title"><h1>Checkout</h1></div>
+<div class="page-title"><h1>Checkout with Amazon</h1></div>
 <ol id="amazonCheckoutSteps">
-    <li class="section allow">
+    <li class="section allow" onclick="window.location = '<?php echo $cartAction; ?>'; return false;">
         <div class="step-title">
             <span class="number">1</span>
             <h2>Review shopping cart</h2>
@@ -46,9 +50,15 @@ $helper = Mage::helper('payone_core/url');
         </div>
         <div class="step" id="addressBookWidgetDiv"></div>
         <div class="buttons-set">
-            <button title="Continue" type="button" class="button amz" id="selectAddress">
+            <button title="Continue" type="button" class="button amz" id="selectAddress" disabled="disabled">
                 Continue
             </button>
+            <span id="shipping-please-wait" class="please-wait">
+                <img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>"
+                     alt="<?php echo $core->quoteEscape($this->__('Loading next step...')) ?>"
+                     title="<?php echo $core->quoteEscape($this->__('Loading next step...')) ?>"
+                     class="v-middle"/> <?php echo $this->__('Loading next step...') ?>
+            </span>
         </div>
     </li>
     <li class="section" id="amazonCheckoutSelectMethod">
@@ -64,9 +74,15 @@ $helper = Mage::helper('payone_core/url');
             </form>
         </div>
         <div class="buttons-set">
-            <button title="Continue" type="button" class="button amz" id="selectMethod">
+            <button title="Continue" type="button" class="button amz" id="selectMethod" disabled="disabled">
                 Continue
             </button>
+            <span id="shipping-please-wait" class="please-wait">
+                <img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>"
+                     alt="<?php echo $core->quoteEscape($this->__('Loading next step...')) ?>"
+                     title="<?php echo $core->quoteEscape($this->__('Loading next step...')) ?>"
+                     class="v-middle"/> <?php echo $this->__('Loading next step...') ?>
+            </span>
         </div>
     </li>
     <li class="section" id="amazonCheckoutSelectWallet">
@@ -77,9 +93,15 @@ $helper = Mage::helper('payone_core/url');
         </div>
         <div class="step" id="walletWidgetDiv"></div>
         <div class="buttons-set">
-            <button title="Continue" type="button" class="button amz" id="selectWallet">
+            <button title="Continue" type="button" class="button amz" id="selectWallet" disabled="disabled">
                 Continue
             </button>
+            <span id="shipping-please-wait" class="please-wait">
+                <img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>"
+                     alt="<?php echo $core->quoteEscape($this->__('Loading next step...')) ?>"
+                     title="<?php echo $core->quoteEscape($this->__('Loading next step...')) ?>"
+                     class="v-middle"/> <?php echo $this->__('Loading next step...') ?>
+            </span>
         </div>
     </li>
     <li class="section" id="amazonCheckoutSubmitOrder">
@@ -90,9 +112,15 @@ $helper = Mage::helper('payone_core/url');
         </div>
         <div class="step" id="orderReviewDiv"></div>
         <div class="buttons-set">
-            <button title="Continue" type="button" class="button amz" id="submitOrder">
-                Continue
+            <button title="Place order" type="button" class="button amz" id="submitOrder" disabled="disabled">
+                Place order
             </button>
+            <span id="shipping-please-wait" class="please-wait">
+                <img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>"
+                     alt="<?php echo $core->quoteEscape($this->__('Submitting order information...')) ?>"
+                     title="<?php echo $core->quoteEscape($this->__('Submitting order information...')) ?>"
+                     class="v-middle"/> <?php echo $this->__('Submitting order information...') ?>
+            </span>
         </div>
     </li>
 </ol>
@@ -101,7 +129,7 @@ $helper = Mage::helper('payone_core/url');
     var PayoneCheckoutParams = {
         amazonClientId: '<?php echo $config->getAmzClientId(); ?>',
         amazonSellerId: '<?php echo $config->getAmzSellerId(); ?>',
-        progressAction: '<?php echo $helper->getMagentoUrl('*/*/progress'); ?>',
+        progressAction: '<?php echo $helper->getMagentoUrl('*/*/progress'); ?>'
     };
     var quoteBaseGrandTotal = <?php echo $quote->getBaseGrandTotal(); ?>;
     var checkQuoteBaseGrandTotal = quoteBaseGrandTotal;
