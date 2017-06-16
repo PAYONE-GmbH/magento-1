@@ -101,7 +101,6 @@ function payoneSwitchOnlineBankTransfer(typeCode, methodCode, element, country, 
             epsPaymentMethodContainer.on("click", function (event) {
                 disableAll();
                 enableBankGroupAt();
-                alert('dsfsddf');
             });
         }
     }
