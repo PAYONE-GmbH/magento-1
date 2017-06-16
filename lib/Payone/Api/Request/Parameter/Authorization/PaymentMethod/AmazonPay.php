@@ -23,19 +23,118 @@
 class Payone_Api_Request_Parameter_Authorization_PaymentMethod_AmazonPay
     extends Payone_Api_Request_Parameter_Authorization_PaymentMethod_Abstract
 {
+    /** @var Payone_Api_Request_Parameter_Paydata_Paydata */
+    protected $paydata = null;
+
+    /** @var string $wallettype */
+    protected $wallettype = null;
+
+    /** @var string $workorderid */
+    protected $workorderid = null;
+
+    /** @var string $successurl */
+    protected $successurl = null;
+
+    /** @var string $errorurl */
+    protected $errorurl = null;
+
     /**
-     * @var string
+     * Payone_Api_Request_Parameter_Authorization_PaymentMethod_AmazonPay constructor.
+     *
+     * @param array $data
+     * @param array $paydata
      */
-    protected $clearingsubtype = null;
-    public function setClearingsubtype()
+    public function __construct(array $data = [], array $paydata = [])
     {
-        $this->clearingsubtype = 'AMZ';
+        parent::__construct($data);
+
+        $items = [];
+        foreach ($paydata as $index => $value) {
+            array_push($items, new Payone_Api_Request_Parameter_Paydata_DataItem([
+                'key'  => $index,
+                'data' => $value,
+            ]));
+        }
+        if (count($items)) {
+            $this->paydata = new Payone_Api_Request_Parameter_Paydata_Paydata(['items' => $items]);
+        }
+        $this->setWallettype();
+        $this->setWorkorderid();
     }
+
+    /**
+     * @param Payone_Api_Request_Parameter_Paydata_Paydata $paydata
+     */
+    public function setPaydata($paydata)
+    {
+        $this->paydata = $paydata;
+    }
+
+    /**
+     * @return Payone_Api_Request_Parameter_Paydata_Paydata
+     */
+    public function getPaydata()
+    {
+        return $this->paydata;
+    }
+
+    public function setWallettype()
+    {
+        $this->wallettype = 'AMZ';
+    }
+
     /**
      * @return string
      */
-    public function getClearingsubtype()
+    public function getWallettype()
     {
-        return $this->clearingsubtype;
+        return $this->wallettype;
+    }
+
+    public function setWorkorderid()
+    {
+        /** @var \Payone_Core_Model_Session $session */
+        $session = Mage::getSingleton('payone_core/session');
+        $this->workorderid = $session->getData('WorkOrderId');
+    }
+
+    /**
+     * @return string
+     */
+    public function getWorkorderid()
+    {
+        return $this->workorderid;
+    }
+
+    /**
+     * @param string $successurl
+     */
+    public function setSuccessurl($successurl)
+    {
+        $this->successurl = $successurl;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSuccessurl()
+    {
+        return $this->successurl;
+    }
+
+    /**
+     * @param string $errorurl
+     */
+    public function setErrorurl($errorurl)
+    {
+        $this->errorurl = $errorurl;
+    }
+
+    /**
+     * @return string
+     */
+    public function getErrorurl()
+    {
+        return $this->errorurl;
     }
 }

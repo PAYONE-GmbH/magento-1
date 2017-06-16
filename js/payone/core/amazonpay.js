@@ -55,6 +55,9 @@ var PayoneCheckout = {
         jQuery('#orderReviewDiv').html(jQuery(result['orderReviewHtml'])[0]);
         jQuery('#amazonCheckoutSelectWallet').removeClass('active');
         jQuery('#amazonCheckoutSubmitOrder').addClass('allow active');
+    },
+    afterSubmitOrder: function (result) {
+        window.location = result['redirectUrl'];
     }
 };
 

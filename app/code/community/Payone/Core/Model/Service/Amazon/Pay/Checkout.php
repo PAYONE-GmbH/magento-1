@@ -151,9 +151,9 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
             ->collectShippingRates()
             ->getGroupedAllShippingRates();
         $this->_quote->save();
-        if (empty($shippingRates)) {
+        if (empty($shippingRates) || !$this->isCountryAllowed($this->_quote->getShippingAddress()->getCountry())) {
             Mage::throwException(
-                Mage::helper('payone_core')->__('Shipping to this destination is not available.')
+                Mage::helper('payone_core')->__('Shipping to the selected address is not available.')
             );
         }
         foreach ($shippingRates as $carrier => $methods) {
@@ -252,6 +252,7 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
             ->setData('should_ignore_validation', true)
             ->setData('payment_method', $paymentMethodCode);
         $this->_quote->save();
+
         /** @var \Payone_Core_AmazonPayController $controller */
         $controller = $params['controller'];
         $layout = $controller->getLayout();
@@ -265,6 +266,67 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
         return [
             'successful'      => true,
             'orderReviewHtml' => $output,
+        ];
+    }
+
+    /**
+     * @param array $params
+     * @return array
+     */
+    public function submitOrder($params)
+    {
+        $this->_quote->getBillingAddress()
+            ->setData('should_ignore_validation', true);
+        $this->_quote->getShippingAddress()
+            ->setData('should_ignore_validation', true);
+        $this->_quote->collectTotals()->save();
+        $this->_quote->setCustomerId(null)
+            ->setCustomerEmail($this->_quote->getBillingAddress()->getEmail())
+            ->setCustomerIsGuest(true)
+            ->setCustomerGroupId(\Mage_Customer_Model_Group::NOT_LOGGED_IN_ID);
+        /** @var \Payone_Core_Model_Session $session */
+        $session = Mage::getSingleton('payone_core/session');
+        $session->setData('AmazonRequestAddPaydata', [
+            'amazon_reference_id'  => $params['amazonOrderReferenceId'],
+            'amazon_address_token' => $params['addressConsentToken'],
+        ]);
+        /** @var \Mage_Sales_Model_Service_Quote $service */
+        $service = Mage::getModel('sales/service_quote', $this->_quote);
+        $service->submitAll();
+        $session->unsetData('AmazonRequestAddPaydata');
+        $this->_checkoutSession->setData('last_quote_id', $this->_quote->getId());
+        $this->_checkoutSession->setData('last_success_quote_id', $this->_quote->getId());
+        $this->_checkoutSession->clearHelperData();
+        $order = $service->getOrder();
+        if ($order) {
+            Mage::dispatchEvent(
+                'checkout_type_onepage_save_order_after',
+                ['order' => $order, 'quote' => $this->_quote]
+            );
+            if ($order->getCanSendNewEmailFlag()) {
+                try {
+                    $order->queueNewOrderEmail();
+                } catch (Exception $e) {
+                    Mage::logException($e);
+                }
+            }
+            // add order information to the session
+            $this->_checkoutSession->setData('last_order_id', $order->getId());
+            $this->_checkoutSession->setData('last_real_order_id', $order->getIncrementId());
+            // as well a billing agreement can be created
+            $agreement = $order->getPayment()->getBillingAgreement();
+            if ($agreement) {
+                $this->_checkoutSession->setData('last_billing_agreement_id', $agreement->getId());
+            }
+        }
+        Mage::dispatchEvent(
+            'checkout_submit_all_after',
+            ['order' => $order, 'quote' => $this->_quote, 'recurring_profiles' => []]
+        );
+
+        return [
+            'successful'  => true,
+            'redirectUrl' => Mage::getUrl('payone_core/checkout_onepage_payment/success'),
         ];
     }
 
@@ -308,5 +370,14 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
         }
 
         return $address;
+    }
+
+    /**
+     * @param $country
+     * @return bool
+     */
+    private function isCountryAllowed($country)
+    {
+        return in_array(strtoupper($country), explode(',', Mage::getStoreConfig('general/country/allow')));
     }
 }
