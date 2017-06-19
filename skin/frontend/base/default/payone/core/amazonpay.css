@@ -5,6 +5,28 @@
     height: 272px;
 }
 
+#shippingMethodDiv .sp-methods dd input.radio {
+    float: left;
+    margin-right: -40px;
+    margin-top: 10px;
+    margin-left: 15px;
+}
+
+#shippingMethodDiv .sp-methods dd label {
+    color: #636363;
+    background-color: #f4f4f4;
+    padding: 6px 10px 6px 40px;
+    display: inline-block;
+    width: auto;
+    max-width: none;
+    min-width: 250px;
+    float: none;
+}
+
+#shippingMethodDiv .sp-methods dd label:hover {
+    background-color: #ececec;
+}
+
 #amazonCheckoutSteps .section .step {
     padding: 20px 20px 12px 20px;
 }

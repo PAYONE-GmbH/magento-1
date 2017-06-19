@@ -52,7 +52,10 @@ var PayoneCheckout = {
         jQuery('#amazonCheckoutSelectWallet').addClass('allow active');
     },
     afterSelectWallet: function (result) {
-        jQuery('#orderReviewDiv').html(jQuery(result['orderReviewHtml'])[0]);
+        jQuery('#orderReviewDiv').html(jQuery.merge(
+            jQuery(result['orderReviewHtml']).filter('#checkout-review-table-wrapper'),
+            jQuery(result['orderReviewHtml']).find('#checkout-agreements')
+        ));
         jQuery('#amazonCheckoutSelectWallet').removeClass('active');
         jQuery('#amazonCheckoutSubmitOrder').addClass('allow active');
     },
@@ -61,13 +64,19 @@ var PayoneCheckout = {
     }
 };
 
-jQuery(document).on('ready', function () {
+window.onDocumentReady = function () {
     jQuery.extend(PayoneCheckout, PayoneCheckoutParams);
     jQuery('button.amz').on('click', function (event) {
         event.preventDefault();
         event.currentTarget.disabled = true;
         event.currentTarget.parentElement.addClassName('disabled');
         var Progress = {currentStep: event.currentTarget.getAttribute('id')};
+        var Agreements = jQuery('#checkout-agreements');
+        if (Agreements) {
+            Agreements.serializeArray().each(function(Agreement) {
+                Progress[Agreement['name']] = Agreement['value'];
+            });
+        }
         new Ajax.Request(PayoneCheckout.progressAction, {
             method: 'get',
             parameters: jQuery.extend({}, PayoneCheckout, Progress),
@@ -97,7 +106,7 @@ jQuery(document).on('ready', function () {
             jQuery(event.currentTarget).addClass('allow active');
         }
     })
-});
+};
 
 window.onAmazonOrderReady = function (orderReference) {
     var match,
@@ -148,3 +157,5 @@ window.onAmazonPaymentsReady = function () {
         }
     }).bind("walletWidgetDiv");
 };
+
+jQuery(document).on('ready', window.onDocumentReady);
