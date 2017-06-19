@@ -108,6 +108,11 @@ class Payone_Core_Model_Config_Payment_Method
     protected $request_type = '';
 
     /**
+     * @var string
+     */
+    protected $request_type_amazon = '';
+
+    /**
      * @var int
      */
     protected $invoice_transmit = 0;
@@ -690,6 +695,22 @@ class Payone_Core_Model_Config_Payment_Method
     public function getRequestType()
     {
         return $this->request_type;
+    }
+
+    /**
+     * @param string $request_type_amazon
+     */
+    public function setRequestTypeAmazon($request_type_amazon)
+    {
+        $this->request_type_amazon = $request_type_amazon;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRequestTypeAmazon()
+    {
+        return $this->request_type_amazon;
     }
 
     /**

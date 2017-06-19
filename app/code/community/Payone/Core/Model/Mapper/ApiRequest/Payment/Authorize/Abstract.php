@@ -164,8 +164,10 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
 
         // Override system setting (prefer PREAUTHORIZATION unless explicitly set otherwise)
         if ($paymentMethod instanceof Payone_Core_Model_Payment_Method_AmazonPay) {
-            $requestType = Payone_Api_Enum_RequestType::PREAUTHORIZATION;
-            // TODO - Read Amazon Pay specific configuration value here
+            $requestType = $this->configPayment->getRequestTypeAmazon();
+            if (empty($requestType)) {
+                $requestType = Payone_Api_Enum_RequestType::PREAUTHORIZATION;
+            }
         }
 
         $request->setRequest($requestType);
