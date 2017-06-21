@@ -25,6 +25,8 @@
     <payone_core_amazonpay_checkout>
         <remove name="left"/>
         <remove name="right"/>
+        <remove name="payone.amazon.partner.top_cart.shortcut"/>
+        <remove name="payone.amazon.partner.cart_sidebar.shortcut"/>
         <reference name="root">
             <action method="setTemplate"><template>page/1column.phtml</template></action>
         </reference>
@@ -72,28 +74,42 @@
                 <action method="setShowOrPosition"><value>after</value></action>
             </block>
         </reference>
-
         <reference name="checkout.cart.top_methods">
             <block type="payone_core/paypal_express_shortcut" name="payone.checkout.cart.methods.paypal_express.top" before="-" template="payone/core/paypal/express/shortcut.phtml">
                 <action method="setIsQuoteAllowed"><value>1</value></action>
                 <action method="setShowOrPosition"><value>after</value></action>
             </block>
         </reference>
-
+        <reference name="checkout.cart.methods">
+            <block type="payone_core/amazon_pay_shortcut" name="payone.checkout.cart.methods.amazon_pay.bottom" before="-" template="payone/core/amazon/pay/shortcut.phtml">
+                <action method="setIsQuoteAllowed"><value>1</value></action>
+                <action method="setShowOrPosition"><value>after</value></action>
+            </block>
+        </reference>
         <reference name="checkout.cart.methods">
             <block type="payone_core/paypal_express_shortcut" name="payone.checkout.cart.methods.paypal_express.bottom" before="-" template="payone/core/paypal/express/shortcut.phtml">
                 <action method="setIsQuoteAllowed"><value>1</value></action>
                 <action method="setShowOrPosition"><value>after</value></action>
             </block>
         </reference>
-
         <!--<update handle="SHORTCUT_popup" />-->
     </checkout_cart_index>
 
     <default>
+        <reference name="head">
+            <action method="addCss"><name>payone/core/amazonpay_button.css</name></action>
+        </reference>
+        <reference name="topCart.extra_actions">
+            <block type="payone_core/amazon_pay_shortcut" name="payone.amazon.partner.top_cart.shortcut"
+                   template="payone/core/amazon/pay/shortcut.phtml"/>
+        </reference>
         <reference name="topCart.extra_actions">
             <block type="payone_core/paypal_express_shortcut" name="payone.paypal.partner.top_cart.shortcut"
                    template="payone/core/paypal/express/shortcut.phtml"/>
+        </reference>
+        <reference name="cart_sidebar.extra_actions">
+            <block type="payone_core/amazon_pay_shortcut" name="payone.amazon.partner.cart_sidebar.shortcut"
+                   template="payone/core/amazon/pay/shortcut.phtml"/>
         </reference>
         <reference name="cart_sidebar.extra_actions">
             <block type="payone_core/paypal_express_shortcut" name="payone.paypal.partner.cart_sidebar.shortcut"

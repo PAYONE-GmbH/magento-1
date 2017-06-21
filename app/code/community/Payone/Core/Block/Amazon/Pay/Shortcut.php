@@ -23,6 +23,10 @@
 class Payone_Core_Block_Amazon_Pay_Shortcut extends Mage_Core_Block_Template
 {
     /**
+     * @var int $counter
+     */
+    public static $counter = 0;
+    /**
      * @return \Payone_Core_Model_Config_Payment_Method
      */
     protected function getConfiguration()

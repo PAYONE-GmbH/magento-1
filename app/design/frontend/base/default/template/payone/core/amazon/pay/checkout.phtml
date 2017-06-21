@@ -30,6 +30,8 @@ $config = $this->getData('config');
 $quote = $this->getData('quote');
 /** @var \Payone_Core_Helper_Url $helper */
 $helper = Mage::helper('payone_core/url');
+/** @var string $progressAction*/
+$progressAction = $helper->getMagentoUrl('*/*/progress');
 /** @var string $cartAction */
 $cartAction = $helper->getMagentoUrl('checkout/cart');
 ?>
@@ -129,7 +131,7 @@ $cartAction = $helper->getMagentoUrl('checkout/cart');
     var PayoneCheckoutParams = {
         amazonClientId: '<?php echo $config->getAmzClientId(); ?>',
         amazonSellerId: '<?php echo $config->getAmzSellerId(); ?>',
-        progressAction: '<?php echo $helper->getMagentoUrl('*/*/progress'); ?>'
+        progressAction: '<?php echo $progressAction; ?>'
     };
     var quoteBaseGrandTotal = <?php echo $quote->getBaseGrandTotal(); ?>;
     var checkQuoteBaseGrandTotal = quoteBaseGrandTotal;

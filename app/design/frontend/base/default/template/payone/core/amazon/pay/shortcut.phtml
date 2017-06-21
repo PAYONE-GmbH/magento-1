@@ -22,27 +22,56 @@
  */
 ?>
 <?php
-/**
- * @var $this Payone_Core_Block_Amazon_Pay_Shortcut
- */
+/** @var Payone_Core_Block_Amazon_Pay_Shortcut $this */
 $config = $this->getConfiguration();
-$returnUrl = 'https://tunnel.forgefire.net/magento1ce/payone_core/amazonpay/checkout/';
+/** @var Payone_Core_Helper_Url $helper */
+$helper = Mage::helper('payone_core/url');
+/** @var string $returnUrl */
+$returnUrl = $helper->getMagentoUrl('payone_core/amazonpay/checkout');
+/** @var string $buttonType */
+$buttonType = Payone_Core_Model_System_Config_AmazonButtonType::getParameter($config->getAmzButtonType());
+/** @var string $buttonColor */
+$buttonColor = Payone_Core_Model_System_Config_AmazonButtonColor::getParameter($config->getAmzButtonColor());
+/** @var string $buttonLanguage */
+$buttonLanguage = Payone_Core_Model_System_Config_AmazonButtonLang::getParameter($config->getAmzButtonLang());
+/** @var string $buttonDelimiter */
+$buttonDelimiter = "<span class=\"amazon-or\">{$this->__('-OR-')}</span>";
+/** @var int $buttonIdentifier */
+$buttonIdentifier = "LoginWithAmazon" . (++$this::$counter);
 ?>
-<div id="LoginWithAmazon"></div>
-<!-- In an appropriate script section -->
+<div class="amazon-checkout-button">
+    <?php if ($this->getData('show_or_position') === 'before') : ?>
+        <?php echo $buttonDelimiter; ?>
+    <?php endif; ?>
+    <div id="<?php echo $buttonIdentifier; ?>"></div>
+    <?php if ($this->getData('show_or_position') === 'after') : ?>
+        <?php echo $buttonDelimiter; ?>
+    <?php endif; ?>
+</div>
 <script>
-    window.onAmazonLoginReady = function () {
-        amazon.Login.setClientId('<?php echo $config->getAmzClientId(); ?>');
-    };
-    window.onAmazonPaymentsReady = function () {
+    if (typeof window.onAmazonLoginReady !== 'function') {
+        window.onAmazonLoginReady = function () {
+            amazon.Login.setClientId('<?php echo $config->getAmzClientId(); ?>');
+        };
+    }
+    if (typeof window.onAmazonPaymentsReadyArray === 'undefined') {
+        window.onAmazonPaymentsReadyArray = [];
+    }
+    if (typeof window.onAmazonPaymentsReady !== 'function') {
+        window.onAmazonPaymentsReady = function () {
+            window.onAmazonPaymentsReadyArray.each(function (callback) {
+                callback();
+            });
+        };
+    }
+    window.onAmazonPaymentsReadyArray.push(function () {
         // render the button here
         var authRequest, loginOptions;
-        OffAmazonPayments.Button('LoginWithAmazon', '<?php echo $config->getAmzSellerId(); ?>', {
-            type: 'PwA',
-            color: 'Gold',
-            size: 'medium', // type, color and size of the button are configureable in the backend
-            language: 'de-DE', // this may change when the shop language changes, supported:
-            // en-GB, de-DE, fr-FR, it-IT, es-ES -- if empty, the locale will be auto-detected
+        OffAmazonPayments.Button('<?php echo $buttonIdentifier; ?>', '<?php echo $config->getAmzSellerId(); ?>', {
+            type: '<?php echo $buttonType; ?>',
+            color: '<?php echo $buttonColor; ?>',
+            language: '<?php echo $buttonLanguage; ?>',
+            size: 'medium',
             authorization: function () {
                 loginOptions = {
                     scope: 'payments:billing_address payments:shipping_address payments:widget profile',
@@ -51,9 +80,11 @@ $returnUrl = 'https://tunnel.forgefire.net/magento1ce/payone_core/amazonpay/chec
                 authRequest = amazon.Login.authorize(loginOptions, '<?php echo $returnUrl; ?>');
             }
         });
-    }
+    });
 </script>
-<!-- Load script Widgets.js from Amazon -->
-<!-- URL changes to https://static-eu.payments-amazon.com/OffAmazonPayments/eur/lpa/js/Widgets.js when mode=live -->
-<script async="async" src='https://static-eu.payments-amazon.com/OffAmazonPayments/eur/sandbox/lpa/js/Widgets.js'
-></script>
+<?php if ($this::$counter <= 1) : ?>
+    <!-- Load script Widgets.js from Amazon -->
+    <!-- URL changes to https://static-eu.payments-amazon.com/OffAmazonPayments/eur/lpa/js/Widgets.js when mode=live -->
+    <script async="async" src='https://static-eu.payments-amazon.com/OffAmazonPayments/eur/sandbox/lpa/js/Widgets.js'
+    ></script>
+<?php endif; ?>

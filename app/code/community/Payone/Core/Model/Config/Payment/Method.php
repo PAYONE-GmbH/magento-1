@@ -265,6 +265,26 @@ class Payone_Core_Model_Config_Payment_Method
      * @var string
      */
     protected $amz_seller_id = '';
+
+    /**
+     * @var int
+     */
+    protected $amz_button_type = 0;
+
+    /**
+     * @var int
+     */
+    protected $amz_button_color = 0;
+
+    /**
+     * @var int
+     */
+    protected $amz_button_lang = 0;
+
+    /**
+     * @var int
+     */
+    protected $amz_sync_mode = 0;
     
     /**
      * Check if Method can be used in Country
@@ -1274,5 +1294,69 @@ class Payone_Core_Model_Config_Payment_Method
     public function getAmzSellerId()
     {
         return $this->amz_seller_id;
+    }
+
+    /**
+     * @param int $amz_button_type
+     */
+    public function setAmzButtonType($amz_button_type)
+    {
+        $this->amz_button_type = $amz_button_type;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAmzButtonType()
+    {
+        return $this->amz_button_type;
+    }
+
+    /**
+     * @param int $amz_button_color
+     */
+    public function setAmzButtonColor($amz_button_color)
+    {
+        $this->amz_button_color = $amz_button_color;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAmzButtonColor()
+    {
+        return $this->amz_button_color;
+    }
+
+    /**
+     * @param int $amz_button_lang
+     */
+    public function setAmzButtonLang($amz_button_lang)
+    {
+        $this->amz_button_lang = $amz_button_lang;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAmzButtonLang()
+    {
+        return $this->amz_button_lang;
+    }
+
+    /**
+     * @param int $amz_sync_mode
+     */
+    public function setAmzSyncMode($amz_sync_mode)
+    {
+        $this->amz_sync_mode = $amz_sync_mode;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAmzSyncMode()
+    {
+        return $this->amz_sync_mode;
     }
 }

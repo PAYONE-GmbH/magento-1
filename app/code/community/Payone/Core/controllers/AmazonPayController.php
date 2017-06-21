@@ -94,20 +94,6 @@ class Payone_Core_AmazonPayController extends Payone_Core_Controller_Abstract
         }
     }
 
-    public function getAdditionalAction()
-    {
-        $layout = $this->getLayout();
-        $update = $layout->getUpdate();
-        $update->load('checkout_onepage_additional');
-        $layout->generateXml();
-        $layout->generateBlocks();
-        $output = $layout->getOutput();
-        /** @var \Mage_Core_Model_Translate_Inline $translator */
-        $translator = Mage::getSingleton('core/translate_inline');
-        $translator->processResponseBody($output);
-        $this->getResponse()->setBody($output);
-    }
-
     /**
      * @return \Payone_Core_AmazonPayController
      * @throws \Mage_Core_Exception
