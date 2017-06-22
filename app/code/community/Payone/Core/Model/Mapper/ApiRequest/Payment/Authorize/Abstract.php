@@ -746,6 +746,26 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
             $session = Mage::getSingleton('payone_core/session');
             /** @var array $paydata */
             $paydata = $session->getData('AmazonRequestAddPaydata');
+            /** @var \Payone_Core_Model_Config_Payment_Method $config */
+            $config = $paymentMethod->getConfig();
+
+            switch ($config->getAmzSyncMode()) {
+                case Payone_Core_Model_System_Config_AmazonSyncMode::ASYNCHRONOUS_ON_FAILURE:
+                    if ($session->getData('AmazonRequestRetryAsync') === true) {
+                        $paydata['amazon_timeout'] = 1440;
+                    } else {
+                        $session->setData('AmazonRequestRetryAsync', true);
+                        $paydata['amazon_timeout'] = 0;
+                    }
+                    break;
+                case Payone_Core_Model_System_Config_AmazonSyncMode::ALWAYS_ASYNCHRONOUS:
+                    $paydata['amazon_timeout'] = 1440;
+                    break;
+                case Payone_Core_Model_System_Config_AmazonSyncMode::ALWAYS_SYNCHRONOUS:
+                    $paydata['amazon_timeout'] = 0;
+                    break;
+            }
+
             $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_AmazonPay([
                 'successurl' => $this->helperUrl()->getSuccessUrl(),
                 'errorurl'   => $this->helperUrl()->getErrorUrl(),

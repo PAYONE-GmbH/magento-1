@@ -25,27 +25,27 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
     /**
      * @var \Mage_Checkout_Model_Session|null
      */
-    protected $_checkoutSession = null;
+    protected $checkoutSession = null;
 
     /**
      * @var \Mage_Customer_Model_Session|null
      */
-    protected $_customerSession = null;
+    protected $customerSession = null;
 
     /**
      * @var \Payone_Core_Model_Config_Payment_Method|null
      */
-    protected $_config = null;
+    protected $config = null;
 
     /**
      * @var \Mage_Sales_Model_Quote|null
      */
-    protected $_quote = null;
+    protected $quote = null;
 
     /**
      * @var string|null
      */
-    protected $_workOrderId = null;
+    protected $workOrderId = null;
 
     /**
      * @var \Payone_Core_Model_Factory|null
@@ -59,17 +59,17 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
     public function __construct($params = [])
     {
         if (isset($params['quote']) && $params['quote'] instanceof \Mage_Sales_Model_Quote) {
-            $this->_quote = $params['quote'];
+            $this->quote = $params['quote'];
         } else {
             throw new \Exception('Quote object is required.');
         }
         if (isset($params['config']) && $params['config'] instanceof \Payone_Core_Model_Config_Payment_Method) {
-            $this->_config = $params['config'];
+            $this->config = $params['config'];
         } else {
             throw new \Exception('Configuration object is required.');
         }
-        $this->_checkoutSession = Mage::getSingleton('checkout/session');
-        $this->_customerSession = Mage::getSingleton('customer/session');
+        $this->checkoutSession = Mage::getSingleton('checkout/session');
+        $this->customerSession = Mage::getSingleton('customer/session');
     }
 
     /**
@@ -79,24 +79,24 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
     public function initWorkOrder($fromSession = null)
     {
         if (!empty($fromSession)) {
-            $this->_workOrderId = $fromSession;
+            $this->workOrderId = $fromSession;
         }
-        if (!empty($this->_workOrderId)) {
-            return $this->_workOrderId;
+        if (!empty($this->workOrderId)) {
+            return $this->workOrderId;
         }
-        $service = $this->getFactory()->getServicePaymentGenericpayment($this->_config);
+        $service = $this->getFactory()->getServicePaymentGenericpayment($this->config);
         /** @var \Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment $mapper */
         $mapper = $service->getMapper();
-        $request = $mapper->requestAmazonPayGetConfiguration($this->_quote->getQuoteCurrencyCode());
+        $request = $mapper->requestAmazonPayGetConfiguration($this->quote->getQuoteCurrencyCode());
         $response = $this->getFactory()->getServiceApiPaymentGenericpayment()->request($request);
 
         if ($response instanceof \Payone_Api_Response_Genericpayment_Ok) {
-            $this->_workOrderId = $response->getWorkorderId();
+            $this->workOrderId = $response->getWorkorderId();
         } else {
             Mage::throwException(Mage::helper('payone_core')->__('Unable to initialize PAYONE Amazon Checkout.'));
         }
 
-        return $this->_workOrderId;
+        return $this->workOrderId;
     }
 
     /**
@@ -107,17 +107,17 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
     {
         $data = [];
         $action = \Payone_Api_Enum_GenericpaymentAction::AMAZONPAY_GETORDERREFERENCEDETAILS;
-        $service = $this->getFactory()->getServicePaymentGenericpayment($this->_config);
+        $service = $this->getFactory()->getServicePaymentGenericpayment($this->config);
         /** @var \Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment $mapper */
         $mapper = $service->getMapper();
         $request = $mapper->requestAmazonPayOrderReferenceDetails(
-            $this->_workOrderId,
+            $this->workOrderId,
             [
                 'action'               => $action,
                 'amazon_reference_id'  => $params['amazonOrderReferenceId'],
                 'amazon_address_token' => $params['addressConsentToken'],
             ],
-            $this->_quote->getQuoteCurrencyCode()
+            $this->quote->getQuoteCurrencyCode()
         );
         $response = $this->getFactory()->getServiceApiPaymentGenericpayment()->request($request);
         if ($response instanceof \Payone_Api_Response_Genericpayment_Ok) {
@@ -128,30 +128,30 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
             );
         }
         $paymentMethodCode = \Payone_Core_Model_System_Config_PaymentMethodCode::AMAZONPAY;
-        $this->_quote->getPayment()->importData([
+        $this->quote->getPayment()->importData([
             'method'                          => $paymentMethodCode,
-            'payone_config_payment_method_id' => $this->_config->getId(),
+            'payone_config_payment_method_id' => $this->config->getId(),
             'checks'                          => [],
         ]);
-        $this->fillAddressFields('shipping', $this->_quote->getShippingAddress(), $data)
+        $this->fillAddressFields('shipping', $this->quote->getShippingAddress(), $data)
             ->setSameAsBilling(false)
             ->setCollectShippingRates(true)
             ->setData('should_ignore_validation', true)
             ->setData('payment_method', $paymentMethodCode);
-        $this->_quote->setTotalsCollectedFlag(false);
-        $coupon = $this->_checkoutSession->getData('cart_coupon_code');
+        $this->quote->setTotalsCollectedFlag(false);
+        $coupon = $this->checkoutSession->getData('cart_coupon_code');
         if (!empty($coupon)) {
-            $this->_quote->setCouponCode($coupon);
+            $this->quote->setCouponCode($coupon);
         }
-        $baseGrandTotal = $this->_quote
+        $baseGrandTotal = $this->quote
             ->collectTotals()
             ->getBaseGrandTotal();
-        $shippingRates = $this->_quote
+        $shippingRates = $this->quote
             ->getShippingAddress()
             ->collectShippingRates()
             ->getGroupedAllShippingRates();
-        $this->_quote->save();
-        if (empty($shippingRates) || !$this->isCountryAllowed($this->_quote->getShippingAddress()->getCountry())) {
+        $this->quote->save();
+        if (empty($shippingRates) || !$this->isCountryAllowed($this->quote->getShippingAddress()->getCountry())) {
             Mage::throwException(
                 Mage::helper('payone_core')->__('Shipping to the selected address is not available.')
             );
@@ -190,21 +190,21 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
                 Mage::helper('payone_core')->__('Please select a shipping method.')
             );
         }
-        $this->_quote->getShippingAddress()->setShippingMethod($params['shippingMethodCode']);
-        $this->_quote->setTotalsCollectedFlag(false)->collectTotals()->save();
+        $this->quote->getShippingAddress()->setShippingMethod($params['shippingMethodCode']);
+        $this->quote->setTotalsCollectedFlag(false)->collectTotals()->save();
         $action = \Payone_Api_Enum_GenericpaymentAction::AMAZONPAY_SETORDERREFERENCEDETAILS;
-        $service = $this->getFactory()->getServicePaymentGenericpayment($this->_config);
+        $service = $this->getFactory()->getServicePaymentGenericpayment($this->config);
         /** @var \Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment $mapper */
         $mapper = $service->getMapper();
         $request = $mapper->requestAmazonPayOrderReferenceDetails(
-            $this->_workOrderId,
+            $this->workOrderId,
             [
                 'action'               => $action,
                 'amazon_reference_id'  => $params['amazonOrderReferenceId'],
                 'amazon_address_token' => $params['addressConsentToken'],
             ],
-            $this->_quote->getQuoteCurrencyCode(),
-            $this->_quote->getGrandTotal()
+            $this->quote->getQuoteCurrencyCode(),
+            $this->quote->getGrandTotal()
         );
         $response = $this->getFactory()->getServiceApiPaymentGenericpayment()->request($request);
         if ($response instanceof \Payone_Api_Response_Genericpayment_Ok !== true) {
@@ -226,17 +226,17 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
     {
         $data = [];
         $action = \Payone_Api_Enum_GenericpaymentAction::AMAZONPAY_GETORDERREFERENCEDETAILS;
-        $service = $this->getFactory()->getServicePaymentGenericpayment($this->_config);
+        $service = $this->getFactory()->getServicePaymentGenericpayment($this->config);
         /** @var \Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment $mapper */
         $mapper = $service->getMapper();
         $request = $mapper->requestAmazonPayOrderReferenceDetails(
-            $this->_workOrderId,
+            $this->workOrderId,
             [
                 'action'               => $action,
                 'amazon_reference_id'  => $params['amazonOrderReferenceId'],
                 'amazon_address_token' => $params['addressConsentToken'],
             ],
-            $this->_quote->getQuoteCurrencyCode()
+            $this->quote->getQuoteCurrencyCode()
         );
         $response = $this->getFactory()->getServiceApiPaymentGenericpayment()->request($request);
         if ($response instanceof \Payone_Api_Response_Genericpayment_Ok) {
@@ -247,11 +247,11 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
             );
         }
         $paymentMethodCode = \Payone_Core_Model_System_Config_PaymentMethodCode::AMAZONPAY;
-        $this->fillAddressFields('billing', $this->_quote->getBillingAddress(), $data)
+        $this->fillAddressFields('billing', $this->quote->getBillingAddress(), $data)
             ->setSameAsBilling(false)
             ->setData('should_ignore_validation', true)
             ->setData('payment_method', $paymentMethodCode);
-        $this->_quote->save();
+        $this->quote->save();
 
         /** @var \Payone_Core_AmazonPayController $controller */
         $controller = $params['controller'];
@@ -272,6 +272,7 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
     /**
      * @param array $params
      * @return array
+     * @throws Exception
      */
     public function submitOrder($params)
     {
@@ -287,13 +288,13 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
                 Mage::throwException($agreementsErrorMessage);
             }
         }
-        $this->_quote->getBillingAddress()
+        $this->quote->getBillingAddress()
             ->setData('should_ignore_validation', true);
-        $this->_quote->getShippingAddress()
+        $this->quote->getShippingAddress()
             ->setData('should_ignore_validation', true);
-        $this->_quote->collectTotals()->save();
-        $this->_quote->setCustomerId(null)
-            ->setCustomerEmail($this->_quote->getBillingAddress()->getEmail())
+        $this->quote->collectTotals()->save();
+        $this->quote->setCustomerId(null)
+            ->setCustomerEmail($this->quote->getBillingAddress()->getEmail())
             ->setCustomerIsGuest(true)
             ->setCustomerGroupId(\Mage_Customer_Model_Group::NOT_LOGGED_IN_ID);
         /** @var \Payone_Core_Model_Session $session */
@@ -302,18 +303,23 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
             'amazon_reference_id'  => $params['amazonOrderReferenceId'],
             'amazon_address_token' => $params['addressConsentToken'],
         ]);
-        /** @var \Mage_Sales_Model_Service_Quote $service */
-        $service = Mage::getModel('sales/service_quote', $this->_quote);
-        $service->submitAll();
+        try {
+            /** @var \Mage_Sales_Model_Service_Quote $service */
+            $service = Mage::getModel('sales/service_quote', $this->quote);
+            $service->submitAll();
+        } catch (\Exception $e) {
+            $session->unsetData('AmazonRequestAddPaydata');
+            throw $e;
+        }
         $session->unsetData('AmazonRequestAddPaydata');
-        $this->_checkoutSession->setData('last_quote_id', $this->_quote->getId());
-        $this->_checkoutSession->setData('last_success_quote_id', $this->_quote->getId());
-        $this->_checkoutSession->clearHelperData();
+        $this->checkoutSession->setData('last_quote_id', $this->quote->getId());
+        $this->checkoutSession->setData('last_success_quote_id', $this->quote->getId());
+        $this->checkoutSession->clearHelperData();
         $order = $service->getOrder();
         if ($order) {
             Mage::dispatchEvent(
                 'checkout_type_onepage_save_order_after',
-                ['order' => $order, 'quote' => $this->_quote]
+                ['order' => $order, 'quote' => $this->quote]
             );
             if ($order->getCanSendNewEmailFlag()) {
                 try {
@@ -323,17 +329,17 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
                 }
             }
             // add order information to the session
-            $this->_checkoutSession->setData('last_order_id', $order->getId());
-            $this->_checkoutSession->setData('last_real_order_id', $order->getIncrementId());
+            $this->checkoutSession->setData('last_order_id', $order->getId());
+            $this->checkoutSession->setData('last_real_order_id', $order->getIncrementId());
             // as well a billing agreement can be created
             $agreement = $order->getPayment()->getBillingAgreement();
             if ($agreement) {
-                $this->_checkoutSession->setData('last_billing_agreement_id', $agreement->getId());
+                $this->checkoutSession->setData('last_billing_agreement_id', $agreement->getId());
             }
         }
         Mage::dispatchEvent(
             'checkout_submit_all_after',
-            ['order' => $order, 'quote' => $this->_quote, 'recurring_profiles' => []]
+            ['order' => $order, 'quote' => $this->quote, 'recurring_profiles' => []]
         );
 
         return [

@@ -58,7 +58,7 @@ abstract class Payone_Core_Model_Service_Payment_Abstract
     /**
      * @inheritdoc
      */
-    public function execute(Mage_Sales_Model_Order_Payment $payment, $amount = 0.00)
+    public function execute(Mage_Sales_Model_Order_Payment $payment, $amount = 0.00, $isRetry = false)
     {
         $this->getMapper()->setAmount($amount);
 
@@ -71,6 +71,7 @@ abstract class Payone_Core_Model_Service_Payment_Abstract
         $this->getHandler()->setRequest($request);
         $this->getHandler()->handle($response);
 
+        /** @var Payone_Core_Model_Payment_Method_Abstract $oMethodInstance */
         $oMethodInstance = $payment->getMethodInstance();
 
         // Trigger Event
@@ -85,10 +86,19 @@ abstract class Payone_Core_Model_Service_Payment_Abstract
         $this->dispatchEvent($this->getEventName(), $params);
         $this->dispatchEvent($this->getEventName() . '_' . strtolower($response->getStatus()), $params);
 
+        /** @var Payone_Core_Model_Session $session */
+        $session = Mage::getSingleton('payone_core/session');
         if ($response instanceof Payone_Api_Response_Error) {
-            /** @var $response Payone_Api_Response_Error */
-            $this->throwMageException($this->helper()->__($oMethodInstance->getApiResponseErrorMessage($response)));
+            if (!$isRetry && $session->getData('AmazonRequestRetryAsync') && $response->getErrorcode() == 980) {
+                // Retry the transaction in asynchronous mode
+                $response = $this->execute($payment, $amount, true);
+            } else {
+                $session->unsetData('AmazonRequestRetryAsync');
+                /** @var Payone_Api_Response_Error $response */
+                $this->throwMageException($this->helper()->__($oMethodInstance->getApiResponseErrorMessage($response)));
+            }
         }
+        $session->unsetData('AmazonRequestRetryAsync');
 
         return $response;
     }
