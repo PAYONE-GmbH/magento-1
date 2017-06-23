@@ -20,24 +20,24 @@
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
  * @link            http://www.fatchip.de
  */
-?>
-<?php
+
 /** @var Payone_Core_Block_Amazon_Pay_Shortcut $this */
 $config = $this->getConfiguration();
-/** @var Payone_Core_Helper_Url $helper */
-$helper = Mage::helper('payone_core/url');
-/** @var string $returnUrl */
-$returnUrl = $helper->getMagentoUrl('payone_core/amazonpay/checkout');
-/** @var string $buttonType */
-$buttonType = Payone_Core_Model_System_Config_AmazonButtonType::getParameter($config->getAmzButtonType());
-/** @var string $buttonColor */
-$buttonColor = Payone_Core_Model_System_Config_AmazonButtonColor::getParameter($config->getAmzButtonColor());
-/** @var string $buttonLanguage */
-$buttonLanguage = Payone_Core_Model_System_Config_AmazonButtonLang::getParameter($config->getAmzButtonLang());
-/** @var string $buttonDelimiter */
-$buttonDelimiter = "<span class=\"amazon-or\">{$this->__('-OR-')}</span>";
-/** @var int $buttonIdentifier */
-$buttonIdentifier = "LoginWithAmazon" . (++$this::$counter);
+if (!empty($config)) :
+    /** @var Payone_Core_Helper_Url $helper */
+    $helper = Mage::helper('payone_core/url');
+    /** @var string $returnUrl */
+    $returnUrl = $helper->getMagentoUrl('payone_core/amazonpay/checkout');
+    /** @var string $buttonType */
+    $buttonType = Payone_Core_Model_System_Config_AmazonButtonType::getParameter($config->getAmzButtonType());
+    /** @var string $buttonColor */
+    $buttonColor = Payone_Core_Model_System_Config_AmazonButtonColor::getParameter($config->getAmzButtonColor());
+    /** @var string $buttonLanguage */
+    $buttonLanguage = Payone_Core_Model_System_Config_AmazonButtonLang::getParameter($config->getAmzButtonLang());
+    /** @var string $buttonDelimiter */
+    $buttonDelimiter = "<span class=\"amazon-or\">{$this->__('-OR-')}</span>";
+    /** @var int $buttonIdentifier */
+    $buttonIdentifier = "LoginWithAmazon" . (++$this::$counter);
 ?>
 <div class="amazon-checkout-button">
     <?php if ($this->getData('show_or_position') === 'before') : ?>
@@ -87,4 +87,5 @@ $buttonIdentifier = "LoginWithAmazon" . (++$this::$counter);
     <!-- URL changes to https://static-eu.payments-amazon.com/OffAmazonPayments/eur/lpa/js/Widgets.js when mode=live -->
     <script async="async" src='https://static-eu.payments-amazon.com/OffAmazonPayments/eur/sandbox/lpa/js/Widgets.js'
     ></script>
+<?php endif; ?>
 <?php endif; ?>

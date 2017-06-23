@@ -41,8 +41,12 @@ class Payone_Core_Block_Amazon_Pay_Shortcut extends Mage_Core_Block_Template
         $paymentMethod = $paymentHelper->getMethodInstance(
             Payone_Core_Model_System_Config_PaymentMethodCode::AMAZONPAY
         );
-        /** @var \Payone_Core_Model_Config_Payment_Method $paymentConfig */
-        $paymentConfig = $paymentMethod->getConfigForQuote($quote);
+        try {
+            /** @var \Payone_Core_Model_Config_Payment_Method $paymentConfig */
+            $paymentConfig = $paymentMethod->getConfigForQuote($quote);
+        } catch (\Payone_Core_Exception_PaymentMethodConfigNotFound $e) {
+            return null;
+        }
 
         return $paymentConfig;
     }
