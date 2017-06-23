@@ -35,25 +35,26 @@ $progressAction = $helper->getMagentoUrl('*/*/progress');
 /** @var string $cartAction */
 $cartAction = $helper->getMagentoUrl('checkout/cart');
 ?>
-<div class="page-title"><h1>Checkout with Amazon</h1></div>
+<div class="page-title"><h1><?php echo $this->__('Checkout with Amazon'); ?></h1></div>
 <ol id="amazonCheckoutSteps">
     <li class="section allow" onclick="window.location = '<?php echo $cartAction; ?>'; return false;">
         <div class="step-title">
             <span class="number">1</span>
-            <h2>Review shopping cart</h2>
-            <a href="#">View</a>
+            <h2><?php echo $this->__('Review shopping cart'); ?></h2>
+            <a href="#"><?php echo $this->__('View'); ?></a>
         </div>
     </li>
     <li class="section allow active" id="amazonCheckoutSelectAddress">
         <div class="step-title">
             <span class="number">2</span>
-            <h2>Shipping information</h2>
-            <a href="#">Edit</a>
+            <h2><?php echo $this->__('Shipping information'); ?></h2>
+            <a href="#"><?php echo $this->__('Edit'); ?></a>
         </div>
         <div class="step" id="addressBookWidgetDiv"></div>
         <div class="buttons-set">
-            <button title="Continue" type="button" class="button amz" id="selectAddress" disabled="disabled">
-                Continue
+            <button title="<?php echo $this->__('Continue'); ?>" type="button"
+                    class="button amz" id="selectAddress" disabled="disabled">
+                <?php echo $this->__('Continue'); ?>
             </button>
             <span id="shipping-please-wait" class="please-wait">
                 <img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>"
@@ -66,8 +67,8 @@ $cartAction = $helper->getMagentoUrl('checkout/cart');
     <li class="section" id="amazonCheckoutSelectMethod">
         <div class="step-title">
             <span class="number">3</span>
-            <h2>Shipping method</h2>
-            <a href="#">Edit</a>
+            <h2><?php echo $this->__('Shipping method'); ?></h2>
+            <a href="#"><?php echo $this->__('Edit'); ?></a>
         </div>
         <div class="step" id="shippingMethodDiv">
             <form id="shippingMethodForm" action="">
@@ -76,8 +77,9 @@ $cartAction = $helper->getMagentoUrl('checkout/cart');
             </form>
         </div>
         <div class="buttons-set">
-            <button title="Continue" type="button" class="button amz" id="selectMethod" disabled="disabled">
-                Continue
+            <button title="<?php echo $this->__('Continue'); ?>" type="button"
+                    class="button amz" id="selectMethod" disabled="disabled">
+                <?php echo $this->__('Continue'); ?>
             </button>
             <span id="shipping-please-wait" class="please-wait">
                 <img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>"
@@ -90,13 +92,14 @@ $cartAction = $helper->getMagentoUrl('checkout/cart');
     <li class="section" id="amazonCheckoutSelectWallet">
         <div class="step-title">
             <span class="number">4</span>
-            <h2>Payment information</h2>
-            <a href="#">Edit</a>
+            <h2><?php echo $this->__('Payment information'); ?></h2>
+            <a href="#"><?php echo $this->__('Edit'); ?></a>
         </div>
         <div class="step" id="walletWidgetDiv"></div>
         <div class="buttons-set">
-            <button title="Continue" type="button" class="button amz" id="selectWallet" disabled="disabled">
-                Continue
+            <button title="<?php echo $this->__('Continue'); ?>" type="button"
+                    class="button amz" id="selectWallet" disabled="disabled">
+                <?php echo $this->__('Continue'); ?>
             </button>
             <span id="shipping-please-wait" class="please-wait">
                 <img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>"
@@ -109,13 +112,13 @@ $cartAction = $helper->getMagentoUrl('checkout/cart');
     <li class="section" id="amazonCheckoutSubmitOrder">
         <div class="step-title">
             <span class="number">5</span>
-            <h2>Order review</h2>
-            <a href="#">Edit</a>
+            <h2><?php echo $this->__('Order review'); ?></h2>
+            <a href="#"><?php echo $this->__('Edit'); ?></a>
         </div>
         <div class="step" id="orderReviewDiv"></div>
         <div class="buttons-set">
-            <button title="Place order" type="button" class="button amz" id="submitOrder">
-                Place order
+            <button title="<?php echo $this->__('Place order'); ?>" type="button" class="button amz" id="submitOrder">
+                <?php echo $this->__('Place order'); ?>
             </button>
             <span id="shipping-please-wait" class="please-wait">
                 <img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>"

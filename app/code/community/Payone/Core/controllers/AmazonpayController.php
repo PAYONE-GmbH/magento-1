@@ -87,7 +87,7 @@ class Payone_Core_AmazonPayController extends Payone_Core_Controller_Abstract
             $response->setBody(json_encode(['errorMessage' => $e->getMessage(), 'successful' => false]));
             return;
         } catch (\Exception $e) {
-            $errorMessage = $this->__('Unable to initialize PAYONE Amazon Checkout.');
+            $errorMessage = $this->__('Unable to proceed with PAYONE Amazon Checkout.');
             $response->setBody(json_encode(['errorMessage' => $errorMessage, 'successful' => false]));
             Mage::logException($e);
             return;

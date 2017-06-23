@@ -34,6 +34,6 @@ class Payone_Core_Model_Payment_Method_AmazonPay extends Payone_Core_Model_Payme
      */
     public function getApiResponseErrorMessage($response)
     {
-        return $response->getCustomermessage() . " " . $response->getErrormessage();
+        return $response->getCustomermessage();
     }
 }
