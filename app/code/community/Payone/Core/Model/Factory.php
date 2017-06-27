@@ -714,7 +714,7 @@ class Payone_Core_Model_Factory
     }
 
     /**
-     * @return Payone_Api_Request_AddressCheck
+     * @return Payone_Api_Request_Consumerscore
      */
     public function getRequestVerificationConsumerScore()
     {
@@ -1579,6 +1579,14 @@ class Payone_Core_Model_Factory
     public function getModelSystemConfigCreditCardType()
     {
         return Mage::getSingleton('payone_core/system_config_creditCardType');
+    }
+
+    /**
+     * @return Payone_Core_Model_System_Config_CreditCardType
+     */
+    public function getModelSystemConfigHideCvc()
+    {
+        return Mage::getSingleton('payone_core/system_config_creditCardHideCvc');
     }
 
     /**

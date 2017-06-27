@@ -42,6 +42,18 @@ class Payone_Core_Block_Payment_Method_Form_Wallet
     }
 
     /**
+     * @return array
+     */
+    public function walletTypeMapping()
+    {
+        return $walletPayment = array(
+            Payone_Core_Model_System_Config_PaymentMethodCode::WALLETPAYDIREKT => Payone_Api_Enum_WalletType::PAYDIREKT,
+            Payone_Core_Model_System_Config_PaymentMethodCode::WALLETPAYPALEXPRESS => Payone_Api_Enum_WalletType::PAYPAL_EXPRESS,
+            Payone_Core_Model_System_Config_PaymentMethodCode::WALLETALIPAY => Payone_Api_Enum_WalletType::ALIPAY
+        );
+    }
+
+    /**
      * @override To prevent display of fee config on payment method, as there might be differen fees for each wallet type
      *
      * @return string

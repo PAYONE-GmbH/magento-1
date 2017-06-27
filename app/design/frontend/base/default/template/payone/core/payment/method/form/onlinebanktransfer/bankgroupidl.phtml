@@ -1,0 +1,46 @@
+<?php
+/**
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the GNU General Public License (GPL 3)
+ * that is bundled with this package in the file LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Payone_Core to newer
+ * versions in the future. If you wish to customize Payone_Core for your
+ * needs please refer to http://www.payone.de for more information.
+ *
+ * @category        Payone
+ * @package         design_frontend_base_default
+ * @subpackage      template
+ * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
+ * @author          Matthias Walter <info@noovias.com>
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.noovias.com
+ */
+?>
+<?php
+$code = $this->getMethodCode();
+?>
+
+
+<li id="bank_group_wrap_nl" style="display: none">
+    <div class="input-box">
+        <label for="<?php echo $code ?>_bank_group_nl"><?php echo $this->__('Bank group') ?> <span
+                    class="required">*</span></label><br class="clear"/>
+        <select name="payment[payone_bank_group]" id="<?php echo $code ?>_bank_group_nl">
+            <option value="ABN_AMRO_BANK" <?php echo ($this->getSavedCustomerBankGroup() == 'ABN_AMRO_BANK')?'selected="selected"':'';?>>ABN Amro</option>
+            <option value="BUNQ_BANK" <?php echo ($this->getSavedCustomerBankGroup() == 'BUNQ_BANK')?'selected="selected"':'';?>>Bunq</option>
+            <option value="ING_BANK" <?php echo ($this->getSavedCustomerBankGroup() == 'ING_BANK')?'selected="selected"':'';?>>ING Bank</option>
+            <option value="RABOBANK" <?php echo ($this->getSavedCustomerBankGroup() == 'RABOBANK')?'selected="selected"':'';?>>Rabobank</option>
+            <option value="SNS_BANK" <?php echo ($this->getSavedCustomerBankGroup() == 'SNS_BANK')?'selected="selected"':'';?>>SNS BANK</option>
+            <option value="ASN_BANK" <?php echo ($this->getSavedCustomerBankGroup() == 'ASN_BANK')?'selected="selected"':'';?>>ASN Bank</option>
+            <option value="SNS_REGIO_BANK" <?php echo ($this->getSavedCustomerBankGroup() == 'SNS_REGIO_BANK')?'selected="selected"':'';?>>Regio Bank</option>
+            <option value="TRIODOS_BANK" <?php echo ($this->getSavedCustomerBankGroup() == 'TRIODOS_BANK')?'selected="selected"':'';?>>Triodos Bank</option>
+            <option value="KNAB_BANK" <?php echo ($this->getSavedCustomerBankGroup() == 'KNAB_BANK')?'selected="selected"':'';?>>Knab</option>
+            <option value="VAN_LANSCHOT_BANKIERS" <?php echo ($this->getSavedCustomerBankGroup() == 'VAN_LANSCHOT_BANKIERS')?'selected="selected"':'';?>>van Lanschot</option>
+        </select>
+    </div>
+</li>

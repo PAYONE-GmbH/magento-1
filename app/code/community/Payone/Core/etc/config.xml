@@ -24,7 +24,7 @@
 <config>
     <modules>
         <Payone_Core>
-            <version>3.7.7</version>
+            <version>3.7.8</version>
         </Payone_Core>
     </modules>
 
@@ -279,6 +279,18 @@
                     <!-- Wallet Type -->
                     <to_order_payment>*</to_order_payment>
                 </payone_wallet_type>
+                <payone_wallet_paydirekt_type>
+                    <!-- Paydirekt Type -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_wallet_paydirekt_type>
+                <payone_wallet_paypal_express_type>
+                    <!-- Paypal Express Type -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_wallet_paypal_express_type>
+                <payone_wallet_alipay_type>
+                    <!-- Ali Pay Type -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_wallet_alipay_type>
                 <payone_ratepay_type>
                     <!-- Ratepay Type -->
                     <to_order_payment>*</to_order_payment>
@@ -504,6 +516,14 @@
                     </downloadable_observer>
                 </observers>
             </sales_order_save_commit_after>
+            <sales_model_service_quote_submit_failure>
+                <observers>
+                    <payone_service_quote_submit_failure>
+                        <class>payone_core/observer_sales_quote_submit_failure</class>
+                        <method>protocol</method>
+                    </payone_service_quote_submit_failure>
+                </observers>
+            </sales_model_service_quote_submit_failure>
         </events>
     </global>
 
@@ -650,6 +670,41 @@
                 <model>payone_core/payment_method_onlineBankTransfer</model>
                 <group>payone</group>
             </payone_online_bank_transfer>
+            <payone_online_bank_transfer_sofortueberweisung translate="title" module="payone_core">
+                <title>PAYONE - Sofortüberweisung</title>
+                <model>payone_core/payment_method_onlineBankTransferSofortueberweisung</model>
+                <group>payone</group>
+            </payone_online_bank_transfer_sofortueberweisung>
+            <payone_online_bank_transfer_giropay translate="title" module="payone_core">
+                <title>PAYONE - Sofortüberweisung</title>
+                <model>payone_core/payment_method_onlineBankTransferGiropay</model>
+                <group>payone</group>
+            </payone_online_bank_transfer_giropay>
+            <payone_online_bank_transfer_eps translate="title" module="payone_core">
+                <title>PAYONE - eps Online-Überweisung</title>
+                <model>payone_core/payment_method_onlineBankTransferEps</model>
+                <group>payone</group>
+            </payone_online_bank_transfer_eps>
+            <payone_online_bank_transfer_idl translate="title" module="payone_core">
+                <title>PAYONE - eps Online-Überweisung</title>
+                <model>payone_core/payment_method_onlineBankTransferIdl</model>
+                <group>payone</group>
+            </payone_online_bank_transfer_idl>
+            <payone_online_bank_transfer_pff translate="title" module="payone_core">
+                <title>PAYONE - PostFinance E-Finance</title>
+                <model>payone_core/payment_method_onlineBankTransferPostFinanceEfinance</model>
+                <group>payone</group>
+            </payone_online_bank_transfer_pff>
+            <payone_online_bank_transfer_pfc translate="title" module="payone_core">
+                <title>PAYONE - PostFinance Card</title>
+                <model>payone_core/payment_method_onlineBankTransferPostFinanceCard</model>
+                <group>payone</group>
+            </payone_online_bank_transfer_pfc>
+            <payone_online_bank_transfer_p24 translate="title" module="payone_core">
+                <title>PAYONE - Przelewy24</title>
+                <model>payone_core/payment_method_onlineBankTransferP24</model>
+                <group>payone</group>
+            </payone_online_bank_transfer_p24>
             <payone_advance_payment translate="title" module="payone_core">
                 <title>PAYONE - AdvancePayment</title>
                 <model>payone_core/payment_method_advancePayment</model>
@@ -660,6 +715,21 @@
                 <model>payone_core/payment_method_wallet</model>
                 <group>payone</group>
             </payone_wallet>
+            <payone_wallet_paydirekt translate="title" module="payone_core">
+                <title>PAYONE - Paydirekt</title>
+                <model>payone_core/payment_method_walletPaydirekt</model>
+                <group>payone</group>
+            </payone_wallet_paydirekt>
+            <payone_wallet_paypal_express translate="title" module="payone_core">
+                <title>PAYONE - Paypal Express</title>
+                <model>payone_core/payment_method_walletPaypalExpress</model>
+                <group>payone</group>
+            </payone_wallet_paypal_express>
+            <payone_wallet_alipay translate="title" module="payone_core">
+                <title>PAYONE - AliPay</title>
+                <model>payone_core/payment_method_walletAliPay</model>
+                <group>payone</group>
+            </payone_wallet_alipay>
         </payment>
         <payone_payment>
             <template_creditcard>
@@ -677,6 +747,28 @@
                 <use_global>1</use_global>
                 <sofortueberweisung_show_iban>0</sofortueberweisung_show_iban>
             </template_online_bank_transfer>
+            <template_online_bank_transfer_sofortueberweisung>
+                <use_global>1</use_global>
+                <sofortueberweisung_show_iban>0</sofortueberweisung_show_iban>
+            </template_online_bank_transfer_sofortueberweisung>
+            <template_online_bank_transfer_giropay>
+                <use_global>1</use_global>
+            </template_online_bank_transfer_giropay>
+            <template_online_bank_transfer_eps>
+                <use_global>1</use_global>
+            </template_online_bank_transfer_eps>
+            <template_online_bank_transfer_idl>
+                <use_global>1</use_global>
+            </template_online_bank_transfer_idl>
+            <template_online_bank_transfer_pff>
+                <use_global>1</use_global>
+            </template_online_bank_transfer_pff>
+            <template_online_bank_transfer_pfc>
+                <use_global>1</use_global>
+            </template_online_bank_transfer_pfc>
+            <template_online_bank_transfer_p24>
+                <use_global>1</use_global>
+            </template_online_bank_transfer_p24>
             <template_safe_invoice>
                 <types>BSV</types>
                 <use_global>1</use_global>
@@ -687,6 +779,15 @@
             <template_wallet>
                 <use_global>1</use_global>
             </template_wallet>
+            <template_wallet_paydirekt>
+                <use_global>1</use_global>
+            </template_wallet_paydirekt>
+            <template_wallet_paypal_express>
+                <use_global>1</use_global>
+            </template_wallet_paypal_express>
+            <template_wallet_alipay>
+                <use_global>1</use_global>
+            </template_wallet_alipay>
             <template_advance_payment>
                 <use_global>1</use_global>
             </template_advance_payment>
@@ -735,6 +836,9 @@
                 <online_bank_transfer>a:1:{s:18:"_1343118466182_182";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</online_bank_transfer>
                 <cash_on_delivery>a:1:{s:18:"_1338893625332_332";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</cash_on_delivery>
                 <wallet>a:1:{s:18:"_1343137411652_652";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</wallet>
+                <wallet_paydirekt>a:1:{s:18:"_1343137411652_652";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</wallet_paydirekt>
+                <wallet_paypal_express>a:1:{s:18:"_1343137411652_652";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</wallet_paypal_express>
+                <wallet_alipay>a:1:{s:18:"_1343137411652_652";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</wallet_alipay>
                 <barzahlen>a:1:{s:23:"_payone_status_mapping4";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</barzahlen>
                 <ratepay>a:1:{s:17:"_1468417699073_73";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</ratepay>
                 <payolution>a:1:{s:18:"_1468430772551_551";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</payolution>
@@ -776,6 +880,19 @@ Detaillierte Informationen zur Arbeitsweise der ABC finde ich unter www.abc.de/f
                 <enabled>0</enabled>
                 <template>payone_misc_email_avs_template</template>
             </email_avs>
+            <discount>
+                <sku>discount</sku>
+                <description>Discount</description>
+            </discount>
+            <creditmemo>
+                <adjustment_refund_sku>adjustment-refund</adjustment_refund_sku>
+                <adjustment_refund_name>Adjustment Refund</adjustment_refund_name>
+                <adjustment_fee_sku>adjustment-fee</adjustment_fee_sku>
+                <adjustment_fee_name>Adjustment Fee</adjustment_fee_name>
+            </creditmemo>
+            <shipping_costs>
+                <sku>shipping</sku>
+            </shipping_costs>
         </payone_misc>
     </default>
 

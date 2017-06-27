@@ -107,14 +107,21 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
     {
 
     }
-    
+
+    /**
+     * @param $oPayment
+     * @param $oOrder
+     * @return mixed
+     */
     protected function _getReferenceNumber($oPayment, $oOrder)
     {
         $sRefNr = $oOrder->getIncrementId();
-        if ($oPayment instanceof Payone_Core_Model_Payment_Method_Wallet && $this->_getWalletType() == 'PDT') {
+        if (($oPayment instanceof Payone_Core_Model_Payment_Method_Wallet
+             || $oPayment instanceof Payone_Core_Model_Payment_Method_WalletPaydirekt)
+             && ($this->_getWalletType() == 'PDT')
+        ) {
             $sRefNr = str_replace('_', '-', $sRefNr);
         }
-
         return $sRefNr;
     }
 
@@ -332,6 +339,8 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
         // Multiple Ips could be included, we only send the last one.
         $remoteIps = explode(',', $remoteIp);
         $ip = array_shift($remoteIps);
+        // remove leading Whitespace for Muliple IPs e.g. "0.0.0.0, 1.1.1.1"
+        $ip = trim($ip);
         return $ip;
     }
 
@@ -479,7 +488,15 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
 
             $payment->setPseudocardpan($info->getPayonePseudocardpan());
             $isRedirect = true;
-        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransfer) {
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransfer ||
+                  $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferSofortueberweisung ||
+                  $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferGiropay ||
+                  $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferEps ||
+                  $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferIdl ||
+                  $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferPostFinanceEfinance ||
+                  $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferPostFinanceCard ||
+                  $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferP24)
+        {
             $country = $this->getOrder()->getBillingAddress()->getCountry();
             $payoneOnlinebanktransferType = $info->getPayoneOnlinebanktransferType();
             $iban = $info->getPayoneSepaIban();
@@ -503,6 +520,8 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
                     }
                     break;
                 case Payone_Api_Enum_OnlinebanktransferType::IDEAL:
+                    $payment->setBankgrouptype($info->getPayoneBankGroup());
+                    break;
                 case Payone_Api_Enum_OnlinebanktransferType::EPS_ONLINE_BANK_TRANSFER:
                     $payment->setBankgrouptype($info->getPayoneBankGroup());
                     break;
@@ -521,7 +540,40 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
                 // BillSAFE is a redirect payment method, Klarna not
                 $isRedirect = true;
             }
-        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Wallet) {
+        }
+        //Wallet PayDirekt
+        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_WalletPaydirekt) {
+            $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_Wallet();
+
+            $payment->setWallettype(Payone_Api_Enum_WalletType::PAYDIREKT);
+            $isRedirect = true;
+
+            if ($this->_getWalletType() == 'PDT' && $this->getOrder()->getIsVirtual()) { // is Paydirekt and virtual/download?
+                $payData = new Payone_Api_Request_Parameter_Paydata_Paydata();
+                $payData->addItem(
+                    new Payone_Api_Request_Parameter_Paydata_DataItem(
+                        array('key' => 'shopping_cart_type', 'data' => 'DIGITAL')
+                    )
+                );
+                $payment->setPaydata($payData);
+            }
+        }
+        //Wallet PayPal Express
+        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_WalletPaypalExpress) {
+            $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_Wallet();
+
+            $payment->setWallettype(Payone_Api_Enum_WalletType::PAYPAL_EXPRESS);
+            $isRedirect = true;
+        }
+        //Wallet AliPay
+        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_WalletAliPay) {
+            $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_Wallet();
+
+            $payment->setWallettype(Payone_Api_Enum_WalletType::ALIPAY);
+            $isRedirect = true;
+        }
+        //Old Wallet Payment
+        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Wallet) {
             $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_Wallet();
             $payment->setWallettype($this->_getWalletType());
             $isRedirect = true;
@@ -701,8 +753,15 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
         $sType = false;
 
         $aPostPayment = Mage::app()->getRequest()->getPost('payment');
+
         if($aPostPayment && array_key_exists('payone_wallet_type', $aPostPayment)) {
             $sType = $aPostPayment['payone_wallet_type'];
+        } else {
+            $sType = Payone_Api_Enum_WalletType::PAYPAL_EXPRESS;
+        }
+
+        if($aPostPayment && array_key_exists('payone_wallet_paydirekt_type', $aPostPayment)) {
+            $sType = $aPostPayment['payone_wallet_paydirekt_type'];
         } else {
             $sType = Payone_Api_Enum_WalletType::PAYPAL_EXPRESS;
         }
@@ -748,8 +807,38 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
         elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransfer) {
             $clearingType = Payone_Enum_ClearingType::ONLINEBANKTRANSFER;
         }
+        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferSofortueberweisung) {
+            $clearingType = Payone_Enum_ClearingType::ONLINEBANKTRANSFERSOFORT;
+        }
+        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferIdl) {
+            $clearingType = Payone_Enum_ClearingType::ONLINEBANKTRANSFERIDL;
+        }
+        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferPostFinanceCard) {
+            $clearingType = Payone_Enum_ClearingType::ONLINEBANKTRANSFERPFC;
+        }
+        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferp24) {
+            $clearingType = Payone_Enum_ClearingType::ONLINEBANKTRANSFERP24;
+        }
+        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferPostFinanceEfinance) {
+            $clearingType = Payone_Enum_ClearingType::ONLINEBANKTRANSFERPFF;
+        }
+        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferGiropay) {
+            $clearingType = Payone_Enum_ClearingType::ONLINEBANKTRANSFERGIROPAY;
+        }
+        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferEps) {
+            $clearingType = Payone_Enum_ClearingType::ONLINEBANKTRANSFEREPS;
+        }
         elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Wallet) {
             $clearingType = Payone_Enum_ClearingType::WALLET;
+        }
+        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_WalletPaydirekt) {
+            $clearingType = Payone_Enum_ClearingType::WALLETPAYDIREKT;
+        }
+        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_WalletPaypalExpress) {
+            $clearingType = Payone_Enum_ClearingType::WALLETPAYPALEXPRESS;
+        }
+        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_WalletAliPay) {
+            $clearingType = Payone_Enum_ClearingType::WALLETALIPAY;
         }
         elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Invoice) {
             $clearingType = Payone_Enum_ClearingType::INVOICE;

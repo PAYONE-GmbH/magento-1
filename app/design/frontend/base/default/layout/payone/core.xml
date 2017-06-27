@@ -87,7 +87,6 @@
             <action method="addJs"><script>payone/core/creditcard.js</script></action>
             <action method="addJs"><script>payone/core/onlinebanktransfer.js</script></action>
             <action method="addJs"><script>payone/core/safe_invoice.js</script></action>
-            <action method="addJs"><script>payone/core/wallet.js</script></action>
             <action method="addJs"><script>payone/core/debitpayment.js</script></action>
             <action method="addJs"><script>payone/core/sepa_input.js</script></action>
             <action method="addJs"><script>payone/core/sepa_validation.js</script></action>
