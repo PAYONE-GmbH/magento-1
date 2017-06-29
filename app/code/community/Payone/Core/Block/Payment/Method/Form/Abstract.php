@@ -113,8 +113,13 @@ class Payone_Core_Block_Payment_Method_Form_Abstract
         $fee = 0.0;
         if (is_array($feeConfig) and array_key_exists('fee_config', $feeConfig) and !empty($feeConfig['fee_config'])) {
             $fee = $feeConfig['fee_config'];
-            if(isset($feeConfig['fee_type'][0]) && $feeConfig['fee_type'][0] == 'percent') {
-                $fee = $oQuote->getSubtotal() * $fee / 100; // net price
+            if (isset($feeConfig['fee_type'][0]) && $feeConfig['fee_type'][0] == 'percent') {
+                $aTotals = $oQuote->getTotals();
+                $dSubTotal = 0.0;
+                if (isset($aTotals['subtotal'])) {
+                    $dSubTotal = $aTotals['subtotal']->getValueExclTax();
+                }
+                $fee = $dSubTotal * $fee / 100; // net price
             }
 
             #$oQuote->getSubtotal();
@@ -133,7 +138,7 @@ class Payone_Core_Block_Payment_Method_Form_Abstract
     {
         $dPercent = $this->getFactory()->helper()->getShippingTaxRate($oQuote);
         $dTaxAmount = Mage::helper('tax')->getCalculator()->calcTaxAmount($dPrice, $dPercent, false, false);
-        $dPrice = $dPrice + $dTaxAmount;
+        $dPrice += $this->getQuote()->getStore()->roundPrice($dTaxAmount);
         return $dPrice;
     }
     
@@ -175,7 +180,7 @@ class Payone_Core_Block_Payment_Method_Form_Abstract
     protected function getFormattedFeePriceLabel($price)
     {
         $formattedFeePrice = $this->getQuote()->getStore()->formatPrice($price);
-        $text = $this->__('(+ %s)', $formattedFeePrice);
+        $text = $this->__('+ %s', $formattedFeePrice);
         return $text;
     }
 
@@ -265,7 +270,7 @@ class Payone_Core_Block_Payment_Method_Form_Abstract
             return '';
         }
 
-        $text = '(+ %s)';
+        $text = '+ %s';
         $text = $this->__($text, $this->getFormattedFeePrice());
 
         $id = 'payone_payment_fee_' . $this->getMethodCode();

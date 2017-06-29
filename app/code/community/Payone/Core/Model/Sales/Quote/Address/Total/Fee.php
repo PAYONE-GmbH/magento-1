@@ -78,12 +78,12 @@ class Payone_Core_Model_Sales_Quote_Address_Total_Fee
          */
         $aTotals = $quote->getTotals();
         $dSubTotal = 0;
-        if(isset($aTotals['subtotal'])) {
+        if (isset($aTotals['subtotal'])) {
             $dSubTotal = $aTotals['subtotal']->getValueExclTax();
         }
         
         $paymentFee = $feeConfig['fee_config'];
-        if(isset($feeConfig['fee_type'][0]) && $feeConfig['fee_type'][0] == 'percent') {
+        if (isset($feeConfig['fee_type'][0]) && $feeConfig['fee_type'][0] == 'percent') {
             $paymentFee = $dSubTotal * $paymentFee / 100; // subtotal is excl tax, so fee is too
             error_log('Netto: '.$paymentFee);
             if (Mage::helper('tax')->shippingPriceIncludesTax(Mage::app()->getStore())) {
@@ -101,7 +101,7 @@ class Payone_Core_Model_Sales_Quote_Address_Total_Fee
     {
         $dTaxRate = $this->getFactory()->helper()->getShippingTaxRate($quote);
         $dTaxAmount = Mage::helper('tax')->getCalculator()->calcTaxAmount($paymentFee, $dTaxRate, false, false);
-        $paymentFee = $paymentFee + $dTaxAmount;
+        $paymentFee += $this->getQuote()->getStore()->roundPrice($dTaxAmount);
         return $paymentFee;
     }
     
