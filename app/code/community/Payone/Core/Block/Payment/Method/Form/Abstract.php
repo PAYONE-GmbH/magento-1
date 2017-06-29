@@ -118,6 +118,9 @@ class Payone_Core_Block_Payment_Method_Form_Abstract
                 $dSubTotal = 0.0;
                 if (isset($aTotals['subtotal'])) {
                     $dSubTotal = $aTotals['subtotal']->getValueExclTax();
+                    if ($dSubTotal === null) {
+                        $dSubTotal = $aTotals['subtotal']->getValue();
+                    }
                 }
                 $fee = $dSubTotal * $fee / 100; // net price
             }
