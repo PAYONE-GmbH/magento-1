@@ -63,10 +63,9 @@ class Payone_Core_AmazonPayController extends Payone_Core_Controller_Abstract
         $response->setHeader('Content-Type', 'application/json');
         $params = $this->getRequest()->getParams();
         $checkoutSteps = [
-            'selectAddress',
-            'selectMethod',
-            'selectWallet',
-            'submitOrder',
+            'confirmSelection',
+            'chooseMethod',
+            'placeOrder',
         ];
         try {
             if (!in_array($params['currentStep'], $checkoutSteps)) {

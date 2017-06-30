@@ -103,7 +103,7 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
      * @param array $params
      * @return array
      */
-    public function selectAddress($params)
+    public function confirmSelection($params)
     {
         $data = [];
         $action = \Payone_Api_Enum_GenericpaymentAction::AMAZONPAY_GETORDERREFERENCEDETAILS;
@@ -138,6 +138,10 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
             ->setCollectShippingRates(true)
             ->setData('should_ignore_validation', true)
             ->setData('payment_method', $paymentMethodCode);
+        $this->fillAddressFields('billing', $this->quote->getBillingAddress(), $data)
+            ->setSameAsBilling(false)
+            ->setData('should_ignore_validation', true)
+            ->setData('payment_method', $paymentMethodCode);
         $this->quote->setTotalsCollectedFlag(false);
         $coupon = $this->checkoutSession->getData('cart_coupon_code');
         if (!empty($coupon)) {
@@ -165,17 +169,22 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
         /** @var \Payone_Core_AmazonPayController $controller */
         $controller = $params['controller'];
         $layout = $controller->getLayout();
-        $update = $layout->getUpdate();
-        $update->load('checkout_onepage_shippingmethod');
-        $layout->generateXml();
-        $layout->generateBlocks();
-        $output = $layout->getOutput();
+        $update = $layout->getUpdate()
+            ->load('checkout_onepage_shippingmethod');
+        $layout->generateXml()->generateBlocks();
+        $shippingRatesHtml = $layout->getOutput();
+        $update->resetHandles()->setCacheId(0)
+            ->load('checkout_onepage_review');
+        $layout->removeOutputBlock('checkout_review_submit');
+        $layout->generateXml()->generateBlocks();
+        $orderReviewHtml = $layout->getOutput();
 
         return [
             'successful'          => true,
             'quoteBaseGrandTotal' => $baseGrandTotal,
             'shippingRates'       => $shippingRates,
-            'shippingRatesHtml'   => $output,
+            'shippingRatesHtml'   => $shippingRatesHtml,
+            'orderReviewHtml'     => $orderReviewHtml,
         ];
     }
 
@@ -183,7 +192,7 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
      * @param array $params
      * @return array
      */
-    public function selectMethod($params)
+    public function chooseMethod($params)
     {
         if (empty($params['shippingMethodCode'])) {
             Mage::throwException(
@@ -212,60 +221,17 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
                 Mage::helper('payone_core')->__('Unable to proceed with PAYONE Amazon Checkout.')
             );
         }
-
-        return [
-            'successful'   => true,
-        ];
-    }
-
-    /**
-     * @param array $params
-     * @return array
-     */
-    public function selectWallet($params)
-    {
-        $data = [];
-        $action = \Payone_Api_Enum_GenericpaymentAction::AMAZONPAY_GETORDERREFERENCEDETAILS;
-        $service = $this->getFactory()->getServicePaymentGenericpayment($this->config);
-        /** @var \Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment $mapper */
-        $mapper = $service->getMapper();
-        $request = $mapper->requestAmazonPayOrderReferenceDetails(
-            $this->workOrderId,
-            [
-                'action'               => $action,
-                'amazon_reference_id'  => $params['amazonOrderReferenceId'],
-                'amazon_address_token' => $params['addressConsentToken'],
-            ],
-            $this->quote->getQuoteCurrencyCode()
-        );
-        $response = $this->getFactory()->getServiceApiPaymentGenericpayment()->request($request);
-        if ($response instanceof \Payone_Api_Response_Genericpayment_Ok) {
-            $data = $response->getPayDataArray();
-        } else {
-            Mage::throwException(
-                Mage::helper('payone_core')->__('Unable to proceed with PAYONE Amazon Checkout.')
-            );
-        }
-        $paymentMethodCode = \Payone_Core_Model_System_Config_PaymentMethodCode::AMAZONPAY;
-        $this->fillAddressFields('billing', $this->quote->getBillingAddress(), $data)
-            ->setSameAsBilling(false)
-            ->setData('should_ignore_validation', true)
-            ->setData('payment_method', $paymentMethodCode);
-        $this->quote->save();
-
         /** @var \Payone_Core_AmazonPayController $controller */
         $controller = $params['controller'];
         $layout = $controller->getLayout();
-        $update = $layout->getUpdate();
-        $update->load('checkout_onepage_review');
+        $layout->getUpdate()->load('checkout_onepage_review');
         $layout->removeOutputBlock('checkout_review_submit');
-        $layout->generateXml();
-        $layout->generateBlocks();
-        $output = $layout->getOutput();
+        $layout->generateXml()->generateBlocks();
+        $orderReviewHtml = $layout->getOutput();
 
         return [
             'successful'      => true,
-            'orderReviewHtml' => $output,
+            'orderReviewHtml' => $orderReviewHtml,
         ];
     }
 
@@ -274,7 +240,7 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
      * @return array
      * @throws Exception
      */
-    public function submitOrder($params)
+    public function placeOrder($params)
     {
         /** @var \Mage_Checkout_Helper_Data $checkoutHelper */
         $checkoutHelper = Mage::helper('checkout');
@@ -369,20 +335,21 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
     private function fillAddressFields($type, $address, $data)
     {
         $mapping = [
-            'email'           => 'email',
-            'zip'             => 'postcode',
-            'country'         => 'country_id',
-            'state'           => 'region',
-            'city'            => 'city',
-            'street'          => 'street',
             'firstname'       => 'firstname',
             'lastname'        => 'lastname',
+            'email'           => 'email',
             'telephonenumber' => 'telephone',
+            'company'         => 'company',
+            'street'          => 'street',
+            'zip'             => 'postcode',
+            'city'            => 'city',
+            'state'           => 'region',
+            'country'         => 'country_id',
         ];
         foreach ($data as $key => $value) {
             $key = array_key_exists($key, $mapping) ?
                 $key : str_replace("{$type}_", "", $key);
-            if (array_key_exists($key, $mapping)) {
+            if (array_key_exists($key, $mapping) && !empty($value)) {
                 $address->setData($mapping[$key], $value);
             }
         }

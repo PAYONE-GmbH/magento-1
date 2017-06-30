@@ -29,29 +29,7 @@ var PayoneCheckout = {
     amazonOrderReferenceId: null,
     addressConsentToken: null,
     shippingMethodCode: null,
-    afterSelectAddress: function (result) {
-        quoteBaseGrandTotal = result['quoteBaseGrandTotal'];
-        checkQuoteBaseGrandTotal = quoteBaseGrandTotal;
-        jQuery('#shippingMethodsList').html(result['shippingRatesHtml']);
-        jQuery('input[type="radio"][name="shipping_method"]').on('click', function (event) {
-            if (event.currentTarget.checked === true) {
-                PayoneCheckout.shippingMethodCode = event.currentTarget.getValue();
-                jQuery('#selectMethod').attr('disabled', false);
-            }
-        });
-        var checkedMethod = jQuery('input[type="radio"][name="shipping_method"]:checked');
-        if (checkedMethod.length === 1) {
-            PayoneCheckout.shippingMethodCode = checkedMethod[0].getValue();
-            jQuery('#selectMethod').attr('disabled', false);
-        }
-        jQuery('#amazonCheckoutSelectAddress').removeClass('active');
-        jQuery('#amazonCheckoutSelectMethod').addClass('allow active');
-    },
-    afterSelectMethod: function () {
-        jQuery('#amazonCheckoutSelectMethod').removeClass('active');
-        jQuery('#amazonCheckoutSelectWallet').addClass('allow active');
-    },
-    afterSelectWallet: function (result) {
+    displayOrderReview: function (result) {
         var review = jQuery(result['orderReviewHtml']).filter('#checkout-review-table-wrapper');
         var agreements = jQuery(result['orderReviewHtml']).filter('#checkout-agreements');
         if (agreements.length === 0) {
@@ -62,59 +40,88 @@ var PayoneCheckout = {
         } else {
             jQuery('#orderReviewDiv').html(review);
         }
-        jQuery('#amazonCheckoutSelectWallet').removeClass('active');
-        jQuery('#amazonCheckoutSubmitOrder').addClass('allow active');
     },
-    afterSubmitOrder: function (result) {
+    afterConfirmSelection: function (result) {
+        quoteBaseGrandTotal = result['quoteBaseGrandTotal'];
+        checkQuoteBaseGrandTotal = quoteBaseGrandTotal;
+        jQuery('#shippingMethodsDiv').html(result['shippingRatesHtml']);
+        jQuery('input[type="radio"][name="shipping_method"]').on('click', function (event) {
+            if (event.currentTarget.checked === true) {
+                PayoneCheckout.shippingMethodCode = event.currentTarget.getValue();
+                window.onCheckoutProgress(jQuery(event.currentTarget).parents('form[id]')[0]);
+            }
+        });
+        var checkedMethod = jQuery('input[type="radio"][name="shipping_method"]:checked');
+        if (checkedMethod.length === 1) {
+            PayoneCheckout.shippingMethodCode = checkedMethod[0].getValue();
+            jQuery('#placeOrder').attr('disabled', false);
+        }
+        this.displayOrderReview(result);
+        jQuery('#checkoutStepInit').removeClass('active');
+        jQuery('#checkoutStepFinish').addClass('allow active');
+    },
+    afterChooseMethod: function (result) {
+        this.displayOrderReview(result);
+        jQuery('#placeOrder').attr('disabled', false);
+    },
+    afterPlaceOrder: function (result) {
         window.location = result['redirectUrl'];
     }
+};
+
+window.onCheckoutProgress = function (target) {
+    target.disabled = true;
+    target.parentElement.addClassName('disabled');
+    jQuery('#addressBookWidgetCover, #walletWidgetCover').addClass('show');
+    var Progress = {currentStep: target.getAttribute('id')};
+    var Agreements = jQuery('#checkout-agreements');
+    if (Agreements) {
+        Agreements.serializeArray().each(function(Agreement) {
+            Progress[Agreement['name']] = Agreement['value'];
+        });
+    }
+    new Ajax.Request(PayoneCheckout.progressAction, {
+        method: 'get',
+        parameters: jQuery.extend({}, PayoneCheckout, Progress),
+        onSuccess: function (transport) {
+            if (transport.responseText) {
+                var Result = JSON.parse(transport.responseText);
+                if (Result['successful'] === true) {
+                    var Callback = "after"
+                        + Progress.currentStep.charAt(0).toUpperCase()
+                        + Progress.currentStep.slice(1);
+                    PayoneCheckout[Callback](Result);
+                } else {
+                    alert(Result['errorMessage']);
+                }
+            }
+            jQuery('#addressBookWidgetCover, #walletWidgetCover').removeClass('show');
+            target.parentElement.removeClassName('disabled');
+            target.disabled = false;
+        }
+    });
 };
 
 window.onDocumentReady = function () {
     jQuery.extend(PayoneCheckout, PayoneCheckoutParams);
     jQuery('button.amz').on('click', function (event) {
         event.preventDefault();
-        event.currentTarget.disabled = true;
-        event.currentTarget.parentElement.addClassName('disabled');
-        var Progress = {currentStep: event.currentTarget.getAttribute('id')};
-        var Agreements = jQuery('#checkout-agreements');
-        if (Agreements) {
-            Agreements.serializeArray().each(function(Agreement) {
-                Progress[Agreement['name']] = Agreement['value'];
-            });
-        }
-        new Ajax.Request(PayoneCheckout.progressAction, {
-            method: 'get',
-            parameters: jQuery.extend({}, PayoneCheckout, Progress),
-            onSuccess: function (transport) {
-                if (transport.responseText) {
-                    var Result = JSON.parse(transport.responseText);
-                    if (Result['successful'] === true) {
-                        var Callback = "after"
-                            + Progress.currentStep.charAt(0).toUpperCase()
-                            + Progress.currentStep.slice(1);
-                        PayoneCheckout[Callback](Result);
-                    } else {
-                        alert(Result['errorMessage']);
-                    }
-                }
-                event.currentTarget.parentElement.removeClassName('disabled');
-                event.currentTarget.disabled = false;
-            }
-        });
+        window.onCheckoutProgress(event.currentTarget);
     });
     jQuery('li.section').on('click', function (event) {
         if (event.currentTarget.hasClassName('allow') &&
             !event.currentTarget.hasClassName('active') &&
             event.currentTarget.getAttribute('id') !== null
         ) {
+            event.preventDefault();
+            jQuery('#placeOrder').attr('disabled', true);
             jQuery(event.currentTarget).nextAll().removeClass('allow active');
             jQuery(event.currentTarget).addClass('allow active');
         }
     })
 };
 
-window.onAmazonOrderReady = function (orderReference) {
+window.onAmazonWidgetsInitialized = function (orderReference) {
     var match,
         pl     = /\+/g,
         search = /([^&=]+)=?([^&]*)/g,
@@ -137,13 +144,11 @@ window.onAmazonPaymentsReady = function () {
     new OffAmazonPayments.Widgets.AddressBook({
         sellerId: PayoneCheckout.amazonSellerId,
         scope: 'payments:billing_address payments:shipping_address payments:widget profile',
-        onAddressSelect: function () {
-            jQuery('#selectAddress').attr('disabled', false);
-        },
+        onAddressSelect: function () {},
         design: {
             designMode: 'responsive'
         },
-        onReady: window.onAmazonOrderReady,
+        onReady: window.onAmazonWidgetsInitialized,
         onError: function (error) {
             console.log(error.getErrorCode() + ': ' + error.getErrorMessage());
         }
@@ -153,7 +158,7 @@ window.onAmazonPaymentsReady = function () {
         sellerId: PayoneCheckout.amazonSellerId,
         scope: 'payments:billing_address payments:shipping_address payments:widget profile',
         onPaymentSelect: function () {
-            jQuery('#selectWallet').attr('disabled', false);
+            jQuery('#confirmSelection').attr('disabled', false);
         },
         design: {
             designMode: 'responsive'
