@@ -52,10 +52,16 @@ var PayoneCheckout = {
         jQuery('#amazonCheckoutSelectWallet').addClass('allow active');
     },
     afterSelectWallet: function (result) {
-        jQuery('#orderReviewDiv').html(jQuery.merge(
-            jQuery(result['orderReviewHtml']).filter('#checkout-review-table-wrapper'),
-            jQuery(result['orderReviewHtml']).find('#checkout-agreements')
-        ));
+        var review = jQuery(result['orderReviewHtml']).filter('#checkout-review-table-wrapper');
+        var agreements = jQuery(result['orderReviewHtml']).filter('#checkout-agreements');
+        if (agreements.length === 0) {
+            agreements = jQuery(result['orderReviewHtml']).find('#checkout-agreements');
+        }
+        if (agreements.length === 1) {
+            jQuery('#orderReviewDiv').html(jQuery.merge(review.append('<br/>'), agreements));
+        } else {
+            jQuery('#orderReviewDiv').html(review);
+        }
         jQuery('#amazonCheckoutSelectWallet').removeClass('active');
         jQuery('#amazonCheckoutSubmitOrder').addClass('allow active');
     },

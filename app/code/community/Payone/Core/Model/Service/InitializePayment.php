@@ -53,17 +53,17 @@ class Payone_Core_Model_Service_InitializePayment
         /** @var $service Payone_Core_Model_Service_Payment_Interface */
         $service = null;
 
-        $isAmazonPayAuthorization = (
+        $isAmazonAuthorization = (
             $config->getCode() === 'amazon_pay' &&
             $config->getRequestTypeAmazon() === 'authorization'
         );
-        $isAmazonPayPreauthorization = (
+        $isAmazonPreauthorization = (
             $config->getCode() === 'amazon_pay' &&
             $config->getRequestTypeAmazon() === 'preauthorization'
         );
-        if ($config->isRequestAuthorization() && !$isAmazonPayPreauthorization || $isAmazonPayAuthorization) {
+        if ($isAmazonAuthorization || ($config->isRequestAuthorization() && !$isAmazonPreauthorization)) {
             $service = $this->getFactory()->getServicePaymentAuthorize($config);
-        } elseif ($config->isRequestPreauthorization() && !$isAmazonPayAuthorization) {
+        } elseif ($isAmazonPreauthorization || ($config->isRequestPreauthorization() && !$isAmazonAuthorization)) {
             $service = $this->getFactory()->getServicePaymentPreauthorize($config);
         } else {
             $msg = 'Invalid request type configured: "' . $config->getRequestType() . '"';
