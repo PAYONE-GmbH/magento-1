@@ -37,7 +37,7 @@ var PayoneCheckout = {
         }
         var orderReview = jQuery('#orderReviewDiv');
         if (agreements.length === 1) {
-            orderReview.html(jQuery.merge(review.append('<br/>'), agreements));
+            orderReview.html(jQuery.merge(agreements, review));
         } else {
             orderReview.html(review);
         }
