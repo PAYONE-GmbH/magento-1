@@ -58,7 +58,12 @@
     float: none;
 }
 
-#shippingMethodsDiv .sp-methods dd label:hover {
+#shippingMethodsDiv .sp-methods dd span ~ label {
+    padding-left: 15px !important;
+}
+
+#shippingMethodsDiv .sp-methods dd input ~ label:hover,
+#shippingMethodsDiv .sp-methods dd input:hover ~ label {
     background-color: #ececec;
 }
 

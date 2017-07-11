@@ -35,26 +35,42 @@ var PayoneCheckout = {
         if (agreements.length === 0) {
             agreements = jQuery(result['orderReviewHtml']).find('#checkout-agreements');
         }
+        var orderReview = jQuery('#orderReviewDiv');
         if (agreements.length === 1) {
-            jQuery('#orderReviewDiv').html(jQuery.merge(review.append('<br/>'), agreements));
+            orderReview.html(jQuery.merge(review.append('<br/>'), agreements));
         } else {
-            jQuery('#orderReviewDiv').html(review);
+            orderReview.html(review);
         }
+        var shortDescriptions = orderReview.find('.item-options dd.truncated');
+        shortDescriptions.hover(function (event) {
+            jQuery(event.currentTarget).find('.truncated_full_value').addClass('show');
+        }, function (event) {
+            jQuery(event.currentTarget).find('.truncated_full_value').removeClass('show');
+        });
     },
     afterConfirmSelection: function (result) {
         quoteBaseGrandTotal = result['quoteBaseGrandTotal'];
         checkQuoteBaseGrandTotal = quoteBaseGrandTotal;
         jQuery('#shippingMethodsDiv').html(result['shippingRatesHtml']);
-        jQuery('input[type="radio"][name="shipping_method"]').on('click', function (event) {
-            if (event.currentTarget.checked === true) {
-                PayoneCheckout.shippingMethodCode = event.currentTarget.getValue();
-                window.onCheckoutProgress(jQuery(event.currentTarget).parents('form[id]')[0]);
-            }
-        });
-        var checkedMethod = jQuery('input[type="radio"][name="shipping_method"]:checked');
+        var availableMethods = jQuery('input[type="radio"][name="shipping_method"]');
+        if (availableMethods.length > 1) {
+            availableMethods.on('click', function (event) {
+                if (event.currentTarget.checked === true) {
+                    PayoneCheckout.shippingMethodCode = event.currentTarget.getValue();
+                    window.onCheckoutProgress(jQuery(event.currentTarget).parents('form[id]')[0]);
+                }
+            });
+        }
+        var checkedMethod = availableMethods.filter(':checked');
         if (checkedMethod.length === 1) {
             PayoneCheckout.shippingMethodCode = checkedMethod[0].getValue();
             jQuery('#placeOrder').attr('disabled', false);
+        } else if (availableMethods.length === 1) {
+            // In case there's only one method that's not already checked
+            var singleMethod = availableMethods.filter(':first');
+            singleMethod.attr('checked', true);
+            PayoneCheckout.shippingMethodCode = singleMethod[0].getValue();
+            window.onCheckoutProgress(singleMethod.parents('form[id]')[0]);
         }
         this.displayOrderReview(result);
         jQuery('#checkoutStepInit').removeClass('active');
@@ -144,7 +160,9 @@ window.onAmazonPaymentsReady = function () {
     new OffAmazonPayments.Widgets.AddressBook({
         sellerId: PayoneCheckout.amazonSellerId,
         scope: 'payments:billing_address payments:shipping_address payments:widget profile',
-        onAddressSelect: function () {},
+        onAddressSelect: function () {
+            jQuery('#confirmSelection').attr('disabled', true);
+        },
         design: {
             designMode: 'responsive'
         },

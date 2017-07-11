@@ -160,10 +160,12 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
                 Mage::helper('payone_core')->__('Shipping to the selected address is not available.')
             );
         }
+        $shippingRatesCount = 0;
         foreach ($shippingRates as $carrier => $methods) {
             foreach ($methods as $index => $method) {
                 /** @var \Mage_Sales_Model_Quote_Address_Rate $method */
                 $shippingRates[$carrier][$index] = $method->getData();
+                $shippingRatesCount++;
             }
         }
         /** @var \Payone_Core_AmazonPayController $controller */
@@ -178,6 +180,10 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
         $layout->removeOutputBlock('checkout_review_submit');
         $layout->generateXml()->generateBlocks();
         $orderReviewHtml = $layout->getOutput();
+        if ($shippingRatesCount === 1) {
+            $params['shippingMethodCode'] = array_values($shippingRates)[0][0]['code'];
+            $orderReviewHtml = $this->chooseMethod($params)['orderReviewHtml'];
+        }
 
         return [
             'successful'          => true,
