@@ -472,6 +472,15 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </financing>
+                        <amazon_pay translate="label">
+                            <label>Amazon Pay</label>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_statusMapping</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <sort_order>120</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </amazon_pay>
                     </fields>
                 </status_mapping>
                 <payment_creditcard>
