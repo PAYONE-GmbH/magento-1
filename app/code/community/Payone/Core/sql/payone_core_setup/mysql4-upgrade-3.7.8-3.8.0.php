@@ -28,6 +28,7 @@ $installer = $this;
 $installer->startSetup();
 
 $tablePaymentMethod = $this->getTable('payone_core/config_payment_method');
+$tableOrderPayment = $this->getTable('sales/order_payment');
 
 /** @var $helper Payone_Core_Helper_Data */
 $helper = Mage::helper('payone_core');
@@ -38,6 +39,7 @@ if ($useSqlInstaller) {
 
     $installSqlConfig = [
         '{{payone_config_payment_method}}' => $tablePaymentMethod,
+        '{{sales_flat_order_payment}}' => $tableOrderPayment,
     ];
 
     $installSql = str_replace(array_keys($installSqlConfig), array_values($installSqlConfig), $sql);
@@ -94,6 +96,15 @@ if ($useSqlInstaller) {
         'NULLABLE' => true,
         'DEFAULT'  => null,
         'COMMENT'  => 'amz_sync_mode',
+    ]);
+
+    // Alter table sales_flat_order_payment
+    $connection->addColumn($tableOrderPayment, 'payone_amz_order_reference', [
+        'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
+        'LENGTH' => 255,
+        'NULLABLE' => true,
+        'DEFAULT' => null,
+        'COMMENT' => 'Amazon Order Reference',
     ]);
 }
 

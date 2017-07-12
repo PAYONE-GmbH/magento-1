@@ -177,9 +177,16 @@ abstract class Payone_Core_Model_Handler_Payment_Abstract
      */
     protected function updatePaymentByOrder(Mage_Sales_Model_Order $order)
     {
+        $payment = $this->getPayment();
         // Set Amount Authorized
-        $this->getPayment()->setAmountAuthorized($order->getTotalDue());
-        $this->getPayment()->setBaseAmountAuthorized($order->getBaseTotalDue());
+        $payment->setAmountAuthorized($order->getTotalDue());
+        $payment->setBaseAmountAuthorized($order->getBaseTotalDue());
+        /** @var \Payone_Core_Model_Session $session */
+        $session = Mage::getSingleton('payone_core/session');
+        $amazonData = $session->getData('AmazonRequestAddPaydata');
+        if (is_array($amazonData) && !empty($amazonData['amazon_reference_id'])) {
+            $payment->setData('payone_amz_order_reference', $amazonData['amazon_reference_id']);
+        }
     }
 
     /**
