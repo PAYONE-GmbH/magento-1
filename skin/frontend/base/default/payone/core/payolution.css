@@ -1,29 +1,29 @@
-#payolution_overlay header {
+.payolution_overlay header {
     margin: 0px 0px 20px 20px;
 }
 
-#payolution_overlay li {
+.payolution_overlay li {
     margin: 0px 20px 0px 20px;
     text-align: justify;
 }
 
-#payolution_overlay ol {
+.payolution_overlay ol {
     margin-bottom: 30px;
 }
 
-#payolution_overlay ol ul {
+.payolution_overlay ol ul {
     margin-bottom: 10px;
 }
 
-#payolution_overlay footer {
+.payolution_overlay footer {
     margin: 10px 0px 30px 30px;
 }
 
-#payolution_overlay .right {
+.payolution_overlay .right {
     float:right;
 }
 
-#payolution_overlay {
+.payolution_overlay {
     position:absolute; 
     width:100%;
     border:2px solid black;
@@ -32,11 +32,11 @@
     background-color: #FFFFFF;
 }
 
-#payolution_overlay ol {
+.payolution_overlay ol {
     list-style: decimal outside none;
 }
 
-#payolution_overlay ul {
+.payolution_overlay ul {
     list-style: circle outside none;
 }
 

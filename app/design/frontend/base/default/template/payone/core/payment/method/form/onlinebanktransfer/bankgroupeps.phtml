@@ -1,0 +1,59 @@
+<?php
+/**
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the GNU General Public License (GPL 3)
+ * that is bundled with this package in the file LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Payone_Core to newer
+ * versions in the future. If you wish to customize Payone_Core for your
+ * needs please refer to http://www.payone.de for more information.
+ *
+ * @category        Payone
+ * @package         design_frontend_base_default
+ * @subpackage      template
+ * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
+ * @author          Matthias Walter <info@noovias.com>
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.noovias.com
+ */
+?>
+<?php
+$code = $this->getMethodCode();
+?>
+<li id="bank_group_wrap_at" style="display: none">
+    <div class="input-box">
+        <label for="<?php echo $code ?>_bank_group_at">
+            <?php echo $this->__('Bank group') ?>&nbsp;<span class="required">*</span>
+        </label><br class="clear"/>
+        <select name="payment[payone_bank_group]" id="<?php echo $code ?>_bank_group_at">
+            <option value="ARZ_OVB" <?php echo ($this->getSavedCustomerBankGroup() == 'ARZ_OVB')?'selected="selected"':'';?>>Commercial credit cooperatives (Volksbank)</option>
+            <option value="ARZ_BAF" <?php echo ($this->getSavedCustomerBankGroup() == 'ARZ_BAF')?'selected="selected"':'';?>>Bank for doctors and independent professions</option>
+            <option value="ARZ_NLH" <?php echo ($this->getSavedCustomerBankGroup() == 'ARZ_NLH')?'selected="selected"':'';?>>Hypo state bank Lower Austria</option>
+            <option value="ARZ_VLH" <?php echo ($this->getSavedCustomerBankGroup() == 'ARZ_VLH')?'selected="selected"':'';?>>Hypo state bank Voralberg</option>
+            <option value="ARZ_BCS" <?php echo ($this->getSavedCustomerBankGroup() == 'ARZ_BCS')?'selected="selected"':'';?>>Bankhaus Carl Spängler & Co. AG</option>
+            <option value="ARZ_HTB" <?php echo ($this->getSavedCustomerBankGroup() == 'ARZ_HTB')?'selected="selected"':'';?>>Hypo bank Tyrol</option>
+            <option value="ARZ_HAA" <?php echo ($this->getSavedCustomerBankGroup() == 'ARZ_HAA')?'selected="selected"':'';?>>Hypo Alpe Adria</option>
+            <option value="ARZ_IKB" <?php echo ($this->getSavedCustomerBankGroup() == 'ARZ_IKB')?'selected="selected"':'';?>>Investkredit bank</option>
+            <option value="ARZ_OAB" <?php echo ($this->getSavedCustomerBankGroup() == 'ARZ_OAB')?'selected="selected"':'';?>>Österreichische Apothekerbank</option>
+            <option value="ARZ_IMB" <?php echo ($this->getSavedCustomerBankGroup() == 'ARZ_IMB')?'selected="selected"':'';?>>Immobank</option>
+            <option value="ARZ_GRB" <?php echo ($this->getSavedCustomerBankGroup() == 'ARZ_GRB')?'selected="selected"':'';?>>Gärtnerbank</option>
+            <option value="ARZ_HIB" <?php echo ($this->getSavedCustomerBankGroup() == 'ARZ_HIB')?'selected="selected"':'';?>>HYPO Investment bank</option>
+            <option value="BA_AUS" <?php echo ($this->getSavedCustomerBankGroup() == 'BA_AUS')?'selected="selected"':'';?>>Bank Austria</option>
+            <option value="BAWAG_BWG" <?php echo ($this->getSavedCustomerBankGroup() == 'BAWAG_BWG')?'selected="selected"':'';?>>BAWAG</option>
+            <option value="BAWAG_PSK" <?php echo ($this->getSavedCustomerBankGroup() == 'BAWAG_PSK')?'selected="selected"':'';?>>PSK Bank</option>
+            <option value="BAWAG_ESY" <?php echo ($this->getSavedCustomerBankGroup() == 'BAWAG_ESY')?'selected="selected"':'';?>>easybank</option>
+            <option value="BAWAG_SPD" <?php echo ($this->getSavedCustomerBankGroup() == 'BAWAG_SPD')?'selected="selected"':'';?>>Sparda Bank</option>
+            <option value="SPARDAT_EBS" <?php echo ($this->getSavedCustomerBankGroup() == 'SPARDAT_EBS')?'selected="selected"':'';?>>Erste Bank</option>
+            <option value="SPARDAT_BBL" <?php echo ($this->getSavedCustomerBankGroup() == 'SPARDAT_BBL')?'selected="selected"':'';?>>Bank Burgenland</option>
+            <option value="RAC_RAC" <?php echo ($this->getSavedCustomerBankGroup() == 'RAC_RAC')?'selected="selected"':'';?>>Raiffeisen bank</option>
+            <option value="HRAC_OOS" <?php echo ($this->getSavedCustomerBankGroup() == 'HRAC_OOS')?'selected="selected"':'';?>>Hypo bank Upper Austria</option>
+            <option value="HRAC_SLB" <?php echo ($this->getSavedCustomerBankGroup() == 'HRAC_SLB')?'selected="selected"':'';?>>Hypo bank Salzburg</option>
+            <option value="HRAC_STM" <?php echo ($this->getSavedCustomerBankGroup() == 'HRAC_STM')?'selected="selected"':'';?>>Hypo bank Styria</option>
+        </select>
+    </div>
+</li>
+

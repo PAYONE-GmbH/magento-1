@@ -67,7 +67,7 @@ class Payone_Core_Model_Service_TransactionStatus_Execute extends Payone_Core_Mo
                 $continue = false;
             }
         }
-
+        Mage::helper('payone_core')->logCronjobMessage("executePending: finished ".$countExecuted);
         return $countExecuted;
     }
 
@@ -77,6 +77,8 @@ class Payone_Core_Model_Service_TransactionStatus_Execute extends Payone_Core_Mo
     public function execute(Payone_Core_Model_Domain_Protocol_TransactionStatus $transactionStatus)
     {
         $storeId = $transactionStatus->getStoreId();
+
+        $this->helper()->logCronjobMessage("ID: {$transactionStatus->getId()} - Execute - Execute TransactionStatus action: {$transactionStatus->getTxaction()} - store-id: {$storeId}", $storeId);
 
         $storeBefore = $this->getApp()->getStore();
         $areaBefore = $this->getDesign()->getArea();
@@ -91,15 +93,16 @@ class Payone_Core_Model_Service_TransactionStatus_Execute extends Payone_Core_Mo
 
         $transactionStatus->setStatusRunning();
         $transactionStatus->save();
-
+        $this->helper()->logCronjobMessage("ID: {$transactionStatus->getId()} - Execute - Set status to running", $storeId);
         try {
             $this->getServiceProcess()->execute($transactionStatus);
             $transactionStatus->setStatusOk();
+            $this->helper()->logCronjobMessage("ID: {$transactionStatus->getId()} - Execute - Finished service execution, set status to complete", $storeId);
         } catch (Exception $e) {
             $transactionStatus->setStatusError();
             $transactionStatus->setProcessingError($e->getMessage());
+            $this->helper()->logCronjobMessage("ID: {$transactionStatus->getId()} - Execute - Error during service execution, set status to error with message {$e->getMessage()}", $storeId);
         }
-
         $transactionStatus->setProcessedAt(date('Y-m-d H:i:s'));
         $transactionStatus->save();
 
@@ -109,6 +112,7 @@ class Payone_Core_Model_Service_TransactionStatus_Execute extends Payone_Core_Mo
         // Reset Area to old Area
         $this->getDesign()->setArea($areaBefore);
         $this->getApp()->loadArea($areaBefore);
+        $this->helper()->logCronjobMessage("ID: {$transactionStatus->getId()} - Execute - Finished", $storeId);
     }
 
     /**

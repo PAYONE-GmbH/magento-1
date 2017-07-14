@@ -190,6 +190,17 @@ interface Payone_Core_Model_Config_Payment_Method_Interface
      */
     public function getCheckCvc();
 
+   /**
+     * @param $hide_cvc
+     * @return mixed
+    */
+    public function setHideCvc($hide_cvc);
+
+    /**
+     * @return string
+*/
+    public function getHideCvc();
+
     /**
      * @param string $code
      */

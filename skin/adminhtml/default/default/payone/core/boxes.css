@@ -63,6 +63,13 @@ h3.payone-config-header {
     cursor: pointer;
 }
 
+.update-message-container {
+    padding-bottom: 15px;
+    padding-left: 40px;
+    margin-bottom: 5px;
+    padding-top: 10px;
+}
+
 .payone-config-hint-content {
     padding-left: 20px;
     padding-right: 20px;

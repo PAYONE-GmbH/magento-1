@@ -26,15 +26,25 @@ class Payone_Enum_ClearingType
     const CREDITCARD = 'cc';
     const ADVANCEPAYMENT = 'vor';
     const INVOICE = 'rec';
+    const ONLINEBANKTRANSFERPFF = 'sb';
+    const ONLINEBANKTRANSFERP24 = 'sb';
+    const ONLINEBANKTRANSFERPFC = 'sb';
+    const ONLINEBANKTRANSFEREPS = 'sb';
+    const ONLINEBANKTRANSFERIDL = 'sb';
+    const ONLINEBANKTRANSFERGIROPAY = 'sb';
+    const ONLINEBANKTRANSFERSOFORT = 'sb';
     const ONLINEBANKTRANSFER = 'sb';
     const CASHONDELIVERY = 'cod';
+    const WALLETPAYDIREKT = 'wlt';
+    const WALLETPAYPALEXPRESS = 'wlt';
+    const WALLETALIPAY = 'wlt';
     const WALLET = 'wlt';
     const BARZAHLEN = 'csh';
     const RATEPAY = 'fnc';
-    const PAYOLUTION = 'fnc';
     const PAYOLUTIONINVOICING = 'fnc';
     const PAYOLUTIONDEBIT = 'fnc';
     const PAYOLUTIONINSTALLMENT = 'fnc';
+    const PAYOLUTION = 'fnc';
     const FINANCING = 'fnc';
     const PAYMENTGUARANTEEINVOICE = 'rec';
 }

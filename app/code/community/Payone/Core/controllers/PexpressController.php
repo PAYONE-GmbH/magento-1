@@ -70,8 +70,7 @@ class Payone_Core_PexpressController extends Payone_Core_Controller_Abstract
 
             $this->_checkout->savePayment(
                 array(
-                'method' => Payone_Core_Model_System_Config_PaymentMethodCode::WALLET,
-                'payone_wallet_type' => Payone_Api_Enum_WalletType::PAYPAL_EXPRESS,
+                'method' => Payone_Core_Model_System_Config_PaymentMethodCode::WALLETPAYPALEXPRESS,
                 'payone_config_payment_method_id' => $this->_config->getId()
                 )
             );
@@ -233,7 +232,7 @@ class Payone_Core_PexpressController extends Payone_Core_Controller_Abstract
             Mage::throwException(Mage::helper('payone_core')->__('Unable to initialize Payone Express Checkout.'));
         }
 
-        $methodInstance = Mage::helper('payment')->getMethodInstance(Payone_Core_Model_System_Config_PaymentMethodCode::WALLET);
+        $methodInstance = Mage::helper('payment')->getMethodInstance(Payone_Core_Model_System_Config_PaymentMethodCode::WALLETPAYPALEXPRESS);
         $this->_config = $methodInstance->getConfigForQuote($quote);
 
         $this->_checkout = Mage::getModel(
@@ -246,8 +245,9 @@ class Payone_Core_PexpressController extends Payone_Core_Controller_Abstract
 
     /**
      * Set and get $workOrderId to the session
-     *
-     * @param int $workOrderId
+     * @param null $workOrderId
+     * @return $this
+     * @throws Mage_Core_Exception
      */
     private function _initWorkOrderId($workOrderId = null)
     {

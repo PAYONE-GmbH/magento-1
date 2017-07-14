@@ -287,6 +287,10 @@ abstract class Payone_Core_Model_Payment_Method_Abstract
             $config = $this->getConfigByOrder($order);
             $service = $this->getFactory()->getServicePaymentDebit($config);
             $service->setConfigStore($this->getConfigStore($order->getStoreId()));
+
+            if($order->getBaseCurrencyCode() != $order->getOrderCurrencyCode()) {
+                $amount = Mage::app()->getStore()->roundPrice($order->getGrandTotal()); // MAGE-306
+            }
             $service->execute($payment, $amount);
         }
 
@@ -396,13 +400,14 @@ abstract class Payone_Core_Model_Payment_Method_Abstract
     /**
      * @param string $field
      * @param int $storeId
+     * @param Mage_Sales_Model_Quote $quote
      * @return mixed
      */
-    public function getConfigData($field, $storeId = null)
+    public function getConfigData($field, $storeId = null, Mage_Sales_Model_Quote $quote = null)
     {
         if ($field == 'sort_order') {
             try {
-                $data = $this->getConfigForQuote(null, $storeId)->getSortOrder();
+                $data = $this->getConfigForQuote($quote, $storeId)->getSortOrder();
             }
             catch (Payone_Core_Exception_PaymentMethodConfigNotFound $e) {
                 return 0;

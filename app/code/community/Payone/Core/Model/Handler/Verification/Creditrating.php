@@ -52,8 +52,12 @@ class Payone_Core_Model_Handler_Verification_Creditrating
 
         $creditRatingScore = array();
         if ($response instanceof Payone_Api_Response_Consumerscore_Valid) {
+
+            $unknownDefault = $this->config->getUnknownDefault();
             /** @var $response Payone_Api_Response_Consumerscore_Valid */
             $creditRatingScore = $response->getScore();
+
+            $creditRatingScore = $creditRatingScore === 'U' ? $unknownDefault : $creditRatingScore;
 
             $address->setPayoneProtectScore($creditRatingScore);
             $address->setPayoneProtectDate(now());

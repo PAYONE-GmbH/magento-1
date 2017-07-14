@@ -16,7 +16,7 @@
  * @package         Payone_Api
  * @subpackage      Request
  * @copyright       Copyright (c) 2015 <kontakt@fatchip.de> - www.fatchip.com
- * @author          Robert Müller <robert.mueller@fatchip.de>
+ * @author          Robert MÃ¼ller <robert.mueller@fatchip.de>
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
  * @link            http://www.fatchip.com
  */
