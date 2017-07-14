@@ -27,7 +27,17 @@ class Payone_Api_Request_Parameter_Authorization_PaymentMethod_PaymentGuaranteeI
     /**
      * @var string
      */
-    protected $clearingsubtype = NULL;
+    protected $clearingsubtype = null;
+
+    /**
+     * @var Payone_Api_Request_Parameter_Paydata_Paydata
+     */
+    protected $paydata = null;
+
+    /**
+     * @var string
+     */
+    protected $birthday = null;
 
     public function setClearingsubtype()
     {
@@ -40,5 +50,37 @@ class Payone_Api_Request_Parameter_Authorization_PaymentMethod_PaymentGuaranteeI
     public function getClearingsubtype()
     {
         return $this->clearingsubtype;
+    }
+
+    /**
+     * @param Payone_Api_Request_Parameter_Paydata_Paydata $paydata
+     */
+    public function setPaydata($paydata)
+    {
+        $this->paydata = $paydata;
+    }
+
+    /**
+     * @return Payone_Api_Request_Parameter_Paydata_Paydata
+     */
+    public function getPaydata()
+    {
+        return $this->paydata;
+    }
+
+    /**
+     * @param string $birthday
+     */
+    public function setBirthday($birthday)
+    {
+        $this->birthday = $birthday;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBirthday()
+    {
+        return $this->birthday;
     }
 }

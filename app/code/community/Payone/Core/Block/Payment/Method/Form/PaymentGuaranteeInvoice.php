@@ -38,4 +38,33 @@ class Payone_Core_Block_Payment_Method_Form_PaymentGuaranteeInvoice
         parent::_construct();
         $this->setTemplate('payone/core/payment/method/form/paymentguaranteeinvoice.phtml');
     }
+
+    /**
+     * @return bool
+     */
+    public function isB2BMode()
+    {
+        /** @var Payone_Core_Model_Payment_Method_PaymentGuaranteeInvoice $method */
+        $method = $this->getMethod();
+        if ($method->getConfig()->getB2bMode()) {
+            $sCompany = $this->getQuote()->getBillingAddress()->getCompany();
+            if ($sCompany) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function showBirthdayFields()
+    {
+        if ($this->isB2BMode() === false) {
+            return true;
+        }
+
+        return false;
+    }
 }

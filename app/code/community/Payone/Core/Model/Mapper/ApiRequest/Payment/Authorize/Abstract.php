@@ -733,8 +733,30 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
 
                 $payment->setTelephonenumber($telephone);
             }
-        } elseif($paymentMethod instanceof Payone_Core_Model_Payment_Method_PaymentGuaranteeInvoice) {
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_PaymentGuaranteeInvoice) {
             $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_PaymentGuaranteeInvoice();
+            $payData = new Payone_Api_Request_Parameter_Paydata_Paydata();
+            if ((bool)$info->getPayoneIsb2b() === true) {
+                $payData->addItem(
+                    new Payone_Api_Request_Parameter_Paydata_DataItem(
+                        ['key' => 'b2b', 'data' => 'yes']
+                    )
+                );
+                $payData->addItem(
+                    new Payone_Api_Request_Parameter_Paydata_DataItem(
+                        ['key' => 'company_trade_registry_number', 'data' => $info->getPayoneTradeRegistryNumber()]
+                    )
+                );
+            } else {
+                $birthdayDate = $info->getPayoneCustomerDob();
+                if (empty($birthdayDate)) {
+                    $birthdayDate = $this->getOrder()->getCustomerDob();
+                }
+                if ($birthdayDate) {
+                    $payment->setBirthday($this->formatBirthday($birthdayDate));
+                }
+            }
+            $payment->setPaydata($payData);
             $payment->setClearingsubtype();
         }
 

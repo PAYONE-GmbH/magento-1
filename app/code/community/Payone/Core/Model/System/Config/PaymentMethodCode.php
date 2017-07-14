@@ -82,7 +82,7 @@ class Payone_Core_Model_System_Config_PaymentMethodCode extends Payone_Core_Mode
             self::PAYOLUTIONINVOICING => 'Payolution Invoicing',
             self::PAYOLUTIONDEBIT => 'Payolution Debit',
             self::PAYOLUTIONINSTALLMENT => 'Payolution Installment',
-            self::PAYMENTGUARANTEEINVOICE => 'Invoice with Payment Guarantee'
+            self::PAYMENTGUARANTEEINVOICE => 'Invoice with Payment Guarantee',
             self::WALLETPAYDIREKT => 'Paydirekt',
             self::WALLETPAYPALEXPRESS => 'Paypal Express',
             self::WALLETALIPAY => 'AliPay',
@@ -92,7 +92,7 @@ class Payone_Core_Model_System_Config_PaymentMethodCode extends Payone_Core_Mode
             self::ONLINEBANKTRANSFERIDL => 'Ideal',
             self::ONLINEBANKTRANSFERPFF => 'PostFinance E-Finance',
             self::ONLINEBANKTRANSFERPFC => 'PostFinance Card',
-            self::ONLINEBANKTRANSFERP24 => 'Przelewy24'
+            self::ONLINEBANKTRANSFERP24 => 'Przelewy24',
         );
     }
 }

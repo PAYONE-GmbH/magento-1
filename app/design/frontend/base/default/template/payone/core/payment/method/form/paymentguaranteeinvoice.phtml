@@ -27,8 +27,62 @@ $paymentConfigId = $this->getPaymentConfig()->getId();
 ?>
 <fieldset class="form-list">
     <ul id="payment_form_<?php echo $code ?>" style="display:none">
-        <li>
-            <input type="hidden" name="payment[payone_config_payment_method_id]" value="<?php echo $paymentConfigId; ?>"/>
+        <li class="fields">
+            <?php if ($this->isB2BMode()) { ?>
+                <div id="<?php echo $code; ?>_b2b_wrap" class="field">
+                    <div class="input-box">
+                        <label for="<?php echo $code ?>_trade_registry_number">
+                            <?php echo $this->__('Company trade registry number') ?>
+                            <span class="required">*</span>
+                        </label>
+                        <br class="clear"/>
+                        <input type="text" id="<?php echo $code ?>_trade_registry_number"
+                               name="payment[payone_trade_registry_number]"
+                               value="" title="" class="required-entry input-text no-submit"/>
+                    </div>
+                </div>
+            <?php } ?>
+            <?php if ($this->showBirthdayFields()) : ?>
+                <div id="<?php echo $code; ?>_birthday_wrap" class="field">
+                    <label for="<?php echo $code ?>_additional_fields_customer_dob_month"
+                           class="required"><em>*</em><?php echo $this->__('Date of birth (DD MM YYYY)') ?>
+                    </label>
+                    <br class="clear"/>
+                    <select id="<?php echo $code ?>_additional_fields_customer_dob_day" class="required-entry"
+                            style="width: 60px;" onchange="payoneRatepayCustomerDobInput('<?php echo $code ?>')">
+                        <option value="">--</option>
+                        <?php for ($x = 1; $x <= 31; $x++) : ?>
+                            <option value="<?php echo sprintf('%02d', $x); ?>">
+                                <?php echo sprintf('%02d', $x); ?>
+                            </option>
+                        <?php endfor; ?>
+                    </select>
+                    <select id="<?php echo $code ?>_additional_fields_customer_dob_month" class="required-entry"
+                            style="width: 60px;" onchange="payoneRatepayCustomerDobInput('<?php echo $code ?>')">
+                        <option value="">--</option>
+                        <?php for ($x = 1; $x <= 12; $x++) : ?>
+                            <option value="<?php echo sprintf('%02d', $x); ?>">
+                                <?php echo sprintf('%02d', $x); ?>
+                            </option>
+                        <?php endfor; ?>
+                    </select>
+                    <select id="<?php echo $code ?>_additional_fields_customer_dob_year" class="required-entry"
+                            style="width: 60px;" onchange="payoneRatepayCustomerDobInput('<?php echo $code ?>')">
+                        <option value="">----</option>
+                        <?php for ($x = date('Y'); $x > (date('Y') - 100); $x--) : ?>
+                            <option value="<?php echo $x; ?>">
+                                <?php echo $x; ?>
+                            </option>
+                        <?php endfor; ?>
+                    </select>
+
+                    <input type="hidden" id="<?php echo $code ?>_additional_fields_customer_dob_full"
+                           name="payment[payone_customer_dob]" class="validate-18-years">
+                </div>
+            <?php endif; ?>
+            <input type="hidden"
+                   name="payment[payone_config_payment_method_id]"
+                   value="<?php echo $paymentConfigId; ?>"/>
         </li>
     </ul>
 </fieldset>
