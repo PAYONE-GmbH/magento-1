@@ -107,6 +107,9 @@ window.onCheckoutProgress = function (target) {
                         + Progress.currentStep.charAt(0).toUpperCase()
                         + Progress.currentStep.slice(1);
                     PayoneCheckout[Callback](Result);
+                } else if (Result['errorMessage'] === 'InvalidPaymentMethod') {
+                    alert('There\'s an error! We will re-render the widgets now...');
+                    // TODO - Properly display the widgets according to this situation
                 } else {
                     alert(Result['errorMessage']);
                 }

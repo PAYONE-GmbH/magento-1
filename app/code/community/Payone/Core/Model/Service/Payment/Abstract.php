@@ -92,6 +92,9 @@ abstract class Payone_Core_Model_Service_Payment_Abstract
             if (!$isRetry && $session->getData('AmazonRequestRetryAsync') && $response->getErrorcode() == 980) {
                 // Retry the transaction in asynchronous mode
                 $response = $this->execute($payment, $amount, true);
+            } elseif ($response->getErrorcode() == 981) {
+                $session->unsetData('AmazonRequestRetryAsync');
+                throw new Payone_Api_Exception_InvalidParameters('InvalidPaymentMethod', 981);
             } else {
                 $session->unsetData('AmazonRequestRetryAsync');
                 /** @var Payone_Api_Response_Error $response */

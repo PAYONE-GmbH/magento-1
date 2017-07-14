@@ -85,12 +85,25 @@ class Payone_Core_AmazonPayController extends Payone_Core_Controller_Abstract
         } catch (\Mage_Core_Exception $e) {
             $response->setBody(json_encode(['errorMessage' => $e->getMessage(), 'successful' => false]));
             return;
+        } catch (\Payone_Api_Exception_InvalidParameters $e) {
+            if ($e->getCode() === 981) {
+                $response->setBody(json_encode(['errorMessage' => $e->getMessage(), 'successful' => false]));
+            } else {
+                $this->_handleUnknownException($e);
+            }
         } catch (\Exception $e) {
-            $errorMessage = $this->__('Unable to proceed with PAYONE Amazon Checkout.');
-            $response->setBody(json_encode(['errorMessage' => $errorMessage, 'successful' => false]));
-            Mage::logException($e);
-            return;
+            $this->_handleUnknownException($e);
         }
+    }
+
+    /**
+     * @param Exception $exception
+     */
+    private function _handleUnknownException(\Exception $exception)
+    {
+        $errorMessage = $this->__('Unable to proceed with PAYONE Amazon Checkout.');
+        $this->getResponse()->setBody(json_encode(['errorMessage' => $errorMessage, 'successful' => false]));
+        Mage::logException($exception);
     }
 
     /**
@@ -120,6 +133,9 @@ class Payone_Core_AmazonPayController extends Payone_Core_Controller_Abstract
         return $this;
     }
 
+    /**
+     * @return mixed|string
+     */
     private function _initWorkOrder()
     {
         $workOrderId = $this->_getSession()->getData('WorkOrderId');
