@@ -182,7 +182,9 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
         $orderReviewHtml = $layout->getOutput();
         if ($shippingRatesCount === 1) {
             $params['shippingMethodCode'] = array_values($shippingRates)[0][0]['code'];
-            $orderReviewHtml = $this->chooseMethod($params)['orderReviewHtml'];
+            if ($this->quote->getShippingAddress()->getShippingMethod() !== $params['shippingMethodCode']) {
+                $orderReviewHtml = $this->chooseMethod($params)['orderReviewHtml'];
+            }
         }
 
         return [
@@ -271,7 +273,7 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
             ->setCustomerGroupId(\Mage_Customer_Model_Group::NOT_LOGGED_IN_ID);
         /** @var \Payone_Core_Model_Session $session */
         $session = Mage::getSingleton('payone_core/session');
-        $session->setData('AmazonRequestAddPaydata', [
+        $session->setData('amazon_add_paydata', [
             'amazon_reference_id'  => $params['amazonOrderReferenceId'],
             'amazon_address_token' => $params['addressConsentToken'],
         ]);
@@ -280,10 +282,14 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
             $service = Mage::getModel('sales/service_quote', $this->quote);
             $service->submitAll();
         } catch (\Exception $e) {
-            $session->unsetData('AmazonRequestAddPaydata');
+            if ($e->getCode() === 981) {
+                $session->setData('amazon_lock_order', true);
+                $session->setData('amazon_reference_id', $params['amazonOrderReferenceId']);
+            }
+            $session->unsetData('amazon_add_paydata');
             throw $e;
         }
-        $session->unsetData('AmazonRequestAddPaydata');
+        $session->unsetData('amazon_add_paydata');
         $this->checkoutSession->setData('last_quote_id', $this->quote->getId());
         $this->checkoutSession->setData('last_success_quote_id', $this->quote->getId());
         $this->checkoutSession->clearHelperData();

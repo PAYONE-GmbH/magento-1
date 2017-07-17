@@ -745,16 +745,16 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
             /** @var \Payone_Core_Model_Session $session */
             $session = Mage::getSingleton('payone_core/session');
             /** @var array $paydata */
-            $paydata = $session->getData('AmazonRequestAddPaydata');
+            $paydata = $session->getData('amazon_add_paydata');
             /** @var \Payone_Core_Model_Config_Payment_Method $config */
             $config = $paymentMethod->getConfig();
 
             switch ($config->getAmzSyncMode()) {
                 case Payone_Core_Model_System_Config_AmazonSyncMode::ASYNCHRONOUS_ON_FAILURE:
-                    if ($session->getData('AmazonRequestRetryAsync') === true) {
+                    if ($session->getData('amazon_retry_async') === true) {
                         $paydata['amazon_timeout'] = 1440;
                     } else {
-                        $session->setData('AmazonRequestRetryAsync', true);
+                        $session->setData('amazon_retry_async', true);
                         $paydata['amazon_timeout'] = 0;
                     }
                     break;

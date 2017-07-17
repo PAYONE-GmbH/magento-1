@@ -89,19 +89,21 @@ abstract class Payone_Core_Model_Service_Payment_Abstract
         /** @var Payone_Core_Model_Session $session */
         $session = Mage::getSingleton('payone_core/session');
         if ($response instanceof Payone_Api_Response_Error) {
-            if (!$isRetry && $session->getData('AmazonRequestRetryAsync') && $response->getErrorcode() == 980) {
+            if (!$isRetry && $session->getData('amazon_retry_async') && $response->getErrorcode() == 980) {
                 // Retry the transaction in asynchronous mode
                 $response = $this->execute($payment, $amount, true);
             } elseif ($response->getErrorcode() == 981) {
-                $session->unsetData('AmazonRequestRetryAsync');
+                $session->unsetData('amazon_retry_async');
                 throw new Payone_Api_Exception_InvalidParameters('InvalidPaymentMethod', 981);
             } else {
-                $session->unsetData('AmazonRequestRetryAsync');
+                $session->unsetData('amazon_retry_async');
                 /** @var Payone_Api_Response_Error $response */
                 $this->throwMageException($this->helper()->__($oMethodInstance->getApiResponseErrorMessage($response)));
             }
         }
-        $session->unsetData('AmazonRequestRetryAsync');
+        $session->unsetData('amazon_retry_async');
+        $session->unsetData('amazon_reference_id');
+        $session->unsetData('amazon_lock_order');
 
         return $response;
     }

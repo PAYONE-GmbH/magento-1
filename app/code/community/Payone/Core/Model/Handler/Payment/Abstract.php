@@ -183,7 +183,7 @@ abstract class Payone_Core_Model_Handler_Payment_Abstract
         $payment->setBaseAmountAuthorized($order->getBaseTotalDue());
         /** @var \Payone_Core_Model_Session $session */
         $session = Mage::getSingleton('payone_core/session');
-        $amazonData = $session->getData('AmazonRequestAddPaydata');
+        $amazonData = $session->getData('amazon_add_paydata');
         if (is_array($amazonData) && !empty($amazonData['amazon_reference_id'])) {
             $payment->setData('payone_amz_order_reference', $amazonData['amazon_reference_id']);
         }

@@ -38,6 +38,53 @@
     display: inline-block;
 }
 
+#checkoutStepInitContent #amazonWidgetsNotice,
+#chooseMethod #shippingMethodsNotice {
+    display: none;
+}
+
+#chooseMethod.locked #shippingMethodsDiv {
+    display: none;
+}
+
+#checkoutStepInitContent.locked #amazonWidgetsNotice,
+#chooseMethod.locked #shippingMethodsNotice {
+    display: inline-block;
+    font-weight: normal;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px dashed grey;
+    margin-bottom: 20px;
+    padding: 3px 6px;
+    color: grey;
+}
+
+
+#checkoutStepInitContent #amazonWidgetsNotice span {
+    width: 22px;
+    margin-left: 2px;
+    border-radius: 11px;
+    display: inline-block;
+    border: 1px solid lightgrey;
+    background-color: #f8f8f8;
+    font-weight: normal;
+    text-align: center;
+    font-size: 13px;
+    color: red;
+}
+
+#checkoutStepInitContent #amazonWidgetsNotice span::after {
+    content: '\002717';
+}
+
+#checkoutStepInitContent.solved #amazonWidgetsNotice span {
+    color: green;
+}
+
+#checkoutStepInitContent.solved #amazonWidgetsNotice span::after {
+    content: '\002713';
+}
+
 #shippingMethodsDiv .sp-methods dd input.radio {
     float: left;
     margin-right: -40px;

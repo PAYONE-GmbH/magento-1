@@ -20,9 +20,8 @@
  * @link            http://www.fatchip.de
  */
 
-//noinspection JSUnusedGlobalSymbols
 /**
- * Container with properties and helper methods for
+ * Container with properties and event handlers for
  * the interactive Onepage Checkout with Amazon Pay
  */
 var PayoneCheckout = {
@@ -108,8 +107,7 @@ window.onCheckoutProgress = function (target) {
                         + Progress.currentStep.slice(1);
                     PayoneCheckout[Callback](Result);
                 } else if (Result['errorMessage'] === 'InvalidPaymentMethod') {
-                    alert('There\'s an error! We will re-render the widgets now...');
-                    // TODO - Properly display the widgets according to this situation
+                    window.onAmazonPaymentsInvalidPayment();
                 } else {
                     alert(Result['errorMessage']);
                 }
@@ -156,10 +154,27 @@ window.onAmazonWidgetsInitialized = function (orderReference) {
 };
 
 window.onAmazonLoginReady = function () {
+    //noinspection JSUnresolvedVariable, JSUnresolvedFunction
     amazon.Login.setClientId(PayoneCheckout.amazonClientId);
 };
 
+window.onAmazonPaymentsError = function (error) {
+    if (error.getErrorCode() === 'BuyerSessionExpired') {
+        jQuery('#addressBookWidgetCover, #walletWidgetCover')
+            .css('background', 'lightgrey').addClass('show').delay(15)
+            .promise().done(function () {
+                alert(PayoneCheckout.expiredAlert);
+                window.location.href = PayoneCheckout.cartAction;
+            });
+    } else {
+        console.log(error.getErrorCode() + ': ' + error.getErrorMessage());
+    }
+};
+
 window.onAmazonPaymentsReady = function () {
+    if (PayoneCheckout.amazonOrderReferenceId !== null) {
+        return window.onAmazonPaymentsInvalidPayment();
+    }
     new OffAmazonPayments.Widgets.AddressBook({
         sellerId: PayoneCheckout.amazonSellerId,
         scope: 'payments:billing_address payments:shipping_address payments:widget profile',
@@ -170,11 +185,8 @@ window.onAmazonPaymentsReady = function () {
             designMode: 'responsive'
         },
         onReady: window.onAmazonWidgetsInitialized,
-        onError: function (error) {
-            console.log(error.getErrorCode() + ': ' + error.getErrorMessage());
-        }
-    }).bind("addressBookWidgetDiv");
-
+        onError: window.onAmazonPaymentsError
+    }).bind('addressBookWidgetDiv');
     new OffAmazonPayments.Widgets.Wallet({
         sellerId: PayoneCheckout.amazonSellerId,
         scope: 'payments:billing_address payments:shipping_address payments:widget profile',
@@ -187,7 +199,43 @@ window.onAmazonPaymentsReady = function () {
         onError: function (error) {
             console.log(error.getErrorCode() + ': ' + error.getErrorMessage());
         }
-    }).bind("walletWidgetDiv");
+    }).bind('walletWidgetDiv');
+};
+
+window.onAmazonPaymentsInvalidPayment = function () {
+    jQuery('#placeOrder').attr('disabled', true);
+    jQuery('#checkoutStepInitContent, #chooseMethod').addClass('locked');
+    jQuery('#addressBookWidgetDiv, #walletWidgetDiv').empty();
+    new OffAmazonPayments.Widgets.AddressBook({
+        displayMode: 'Read',
+        sellerId: PayoneCheckout.amazonSellerId,
+        amazonOrderReferenceId: PayoneCheckout.amazonOrderReferenceId,
+        scope: 'payments:billing_address payments:shipping_address payments:widget profile',
+        onAddressSelect: function () {
+            jQuery('#confirmSelection').attr('disabled', true);
+        },
+        design: {
+            designMode: 'responsive'
+        },
+        onReady: window.onAmazonWidgetsInitialized,
+        onError: window.onAmazonPaymentsError
+    }).bind('addressBookWidgetDiv');
+    new OffAmazonPayments.Widgets.Wallet({
+        sellerId: PayoneCheckout.amazonSellerId,
+        amazonOrderReferenceId: PayoneCheckout.amazonOrderReferenceId,
+        scope: 'payments:billing_address payments:shipping_address payments:widget profile',
+        onPaymentSelect: function () {
+            jQuery('#confirmSelection').attr('disabled', false);
+            jQuery('#checkoutStepInitContent').addClass('solved');
+        },
+        design: {
+            designMode: 'responsive'
+        },
+        onError: function (error) {
+            console.log(error.getErrorCode() + ': ' + error.getErrorMessage());
+        }
+    }).bind('walletWidgetDiv');
+    jQuery('#checkoutStepInit').addClass('allow active').nextAll().removeClass('allow active');
 };
 
 jQuery(document).on('ready', window.onDocumentReady);
