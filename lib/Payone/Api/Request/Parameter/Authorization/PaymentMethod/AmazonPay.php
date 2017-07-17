@@ -95,7 +95,7 @@ class Payone_Api_Request_Parameter_Authorization_PaymentMethod_AmazonPay
     {
         /** @var \Payone_Core_Model_Session $session */
         $session = Mage::getSingleton('payone_core/session');
-        $this->workorderid = $session->getData('WorkOrderId');
+        $this->workorderid = $session->getData('work_order_id');
     }
 
     /**

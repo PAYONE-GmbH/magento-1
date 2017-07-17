@@ -138,9 +138,9 @@ class Payone_Core_AmazonPayController extends Payone_Core_Controller_Abstract
      */
     private function _initWorkOrder()
     {
-        $workOrderId = $this->_getSession()->getData('WorkOrderId');
+        $workOrderId = $this->_getSession()->getData('work_order_id');
         $workOrderId = $this->_checkout->initWorkOrder($workOrderId);
-        $this->_getSession()->setData('WorkOrderId', $workOrderId);
+        $this->_getSession()->setData('work_order_id', $workOrderId);
         return $workOrderId;
     }
 
