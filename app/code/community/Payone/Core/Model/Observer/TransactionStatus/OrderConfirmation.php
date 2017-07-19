@@ -38,10 +38,8 @@ class Payone_Core_Model_Observer_TransactionStatus_OrderConfirmation
      */
     protected $serviceOrderConfirmation = null;
 
-
     /** @var $order Mage_Sales_Model_Order */
     private $order = null;
-
 
     /** @var $transactionStatus Payone_Core_Model_Domain_Protocol_TransactionStatus */
     private $transactionStatus = null;
@@ -52,9 +50,9 @@ class Payone_Core_Model_Observer_TransactionStatus_OrderConfirmation
     public function onAppointed(Varien_Event_Observer $observer)
     {
         $this->initData($observer);
-
-
-        $this->getServiceOrderConfirmation()->sendMail($this->order);
+        if (!$this->order->getData('payone_prevent_confirmation')) {
+            $this->getServiceOrderConfirmation()->sendMail($this->order);
+        }
     }
 
     /**
@@ -93,6 +91,4 @@ class Payone_Core_Model_Observer_TransactionStatus_OrderConfirmation
 
         return $this->serviceOrderConfirmation;
     }
-
-
 }

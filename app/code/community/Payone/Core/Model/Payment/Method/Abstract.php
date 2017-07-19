@@ -220,6 +220,17 @@ abstract class Payone_Core_Model_Payment_Method_Abstract
 
         // Never send confirmation email, we do it during Tx-Status processing
         $order->setCanSendNewEmailFlag(false);
+        $mailAddress = $order->getData('customer_email');
+        /** @var Mage_Adminhtml_Model_Sales_Order_Create $adminOrderCreate */
+        $adminOrderCreate = Mage::getSingleton('adminhtml/sales_order_create');
+        // Check wether this order was created by an admin in the backend
+        if (!empty($adminOrderCreate) && $mailAddress === $adminOrderCreate->getData('account')['email']) {
+            $preventConfirmation = (false === (bool) $adminOrderCreate->getData('send_confirmation'));
+            // Store a flag to prevent mail delivery if the admin unchecked the corresponding option
+            $order->setData('payone_prevent_confirmation', $preventConfirmation);
+            // Unset the original flag as we send the mail during Tx-Status processing (see above)
+            $adminOrderCreate->unsetData('send_confirmation');
+        }
 
         // Execute Payment Initialization
         $service = $this->getFactory()->getServiceInitializePayment($configPayment);
