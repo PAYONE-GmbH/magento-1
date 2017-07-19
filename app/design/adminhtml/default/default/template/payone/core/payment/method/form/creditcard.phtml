@@ -102,10 +102,16 @@ $code = $this->getMethodCode();
         <li>
             <input type="hidden" id="payone_pseudocardpan" name="payment[payone_pseudocardpan]" value=""/>
             <input type="hidden" id="payone_truncatedcardpan" name="payment[cc_number_enc]" value=""/>
-            <input type="hidden" id="<?php echo $code ?>_config_id" name="payment[payone_config_payment_method_id]" value=""/>
+            <input type="hidden" id="<?php echo $code ?>_config_id"
+                   name="payment[payone_config_payment_method_id]" value=""/>
             <input type="hidden" id="<?php echo $code ?>_config" name="payment[request_config]"
                    value="<?php echo $this->escapeHtml($this->getClientApiConfigAsJson()); ?>" class=""/>
-            <input type="hidden" id="payone_cc_check_validation" value="<?php echo $this->getPayoneCreditCardCheckValidation();?>"/>
+            <input type="hidden" id="<?php echo $code ?>_config_cvc" name="payment[payone_config_cvc]"
+                   value="<?php echo $this->escapeHtml($this->getCvcJson()); ?>" class=""/>
+            <input type="hidden" id="payone_cc_check_validation"
+                   value="<?php echo $this->getPayoneCreditCardCheckValidation();?>"/>
+            <input type="hidden" id="payone_cc_check_validation_types"
+                   value="<?php echo $this->escapeHtml(($hideCvcTypes)); ?>"/>
         </li>
     </ul>
 <?php } else { ?>
@@ -167,16 +173,21 @@ $code = $this->getMethodCode();
             <div id="errorOutput"></div>
             <input type="hidden" id="<?php echo $code; ?>_cc_number" value=""/>
             <input type="hidden" id="<?php echo $code ?>_cc_owner" name="payment[cc_owner]" value="" />
-            <input type="hidden" id="payone_pseudocardpan" name="payment[payone_pseudocardpan]" value="<?php echo $this->getPayonePseudocardpan();?>"/>
+            <input type="hidden" id="payone_pseudocardpan" name="payment[payone_pseudocardpan]"
+                   value="<?php echo $this->getPayonePseudocardpan();?>"/>
             <input type="hidden" id="payone_cardexpiredate" name="payment[payone_cardexpiredate]" value=""/>
-            <input type="hidden" id="payone_truncatedcardpan" name="payment[cc_number_enc]" value="<?php echo $this->getCreditCardNumberEnc();?>"/>
+            <input type="hidden" id="payone_truncatedcardpan" name="payment[cc_number_enc]"
+                   value="<?php echo $this->getCreditCardNumberEnc();?>"/>
             <input type="hidden" id="<?php echo $code ?>_config_id" name="payment[payone_config_payment_method_id]"
                    value="<?php echo $this->getPayoneConfigPaymentMethodId();?>"/>
             <input type="hidden" id="<?php echo $code ?>_config" name="payment[payone_config]"
                    value="<?php echo $this->escapeHtml($this->getHostedClientApiConfigAsJson()); ?>" class=""/>
             <input type="hidden" id="<?php echo $code ?>_config_cvc" name="payment[payone_config_cvc]"
                    value="<?php echo $this->escapeHtml($this->getCvcJson()); ?>" class=""/>
-            <input type="hidden" id="payone_cc_check_validation" value="<?php echo $this->getPayoneCreditCardCheckValidation();?>"/>
+            <input type="hidden" id="payone_cc_check_validation"
+                   value="<?php echo $this->getPayoneCreditCardCheckValidation();?>"/>
+            <input type="hidden" id="payone_cc_check_validation_types"
+                   value="<?php echo $this->escapeHtml(($hideCvcTypes)); ?>"/>
         </li>
     </ul>
     <script>
