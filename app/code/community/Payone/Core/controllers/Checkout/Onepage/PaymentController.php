@@ -107,8 +107,8 @@ class Payone_Core_Checkout_Onepage_PaymentController extends Payone_Core_Control
         $checkoutSession = $this->getFactory()->getSingletonCheckoutSession();
 
         // Load actors:
-        $order = $this->getOrderByCheckoutSession($checkoutSession);
-        $quote = $this->getQuoteByCheckoutSession($checkoutSession);
+        $order = $this->getOrderFromCheckoutSession($checkoutSession);
+        $quote = $this->getQuoteFromOrder($order);
         $helper = $this->helper();
 
         if ($order->getStatus() == Mage_Sales_Model_Order::STATE_CANCELED) {
@@ -146,7 +146,7 @@ class Payone_Core_Checkout_Onepage_PaymentController extends Payone_Core_Control
         $checkoutSession = $this->getFactory()->getSingletonCheckoutSession();
 
         // Load order
-        $order = $this->getOrderByCheckoutSession($checkoutSession);
+        $order = $this->getOrderFromCheckoutSession($checkoutSession);
 
         // Cancel order and add history comment:
         if ($order->canCancel()) {
@@ -159,7 +159,7 @@ class Payone_Core_Checkout_Onepage_PaymentController extends Payone_Core_Control
         // Reactivate quote
         if ($reactivateQuote === true) {
             // Load quote
-            $quote = $this->getQuoteByCheckoutSession($checkoutSession);
+            $quote = $this->getQuoteFromOrder($order);
             $this->reactivateQuote($quote);
         }
 
@@ -174,13 +174,19 @@ class Payone_Core_Checkout_Onepage_PaymentController extends Payone_Core_Control
     protected function reactivateQuote(Mage_Sales_Model_Quote $quote)
     {
         if ($quote->getId()) {
-            /* @note: Reset reserved_order_id, Magento up to and including version 1.7 has a bug in Mage_Sales_Model_Resource_Quote::isOrderIncrementIdUsed()
-             * They cast the orderIncrementId to (int), which breaks the checkout/cart for all non-numerical incrementIds
-             * (Causes Integrity Constraint Violation, because orderIncrementId already exists */
-            $quote->setData('reserved_order_id', '');
-
-            $quote->setIsActive(true);
-            $quote->save();
+            /**
+             * Reset reserved_order_id - Magento up to and including version 1.7 has a
+             * bug in Mage_Sales_Model_Resource_Quote::isOrderIncrementIdUsed() -
+             * orderIncrementId is being casted to (int), which breaks the checkout/cart
+             * for all non-numerical incrementIds (which also causes integrity constraint
+             * violations, because the resulting orderIncrementIds "already exist")
+             */
+            $quote->setIsActive(1)
+                ->setReservedOrderId(null)
+                ->save();
+            /** @var Mage_Checkout_Model_Session $oSession */
+            $oSession = Mage::getSingleton('checkout/session');
+            $oSession->replaceQuote($quote)->unsetData('last_real_order_id');
         }
     }
 
@@ -188,10 +194,10 @@ class Payone_Core_Checkout_Onepage_PaymentController extends Payone_Core_Control
      * @param Mage_Checkout_Model_Session $session
      * @return Mage_Sales_Model_Order
      */
-    protected function getOrderByCheckoutSession(Mage_Checkout_Model_Session $session)
+    protected function getOrderFromCheckoutSession(Mage_Checkout_Model_Session $session)
     {
-        $orderId = $session->getLastOrderId();
-
+        $orderId = base64_decode($this->getRequest()->getParam('reference'));
+        $orderId = in_array($orderId, $session->getData('payone_pending_orders') ?: []) ? $orderId : null;
         $order = $this->getFactory()->getModelSalesOrder();
         $order->load($orderId);
 
@@ -199,13 +205,12 @@ class Payone_Core_Checkout_Onepage_PaymentController extends Payone_Core_Control
     }
 
     /**
-     * @param Mage_Checkout_Model_Session $session
+     * @param Mage_Sales_Model_Order $order
      * @return Mage_Sales_Model_Quote
      */
-    protected function getQuoteByCheckoutSession(Mage_Checkout_Model_Session $session)
+    protected function getQuoteFromOrder(Mage_Sales_Model_Order $order)
     {
-        $quoteId = $session->getLastQuoteId();
-
+        $quoteId = $order->getQuoteId();
         $quote = $this->getFactory()->getModelSalesQuote();
         $quote->load($quoteId);
 

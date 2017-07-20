@@ -736,9 +736,10 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
         }
 
         if ($isRedirect === true) {
-            $successurl = $this->helperUrl()->getSuccessUrl();
-            $errorurl = $this->helperUrl()->getErrorUrl();
-            $backurl = $this->helperUrl()->getBackUrl();
+            $encodedOrderId = base64_encode($this->getOrder()->getEntityId());
+            $successurl = $this->helperUrl()->getSuccessUrl() . "reference/{$encodedOrderId}/";
+            $errorurl = $this->helperUrl()->getErrorUrl() . "reference/{$encodedOrderId}/";
+            $backurl = $this->helperUrl()->getBackUrl() . "reference/{$encodedOrderId}/";
 
             $payment->setSuccessurl($successurl);
             $payment->setErrorurl($errorurl);
