@@ -1,5 +1,6 @@
 #----------------------------------------------------------------------------------------------------
 # Alter tables payone_config_payment_method and sales_flat_order_payment, add columns for Amazon Pay
+# Alter table sales_flat_order, add column for a flag to conditionally prevent the confirmation mail
 #----------------------------------------------------------------------------------------------------
 
 ALTER TABLE `{{payone_config_payment_method}}`
@@ -13,3 +14,6 @@ ALTER TABLE `{{payone_config_payment_method}}`
 
 ALTER TABLE `{{sales_flat_order_payment}}`
   ADD `payone_amz_order_reference` VARCHAR(255) NULL COMMENT 'Amazon Order Reference';
+
+ALTER TABLE `{{sales_flat_order}}`
+  ADD `payone_prevent_confirmation` TINYINT(1) UNSIGNED NULL COMMENT 'Flag to prevent confirmation mail';

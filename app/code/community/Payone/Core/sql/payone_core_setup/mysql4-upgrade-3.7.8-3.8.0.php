@@ -29,6 +29,7 @@ $installer->startSetup();
 
 $tablePaymentMethod = $this->getTable('payone_core/config_payment_method');
 $tableOrderPayment = $this->getTable('sales/order_payment');
+$tableOrder = $this->getTable('sales/order');
 
 /** @var $helper Payone_Core_Helper_Data */
 $helper = Mage::helper('payone_core');
@@ -40,6 +41,7 @@ if ($useSqlInstaller) {
     $installSqlConfig = [
         '{{payone_config_payment_method}}' => $tablePaymentMethod,
         '{{sales_flat_order_payment}}' => $tableOrderPayment,
+        '{{sales_flat_order}}' => $tableOrder,
     ];
 
     $installSql = str_replace(array_keys($installSqlConfig), array_values($installSqlConfig), $sql);
@@ -105,6 +107,15 @@ if ($useSqlInstaller) {
         'NULLABLE' => true,
         'DEFAULT' => null,
         'COMMENT' => 'Amazon Order Reference',
+    ]);
+
+    // Alter table sales_flat_order
+    $connection->addColumn($tableOrder, 'payone_prevent_confirmation', [
+        'TYPE' => Varien_Db_Ddl_Table::TYPE_TINYINT,
+        'LENGTH' => 1,
+        'NULLABLE' => true,
+        'DEFAULT' => null,
+        'COMMENT' => 'Flag to prevent confirmation mail',
     ]);
 }
 
