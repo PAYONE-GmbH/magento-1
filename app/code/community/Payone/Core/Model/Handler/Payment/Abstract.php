@@ -121,8 +121,8 @@ abstract class Payone_Core_Model_Handler_Payment_Abstract
             $this->sendAvsMail($response);
         } elseif ($response->isRedirect()) {
             $sRedirectUrl = $response->getRedirecturl();
+            $oSession = Mage::getSingleton('checkout/session');
             if ($this->_isIframePaymentOrder($request)) {
-                $oSession = Mage::getSingleton('checkout/session');
                 $oSession->setPayoneIframeUrl($sRedirectUrl);
                 $oSession->setPayonePaymentType($this->_getPaymentMethod());
                 $sRedirectUrl = Mage::helper('payone_core/url')->getMagentoUrl('payone_core/iframe/show');
@@ -135,6 +135,10 @@ abstract class Payone_Core_Model_Handler_Payment_Abstract
             }
 
             $paymentMethod->setRedirectUrl($sRedirectUrl);
+
+            $orderId = $order->getEntityId();
+            $pendingOrders = $oSession->getData('payone_pending_orders') ?: [];
+            $oSession->setData('payone_pending_orders', array_unique(array_merge($pendingOrders, [$orderId])));
         }
 
         $this->updatePaymentByResponse($response);

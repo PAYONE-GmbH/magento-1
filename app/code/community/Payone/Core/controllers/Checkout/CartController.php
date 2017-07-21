@@ -16,7 +16,7 @@
  * @package         Payone_Core_controllers
  * @subpackage      Checkout
  * @copyright       Copyright (c) 2015 <kontakt@fatchip.de> - www.fatchip.com
- * @author          Robert Müller <robert.mueller@fatchip.de>
+ * @author          Robert MÃ¼ller <robert.mueller@fatchip.de>
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
  * @link            http://www.fatchip.com
  */
@@ -90,15 +90,19 @@ class Payone_Core_Checkout_CartController extends Mage_Checkout_CartController
     protected function reactivateQuote(Mage_Sales_Model_Quote $quote)
     {
         if ($quote->getId()) {
-            /* @note: Reset reserved_order_id, Magento up to and including version 1.7 has a bug in Mage_Sales_Model_Resource_Quote::isOrderIncrementIdUsed()
-             * They cast the orderIncrementId to (int), which breaks the checkout/cart for all non-numerical incrementIds
-             * (Causes Integrity Constraint Violation, because orderIncrementId already exists */
+            /**
+             * Reset reserved_order_id - Magento up to and including version 1.7 has a
+             * bug in Mage_Sales_Model_Resource_Quote::isOrderIncrementIdUsed() -
+             * orderIncrementId is being casted to (int), which breaks the checkout/cart
+             * for all non-numerical incrementIds (which also causes integrity constraint
+             * violations, because the resulting orderIncrementIds "already exist")
+             */
             $quote->setIsActive(1)
                 ->setReservedOrderId(null)
                 ->save();
+            /** @var Mage_Checkout_Model_Session $oSession */
             $oSession = Mage::getSingleton('checkout/session');
-            $oSession->replaceQuote($quote)
-                ->unsLastRealOrderId();
+            $oSession->replaceQuote($quote)->unsetData('last_real_order_id');
         }
     }
     
@@ -107,15 +111,15 @@ class Payone_Core_Checkout_CartController extends Mage_Checkout_CartController
      */
     public function indexAction()
     {
-        // Get singleton of Checkout Session Model
+        /** @var Mage_Checkout_Model_Session $oSession */
         $oSession = Mage::getSingleton('checkout/session');
         
-        if($oSession->getPayoneIsRedirectedToPayPal() === true) {
+        if ($oSession->getPayoneIsRedirectedToPayPal() === true) {
             $oSession->unsPayoneIsRedirectedToPayPal();
             
             // Load order
             $oOrder = $this->getOrderByCheckoutSession($oSession);
-            if($oOrder) {
+            if ($oOrder) {
                 // Cancel order and add history comment:
                 if ($oOrder->canCancel()) {
                     $oOrder->cancel();
@@ -126,7 +130,7 @@ class Payone_Core_Checkout_CartController extends Mage_Checkout_CartController
 
                 // Load quote
                 $oQuote = $this->getQuoteByCheckoutSession($oSession);
-                if($oQuote) {
+                if ($oQuote) {
                     $this->reactivateQuote($oQuote);
                     
                     //reload the page
@@ -137,5 +141,4 @@ class Payone_Core_Checkout_CartController extends Mage_Checkout_CartController
 
         return parent::indexAction();
     }
-
 }
