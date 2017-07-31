@@ -22,6 +22,7 @@
  */
 class Payone_Core_Model_Payment_Method_AmazonPay extends Payone_Core_Model_Payment_Method_Abstract
 {
+    protected $_canUseCheckout = false;
     protected $_canUseForMultishipping = true;
     protected $methodType = Payone_Core_Model_System_Config_PaymentMethodType::AMAZONPAY;
     protected $_code = Payone_Core_Model_System_Config_PaymentMethodCode::AMAZONPAY;

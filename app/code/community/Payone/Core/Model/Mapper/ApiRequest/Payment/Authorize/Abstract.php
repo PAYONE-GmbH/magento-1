@@ -766,6 +766,17 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
                     break;
             }
 
+            // Comment out to test 'InvalidPaymentMethod' scenario with the Payone API
+            /*
+            $paydata['authorization_note_for_testing'] = '{
+                "SandboxSimulation": {
+                    "State": "Declined",
+                    "ReasonCode": "InvalidPaymentMethod",
+                    "SoftDecline": "false"
+                }
+            }';
+            */
+
             $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_AmazonPay([
                 'successurl' => $this->helperUrl()->getSuccessUrl(),
                 'errorurl'   => $this->helperUrl()->getErrorUrl(),
