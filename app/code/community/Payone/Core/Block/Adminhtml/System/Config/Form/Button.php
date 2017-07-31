@@ -76,11 +76,13 @@ class Payone_Core_Block_Adminhtml_System_Config_Form_Button
      */
     public function getButtonHtml()
     {
+        $isNotSaved = empty($this->getRequest()->getParam('id'));
         /** @var Varien_Data_Form_Element_Button $button */
         $button = $this->getLayout()->createBlock('adminhtml/widget_button')
             ->setData([
                 'id'        => $this->getElementId(),
-                'disabled'  => $this->isDisabled(),
+                'style'     => "margin-bottom: 6px;",
+                'disabled'  => $this->isDisabled() || $isNotSaved,
                 'label'     => Mage::helper('payone_core')->__($this->getLabel()),
                 'onclick'   => "javascript:{$this->getElementId()}_click(); return false;"
             ]);

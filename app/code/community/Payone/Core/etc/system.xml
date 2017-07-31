@@ -855,9 +855,13 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </amz_seller_id>
-                        <get_configuration translate="label,button_label">
+                        <get_configuration translate="label,button_label,comment">
                             <label>Initialization</label>
                             <button_label>Get configuration</button_label>
+                            <comment>
+                                Before initializing the parameters above, the remaining
+                                form fields should be complete and saved to database.
+                            </comment>
                             <route>adminhtml/payonecore_system_config_payment/initAmazon</route>
                             <frontend_type>button</frontend_type>
                             <frontend_model>payone_core/adminhtml_system_config_form_button</frontend_model>
