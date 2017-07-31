@@ -16,4 +16,4 @@ ALTER TABLE `{{sales_flat_order_payment}}`
   ADD `payone_amz_order_reference` VARCHAR(255) NULL COMMENT 'Amazon Order Reference';
 
 ALTER TABLE `{{sales_flat_order}}`
-  ADD `payone_prevent_confirmation` TINYINT(1) UNSIGNED NULL COMMENT 'Flag to prevent confirmation mail';
+  ADD `payone_prevent_confirmation` INT(1) UNSIGNED NULL COMMENT 'Flag to prevent confirmation mail';

@@ -111,7 +111,7 @@ if ($useSqlInstaller) {
 
     // Alter table sales_flat_order
     $connection->addColumn($tableOrder, 'payone_prevent_confirmation', [
-        'TYPE' => Varien_Db_Ddl_Table::TYPE_TINYINT,
+        'TYPE' => Varien_Db_Ddl_Table::TYPE_INTEGER,
         'LENGTH' => 1,
         'NULLABLE' => true,
         'DEFAULT' => null,
