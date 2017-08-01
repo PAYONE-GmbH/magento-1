@@ -705,6 +705,11 @@
                 <model>payone_core/payment_method_onlineBankTransferP24</model>
                 <group>payone</group>
             </payone_online_bank_transfer_p24>
+            <payone_online_bank_transfer_bct translate="title" module="payone_core">
+                <title>PAYONE - Bancontact</title>
+                <model>payone_core/payment_method_onlineBankTransferBct</model>
+                <group>payone</group>
+            </payone_online_bank_transfer_bct>
             <payone_advance_payment translate="title" module="payone_core">
                 <title>PAYONE - AdvancePayment</title>
                 <model>payone_core/payment_method_advancePayment</model>
@@ -769,6 +774,9 @@
             <template_online_bank_transfer_p24>
                 <use_global>1</use_global>
             </template_online_bank_transfer_p24>
+            <template_online_bank_transfer_bct>
+                <use_global>1</use_global>
+            </template_online_bank_transfer_bct>
             <template_safe_invoice>
                 <types>BSV</types>
                 <use_global>1</use_global>

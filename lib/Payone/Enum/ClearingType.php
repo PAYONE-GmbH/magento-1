@@ -26,6 +26,7 @@ class Payone_Enum_ClearingType
     const CREDITCARD = 'cc';
     const ADVANCEPAYMENT = 'vor';
     const INVOICE = 'rec';
+    const ONLINEBANKTRANSFERBCT = 'sb';
     const ONLINEBANKTRANSFERPFF = 'sb';
     const ONLINEBANKTRANSFERP24 = 'sb';
     const ONLINEBANKTRANSFERPFC = 'sb';
