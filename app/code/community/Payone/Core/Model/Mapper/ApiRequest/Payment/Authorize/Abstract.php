@@ -495,8 +495,9 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
                   $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferIdl ||
                   $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferPostFinanceEfinance ||
                   $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferPostFinanceCard ||
-                  $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferP24)
-        {
+                  $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferP24 ||
+                  $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferBct
+        ) {
             $country = $this->getOrder()->getBillingAddress()->getCountry();
             $payoneOnlinebanktransferType = $info->getPayoneOnlinebanktransferType();
             $iban = $info->getPayoneSepaIban();
@@ -828,6 +829,9 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
         }
         elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferEps) {
             $clearingType = Payone_Enum_ClearingType::ONLINEBANKTRANSFEREPS;
+        }
+        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferBct) {
+            $clearingType = Payone_Enum_ClearingType::ONLINEBANKTRANSFERBCT;
         }
         elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Wallet) {
             $clearingType = Payone_Enum_ClearingType::WALLET;
