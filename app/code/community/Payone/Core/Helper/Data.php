@@ -314,4 +314,23 @@ class Payone_Core_Helper_Data
 
         return false;
     }
+
+    /**
+     * Get shipping tax rate for the given quote
+     *
+     * @param Mage_Sales_Model_Quote $oQuote
+     * @return double
+     */
+    public function getShippingTaxRate($oQuote)
+    {
+        $oStore = Mage::app()->getStore();
+
+        /** @var Mage_Tax_Model_Calculation $oTax */
+        $oTax = Mage::getSingleton('tax/calculation');
+        $request = $oTax->getRateRequest($oQuote->getShippingAddress(), $oQuote->getBillingAddress(), null, $oStore);
+        $request->setProductClassId(Mage::helper('tax')->getShippingTaxClass($oStore));
+        $dPercent = $oTax->getRate($request);
+
+        return $dPercent;
+    }
 }
