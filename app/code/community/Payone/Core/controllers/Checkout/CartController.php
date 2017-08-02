@@ -126,15 +126,17 @@ class Payone_Core_Checkout_CartController extends Mage_Checkout_CartController
                     $sMessage = $this->helper()->__('The Payone transaction has been canceled.');
                     $oOrder->addStatusHistoryComment($sMessage, Mage_Sales_Model_Order::STATE_CANCELED);
                     $oOrder->save();
+                    // Add a notice to Magento checkout and
+                    // prevent jumping forward in history:
+                    $sNotice = $this->helper()->__('The order has been canceled.');
+                    $oSession->setData('has_canceled_order_text', $sNotice);
+                    $oSession->setData('has_canceled_order', true);
+                    $oSession->addNotice($sNotice);
                 }
-
                 // Load quote
                 $oQuote = $this->getQuoteByCheckoutSession($oSession);
                 if ($oQuote) {
                     $this->reactivateQuote($oQuote);
-                    
-                    //reload the page
-                    $this->_redirect('checkout/cart');
                 }
             }
         }
