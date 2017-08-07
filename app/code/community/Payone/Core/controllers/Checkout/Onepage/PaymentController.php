@@ -41,42 +41,35 @@ class Payone_Core_Checkout_Onepage_PaymentController extends Payone_Core_Control
     {
         try {
             $oSession = Mage::getSingleton('checkout/session');
-            $oSession->unsPayoneIsRedirectedToPayPal();
-            
+            $oSession->unsPayoneExternalCheckoutActive();
             $this->checkoutCancel(true);
         } catch (Exception $e) {
             $this->handleException($e);
         }
-
-        // Redirect customer to cart
-        $this->_redirect('checkout/cart');
+        $this->forwardToCart();
     }
 
     /**
-     * @return mixed
+     * Payment was successful and order will be saved.
      */
     public function successAction()
     {
         try {
             $oSession = Mage::getSingleton('checkout/session');
-            $oSession->unsPayoneIsRedirectedToPayPal();
-            
+            $oSession->unsPayoneExternalCheckoutActive();
             $success = $this->checkoutSucccess();
-
             if ($success === true) {
                 // Payment is okay. Redirect to standard Magento success page:
-                $this->_redirect(
-                    'checkout/onepage/success', array(
-                    '_nosid' => true,
-                    '_secure' => Mage::app()->getStore()->isCurrentlySecure())
-                );
+                $this->_redirect('checkout/onepage/success', [
+                    '_nosid'  => true,
+                    '_secure' => Mage::app()->getStore()->isCurrentlySecure(),
+                ]);
                 return;
             }
         } catch (Exception $e) {
             $this->handleException($e);
         }
-
-        $this->_redirect('checkout/cart');
+        $this->forwardToCart();
     }
 
     /**
@@ -87,15 +80,22 @@ class Payone_Core_Checkout_Onepage_PaymentController extends Payone_Core_Control
     {
         try {
             $oSession = Mage::getSingleton('checkout/session');
-            $oSession->unsPayoneIsRedirectedToPayPal();
-            
+            $oSession->unsPayoneExternalCheckoutActive();
             $this->checkoutCancel(true);
         } catch (Exception $e) {
             $this->handleException($e);
         }
+        $this->forwardToCart();
+    }
 
-        // Redirect customer to cart
-        $this->_redirect('checkout/cart');
+    protected function forwardToCart()
+    {
+        $this->getRequest()
+            ->setInternallyForwarded()
+            ->setRouteName('checkout')
+            ->setControllerName('cart')
+            ->setActionName('index')
+            ->setDispatched(false);
     }
 
     /**
