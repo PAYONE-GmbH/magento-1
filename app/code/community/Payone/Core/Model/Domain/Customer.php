@@ -90,7 +90,7 @@ class Payone_Core_Model_Domain_Customer
 
     /**
      * @param string $key
-     * @return array
+     * @return array|null
      */
     public function getCustomerData($key = null)
     {
