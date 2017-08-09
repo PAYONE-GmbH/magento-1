@@ -59,7 +59,11 @@ class Payone_Core_TransactionStatusController extends Payone_Core_Controller_Abs
             $order = $this->getFactory()->getModelSalesOrder();
             $order->loadByIncrementId($reference);
 
-            if (!$order->hasData() && ! $this->getFactory()->helperCompatibility()->isExternalOrderReference($reference)) {
+            if (!$order->hasData()) {
+                // do nothing if this is an external (e.g. Shopgate) order
+                if ($this->getFactory()->helperCompatibility()->isExternalOrderReference($reference)) {
+                    return;
+                }
                 throw new Payone_Core_Exception_OrderNotFound('Could not find an order for reference "' . $reference . '".');
             }
 
