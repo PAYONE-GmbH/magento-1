@@ -47,4 +47,5 @@ class Payone_Enum_ClearingType
     const PAYOLUTIONINSTALLMENT = 'fnc';
     const PAYOLUTION = 'fnc';
     const FINANCING = 'fnc';
+    const PAYMENTGUARANTEEINVOICE = 'rec';
 }

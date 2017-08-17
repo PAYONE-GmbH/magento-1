@@ -1478,6 +1478,15 @@
                         </b2b_mode>
                     </fields>
                 </template_payolution_installment>
+                <template_payment_guarantee_invoice translate="label" module="payone_core">
+                    <label>Invoice with Payment Guarantee</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields></fields>
+                </template_payment_guarantee_invoice>
             </groups>
         </payone_payment>
 
