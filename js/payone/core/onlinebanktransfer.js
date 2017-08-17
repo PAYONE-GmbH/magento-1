@@ -148,7 +148,7 @@ function payoneSwitchOnlineBankTransfer(typeCode, methodCode, element, country, 
         }
     }
 
-    if (typeCode == 'PFC' || typeCode == 'P24') {
+    if (typeCode === 'PFC' || typeCode === 'P24' || typeCode === 'BCT') {
         disableAll();
     }
 

@@ -41,6 +41,7 @@ class Payone_Core_Model_System_Config_PaymentMethodCode extends Payone_Core_Mode
     const DEBITPAYMENT = 'payone_debit_payment';
     const INVOICE = 'payone_invoice';
     const SAFEINVOICE = 'payone_safe_invoice';
+    const ONLINEBANKTRANSFERBCT = 'payone_online_bank_transfer_bct';
     const ONLINEBANKTRANSFERGIROPAY = 'payone_online_bank_transfer_giropay';
     const ONLINEBANKTRANSFERP24 = 'payone_online_bank_transfer_p24';
     const ONLINEBANKTRANSFEREPS = 'payone_online_bank_transfer_eps';
@@ -93,6 +94,7 @@ class Payone_Core_Model_System_Config_PaymentMethodCode extends Payone_Core_Mode
             self::ONLINEBANKTRANSFERPFF => 'PostFinance E-Finance',
             self::ONLINEBANKTRANSFERPFC => 'PostFinance Card',
             self::ONLINEBANKTRANSFERP24 => 'Przelewy24',
+            self::ONLINEBANKTRANSFERBCT => 'Bancontact',
         );
     }
 }

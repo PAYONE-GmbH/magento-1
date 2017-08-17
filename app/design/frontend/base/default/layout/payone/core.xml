@@ -51,20 +51,21 @@
     </payone_core_pexpress_review>
 
     <checkout_cart_index>
+        <reference name="head">
+            <block type="core/template" name="payone_core_checkout_cart_helper" template="payone/core/checkout/cart/helper.phtml" />
+        </reference>
         <reference name="checkout.cart.top_methods">
             <block type="payone_core/paypal_express_shortcut" name="payone.checkout.cart.methods.paypal_express.top" before="-" template="payone/core/paypal/express/shortcut.phtml">
                 <action method="setIsQuoteAllowed"><value>1</value></action>
                 <action method="setShowOrPosition"><value>after</value></action>
             </block>
         </reference>
-
         <reference name="checkout.cart.methods">
             <block type="payone_core/paypal_express_shortcut" name="payone.checkout.cart.methods.paypal_express.bottom" before="-" template="payone/core/paypal/express/shortcut.phtml">
                 <action method="setIsQuoteAllowed"><value>1</value></action>
                 <action method="setShowOrPosition"><value>after</value></action>
             </block>
         </reference>
-
         <!--<update handle="SHORTCUT_popup" />-->
     </checkout_cart_index>
 

@@ -15,34 +15,19 @@
  * @category        Payone
  * @package         Payone_Core_Model
  * @subpackage      Payment
- * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
- * @author          Matthias Walter <info@noovias.com>
+ * @copyright       Copyright (c) 2017 <kontakt@fatchip.de> - www.fatchip.de
+ * @author          FATCHIP GmbH <kontakt@fatchip.de>
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
- * @link            http://www.noovias.com
+ * @link            http://www.fatchip.de
  */
-
-/**
- *
- * @category        Payone
- * @package         Payone_Core_Model
- * @subpackage      Payment
- * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
- * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
- * @link            http://www.noovias.com
- */
-class Payone_Core_Model_Payment_Method_OnlineBankTransferEps
-    extends Payone_Core_Model_Payment_Method_Abstract
+class Payone_Core_Model_Payment_Method_OnlineBankTransferBct extends Payone_Core_Model_Payment_Method_Abstract
 {
-    protected $methodType = Payone_Core_Model_System_Config_PaymentMethodType::ONLINEBANKTRANSFEREPS;
-
-    protected $_code = Payone_Core_Model_System_Config_PaymentMethodCode::ONLINEBANKTRANSFEREPS;
-
-    protected $_formBlockType = 'payone_core/payment_method_form_onlineBankTransferEps';
+    protected $methodType = Payone_Core_Model_System_Config_PaymentMethodType::ONLINEBANKTRANSFERBCT;
+    protected $_code = Payone_Core_Model_System_Config_PaymentMethodCode::ONLINEBANKTRANSFERBCT;
+    protected $_formBlockType = 'payone_core/payment_method_form_onlineBankTransfer';
     protected $_infoBlockType = 'payone_core/payment_method_info_onlineBankTransfer';
-
     /** @var Payone_Core_Model_Config_Payment_Method_Interface[] */
-    protected $matchingConfigs = array();
-
+    protected $matchingConfigs = [];
     protected $_canUseInternal = false;
 
     /**
@@ -51,13 +36,12 @@ class Payone_Core_Model_Payment_Method_OnlineBankTransferEps
      * To be used in Form_Block, which has to display all online bank transfer types
      *
      * @param Mage_Sales_Model_Quote $quote
-     * @return Payone_Core_Model_Config_Payment_Method_Interface
+     * @return Payone_Core_Model_Config_Payment_Method_Interface[]
      */
     public function getAllConfigsByQuote(Mage_Sales_Model_Quote $quote)
     {
         if (empty($this->matchingConfigs)) {
             $configStore = $this->getConfigStore($quote->getStoreId());
-
             $this->matchingConfigs = $configStore->getPayment()->getMethodsForQuote($this->methodType, $quote);
         }
 

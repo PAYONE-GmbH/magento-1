@@ -160,6 +160,7 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Capture
                 || $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferPostFinanceEfinance
                 || $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferPostFinanceCard
                 || $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferP24
+                || $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferBct
         ) {
             $payment = $paymentMethod->getInfoInstance();
             // Advancepayment and OnlineBankTransfer use NO/AUTO
