@@ -63,4 +63,14 @@ class Payone_Core_Model_Payment_Method_OnlineBankTransferPostFinanceCard
 
         return $this->matchingConfigs;
     }
+
+    /**
+     * @param $redirectUrl
+     */
+    public function setRedirectUrl($redirectUrl)
+    {
+        $oSession = Mage::getSingleton('checkout/session');
+        $oSession->setPayoneExternalCheckoutActive(true);
+        $this->redirectUrl = $redirectUrl;
+    }
 }

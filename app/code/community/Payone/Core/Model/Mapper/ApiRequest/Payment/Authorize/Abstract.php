@@ -503,8 +503,9 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
                   $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferIdl ||
                   $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferPostFinanceEfinance ||
                   $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferPostFinanceCard ||
-                  $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferP24)
-        {
+                  $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferP24 ||
+                  $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferBct
+        ) {
             $country = $this->getOrder()->getBillingAddress()->getCountry();
             $payoneOnlinebanktransferType = $info->getPayoneOnlinebanktransferType();
             $iban = $info->getPayoneSepaIban();
@@ -781,12 +782,38 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
                 'successurl' => $this->helperUrl()->getSuccessUrl(),
                 'errorurl'   => $this->helperUrl()->getErrorUrl(),
             ], $paydata);
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_PaymentGuaranteeInvoice) {
+            $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_PaymentGuaranteeInvoice();
+            $payData = new Payone_Api_Request_Parameter_Paydata_Paydata();
+            if ((bool)$info->getPayoneIsb2b() === true) {
+                $payData->addItem(
+                    new Payone_Api_Request_Parameter_Paydata_DataItem(
+                        ['key' => 'b2b', 'data' => 'yes']
+                    )
+                );
+                $payData->addItem(
+                    new Payone_Api_Request_Parameter_Paydata_DataItem(
+                        ['key' => 'company_trade_registry_number', 'data' => $info->getPayoneTradeRegistryNumber()]
+                    )
+                );
+            } else {
+                $birthdayDate = $info->getPayoneCustomerDob();
+                if (empty($birthdayDate)) {
+                    $birthdayDate = $this->getOrder()->getCustomerDob();
+                }
+                if ($birthdayDate) {
+                    $payment->setBirthday($this->formatBirthday($birthdayDate));
+                }
+            }
+            $payment->setPaydata($payData);
+            $payment->setClearingsubtype();
         }
 
         if ($isRedirect === true) {
-            $successurl = $this->helperUrl()->getSuccessUrl();
-            $errorurl = $this->helperUrl()->getErrorUrl();
-            $backurl = $this->helperUrl()->getBackUrl();
+            $encodedOrderId = base64_encode($this->getOrder()->getEntityId());
+            $successurl = $this->helperUrl()->getSuccessUrl() . "reference/{$encodedOrderId}/";
+            $errorurl = $this->helperUrl()->getErrorUrl() . "reference/{$encodedOrderId}/";
+            $backurl = $this->helperUrl()->getBackUrl() . "reference/{$encodedOrderId}/";
 
             $payment->setSuccessurl($successurl);
             $payment->setErrorurl($errorurl);
@@ -865,6 +892,8 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
             $clearingType = Payone_Enum_ClearingType::ONLINEBANKTRANSFERGIROPAY;
         } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferEps) {
             $clearingType = Payone_Enum_ClearingType::ONLINEBANKTRANSFEREPS;
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferBct) {
+            $clearingType = Payone_Enum_ClearingType::ONLINEBANKTRANSFERBCT;
         } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Wallet) {
             $clearingType = Payone_Enum_ClearingType::WALLET;
         } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_WalletPaydirekt) {
@@ -895,6 +924,8 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
             $clearingType = Payone_Enum_ClearingType::PAYOLUTION;
         } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_AmazonPay) {
             $clearingType = Payone_Enum_ClearingType::AMAZONPAY;
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_PaymentGuaranteeInvoice) {
+            $clearingType = Payone_Enum_ClearingType::PAYMENTGUARANTEEINVOICE;
         }
 
         return $clearingType;

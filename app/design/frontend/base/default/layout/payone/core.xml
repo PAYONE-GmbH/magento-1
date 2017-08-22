@@ -68,6 +68,9 @@
     </payone_core_pexpress_review>
 
     <checkout_cart_index>
+        <reference name="head">
+            <block type="core/template" name="payone_core_checkout_cart_helper" template="payone/core/checkout/cart/helper.phtml" />
+        </reference>
         <reference name="checkout.cart.top_methods">
             <block type="payone_core/amazon_pay_shortcut" name="payone.checkout.cart.methods.amazon_pay.top" before="-" template="payone/core/amazon/pay/shortcut.phtml">
                 <action method="setIsQuoteAllowed"><value>1</value></action>

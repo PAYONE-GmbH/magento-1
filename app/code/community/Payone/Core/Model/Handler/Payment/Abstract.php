@@ -121,8 +121,8 @@ abstract class Payone_Core_Model_Handler_Payment_Abstract
             $this->sendAvsMail($response);
         } elseif ($response->isRedirect()) {
             $sRedirectUrl = $response->getRedirecturl();
+            $oSession = Mage::getSingleton('checkout/session');
             if ($this->_isIframePaymentOrder($request)) {
-                $oSession = Mage::getSingleton('checkout/session');
                 $oSession->setPayoneIframeUrl($sRedirectUrl);
                 $oSession->setPayonePaymentType($this->_getPaymentMethod());
                 $sRedirectUrl = Mage::helper('payone_core/url')->getMagentoUrl('payone_core/iframe/show');
@@ -135,6 +135,10 @@ abstract class Payone_Core_Model_Handler_Payment_Abstract
             }
 
             $paymentMethod->setRedirectUrl($sRedirectUrl);
+
+            $orderId = $order->getEntityId();
+            $pendingOrders = $oSession->getData('payone_pending_orders') ?: [];
+            $oSession->setData('payone_pending_orders', array_unique(array_merge($pendingOrders, [$orderId])));
         }
 
         $this->updatePaymentByResponse($response);
@@ -197,26 +201,24 @@ abstract class Payone_Core_Model_Handler_Payment_Abstract
         if ($this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_Creditcard) {
             $order->setData('payone_payment_method_type', $this->getPayment()->getData('cc_type'));
         } elseif ($this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_OnlineBankTransfer ||
-                  $this->getConfigPaymentMethod() instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferSofortueberweisung ||
-                  $this->getConfigPaymentMethod() instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferGiropay ||
-                  $this->getConfigPaymentMethod() instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferEps ||
-                  $this->getConfigPaymentMethod() instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferIdl ||
-                  $this->getConfigPaymentMethod() instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferPostFinanceEfinance ||
-                  $this->getConfigPaymentMethod() instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferPostFinanceCard ||
-                  $this->getConfigPaymentMethod() instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferP24)
-        {
+            $this->getConfigPaymentMethod() instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferSofortueberweisung ||
+            $this->getConfigPaymentMethod() instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferGiropay ||
+            $this->getConfigPaymentMethod() instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferEps ||
+            $this->getConfigPaymentMethod() instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferIdl ||
+            $this->getConfigPaymentMethod() instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferPostFinanceEfinance ||
+            $this->getConfigPaymentMethod() instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferPostFinanceCard ||
+            $this->getConfigPaymentMethod() instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferP24 ||
+            $this->getConfigPaymentMethod() instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferBct
+        ) {
             $order->setData('payone_payment_method_type', $this->getPayment()->getData('payone_onlinebanktransfer_type'));
-
         } elseif ($this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_SafeInvoice) {
             $order->setData('payone_payment_method_type', $this->getPayment()->getData('payone_safe_invoice_type'));
-
         } elseif ($this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_PayolutionInvoicing ||
             $this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_PayolutionDebit ||
             $this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_PayolutionInstallment ||
             $this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_Payolution
         ) {
-            $order->setData('payone_payment_method_type', $this->getPayment()->getData('payone_payolution_type')
-            );
+            $order->setData('payone_payment_method_type', $this->getPayment()->getData('payone_payolution_type'));
         } elseif ($this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_Wallet ||
             $this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_WalletPaydirekt ||
             $this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_WalletPaypalExpress ||
