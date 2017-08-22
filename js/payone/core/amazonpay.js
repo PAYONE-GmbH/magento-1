@@ -80,6 +80,8 @@ var PayoneCheckout = {
         jQuery('#placeOrder').attr('disabled', false);
     },
     afterPlaceOrder: function (result) {
+        //noinspection JSUnresolvedFunction, JSUnresolvedVariable
+        amazon.Login.logout();
         window.location = result['redirectUrl'];
     }
 };
@@ -101,6 +103,10 @@ window.onCheckoutProgress = function (target) {
         onSuccess: function (transport) {
             if (transport.responseText) {
                 var Result = JSON.parse(transport.responseText);
+                if (Result['shouldLogout'] === true) {
+                    //noinspection JSUnresolvedFunction, JSUnresolvedVariable
+                    amazon.Login.logout();
+                }
                 if (Result['successful'] === true) {
                     var Callback = "after"
                         + Progress.currentStep.charAt(0).toUpperCase()
@@ -110,6 +116,8 @@ window.onCheckoutProgress = function (target) {
                     window.onAmazonPaymentsInvalidPayment();
                 } else {
                     alert(Result['errorMessage']);
+                    jQuery('#placeOrder').attr('disabled', true);
+                    jQuery('#checkoutStepInit').addClass('allow active').nextAll().removeClass('allow active');
                 }
             }
             jQuery('#addressBookWidgetCover, #walletWidgetCover').removeClass('show');

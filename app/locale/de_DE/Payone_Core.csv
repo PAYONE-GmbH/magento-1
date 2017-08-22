@@ -1174,6 +1174,8 @@
 "Unable to proceed with PAYONE Amazon Checkout.","PAYONE Amazon Checkout kann leider nicht fortfahren."
 "Shipping to the selected address is not available.","Versand zur ausgewählten Adresse ist nicht verfügbar."
 "Please select a shipping method.","Bitte eine Versandmethode auswählen"
+"Sorry, your transaction with Amazon Pay was not successful. Please choose another payment method.","Entschuldigung, die Transaktion mit Amazon Pay war nicht erfolgreich. Bitte wählen Sie eine andere Zahlart."
+"Your transaction with Amazon Pay is currently being validated. Please be aware that we will inform you shortly as needed.","Ihre Zahlung mit Amazon Pay ist derzeit noch in Prüfung. Bitte beachten Sie, dass wir uns mit Ihnen in Kürze per Email in Verbindung setzen werden, falls noch Unklarheiten bestehen sollten."
 "Checkout with Amazon Pay","Bestellabschluss mit Amazon Pay"
 "Review shopping cart","Warenkorb überprüfen"
 "Shipping address & payment","Versandadresse & Bezahlung"

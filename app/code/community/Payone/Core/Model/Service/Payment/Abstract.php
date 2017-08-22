@@ -95,11 +95,30 @@ abstract class Payone_Core_Model_Service_Payment_Abstract
             } elseif ($response->getErrorcode() == 981) {
                 $session->unsetData('amazon_retry_async');
                 throw new Payone_Api_Exception_InvalidParameters('InvalidPaymentMethod', 981);
+            } elseif ($response->getErrorcode() == 980) {
+                $session->unsetData('amazon_retry_async');
+                throw new Payone_Api_Exception_InvalidParameters('TransactionTimedOut', 980);
+            } elseif ($response->getErrorcode() == 109) {
+                $session->unsetData('amazon_retry_async');
+                throw new Payone_Api_Exception_InvalidParameters('AmazonRejected', 109);
             } else {
                 $session->unsetData('amazon_retry_async');
                 /** @var Payone_Api_Response_Error $response */
-                $this->throwMageException($this->helper()->__($oMethodInstance->getApiResponseErrorMessage($response)));
+                $this->throwMageException($this->helper()->__(
+                    "Sorry, your transaction with Amazon Pay was not successful. Please choose another payment method."
+                    //$oMethodInstance->getApiResponseErrorMessage($response)
+                ));
             }
+        } elseif ($request->getPayment()->getPaydata() &&
+            $request->getPayment()->getPaydata()->toArray()['add_paydata[amazon_timeout]'] > 0
+        ) {
+            $message = $this->helper()->__(
+                'Your transaction with Amazon Pay is currently being validated. ' .
+                'Please be aware that we will inform you shortly as needed.'
+            );
+            /** @var \Mage_Checkout_Model_Session $checkoutSession */
+            $checkoutSession = Mage::getSingleton('checkout/session');
+            $checkoutSession->addNotice($message);
         }
         $session->unsetData('amazon_retry_async');
         $session->unsetData('amazon_reference_id');

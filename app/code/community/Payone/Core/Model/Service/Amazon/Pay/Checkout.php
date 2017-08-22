@@ -219,6 +219,7 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
                 'action'               => $action,
                 'amazon_reference_id'  => $params['amazonOrderReferenceId'],
                 'amazon_address_token' => $params['addressConsentToken'],
+                'storename'            => Mage::app()->getStore()->getGroup()->getName(),
             ],
             $this->quote->getQuoteCurrencyCode(),
             $this->quote->getGrandTotal()
@@ -285,8 +286,22 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
             if ($e->getCode() === 981) {
                 $session->setData('amazon_lock_order', true);
                 $session->setData('amazon_reference_id', $params['amazonOrderReferenceId']);
+                $session->unsetData('amazon_add_paydata');
+            } elseif (in_array($e->getCode(), [109, 980])) {
+                // Transaction cannot be completed by Amazon
+                // and the order reference object was closed
+                $session->unsetData('work_order_id');
+                $session->unsetData('amazon_add_paydata');
+                $text = 'Sorry, your transaction with Amazon Pay was not successful. ' .
+                    'Please choose another payment method.';
+                $message = Mage::helper('payone_core')->__($text);
+                $this->checkoutSession->addError($message);
+                return [
+                    'successful'  => true,
+                    'shouldLogout' => true,
+                    'redirectUrl' => Mage::getUrl('checkout/cart/index'),
+                ];
             }
-            $session->unsetData('amazon_add_paydata');
             throw $e;
         }
         $session->unsetData('amazon_add_paydata');
@@ -319,6 +334,7 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
             'checkout_submit_all_after',
             ['order' => $order, 'quote' => $this->quote, 'recurring_profiles' => []]
         );
+        $session->unsetData('work_order_id');
 
         return [
             'successful'  => true,
