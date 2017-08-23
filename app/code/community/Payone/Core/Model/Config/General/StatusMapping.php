@@ -172,8 +172,7 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
      */
     public function getByType($type)
     {
-        $ret = $this->getValue($type);
-        return $ret;
+        return $this->getValue($type);
     }
 
     /**
