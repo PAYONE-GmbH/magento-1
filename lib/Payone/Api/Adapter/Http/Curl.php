@@ -55,11 +55,6 @@ class Payone_Api_Adapter_Http_Curl extends Payone_Api_Adapter_Http_Abstract
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($curl, CURLOPT_TIMEOUT, self::DEFAULT_TIMEOUT);
 
-        if ( $this->checkIfProxyIsEnabled() ) {
-            curl_setopt($curl,  CURLOPT_PROXY, $this->getProxyUrl());
-            curl_setopt($curl, CURLOPT_PROXYPORT, $this->getProxyPort());
-        }
-
         $result = curl_exec($curl);
         
         $this->setRawResponse($result);
@@ -77,33 +72,6 @@ class Payone_Api_Adapter_Http_Curl extends Payone_Api_Adapter_Http_Abstract
         curl_close($curl);
 
         return $response;
-    }
-
-    /**
-     * @param null $storeCode
-     * @return mixed
-     */
-    protected function checkIfProxyIsEnabled($storeCode = null)
-    {
-        return Mage::helper('payone_core/config')->checkIfProxyIsEnabled($storeCode);
-    }
-
-    /**
-     * @param null $storeCode
-     * @return mixed
-     */
-    protected function getProxyUrl($storeCode = null)
-    {
-        return Mage::helper('payone_core/config')->getProxyUrl($storeCode);
-    }
-
-    /**
-     * @param null $storeCode
-     * @return mixed
-     */
-    protected function getProxyPort($storeCode = null)
-    {
-        return Mage::helper('payone_core/config')->getProxyPort($storeCode);
     }
 
 }
