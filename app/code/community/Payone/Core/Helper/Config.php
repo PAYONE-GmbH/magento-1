@@ -36,6 +36,24 @@ class Payone_Core_Helper_Config
     const CONFIG_KEY_CREDITRATING_SAMPLE_COUNTER = 'payone_creditrating_sample_counter';
 
     /**
+     *
+     * @var string
+     */
+    const XML_PATH_ENABLE_PROXY = 'payone_general/global/enable_proxy';
+
+    /**
+     *
+     * @var string
+     */
+    const XML_PATH_PROXY_URL = 'payone_general/global/proxy_url';
+
+    /**
+     *
+     * @var string
+     */
+    const XML_PATH_PROXY_PORT = 'payone_general/global/proxy_port';
+
+    /**
      * @param int $storeId
      * @return bool|Payone_Core_Model_Config_Interface
      */
@@ -136,7 +154,7 @@ class Payone_Core_Helper_Config
     {
         $configId = $order->getPayment()->getData('payone_config_payment_method_id');
         if (!$configId) {
-            $message = 'Payment method configuration with id "' . $configId . '" not found.';
+            $message = 'Payment method configuration for method "'. $order->getPayment()->getMethod() .'" not found.';
             throw new Payone_Core_Exception_PaymentMethodConfigNotFound($message);
         }
 
@@ -155,7 +173,7 @@ class Payone_Core_Helper_Config
     {
         $configId = $quote->getPayment()->getData('payone_config_payment_method_id');
         if (!$configId) {
-            $message = 'Payment method configuration with id "' . $configId . '" not found.';
+            $message = 'Payment method configuration for method "'. $quote->getPayment()->getMethod() .'" not found.';
             throw new Payone_Core_Exception_PaymentMethodConfigNotFound($message);
         }
 
@@ -181,6 +199,11 @@ class Payone_Core_Helper_Config
         $configPayment = $this->getConfigPayment($iStoreId);
         $config = $configPayment->getMethodForQuote($method, $quote);
         return $config;
+    }
+
+    public function getShippingTaxClassId($storeId)
+    {
+        return $this->getStoreConfig(Mage_Tax_Model_Config::CONFIG_XML_PATH_SHIPPING_TAX_CLASS, $storeId);
     }
 
     /**
@@ -256,5 +279,32 @@ class Payone_Core_Helper_Config
     public function getStoreConfigFlag($path, $storeId = null)
     {
         return Mage::getStoreConfigFlag($path, $storeId);
+    }
+
+    /**
+     * @param null $storeCode
+     * @return bool
+     */
+    public function checkIfProxyIsEnabled($storeCode = null)
+    {
+        return Mage::getStoreConfigFlag(self::XML_PATH_ENABLE_PROXY, $storeCode);
+    }
+
+    /**
+     * @param null $storeCode
+     * @return mixed
+     */
+    public function getProxyUrl($storeCode = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_PROXY_URL, $storeCode);
+    }
+
+    /**
+     * @param null $storeCode
+     * @return mixed
+     */
+    public function getProxyPort($storeCode = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_PROXY_PORT, $storeCode);
     }
 }
