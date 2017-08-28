@@ -34,6 +34,24 @@ class Payone_Core_Helper_Config
     extends Payone_Core_Helper_Abstract
 {
     const CONFIG_KEY_CREDITRATING_SAMPLE_COUNTER = 'payone_creditrating_sample_counter';
+	
+	/**
+     *
+     * @var string
+     */
+    const XML_PATH_ENABLE_PROXY = 'payone_general/global/enable_proxy';
+
+    /**
+     *
+     * @var string
+     */
+    const XML_PATH_PROXY_URL = 'payone_general/global/proxy_url';
+
+    /**
+     *
+     * @var string
+     */
+    const XML_PATH_PROXY_PORT = 'payone_general/global/proxy_port';
 
     /**
      * @param int $storeId
@@ -256,5 +274,32 @@ class Payone_Core_Helper_Config
     public function getStoreConfigFlag($path, $storeId = null)
     {
         return Mage::getStoreConfigFlag($path, $storeId);
+    }
+	
+	/**
+     * @param null $storeCode
+     * @return bool
+     */
+    public function checkIfProxyIsEnabled($storeCode = null)
+    {
+        return Mage::getStoreConfigFlag(self::XML_PATH_ENABLE_PROXY, $storeCode);
+    }
+
+    /**
+     * @param null $storeCode
+     * @return mixed
+     */
+    public function getProxyUrl($storeCode = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_PROXY_URL, $storeCode);
+    }
+
+    /**
+     * @param null $storeCode
+     * @return mixed
+     */
+    public function getProxyPort($storeCode = null)
+    {
+        return Mage::getStoreConfig(self::XML_PATH_PROXY_PORT, $storeCode);
     }
 }
