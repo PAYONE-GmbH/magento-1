@@ -15,16 +15,21 @@
  * @category        Payone
  * @package         Payone_Core
  * @subpackage      etc
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ *
  * @copyright       Copyright (c) 2012 <info@votum.de> - www.votum.de
  * @author          Edward Mateja <edward.mateja@votum.de>
- * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
  * @link            http://www.votum.de
+ *
+ * @copyright       Copyright (c) 2017 <service@e3n.de> - e3n.de
+ * @author          Tobias Niebergall <service@e3n.de>
+ * @link            https://e3n.de
  */
 -->
 <config>
     <modules>
         <Payone_Core>
-            <version>3.7.8</version>
+            <version>4.0.1</version>
         </Payone_Core>
     </modules>
 
@@ -828,23 +833,31 @@
                 <max_execution_time>35</max_execution_time>
             </transactionstatus_execute>
             <status_mapping>
+                <!-- Sortorder adapted from Payone_Core_Model_System_Config_PaymentMethodType -->
+                <advance_payment>a:2:{s:18:"_1338893618715_715";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:11:"new|pending";}}s:18:"_1355483828815_815";a:2:{s:8:"txaction";a:1:{i:0;s:4:"paid";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</advance_payment>
+                <cash_on_delivery>a:1:{s:18:"_1338893625332_332";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</cash_on_delivery>
                 <creditcard>a:1:{s:18:"_1343137391927_927";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</creditcard>
-                <invoice>a:1:{s:18:"_1338893611948_948";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</invoice>
                 <debit_payment>a:1:{s:18:"_1338893616379_379";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</debit_payment>
                 <safe_invoice>a:1:{s:23:"_payone_status_mapping3";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</safe_invoice>
-                <advance_payment>a:2:{s:18:"_1338893618715_715";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:11:"new|pending";}}s:18:"_1355483828815_815";a:2:{s:8:"txaction";a:1:{i:0;s:4:"paid";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</advance_payment>
+                <invoice>a:1:{s:18:"_1338893611948_948";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</invoice>
+                <online_bank_transfer_pfc>a:1:{s:18:"_1343137411652_552";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</online_bank_transfer_pfc>
+                <online_bank_transfer_giropay>a:1:{s:18:"_1343137411652_252";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</online_bank_transfer_giropay>
+                <online_bank_transfer_pff>a:1:{s:18:"_1343137411652_452";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</online_bank_transfer_pff>
+                <online_bank_transfer_eps>a:1:{s:18:"_1343137411652_352";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</online_bank_transfer_eps>
+                <online_bank_transfer_p24>a:1:{s:18:"_1343137411652_852";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</online_bank_transfer_p24>
+                <online_bank_transfer_idl>a:1:{s:18:"_1343137411652_752";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</online_bank_transfer_idl>
+                <online_bank_transfer_sofortueberweisung>a:1:{s:18:"_1343137411652_152";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</online_bank_transfer_sofortueberweisung>
                 <online_bank_transfer>a:1:{s:18:"_1343118466182_182";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</online_bank_transfer>
-                <cash_on_delivery>a:1:{s:18:"_1338893625332_332";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</cash_on_delivery>
                 <wallet>a:1:{s:18:"_1343137411652_652";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</wallet>
-                <wallet_paydirekt>a:1:{s:18:"_1343137411652_652";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</wallet_paydirekt>
-                <wallet_paypal_express>a:1:{s:18:"_1343137411652_652";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</wallet_paypal_express>
-                <wallet_alipay>a:1:{s:18:"_1343137411652_652";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</wallet_alipay>
                 <barzahlen>a:1:{s:23:"_payone_status_mapping4";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</barzahlen>
                 <ratepay>a:1:{s:17:"_1468417699073_73";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</ratepay>
                 <payolution>a:1:{s:18:"_1468430772551_551";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</payolution>
-                <payolution_debit>a:1:{s:15:"_1486042141_511";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</payolution_debit>
                 <payolution_invoicing>a:1:{s:15:"_1486042141_541";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</payolution_invoicing>
+                <payolution_debit>a:1:{s:15:"_1486042141_511";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</payolution_debit>
                 <payolution_installment>a:1:{s:15:"_1486042141_591";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</payolution_installment>
+                <wallet_paydirekt>a:1:{s:18:"_1343137411652_652";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</wallet_paydirekt>
+                <wallet_paypal_express>a:1:{s:18:"_1343137411652_652";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</wallet_paypal_express>
+                <wallet_alipay>a:1:{s:18:"_1343137411652_652";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</wallet_alipay>
                 <financing>a:1:{s:18:"_1468430123551_512";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</financing>
             </status_mapping>
         </payone_general>
