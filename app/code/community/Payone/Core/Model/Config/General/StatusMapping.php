@@ -89,6 +89,18 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
      * @var null
      */
     protected $payolution = null;
+    /**
+     * @var null
+     */
+    protected $wallet_paypal_express = null;
+    /**
+     * @var null
+     */
+    protected $online_bank_transfer_giropay = null;
+    /**
+     * @var null
+     */
+    protected $online_bank_transfer_sofortueberweisung = null;
 
     /**
      * @param array $data
@@ -294,7 +306,7 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
 
         $this->wallet = $wallet;
     }
-    
+
     public function setRatepay($ratepay)
     {
         if (is_string($ratepay)) {
@@ -303,7 +315,7 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
 
         $this->ratepay = $ratepay;
     }
-    
+
     /**
      * @return null
      */
@@ -311,7 +323,7 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
     {
         return $this->wallet;
     }
-    
+
     public function getRatepay()
     {
         return $this->ratepay;
@@ -328,12 +340,12 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
      * @param $payolution
      */
     public function setPayolution($payolution)
-     {
-         if (is_string($payolution)) {
+    {
+        if (is_string($payolution)) {
             $payolution = $this->initValue($payolution);
-         }
+        }
 
-       $this->payolution = $payolution;
+        $this->payolution = $payolution;
     }
 
     /**
@@ -414,5 +426,65 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
     public function getSafeInvoice()
     {
         return $this->safe_invoice;
+    }
+
+    /**
+     * @param null $wallet_paypal_express
+     */
+    public function setWalletpaypalexpress($wallet_paypal_express)
+    {
+        if (is_string($wallet_paypal_express)) {
+            $wallet_paypal_express = $this->initValue($wallet_paypal_express);
+        }
+
+        $this->wallet_paypal_express = $wallet_paypal_express;
+    }
+
+    /**
+     * @return null
+     */
+    public function getWalletpaypalexpress()
+    {
+        return $this->wallet_paypal_express;
+    }
+
+    /**
+     * @param null $online_bank_transfer_giropay
+     */
+    public function setOnlinebanktransfergiropay($online_bank_transfer_giropay)
+    {
+        if (is_string($online_bank_transfer_giropay)) {
+            $online_bank_transfer_giropay = $this->initValue($online_bank_transfer_giropay);
+        }
+
+        $this->online_bank_transfer_giropay = $online_bank_transfer_giropay;
+    }
+
+    /**
+     * @return null
+     */
+    public function getOnlinebanktransfergiropay()
+    {
+        return $this->online_bank_transfer_giropay;
+    }
+
+    /**
+     * @param null $online_bank_transfer_sofortueberweisung
+     */
+    public function setOnlinebanktransfersofortueberweisung($online_bank_transfer_sofortueberweisung)
+    {
+        if (is_string($online_bank_transfer_sofortueberweisung)) {
+            $online_bank_transfer_sofortueberweisung = $this->initValue($online_bank_transfer_sofortueberweisung);
+        }
+
+        $this->online_bank_transfer_sofortueberweisung = $online_bank_transfer_sofortueberweisung;
+    }
+
+    /**
+     * @return null
+     */
+    public function getOnlinebanktransfersofortueberweisung()
+    {
+        return $this->online_bank_transfer_sofortueberweisung;
     }
 }
