@@ -764,6 +764,7 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
                     break;
                 case Payone_Core_Model_System_Config_AmazonSyncMode::ALWAYS_SYNCHRONOUS:
                     $paydata['amazon_timeout'] = 0;
+                    $paydata['cancel_on_timeout'] = 'yes';
                     break;
             }
 

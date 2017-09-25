@@ -26,6 +26,37 @@ class Payone_Core_Block_Amazon_Pay_Shortcut extends Mage_Core_Block_Template
      * @var int $counter
      */
     public static $counter = 0;
+
+    /**
+     * Whether the block should be eventually rendered
+     *
+     * @var bool
+     */
+    protected $_shouldRender = true;
+
+    protected function _beforeToHtml()
+    {
+        $result = parent::_beforeToHtml();
+
+        if (!Mage::app()->getStore()->isCurrentlySecure()) {
+            $this->_shouldRender = false;
+        }
+        return $result;
+    }
+
+    /**
+     * Render the block if needed
+     *
+     * @return string
+     */
+    protected function _toHtml()
+    {
+        if (!$this->_shouldRender) {
+            return '';
+        }
+        return parent::_toHtml();
+    }
+
     /**
      * @return \Payone_Core_Model_Config_Payment_Method
      */
