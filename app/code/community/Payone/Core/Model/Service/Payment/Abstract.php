@@ -109,7 +109,10 @@ abstract class Payone_Core_Model_Service_Payment_Abstract
                     //$oMethodInstance->getApiResponseErrorMessage($response)
                 ));
             }
-        } elseif ($request instanceof Payone_Api_Request_Authorization_Abstract && $request->getPayment() && $request->getPayment()->getPaydata() &&
+        } elseif ($request instanceof Payone_Api_Request_Authorization_Abstract &&
+            $oMethodInstance->getCode() == 'payone_amazon_pay' &&
+            $request->getPayment() &&
+            $request->getPayment()->getPaydata() &&
             $request->getPayment()->getPaydata()->toArray()['add_paydata[amazon_timeout]'] > 0
         ) {
             $message = $this->helper()->__(

@@ -162,14 +162,6 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
             $requestType = Payone_Api_Enum_RequestType::AUTHORIZATION;
         }
 
-        // Override system setting (prefer PREAUTHORIZATION unless explicitly set otherwise)
-        if ($paymentMethod instanceof Payone_Core_Model_Payment_Method_AmazonPay) {
-            $requestType = $this->configPayment->getRequestTypeAmazon();
-            if (empty($requestType)) {
-                $requestType = Payone_Api_Enum_RequestType::PREAUTHORIZATION;
-            }
-        }
-
         $request->setRequest($requestType);
         $request->setAid($this->configPayment->getAid());
         $request->setClearingtype($this->mapClearingType($paymentMethod));

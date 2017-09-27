@@ -714,6 +714,9 @@ class Payone_Core_Model_Config_Payment_Method
      */
     public function getRequestType()
     {
+        if ($this->getCode() === 'amazon_pay') {
+            return $this->getRequestTypeAmazon();
+        }
         return $this->request_type;
     }
 
