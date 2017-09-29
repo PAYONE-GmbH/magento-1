@@ -685,7 +685,7 @@
                 <group>payone</group>
             </payone_online_bank_transfer_sofortueberweisung>
             <payone_online_bank_transfer_giropay translate="title" module="payone_core">
-                <title>PAYONE - Sofortüberweisung</title>
+                <title>PAYONE - Giropay</title>
                 <model>payone_core/payment_method_onlineBankTransferGiropay</model>
                 <group>payone</group>
             </payone_online_bank_transfer_giropay>
@@ -695,7 +695,7 @@
                 <group>payone</group>
             </payone_online_bank_transfer_eps>
             <payone_online_bank_transfer_idl translate="title" module="payone_core">
-                <title>PAYONE - eps Online-Überweisung</title>
+                <title>PAYONE - iDEAL</title>
                 <model>payone_core/payment_method_onlineBankTransferIdl</model>
                 <group>payone</group>
             </payone_online_bank_transfer_idl>
