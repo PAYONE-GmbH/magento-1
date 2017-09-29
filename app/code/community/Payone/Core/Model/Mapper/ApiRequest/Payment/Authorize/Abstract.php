@@ -338,7 +338,7 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
 
         // Multiple Ips could be included, we only send the last one.
         $remoteIps = explode(',', $remoteIp);
-        $ip = array_shift($remoteIps);
+        $ip = array_pop($remoteIps);
         // remove leading Whitespace for Muliple IPs e.g. "0.0.0.0, 1.1.1.1"
         $ip = trim($ip);
         return $ip;
