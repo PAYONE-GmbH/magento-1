@@ -144,12 +144,17 @@ class Payone_Core_Model_Observer_Sales_Order
                 //Mage::log($customerSavedData, null, 'test.log', true);
             }
 
-            if(!empty($paymentMethodCode)) {
+            if(!empty($customerId) && !empty($paymentMethodCode)) {
                 $paymentCustomerModel = Mage::getModel('payone_core/domain_customer')->loadByCustomerIdPaymentCode($customerId, $paymentMethodCode);
                 $paymentCustomerModel->setCustomerId($customerId);
                 $paymentCustomerModel->setCode($paymentMethodCode);
                 $paymentCustomerModel->setCustomerData($customerSavedData);
-                $paymentCustomerModel->save();
+                
+                try {
+                    $paymentCustomerModel->save();
+                } catch (Exception $e) {
+                    Mage::logException($e);
+                }
 //                Mage::log($paymentMethodCode, null, 'test.log', true);
             }
         }
