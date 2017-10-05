@@ -8,10 +8,6 @@
     height: 230px;
 }
 
-#walletWidgetDiv {
-    position: absolute;
-}
-
 #addressBookWidgetCover,
 #walletWidgetCover {
     display: none;
@@ -21,11 +17,6 @@
     border-radius: 6px;
     width: 260px;
     height: 230px;
-}
-
-#walletWidgetWrap {
-    position: relative;
-    display: inline-block;
 }
 
 #checkoutStepInitContent {
@@ -260,7 +251,7 @@
 }
 
 @media only screen and (max-width: 1151px) {
-    #walletWidgetWrap {
+    #walletWidgetWrap, #addressBookWidgetWrap {
         top: 10px;
         height: 240px;
     }
@@ -321,10 +312,15 @@
 
     #addressBookWidgetDiv,
     #walletWidgetDiv {
-        display: inline-block;
+        display: block;
     }
 
     #walletWidgetWrap {
-        display: inline;
+        display: block;
+        float: left;
+    }
+    #addressBookWidgetWrap {
+        display: block;
+        float: left;
     }
 }

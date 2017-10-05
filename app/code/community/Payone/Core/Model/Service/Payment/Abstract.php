@@ -45,6 +45,24 @@ abstract class Payone_Core_Model_Service_Payment_Abstract
     protected $handler = null;
 
     /**
+     * Existing Payone error codes mapped to their Amazon error codes
+     *
+     * @var array
+     */
+    protected $_aAmazonErrors = array(
+        109 => 'AmazonRejected',
+        900 => 'UnspecifiedError',
+        980 => 'TransactionTimedOut',
+        981 => 'InvalidPaymentMethod',
+        982 => 'AmazonRejected',
+        983 => 'ProcessingFailure',
+        984 => 'BuyerEqualsSeller',
+        985 => 'PaymentMethodNotAllowed',
+        986 => 'PaymentPlanNotSet',
+        987 => 'ShippingAddressNotSet'
+    );
+
+    /**
      * @param Payone_Api_Request_Interface $request
      * @return mixed
      */
@@ -92,15 +110,9 @@ abstract class Payone_Core_Model_Service_Payment_Abstract
             if (!$isRetry && $session->getData('amazon_retry_async') && $response->getErrorcode() == 980) {
                 // Retry the transaction in asynchronous mode
                 $response = $this->execute($payment, $amount, true);
-            } elseif ($response->getErrorcode() == 981) {
+            } elseif (array_key_exists($response->getErrorcode(), $this->_aAmazonErrors) !== false) {
                 $session->unsetData('amazon_retry_async');
-                throw new Payone_Api_Exception_InvalidParameters('InvalidPaymentMethod', 981);
-            } elseif ($response->getErrorcode() == 980) {
-                $session->unsetData('amazon_retry_async');
-                throw new Payone_Api_Exception_InvalidParameters('TransactionTimedOut', 980);
-            } elseif ($response->getErrorcode() == 109) {
-                $session->unsetData('amazon_retry_async');
-                throw new Payone_Api_Exception_InvalidParameters('AmazonRejected', 109);
+                throw new Payone_Api_Exception_InvalidParameters($this->_aAmazonErrors[$response->getErrorcode()], $response->getErrorcode());
             } else {
                 $session->unsetData('amazon_retry_async');
                 /** @var Payone_Api_Response_Error $response */

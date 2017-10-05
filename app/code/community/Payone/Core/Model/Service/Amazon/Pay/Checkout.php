@@ -283,11 +283,11 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
             $service = Mage::getModel('sales/service_quote', $this->quote);
             $service->submitAll();
         } catch (\Exception $e) {
-            if ($e->getCode() === 981) {
+            if (in_array($e->getCode(), [981, 985, 986])) { // send to widgets
                 $session->setData('amazon_lock_order', true);
                 $session->setData('amazon_reference_id', $params['amazonOrderReferenceId']);
                 $session->unsetData('amazon_add_paydata');
-            } elseif (in_array($e->getCode(), [109, 980])) {
+            } else { // logout and send to basket
                 // Transaction cannot be completed by Amazon
                 // and the order reference object was closed
                 $session->unsetData('work_order_id');

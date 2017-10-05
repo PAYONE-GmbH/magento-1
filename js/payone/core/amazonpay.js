@@ -112,7 +112,7 @@ window.onCheckoutProgress = function (target) {
                         + Progress.currentStep.charAt(0).toUpperCase()
                         + Progress.currentStep.slice(1);
                     PayoneCheckout[Callback](Result);
-                } else if (Result['errorMessage'] === 'InvalidPaymentMethod') {
+                } else if (['InvalidPaymentMethod', 'PaymentMethodNotAllowed', 'PaymentPlanNotSet'].indexOf(Result['errorMessage']) != -1) {
                     window.onAmazonPaymentsInvalidPayment();
                 } else {
                     alert(Result['errorMessage']);

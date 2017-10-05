@@ -82,11 +82,8 @@ class Payone_Core_AmazonPayController extends Payone_Core_Controller_Abstract
             $result = call_user_func([$object, $method], $params);
             $response->setBody(json_encode($result));
             return;
-        } catch (\Mage_Core_Exception $e) {
-            $response->setBody(json_encode(['errorMessage' => $e->getMessage(), 'successful' => false]));
-            return;
         } catch (\Payone_Api_Exception_InvalidParameters $e) {
-            if ($e->getCode() === 981) {
+            if (in_array($e->getCode(), [981, 985, 986])) {
                 $response->setBody(json_encode(['errorMessage' => $e->getMessage(), 'successful' => false]));
             } else {
                 $this->_handleUnknownException($e);
