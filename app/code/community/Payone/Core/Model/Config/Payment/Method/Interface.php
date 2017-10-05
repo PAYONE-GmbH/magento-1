@@ -375,6 +375,16 @@ interface Payone_Core_Model_Config_Payment_Method_Interface
     public function getRequestType();
 
     /**
+     * @param string $request_type
+     */
+    public function setRequestTypeAmazon($request_type);
+
+    /**
+     * @return string
+     */
+    public function getRequestTypeAmazon();
+
+    /**
      * @param string $scope
      */
     public function setScope($scope);

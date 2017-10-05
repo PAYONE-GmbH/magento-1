@@ -24,7 +24,7 @@
 <config>
     <modules>
         <Payone_Core>
-            <version>3.7.8</version>
+            <version>3.8.0</version>
         </Payone_Core>
     </modules>
 
@@ -614,6 +614,11 @@
 
     <default>
         <payment>
+            <payone_amazon_pay translate="title" module="payone_core">
+                <title>PAYONE - Amazon Pay</title>
+                <model>payone_core/payment_method_amazonPay</model>
+                <group>payone</group>
+            </payone_amazon_pay>
             <payone_creditcard translate="title" module="payone_core">
                 <title>PAYONE - CreditCard</title>
                 <model>payone_core/payment_method_creditcard</model>
@@ -751,6 +756,9 @@
             </payone_wallet_alipay>
         </payment>
         <payone_payment>
+            <template_amazon_pay>
+                <use_global>1</use_global>
+            </template_amazon_pay>
             <template_creditcard>
                 <use_global>1</use_global>
             </template_creditcard>
@@ -868,6 +876,7 @@
                 <payolution_invoicing>a:1:{s:15:"_1486042141_541";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</payolution_invoicing>
                 <payolution_installment>a:1:{s:15:"_1486042141_591";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</payolution_installment>
                 <financing>a:1:{s:18:"_1468430123551_512";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</financing>
+                <amazon_pay>a:1:{s:18:"_1499859127882_882";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</amazon_pay>
             </status_mapping>
         </payone_general>
         <payone_protect>
