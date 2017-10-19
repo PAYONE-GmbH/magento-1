@@ -80,11 +80,28 @@ var PayoneCheckout = {
         jQuery('#placeOrder').attr('disabled', false);
     },
     afterPlaceOrder: function (result) {
-        //noinspection JSUnresolvedFunction, JSUnresolvedVariable
         amazon.Login.logout();
         window.location = result['redirectUrl'];
     }
 };
+
+var match, pl = /\+/g, search = /([^&=]+)=?([^&]*)/g,
+    decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
+    query = window.location.hash.substring(1) || window.location.search.substring(1),
+    initiatedByPopup = true;
+if (window.location.hash.substring(1)) {
+    initiatedByPopup = false;
+}
+
+while (match = search.exec(query)) {
+  if (decode(match[1]) === "access_token") {
+    var accessToken = decode(match[2]);
+    if (typeof accessToken === 'string' && accessToken.match(/^Atza/)) {
+      document.cookie = "amazon_Login_accessToken=" + accessToken + ";secure";
+      PayoneCheckout.addressConsentToken = accessToken;
+    }
+  }
+}
 
 window.onCheckoutProgress = function (target) {
     target.disabled = true;
@@ -104,7 +121,6 @@ window.onCheckoutProgress = function (target) {
             if (transport.responseText) {
                 var Result = JSON.parse(transport.responseText);
                 if (Result['shouldLogout'] === true) {
-                    //noinspection JSUnresolvedFunction, JSUnresolvedVariable
                     amazon.Login.logout();
                 }
                 if (Result['successful'] === true) {
@@ -112,7 +128,7 @@ window.onCheckoutProgress = function (target) {
                         + Progress.currentStep.charAt(0).toUpperCase()
                         + Progress.currentStep.slice(1);
                     PayoneCheckout[Callback](Result);
-                } else if (['InvalidPaymentMethod', 'PaymentMethodNotAllowed', 'PaymentPlanNotSet'].indexOf(Result['errorMessage']) != -1) {
+                } else if (['InvalidPaymentMethod', 'PaymentMethodNotAllowed', 'PaymentPlanNotSet'].indexOf(Result['errorMessage']) !== -1) {
                     window.onAmazonPaymentsInvalidPayment();
                 } else {
                     alert(Result['errorMessage']);
@@ -143,27 +159,16 @@ window.onDocumentReady = function () {
             jQuery(event.currentTarget).nextAll().removeClass('allow active');
             jQuery(event.currentTarget).addClass('allow active');
         }
-    })
+    });
 };
 
 window.onAmazonWidgetsInitialized = function (orderReference) {
-    var match,
-        pl     = /\+/g,
-        search = /([^&=]+)=?([^&]*)/g,
-        decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
-        query  = window.location.search.substring(1);
-
-    while (match = search.exec(query)) {
-        if (decode(match[1]) === "access_token") {
-            PayoneCheckout.addressConsentToken = decode(match[2]);
-        }
-    }
     PayoneCheckout.amazonOrderReferenceId = orderReference.getAmazonOrderReferenceId();
 };
 
 window.onAmazonLoginReady = function () {
-    //noinspection JSUnresolvedVariable, JSUnresolvedFunction
     amazon.Login.setClientId(PayoneCheckout.amazonClientId);
+    amazon.Login.setUseCookie(true);
 };
 
 window.onAmazonPaymentsError = function (error) {
@@ -194,7 +199,13 @@ window.onAmazonPaymentsReady = function () {
         },
         onReady: window.onAmazonWidgetsInitialized,
         onError: window.onAmazonPaymentsError
-    }).bind('addressBookWidgetDiv');
+    })  // Bind the widget to the DOM
+        // element with the given ID.
+        .bind('addressBookWidgetDiv')
+        // Reset this widget's flag to
+        // avoid redrawing, which might
+        // happen under circumstances.
+        .renderRequested = initiatedByPopup;
     new OffAmazonPayments.Widgets.Wallet({
         sellerId: PayoneCheckout.amazonSellerId,
         scope: 'payments:billing_address payments:shipping_address payments:widget profile',
@@ -207,7 +218,13 @@ window.onAmazonPaymentsReady = function () {
         onError: function (error) {
             console.log(error.getErrorCode() + ': ' + error.getErrorMessage());
         }
-    }).bind('walletWidgetDiv');
+    })  // Bind the widget to the DOM
+        // element with the given ID.
+        .bind('walletWidgetDiv')
+        // Reset this widget's flag to
+        // avoid redrawing, which might
+        // happen under circumstances.
+        .renderRequested = initiatedByPopup;
 };
 
 window.onAmazonPaymentsInvalidPayment = function () {
@@ -227,7 +244,13 @@ window.onAmazonPaymentsInvalidPayment = function () {
         },
         onReady: window.onAmazonWidgetsInitialized,
         onError: window.onAmazonPaymentsError
-    }).bind('addressBookWidgetDiv');
+    })  // Bind the widget to the DOM
+        // element with the given ID.
+        .bind('addressBookWidgetDiv')
+        // Reset this widget's flag to
+        // avoid redrawing, which might
+        // happen under circumstances.
+        .renderRequested = initiatedByPopup;
     new OffAmazonPayments.Widgets.Wallet({
         sellerId: PayoneCheckout.amazonSellerId,
         amazonOrderReferenceId: PayoneCheckout.amazonOrderReferenceId,
@@ -242,7 +265,13 @@ window.onAmazonPaymentsInvalidPayment = function () {
         onError: function (error) {
             console.log(error.getErrorCode() + ': ' + error.getErrorMessage());
         }
-    }).bind('walletWidgetDiv');
+    })  // Bind the widget to the DOM
+        // element with the given ID.
+        .bind('walletWidgetDiv')
+        // Reset this widget's flag to
+        // avoid redrawing, which might
+        // happen under circumstances.
+        .renderRequested = initiatedByPopup;
     jQuery('#checkoutStepInit').addClass('allow active').nextAll().removeClass('allow active');
 };
 

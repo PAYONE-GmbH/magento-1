@@ -32,14 +32,14 @@ class Payone_Core_Block_Amazon_Pay_Shortcut extends Mage_Core_Block_Template
      *
      * @var bool
      */
-    protected $_shouldRender = true;
+    protected $_hasSecureConnection = false;
 
     protected function _beforeToHtml()
     {
         $result = parent::_beforeToHtml();
 
-        if (!Mage::app()->getStore()->isCurrentlySecure()) {
-            $this->_shouldRender = false;
+        if (Mage::app()->getStore()->isCurrentlySecure()) {
+            $this->_hasSecureConnection = true;
         }
         return $result;
     }
@@ -51,9 +51,6 @@ class Payone_Core_Block_Amazon_Pay_Shortcut extends Mage_Core_Block_Template
      */
     protected function _toHtml()
     {
-        if (!$this->_shouldRender) {
-            return '';
-        }
         return parent::_toHtml();
     }
 
@@ -80,5 +77,13 @@ class Payone_Core_Block_Amazon_Pay_Shortcut extends Mage_Core_Block_Template
         }
 
         return $paymentConfig;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasSecureConnection()
+    {
+        return $this->_hasSecureConnection;
     }
 }

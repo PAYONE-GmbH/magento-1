@@ -27,7 +27,7 @@ if (!empty($config)) :
     /** @var Payone_Core_Helper_Url $helper */
     $helper = Mage::helper('payone_core/url');
     /** @var string $returnUrl */
-    $returnUrl = $helper->getMagentoUrl('payone_core/amazonpay/checkout');
+    $returnUrl = Mage::getUrl('payone_core/amazonpay/checkout', ['_nosid' => true, '_forced_secure' => true]);
     /** @var string $buttonType */
     $buttonType = Payone_Core_Model_System_Config_AmazonButtonType::getParameter($config->getAmzButtonType());
     /** @var string $buttonColor */
@@ -75,7 +75,7 @@ if (!empty($config)) :
             authorization: function () {
                 loginOptions = {
                     scope: 'payments:billing_address payments:shipping_address payments:widget profile',
-                    popup: true
+                    popup: <?php echo $this->hasSecureConnection() ? 'true' : 'false' ?>
                 };
                 authRequest = amazon.Login.authorize(loginOptions, '<?php echo $returnUrl; ?>');
             }

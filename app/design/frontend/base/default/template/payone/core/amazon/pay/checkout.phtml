@@ -22,9 +22,10 @@
  */
 ?>
 <?php
+/** @var \Payone_Core_Block_Amazon_Pay_Checkout $this */
 /** @var \Mage_Core_Helper_Data $core */
 $core = Mage::helper('core');
-/** @var \Payone_Core_Block_Amazon_Pay_Checkout $this */
+/** @var \Payone_Core_Model_Config_Payment_Method $config */
 $config = $this->getData('config');
 /** @var \Mage_Sales_Model_Quote $quote */
 $quote = $this->getData('quote');
@@ -33,7 +34,7 @@ $session = Mage::getSingleton('payone_core/session');
 /** @var \Payone_Core_Helper_Url $helper */
 $helper = Mage::helper('payone_core/url');
 /** @var string $progressAction*/
-$progressAction = $helper->getMagentoUrl('*/*/progress');
+$progressAction = Mage::getUrl('*/*/progress', ['_nosid' => true, '_forced_secure' => true]);
 /** @var string $cartAction */
 $cartAction = $helper->getMagentoUrl('checkout/cart');
 ?>
@@ -141,6 +142,8 @@ $cartAction = $helper->getMagentoUrl('checkout/cart');
     var lastPrice;
 </script>
 <!-- Load script Widgets.js from Amazon -->
-<!-- URL changes to https://static-eu.payments-amazon.com/OffAmazonPayments/eur/lpa/js/Widgets.js when mode=live -->
-<script async="async" src='https://static-eu.payments-amazon.com/OffAmazonPayments/eur/sandbox/lpa/js/Widgets.js'
+<!-- URL changes to https://static-eu.payments-amazon.com/OffAmazonPayments/eur/lpa/js/Widgets.js when mode is live -->
+<?php $useSandbox = $config->getMode() === \Payone_Enum_Mode::TEST ? '/sandbox' : '' ?>
+<script async="async"
+        src='<?php echo "https://static-eu.payments-amazon.com/OffAmazonPayments/eur$useSandbox/lpa/js/Widgets.js" ?>'
 ></script>
