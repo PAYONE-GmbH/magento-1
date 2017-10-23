@@ -32,6 +32,30 @@ class Payone_Core_Block_Adminhtml_System_Config_Form_Field_AmazonConfig
         /** @var Varien_Data_Form_Element_Text */
         $element->setReadonly(true);
 
+        if ($element->getId() === 'payone_payment_template_amazon_pay_amz_js_origin') {
+            $url = parse_url($this->getFrontendUrl());
+            $element->setData('value', 'https://' . $url['host'] . ($url['port'] ? ':' . $url['port'] : ''));
+        } elseif ($element->getId() === 'payone_payment_template_amazon_pay_amz_return_url') {
+            $element->setData('value', $this->getFrontendUrl('payone_core/amazonpay/checkout'));
+        }
         return parent::render($element);
+    }
+
+    /**
+     * @param string $route
+     * @return string
+     */
+    protected function getFrontendUrl($route = '')
+    {
+        $scope = $this->getData('config_data')['payone_payment/template_amazon_pay/scope'];
+        $scopeId = (int) $this->getData('config_data')['payone_payment/template_amazon_pay/scope_id'];
+        if ($scope === 'stores') {
+            $storeId = $scopeId;
+        } elseif ($scope === 'websites') {
+            $storeId = Mage::app()->getWebsite($scopeId)->getDefaultStore()->getId();
+        } else {
+            $storeId = Mage::app()->getDefaultStoreView()->getId();
+        }
+        return Mage::getUrl($route, ['_nosid' => true, '_forced_secure' => true, '_store' => $storeId]);
     }
 }

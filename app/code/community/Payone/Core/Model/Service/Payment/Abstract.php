@@ -106,19 +106,21 @@ abstract class Payone_Core_Model_Service_Payment_Abstract
 
         /** @var Payone_Core_Model_Session $session */
         $session = Mage::getSingleton('payone_core/session');
+        /** @var Payone_Api_Response_Error $response */
         if ($response instanceof Payone_Api_Response_Error) {
             if (!$isRetry && $session->getData('amazon_retry_async') && $response->getErrorcode() == 980) {
                 // Retry the transaction in asynchronous mode
                 $response = $this->execute($payment, $amount, true);
             } elseif (array_key_exists($response->getErrorcode(), $this->_aAmazonErrors) !== false) {
                 $session->unsetData('amazon_retry_async');
-                throw new Payone_Api_Exception_InvalidParameters($this->_aAmazonErrors[$response->getErrorcode()], $response->getErrorcode());
+                throw new Payone_Api_Exception_InvalidParameters(
+                    $this->_aAmazonErrors[$response->getErrorcode()],
+                    $response->getErrorcode()
+                );
             } else {
                 $session->unsetData('amazon_retry_async');
-                /** @var Payone_Api_Response_Error $response */
-                $this->throwMageException($this->helper()->__(
-                    "Sorry, your transaction with Amazon Pay was not successful. Please choose another payment method."
-                    //$oMethodInstance->getApiResponseErrorMessage($response)
+                $this->throwMageException($response->getErrorcode() . ': ' . $this->helper()->__(
+                    $response->getErrormessage()
                 ));
             }
         } elseif ($request instanceof Payone_Api_Request_Authorization_Abstract &&

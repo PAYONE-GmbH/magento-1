@@ -192,3 +192,7 @@ tr.payone-odd {
 button {
     -webkit-border-fit: border !important;
 }
+
+#payone_payment_template_amazon_pay_amz_return_url + p.note {
+    margin-top: 6px;
+}
