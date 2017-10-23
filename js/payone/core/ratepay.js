@@ -35,7 +35,7 @@
  * @param paymentMethod
  * @param url
  */
-function switchRateOrRuntime(mode, paymentMethod, url)
+function payoneSwitchRateOrRuntime(mode, paymentMethod, url)
 {
     if (mode == 'rate') {
         document.getElementById(paymentMethod + '_SwitchToTerm').className = 'ratepay-Active';
@@ -56,7 +56,7 @@ function switchRateOrRuntime(mode, paymentMethod, url)
  * @param paymentMethod
  * @param url
  */
-function ratepayRateCalculatorAction(mode, paymentMethod, url)
+function payoneRatepayRateCalculatorAction(mode, paymentMethod, url)
 {
     var calcValue,
         calcMethod,

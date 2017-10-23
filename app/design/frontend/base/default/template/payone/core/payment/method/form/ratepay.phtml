@@ -153,7 +153,7 @@ $types = $this->getTypes();
                         <br />
                         <label for="firstInput" style="width:100%;">
                             <div class="ratepay-ChooseInput" id="<?php echo $code ?>_ChooseInputRate">
-                                <input id="firstInput" class="ratepay-FloatLeft" type="radio" name="Zahlmethode" value="wishrate"  onClick="switchRateOrRuntime('rate', '<?php echo $code ?>', '<?php echo $this->getSkinUrl('images/ratepay/'); ?>');" checked="checked">
+                                <input id="firstInput" class="ratepay-FloatLeft" type="radio" name="Zahlmethode" value="wishrate"  onClick="payoneSwitchRateOrRuntime('rate', '<?php echo $code ?>', '<?php echo $this->getSkinUrl('images/ratepay/'); ?>');" checked="checked">
                             </div>
                             <div class="ratepay-NintyPercentWidth ratepay-FloatLeft" style="color: black; width: 390px;"><?php echo $this->__('lang_payment_text_wishrate'); ?></div>
                         </label>
@@ -164,13 +164,13 @@ $types = $this->getTypes();
                                 <span class="ratepay-VertAlignMiddle"><?php echo $this->__('lang_please') . " " . $this->__('lang_insert_wishrate'); ?>:</span>
                                 <input id="<?php echo $code ?>-rate" class="ratepay-Input-amount" type="text">
                                 <span class="ratepay-Currency"> &euro;</span>
-                                <input onclick="ratepayRateCalculatorAction('rate', '<?php echo $code ?>', '<?php echo $this->getUrl("payone_core/ratepay/rate", array('_secure' => true)); ?>');" value="<?php echo $this->__('lang_calculate_runtime'); ?>" id="<?php echo $code ?>_Input-button" class="ratepay-Input-button" type="button">
+                                <input onclick="payoneRatepayRateCalculatorAction('rate', '<?php echo $code ?>', '<?php echo $this->getUrl("payone_core/ratepay/rate", array('_secure' => true)); ?>');" value="<?php echo $this->__('lang_calculate_runtime'); ?>" id="<?php echo $code ?>_Input-button" class="ratepay-Input-button" type="button">
                             </div>
                         </div>
                         <br class="ratepay-ClearFix" />
                         <label for="secondInput" style="width:100%;">
                             <div class="ratepay-ChooseInput" id="<?php echo $code ?>_ChooseInputRuntime">
-                                <input id="secondInput" class="ratepay-FloatLeft" type="radio" name="Zahlmethode" value="runtime" onClick="switchRateOrRuntime('runtime', '<?php echo $code ?>', '<?php echo $this->getSkinUrl('images/ratepay/'); ?>');">
+                                <input id="secondInput" class="ratepay-FloatLeft" type="radio" name="Zahlmethode" value="runtime" onClick="payoneSwitchRateOrRuntime('runtime', '<?php echo $code ?>', '<?php echo $this->getSkinUrl('images/ratepay/'); ?>');">
                             </div>
                             <div class="ratepay-NintyPercentWidth ratepay-FloatLeft" style="color: black;"><?php echo $this->__('lang_choose_runtime'); ?></div>
                         </label>
@@ -194,7 +194,7 @@ $types = $this->getTypes();
                                   <option value="24" selected="selected"><?php echo $this->__('24 month'); ?></option>
                                   <option value="36" selected="selected"><?php echo $this->__('36 month'); ?></option>
                                 </select>
-                                <input name="" onclick="ratepayRateCalculatorAction('runtime', '<?php echo $code ?>', '<?php echo $this->getUrl("payone_core/ratepay/runtime", array('_secure' => true)); ?>');" value="<?php echo $this->__('lang_calculate_rate'); ?>" value="<?php echo $this->__('lang_calculate_rate'); ?>" type="button" id="<?php echo $code ?>_Input-buttonRuntime"  class="ratepay-Input-button2">
+                                <input name="" onclick="payoneRatepayRateCalculatorAction('runtime', '<?php echo $code ?>', '<?php echo $this->getUrl("payone_core/ratepay/runtime", array('_secure' => true)); ?>');" value="<?php echo $this->__('lang_calculate_rate'); ?>" value="<?php echo $this->__('lang_calculate_rate'); ?>" type="button" id="<?php echo $code ?>_Input-buttonRuntime"  class="ratepay-Input-button2">
                             </div>
                         </div>
                         <br class="ratepay-ClearFix" />
@@ -217,7 +217,7 @@ $types = $this->getTypes();
                     </div>
                 </div>
                 <script>
-                    switchRateOrRuntime('rate', '<?php echo $code ?>', '<?php echo $this->getSkinUrl(); ?>');
+                    payoneSwitchRateOrRuntime('rate', '<?php echo $code ?>', '<?php echo $this->getSkinUrl(); ?>');
                 </script>
 
                 <br class="ratepay-ClearFix" />
