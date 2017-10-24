@@ -16,7 +16,7 @@
  * @package         Payone_Core_Block
  * @subpackage      Payment
  * @copyright       Copyright (c) 2015 <kontakt@fatchip.de> - www.fatchip.com
- * @author          Robert Müller <robert.mueller@fatchip.de>
+ * @author          Robert Mï¿½ller <robert.mueller@fatchip.de>
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
  * @link            http://www.fatchip.com
  */
@@ -28,6 +28,70 @@ class Payone_Core_Block_Payment_Method_Info_Barzahlen extends Payone_Core_Block_
     {
         parent::_construct();
         $this->setTemplate('payone/core/payment/method/info/barzahlen.phtml');
+    }
+
+    /**
+     * @return string
+     */
+    public function getPayoneClearingBankAccountholder()
+    {
+        return $this->getInfo()->getPayoneClearingBankAccountholder();
+    }
+
+    /**
+     * @return string
+     */
+    public function getPayoneClearingBankCountry()
+    {
+        return $this->getInfo()->getPayoneClearingBankCountry();
+    }
+
+    /**
+     * @return string
+     */
+    public function getPayoneClearingBankAccount()
+    {
+        return $this->getInfo()->getPayoneClearingBankAccount();
+    }
+
+    /**
+     * @return string
+     */
+    public function getPayoneClearingBankCode()
+    {
+        return $this->getInfo()->getPayoneClearingBankCode();
+    }
+
+    /**
+     * @return string
+     */
+    public function getPayoneClearingBankIban()
+    {
+        return $this->getInfo()->getPayoneClearingBankIban();
+    }
+
+    /**
+     * @return string
+     */
+    public function getPayoneClearingBankBic()
+    {
+        return $this->getInfo()->getPayoneClearingBankBic();
+    }
+
+    /**
+     * @return string
+     */
+    public function getPayoneClearingBankCity()
+    {
+        return $this->getInfo()->getPayoneClearingBankCity();
+    }
+
+    /**
+     * @return string
+     */
+    public function getPayoneClearingBankName()
+    {
+        return $this->getInfo()->getPayoneClearingBankName();
     }
 
 }
