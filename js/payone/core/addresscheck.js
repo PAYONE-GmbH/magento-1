@@ -40,7 +40,7 @@ function wrapAddressNextStepEvents()
     }
 }
 
-function nextStepWithAddresscheckOutput(transport, address_type, origSaveMethod) 
+function nextStepWithAddresscheckOutput(transport, address_type, origSaveMethod)
 {
 
     if (transport && transport.responseText) {
@@ -48,19 +48,21 @@ function nextStepWithAddresscheckOutput(transport, address_type, origSaveMethod)
         if (response.error) {
             if (response.message.payone_address_invalid) {
                 response.message = response.message.payone_address_invalid;
-                    transport.responseText = '{"error":1,"message":"' + response.message + '"}';
+                transport.responseText = '{"error":1,"message":"' + response.message + '"}';
+                transport.responseJSON = {error:1, message:response.message};
             }
 
             if (response.message.payone_address_error) {
                 response.message = response.message.payone_address_error;
-                    transport.responseText = '{"error":1,"message":"' + response.message + '"}';
+                transport.responseText = '{"error":1,"message":"' + response.message + '"}';
+                transport.responseJSON = {error:1, message:response.message};
             }
 
             if (response.message.payone_address_corrected) {
                 handleCorrectedAddress(response.message.payone_address_corrected, address_type);
                 response.message = response.message.payone_address_corrected.customermessage;
 
-                    //transport.responseText = '{"error":1,"message":"' + response.message + '"}';
+                //transport.responseText = '{"error":1,"message":"' + response.message + '"}';
             }
         }
     }
