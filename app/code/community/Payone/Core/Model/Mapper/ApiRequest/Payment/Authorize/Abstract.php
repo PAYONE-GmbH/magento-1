@@ -539,6 +539,8 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
             if ($info->getPayoneSafeInvoiceType() == Payone_Api_Enum_FinancingType::BSV) {
                 // BillSAFE is a redirect payment method, Klarna not
                 $isRedirect = true;
+            } elseif ($info->getPayoneSafeInvoiceType() == Payone_Api_Enum_FinancingType::KLV) {
+                $payment->setApiVersion();
             }
         }
         //Wallet PayDirekt
