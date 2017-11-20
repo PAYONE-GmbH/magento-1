@@ -196,8 +196,9 @@ class Payone_Core_Checkout_Onepage_PaymentController extends Payone_Core_Control
      */
     protected function getOrderFromCheckoutSession(Mage_Checkout_Model_Session $session)
     {
+        $lastOrderId = $session->getData('last_order_id');
         $orderId = base64_decode($this->getRequest()->getParam('reference'));
-        $orderId = in_array($orderId, $session->getData('payone_pending_orders') ?: []) ? $orderId : null;
+        $orderId = in_array($orderId, $session->getData('payone_pending_orders') ?: []) ? $orderId : $lastOrderId;
         $order = $this->getFactory()->getModelSalesOrder();
         $order->load($orderId);
 

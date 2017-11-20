@@ -21,6 +21,7 @@
  */
 class Payone_Enum_ClearingType
 {
+    const AMAZONPAY = 'wlt';
     const DEBITPAYMENT = 'elv';
     const CREDITCARD_IFRAME = 'cc';
     const CREDITCARD = 'cc';

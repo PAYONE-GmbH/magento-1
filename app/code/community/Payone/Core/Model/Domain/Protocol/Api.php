@@ -35,8 +35,7 @@
  * @method setUpdatedAt(string $dateTime)
  * @method string getUpdatedAt()
  * @method int getId()
- * @method setId(int $id)
- * @method int getId()
+ * @method setId($id)
  * @method setRawResponse(string $rawResponse)
  * @method string getRawResponse()
  * @method setRawRequest(string $rawRequest)
@@ -49,7 +48,6 @@
  * @method setStoreId(int $storeid)
  * @method int getStoreId()
  * @method string getStacktrace()
- * @method setId(int $id)
  * @method setOrderId(int $orderid)
  * @method int getOrderId()
  */
@@ -121,11 +119,17 @@ class Payone_Core_Model_Domain_Protocol_Api extends Mage_Core_Model_Abstract
             $data = explode('|', $data);
         }
 
+        $previousKey = '';
         $preparedData = array();
         foreach ($data as $key => $value) {
             $valuearr = explode('=', $value, 2);
             if (isset($valuearr[1]) && $valuearr[1] !=='') {
                 $preparedData[$valuearr[0]] = $valuearr[1];
+                $previousKey = $valuearr[0];
+            } elseif (!empty($previousKey) && strpos($value, '=') === false) {
+                $preparedData[$previousKey] .= '|' . $valuearr[0];
+            } else {
+                $previousKey = '';
             }
         }
 
