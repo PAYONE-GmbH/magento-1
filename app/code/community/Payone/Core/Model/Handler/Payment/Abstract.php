@@ -128,12 +128,6 @@ abstract class Payone_Core_Model_Handler_Payment_Abstract
                 $sRedirectUrl = Mage::helper('payone_core/url')->getMagentoUrl('payone_core/iframe/show');
             }
 
-            // Magento is url-encoding the redirect url in the javascript since 1.9.3.0.......
-            // decoding the already url encoded url to make it work again
-            if (version_compare(Mage::getVersion(), '1.9.3', '>=')) {
-                $sRedirectUrl = urldecode($sRedirectUrl);
-            }
-
             $paymentMethod->setRedirectUrl($sRedirectUrl);
         }
 
