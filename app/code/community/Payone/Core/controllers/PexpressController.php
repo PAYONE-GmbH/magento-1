@@ -115,6 +115,18 @@ class Payone_Core_PexpressController extends Payone_Core_Controller_Abstract
         $this->_redirect('checkout/cart');
     }
 
+    public function errorAction()
+    {
+        $this->_getCheckoutSession()->addError($this->__('An error occured during the PayPal Express Checkout.'));
+        $this->_redirect('checkout/cart');
+    }
+
+    public function cancelAction()
+    {
+        $this->_getCheckoutSession()->addSuccess($this->__('The PayPal Express Checkout has been canceled.'));
+        $this->_redirect('checkout/cart');
+    }
+
     /**
      * Review order after returning from PayPal
      */
