@@ -57,4 +57,20 @@ class Payone_Core_Helper_Compatibility
         return $isActive;
     }
 
+    public function isExternalOrderReference($reference)
+    {
+        if ($this->isModuleEnabled('Shopgate_Framework')) {
+            // the reference is something like "SG123456789", but the shopgate_order_number does not include the "SG"
+            $reference               = substr($reference, 2);
+            $shopgateOrderCollection = Mage::getModel('shopgate/shopgate_order')
+                ->getCollection()
+                ->addFieldToFilter('shopgate_order_number', $reference);
+            if ($shopgateOrderCollection->getSize() > 0) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 }

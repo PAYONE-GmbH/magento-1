@@ -153,7 +153,10 @@ class Payone_Api_Request_Parameter_Authorization_PersonalData
      */
     public function setCustomerid($customerid)
     {
-        $this->customerid = $customerid;
+        // Quick and dirty hack to remove customerid from parameters
+        // in order to prevent payone platform from adding additional
+        // personal data.
+    //    $this->customerid = $customerid;
     }
 
     /**
@@ -161,7 +164,8 @@ class Payone_Api_Request_Parameter_Authorization_PersonalData
      */
     public function getCustomerid()
     {
-        return $this->customerid;
+         // See above
+    //    return $this->customerid;
     }
 
     public function setEmail($email)

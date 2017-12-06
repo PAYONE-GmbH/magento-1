@@ -130,7 +130,13 @@ $iCheckValidation = (int)$this->showCvcInput();
                            onchange="inputToNumbers(this)"
                            oninput="inputToNumbers(this)"/>
                     &nbsp;
-                    <a href="#" class="cvv-what-is-this"><?php echo $this->__('What is this?') ?></a>
+                    <a href="#" class="cvv-payone-what-is-this"><?php echo $this->__('What is this?') ?></a>
+
+                    <div class="tool-tip" id="payment-tool-tip-payone" style="display:none;">
+                        <div class="tool-tip-payone-content">
+                            <img src="<?php echo $this->getSkinUrl('images/payone/cvv.gif') ?>" alt="<?php echo Mage::helper('core')->quoteEscape($this->__('Card Verification Number Visual Reference')) ?>" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Card Verification Number Visual Reference')) ?>" />
+                        </div>
+                    </div>
                 </div>
             </li>
             <li>
@@ -181,7 +187,14 @@ $iCheckValidation = (int)$this->showCvcInput();
                     <div class="input-box" id="<?php echo $code ?>_cc_cid_div"
                         <label for="cvcInput"><?php echo $this->__('Card Verification Number') ?>&nbsp;<span class="required">*</span></label><br class="clear"/>
                         <span id="cardcvc2" class="inputIframe"></span>
-                        <a href="#" class="cvv-what-is-this"><?php echo $this->__('What is this?') ?></a>
+
+                        <a href="#" class="cvv-payone-what-is-this"><?php echo $this->__('What is this?') ?></a>
+
+                        <div class="tool-tip" id="payment-tool-tip-payone" style="display:none;">
+                            <div class="tool-tip-payone-content">
+                                <img src="<?php echo $this->getSkinUrl('images/payone/cvv.gif') ?>" alt="<?php echo Mage::helper('core')->quoteEscape($this->__('Card Verification Number Visual Reference')) ?>" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Card Verification Number Visual Reference')) ?>" />
+                            </div>
+                        </div>
                     </div>
                 </li>
             <li>
@@ -325,4 +338,21 @@ $iCheckValidation = (int)$this->showCvcInput();
             var iframes = payone.initHosted(fieldconfig, '<?php echo $code ?>_cc_type_select');
         </script>
     <?php } ?>
+    <script>
+        function toggleToolTipPayone(event)
+        {
+            var tooltip = $('payment-tool-tip-payone');
+            if(tooltip){
+                tooltip.toggle();
+            }
+            Event.stop(event);
+        }
+
+        $$('.cvv-payone-what-is-this').each(function(element){
+            Event.observe(element, 'click', toggleToolTipPayone);
+        });
+        $$('#payment-tool-tip-payone').each(function(element){
+            Event.observe(element, 'click', toggleToolTipPayone);
+        });
+    </script>
 </fieldset>

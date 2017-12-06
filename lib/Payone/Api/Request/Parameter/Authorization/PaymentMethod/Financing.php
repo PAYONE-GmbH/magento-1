@@ -55,6 +55,11 @@ class Payone_Api_Request_Parameter_Authorization_PaymentMethod_Financing
     protected $paydata = NULL;
 
     /**
+     * @var string
+     */
+    protected $api_version = NULL;
+
+    /**
      * @param string $financingtype
      */
     public function setFinancingtype($financingtype)
@@ -134,4 +139,18 @@ class Payone_Api_Request_Parameter_Authorization_PaymentMethod_Financing
     {
         return $this->paydata;
     }
+
+    public function setApiVersion()
+    {
+        $this->api_version = '3.10';
+    }
+
+    /**
+     * @return string
+     */
+    public function getApiVersion()
+    {
+        return $this->api_version;
+    }
+
 }

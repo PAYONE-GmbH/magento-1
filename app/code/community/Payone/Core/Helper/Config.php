@@ -136,7 +136,7 @@ class Payone_Core_Helper_Config
     {
         $configId = $order->getPayment()->getData('payone_config_payment_method_id');
         if (!$configId) {
-            $message = 'Payment method configuration with id "' . $configId . '" not found.';
+            $message = 'Payment method configuration for method "'. $order->getPayment()->getMethod() .'" not found.';
             throw new Payone_Core_Exception_PaymentMethodConfigNotFound($message);
         }
 
@@ -155,7 +155,7 @@ class Payone_Core_Helper_Config
     {
         $configId = $quote->getPayment()->getData('payone_config_payment_method_id');
         if (!$configId) {
-            $message = 'Payment method configuration with id "' . $configId . '" not found.';
+            $message = 'Payment method configuration for method "'. $quote->getPayment()->getMethod() .'" not found.';
             throw new Payone_Core_Exception_PaymentMethodConfigNotFound($message);
         }
 

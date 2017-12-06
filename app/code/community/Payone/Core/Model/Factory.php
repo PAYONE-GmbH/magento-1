@@ -118,6 +118,14 @@ class Payone_Core_Model_Factory
     }
 
     /**
+     * @return Payone_Core_Helper_Compatibility
+     */
+    public function helperCompatibility()
+    {
+        return Mage::helper('payone_core/compatibility');
+    }
+
+    /**
      *
      * @param Payone_Core_Helper_Data $helper
      */
