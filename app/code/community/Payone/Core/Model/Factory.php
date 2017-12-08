@@ -39,6 +39,9 @@ class Payone_Core_Model_Factory
     /** @var Payone_Config */
     protected $config = null;
 
+    /**
+     * Payone_Core_Model_Factory constructor.
+     */
     public function __construct()
     {
     }
@@ -58,7 +61,7 @@ class Payone_Core_Model_Factory
 
     /**
      *
-     * @return Payone_Core_Helper_Email
+     * @return Payone_Core_Helper_Email|Mage_Core_Helper_Abstract
      */
     public function helperEmail()
     {
@@ -66,7 +69,7 @@ class Payone_Core_Model_Factory
     }
 
     /**
-     * @return Payone_Core_Helper_Config
+     * @return Payone_Core_Helper_Config|Mage_Core_Helper_Abstract
      */
     public function helperConfig()
     {
@@ -74,7 +77,7 @@ class Payone_Core_Model_Factory
     }
 
     /**
-     * @return Payone_Core_Helper_Score
+     * @return Payone_Core_Helper_Score|Mage_Core_Helper_Abstract
      */
     public function helperScore()
     {
@@ -83,7 +86,7 @@ class Payone_Core_Model_Factory
 
     /**
      *
-     * @return Payone_Core_Helper_Registry
+     * @return Payone_Core_Helper_Registry|Mage_Core_Helper_Abstract
      */
     public function helperRegistry()
     {
@@ -91,7 +94,7 @@ class Payone_Core_Model_Factory
     }
     
     /**
-     * @return Payone_Core_Helper_Url
+     * @return Payone_Core_Helper_Url|Mage_Core_Helper_Abstract
      */
     public function helperUrl()
     {
@@ -99,7 +102,7 @@ class Payone_Core_Model_Factory
     }
 
     /**
-     * @return Payone_Core_Helper_Wizard
+     * @return Payone_Core_Helper_Wizard|Mage_Core_Helper_Abstract
      */
     public function helperWizard()
     {
@@ -107,7 +110,7 @@ class Payone_Core_Model_Factory
     }
 
     /**
-     * @return Mage_Tax_Helper_Data
+     * @return Mage_Tax_Helper_Data|Mage_Core_Helper_Abstract
      */
     public function helperMageTax()
     {
@@ -1129,7 +1132,7 @@ class Payone_Core_Model_Factory
     }
 
     /**
-     * @return Payone_Core_Model_Service_Protocol_Api_Export
+     * @return Payone_Core_Model_Service_Protocol_Api_Export|Mage_Core_Model_Abstract
      */
     public function getServiceProtocolApiExport()
     {
@@ -1137,7 +1140,7 @@ class Payone_Core_Model_Factory
     }
 
     /**
-     * @return Payone_Core_Model_Service_Protocol_TransactionStatus_Export
+     * @return Payone_Core_Model_Service_Protocol_TransactionStatus_Export|Mage_Core_Model_Abstract
      */
     public function getServiceProtocolTransactionStatusExport()
     {
@@ -1265,7 +1268,7 @@ class Payone_Core_Model_Factory
     }
 
     /**
-     * @return Mage_Core_Model_Store
+     * @return Mage_Core_Model_Store|Mage_Core_Model_Abstract
      */
     public function getModelCoreStore()
     {
@@ -1273,11 +1276,19 @@ class Payone_Core_Model_Factory
     }
 
     /**
-     * @return Mage_Tax_Model_Calculation
+     * @return Mage_Tax_Model_Calculation|Mage_Core_Model_Abstract
      */
     public function getSingletonTaxCalculation()
     {
         return Mage::getModel('tax/calculation');
+    }
+
+    /**
+     * @return Mage_Tax_Model_Config|Mage_Core_Model_Abstract
+     */
+    public function getSingletonTaxConfig()
+    {
+        return Mage::getModel('tax/config');
     }
 
     /**
@@ -1311,7 +1322,7 @@ class Payone_Core_Model_Factory
     }
 
     /**
-     * @return Mage_Payment_Model_Config
+     * @return Mage_Payment_Model_Config|Mage_Core_Model_Abstract
      */
     public function getSingletonPaymentConfig()
     {
@@ -1420,7 +1431,7 @@ class Payone_Core_Model_Factory
     }
 
     /**
-     * @return Mage_Cron_Model_Schedule
+     * @return Mage_Cron_Model_Schedule|Mage_Core_Model_Abstract
      */
     public function getModelCronSchedule()
     {
@@ -1428,7 +1439,7 @@ class Payone_Core_Model_Factory
     }
 
     /**
-     * @return Payone_Core_Model_System_Config_TransactionStatus
+     * @return Payone_Core_Model_System_Config_TransactionStatus|Mage_Core_Model_Abstract
      */
     public function getModelSystemConfigTransactionStatus()
     {
@@ -1436,7 +1447,7 @@ class Payone_Core_Model_Factory
     }
 
     /**
-     * @return Payone_Core_Model_System_Config_StatusTransaction
+     * @return Payone_Core_Model_System_Config_StatusTransaction|Mage_Core_Model_Abstract
      */
     public function getModelSystemConfigStatusTransaction()
     {
@@ -1444,7 +1455,7 @@ class Payone_Core_Model_Factory
     }
 
     /**
-     * @return Payone_Core_Model_System_Config_TranslationMonths
+     * @return Payone_Core_Model_System_Config_TranslationMonths|Mage_Core_Model_Abstract
      */
     public function getModelSystemConfigTranslationMonths()
     {
@@ -1452,7 +1463,7 @@ class Payone_Core_Model_Factory
     }
     
     /**
-     * @return Payone_Core_Model_System_Config_TranslationErrors
+     * @return Payone_Core_Model_System_Config_TranslationErrors|Mage_Core_Model_Abstract
      */
     public function getModelSystemConfigTranslationErrors()
     {
@@ -1460,7 +1471,7 @@ class Payone_Core_Model_Factory
     }
     
     /**
-     * @return Payone_Core_Model_System_Config_TranslationPlaceholders
+     * @return Payone_Core_Model_System_Config_TranslationPlaceholders|Mage_Core_Model_Abstract
      */
     public function getModelSystemConfigTranslationPlaceholders()
     {
@@ -1468,7 +1479,7 @@ class Payone_Core_Model_Factory
     }
 
     /**
-     * @return Payone_Core_Model_System_Config_ResponseType
+     * @return Payone_Core_Model_System_Config_ResponseType|Mage_Core_Model_Abstract
      */
     public function getModelSystemConfigResponseType()
     {
@@ -1480,12 +1491,13 @@ class Payone_Core_Model_Factory
      */
     public function getModelSystemConfigRequestType()
     {
+        /** @var Payone_Core_Model_System_Config_RequestType $model */
         $model = Mage::getSingleton('payone_core/system_config_requestType');
         return $model;
     }
 
     /**
-     * @return Payone_Core_Model_System_Config_PersonStatus
+     * @return Payone_Core_Model_System_Config_PersonStatus|Mage_Core_Model_Abstract
      */
     public function getModelSystemConfigPersonStatus()
     {
@@ -1493,7 +1505,7 @@ class Payone_Core_Model_Factory
     }
 
     /**
-     * @return Payone_Core_Model_System_Config_CreditScore
+     * @return Payone_Core_Model_System_Config_CreditScore|Mage_Core_Model_Abstract
      */
     public function getModelSystemConfigCreditScore()
     {
@@ -1501,7 +1513,7 @@ class Payone_Core_Model_Factory
     }
 
     /**
-     * @return Mage_Adminhtml_Model_System_Config_Source_Locale
+     * @return Mage_Adminhtml_Model_System_Config_Source_Locale|Mage_Core_Model_Abstract
      */
     public function getModelSystemConfigLocale()
     {
@@ -1510,7 +1522,7 @@ class Payone_Core_Model_Factory
 
     
     /**
-     * @return Mage_Adminhtml_Model_System_Config_Source_Order_Status
+     * @return Mage_Adminhtml_Model_System_Config_Source_Order_Status|Mage_Core_Model_Abstract
      */
     public function getModelSystemConfigOrderStatus()
     {
@@ -1518,7 +1530,7 @@ class Payone_Core_Model_Factory
     }
 
     /**
-     * @return Mage_Adminhtml_Model_System_Config_Source_Country_Full
+     * @return Mage_Adminhtml_Model_System_Config_Source_Country_Full|Mage_Core_Model_Abstract
      */
     public function getModelSystemConfigCountryFull()
     {
@@ -1526,7 +1538,7 @@ class Payone_Core_Model_Factory
     }
 
     /**
-     * @return Mage_Adminhtml_Model_System_Config_Source_Shipping_Allmethods
+     * @return Mage_Adminhtml_Model_System_Config_Source_Shipping_Allmethods|Mage_Core_Model_Abstract
      */
     public function getModelSystemConfigShippingMethod()
     {
@@ -1534,7 +1546,7 @@ class Payone_Core_Model_Factory
     }
 
     /**
-     * @return Payone_Core_Model_System_Config_ClearingType
+     * @return Payone_Core_Model_System_Config_ClearingType|Mage_Core_Model_Abstract
      */
     public function getModelSystemConfigClearingType()
     {
@@ -1542,7 +1554,7 @@ class Payone_Core_Model_Factory
     }
     
     /**
-     * @return Payone_Core_Model_System_Config_PaymentFeeType
+     * @return Payone_Core_Model_System_Config_PaymentFeeType|Mage_Core_Model_Abstract
      */
     public function getModelSystemConfigPaymentFeeType()
     {
@@ -1550,7 +1562,7 @@ class Payone_Core_Model_Factory
     }
 
     /**
-     * @return Payone_Core_Model_System_Config_Mode
+     * @return Payone_Core_Model_System_Config_Mode|Mage_Core_Model_Abstract
      */
     public function getModelSystemConfigMode()
     {
@@ -1558,7 +1570,7 @@ class Payone_Core_Model_Factory
     }
 
     /**
-     * @return Payone_Core_Model_System_Config_ReminderLevel
+     * @return Payone_Core_Model_System_Config_ReminderLevel|Mage_Core_Model_Abstract
      */
     public function getModelSystemConfigReminderLevel()
     {
@@ -1566,7 +1578,7 @@ class Payone_Core_Model_Factory
     }
 
     /**
-     * @return Payone_Core_Model_System_Config_Status
+     * @return Payone_Core_Model_System_Config_Status|Mage_Core_Model_Abstract
      */
     public function getModelSystemConfigStatus()
     {
@@ -1574,7 +1586,7 @@ class Payone_Core_Model_Factory
     }
 
     /**
-     * @return Payone_Core_Model_System_Config_PaymentMethodType
+     * @return Payone_Core_Model_System_Config_PaymentMethodType|Mage_Core_Model_Abstract
      */
     public function getModelSystemConfigPaymentMethodType()
     {
@@ -1582,7 +1594,7 @@ class Payone_Core_Model_Factory
     }
 
     /**
-     * @return Payone_Core_Model_System_Config_CreditCardType
+     * @return Payone_Core_Model_System_Config_CreditCardType|Mage_Core_Model_Abstract
      */
     public function getModelSystemConfigCreditCardType()
     {
@@ -1590,7 +1602,7 @@ class Payone_Core_Model_Factory
     }
 
     /**
-     * @return Payone_Core_Model_System_Config_CreditCardType
+     * @return Payone_Core_Model_System_Config_CreditCardType|Mage_Core_Model_Abstract
      */
     public function getModelSystemConfigHideCvc()
     {
@@ -1598,7 +1610,7 @@ class Payone_Core_Model_Factory
     }
 
     /**
-     * @return Payone_Core_Model_System_Config_OnlinebanktransferType
+     * @return Payone_Core_Model_System_Config_OnlinebanktransferType|Mage_Core_Model_Abstract
      */
     public function getModelSystemConfigOnlinebanktransferType()
     {
@@ -1606,7 +1618,7 @@ class Payone_Core_Model_Factory
     }
     
     /**
-     * @return Payone_Core_Model_System_Config_PayolutionType
+     * @return Payone_Core_Model_System_Config_PayolutionType|Mage_Core_Model_Abstract
      */
     public function getModelSystemConfigPayolutionType()
     {
@@ -1614,7 +1626,7 @@ class Payone_Core_Model_Factory
     }
 
     /**
-     * @return Payone_Core_Model_System_Config_WalletType
+     * @return Payone_Core_Model_System_Config_WalletType|Mage_Core_Model_Abstract
      */
     public function getModelSystemConfigWalletType()
     {
@@ -1622,7 +1634,7 @@ class Payone_Core_Model_Factory
     }
 
     /**
-     * @return Payone_Core_Model_System_Config_RatepayType
+     * @return Payone_Core_Model_System_Config_RatepayType|Mage_Core_Model_Abstract
      */
     public function getModelSystemConfigRatePayType()
     {
@@ -1630,7 +1642,7 @@ class Payone_Core_Model_Factory
     }
 
     /**
-     * @return Payone_Core_Model_System_Config_SafeInvoiceType
+     * @return Payone_Core_Model_System_Config_SafeInvoiceType|Mage_Core_Model_Abstract
      */
     public function getModelSystemConfigSafeInvoiceType()
     {
@@ -1638,7 +1650,7 @@ class Payone_Core_Model_Factory
     }
 
     /**
-     * @return Payone_Core_Model_System_Config_AddressCheckType
+     * @return Payone_Core_Model_System_Config_AddressCheckType|Mage_Core_Model_Abstract
      */
     public function getModelSystemConfigAddressCheckType()
     {
@@ -1646,7 +1658,7 @@ class Payone_Core_Model_Factory
     }
 
     /**
-     * @return Payone_Core_Model_System_Config_AuthorizeMethod
+     * @return Payone_Core_Model_System_Config_AuthorizeMethod|Mage_Core_Model_Abstract
      */
     public function getModelSystemConfigAuthorizeMethod()
     {
@@ -1654,7 +1666,7 @@ class Payone_Core_Model_Factory
     }
 
     /**
-     * @return Payone_Core_Model_System_Config_AvsResult
+     * @return Payone_Core_Model_System_Config_AvsResult|Mage_Core_Model_Abstract
      */
     public function getModelSystemConfigAvsResult()
     {
@@ -1662,7 +1674,7 @@ class Payone_Core_Model_Factory
     }
 
     /**
-     * @return Payone_Core_Model_System_Config_CreditratingChecktype
+     * @return Payone_Core_Model_System_Config_CreditratingChecktype|Mage_Core_Model_Abstract
      */
     public function getModelSystemConfigCreditratingChecktype()
     {
@@ -1670,7 +1682,7 @@ class Payone_Core_Model_Factory
     }
 
     /**
-     * @return Payone_Core_Model_System_Config_PaymentMethodCode
+     * @return Payone_Core_Model_System_Config_PaymentMethodCode|Mage_Core_Model_Abstract
      */
     public function getModelSystemConfigPaymentMethodCode()
     {
@@ -1678,7 +1690,7 @@ class Payone_Core_Model_Factory
     }
 
     /**
-     * @return Payone_Core_Model_System_Config_MethodType
+     * @return Payone_Core_Model_System_Config_MethodType|Mage_Core_Model_Abstract
      */
     public function getModelSystemConfigMethodType()
     {
@@ -1686,7 +1698,7 @@ class Payone_Core_Model_Factory
     }
 
     /**
-     * @return Payone_Core_Model_System_Config_KlarnaCountry
+     * @return Payone_Core_Model_System_Config_KlarnaCountry|Mage_Core_Model_Abstract
      */
     public function getModelSystemConfigKlarnaCountry()
     {
@@ -1694,7 +1706,7 @@ class Payone_Core_Model_Factory
     }
 
     /**
-     * @return Mage_Core_Model_Resource_Transaction
+     * @return Mage_Core_Model_Resource_Transaction|Mage_Core_Model_Abstract
      */
     public function getModelResourceTransaction()
     {
@@ -1702,7 +1714,7 @@ class Payone_Core_Model_Factory
     }
 
     /**
-     * @return Mage_Core_Model_Email_Template
+     * @return Mage_Core_Model_Email_Template|Mage_Core_Model_Abstract
      */
     public function getModelEmailTemplate()
     {
@@ -1710,7 +1722,7 @@ class Payone_Core_Model_Factory
     }
 
     /**
-     * @return Mage_Eav_Model_Entity_Type
+     * @return Mage_Eav_Model_Entity_Type|Mage_Core_Model_Abstract
      */
     public function getModelEavEntityType()
     {

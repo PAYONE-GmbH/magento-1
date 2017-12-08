@@ -55,11 +55,9 @@ class Payone_Core_Model_Service_InitializePayment
 
         if ($config->isRequestAuthorization()) {
             $service = $this->getFactory()->getServicePaymentAuthorize($config);
-        }
-        elseif ($config->isRequestPreauthorization()) {
+        } elseif ($config->isRequestPreauthorization()) {
             $service = $this->getFactory()->getServicePaymentPreauthorize($config);
-        }
-        else {
+        } else {
             $msg = 'Invalid request type configured: "' . $config->getRequestType() . '"';
             throw new Payone_Core_Exception_InvalidRequestType($msg);
         }

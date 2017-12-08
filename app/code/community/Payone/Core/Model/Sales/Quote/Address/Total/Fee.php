@@ -71,25 +71,43 @@ class Payone_Core_Model_Sales_Quote_Address_Total_Fee
 
         /*
          * This does not work here:
+         *
          * $quote->getSubtotal();
          * $quote->getGrandTotal();
          * 
-         * because this method is called during the calculation process of those methods and thus the value is not available then
+         * This is due to this method being called during the calculation
+         * process of those methods and thus their values are not available.
          */
         $aTotals = $quote->getTotals();
         $dSubTotal = 0;
-        if(isset($aTotals['subtotal'])) {
-            $dSubTotal = $aTotals['subtotal']->getValue();
+        if (isset($aTotals['subtotal'])) {
+            $dSubTotal = $aTotals['subtotal']->getValueExclTax();
+            if ($dSubTotal === null) {
+                $dSubTotal = $aTotals['subtotal']->getValue();
+            }
         }
         
         $paymentFee = $feeConfig['fee_config'];
-        if(isset($feeConfig['fee_type'][0]) && $feeConfig['fee_type'][0] == 'percent') {
-            $paymentFee = $dSubTotal * $paymentFee / 100;
+        if (isset($feeConfig['fee_type'][0]) && $feeConfig['fee_type'][0] == 'percent') {
+            $paymentFee = $dSubTotal * $paymentFee / 100; // subtotal is excl tax, so fee is too
+            error_log('Netto: '.$paymentFee);
+            if (Mage::helper('tax')->shippingPriceIncludesTax(Mage::app()->getStore())) {
+                $paymentFee = $this->_getPaymentFeeInclTax($quote, $paymentFee);
+                error_log('Brutto: '.$paymentFee);
+            }
         }
 
         $this->_setNewPayonePaymentAmount($quote, $address, $paymentFee);
 
         return parent::collect($address);
+    }
+
+    protected function _getPaymentFeeInclTax($quote, $paymentFee)
+    {
+        $dTaxRate = $this->getFactory()->helper()->getShippingTaxRate($quote);
+        $dTaxAmount = Mage::helper('tax')->getCalculator()->calcTaxAmount($paymentFee, $dTaxRate, false, false);
+        $paymentFee += $quote->getStore()->roundPrice($dTaxAmount);
+        return $paymentFee;
     }
     
     protected function _setNewPayonePaymentAmount($oQuote, $oAddress, $dPaymentFee) 
@@ -97,7 +115,7 @@ class Payone_Core_Model_Sales_Quote_Address_Total_Fee
         $dOldShippingAmount = $oAddress->getBaseShippingAmount();
         $dNewShippingAmount = $dOldShippingAmount + $dPaymentFee;
 
-        $oAddress->setData('payone_payment_fee', $dPaymentFee);
+        $oAddress->setData('payone_payment_fee', $oQuote->getStore()->roundPrice($dPaymentFee));
         
         $oAddress->setBaseShippingAmount($dNewShippingAmount);
         $oAddress->setShippingAmount(

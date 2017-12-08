@@ -1,0 +1,149 @@
+<?php
+/**
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the GNU General Public License (GPL 3)
+ * that is bundled with this package in the file LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Payone_Core to newer
+ * versions in the future. If you wish to customize Payone_Core for your
+ * needs please refer to http://www.payone.de for more information.
+ *
+ * @category        Payone
+ * @package         design_frontend_base_default
+ * @subpackage      template
+ * @copyright       Copyright (c) 2017 <kontakt@fatchip.de> - www.fatchip.de
+ * @author          FATCHIP GmbH <kontakt@fatchip.de>
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.fatchip.de
+ */
+?>
+<?php
+/** @var \Payone_Core_Block_Amazon_Pay_Checkout $this */
+/** @var \Mage_Core_Helper_Data $core */
+$core = Mage::helper('core');
+/** @var \Payone_Core_Model_Config_Payment_Method $config */
+$config = $this->getData('config');
+/** @var \Mage_Sales_Model_Quote $quote */
+$quote = $this->getData('quote');
+/** @var \Payone_Core_Model_Session $session */
+$session = Mage::getSingleton('payone_core/session');
+/** @var \Payone_Core_Helper_Url $helper */
+$helper = Mage::helper('payone_core/url');
+/** @var string $progressAction*/
+$progressAction = Mage::getUrl('*/*/progress', ['_nosid' => true, '_forced_secure' => true]);
+/** @var string $cartAction */
+$cartAction = $helper->getMagentoUrl('checkout/cart');
+?>
+<div class="page-title"><h1><?php echo $this->__('Checkout with Amazon Pay'); ?></h1></div>
+<ol id="checkoutSteps">
+    <li class="section allow" onclick="window.location.href = '<?php echo $cartAction; ?>'; return false;">
+        <div class="step-title">
+            <span class="number">1</span>
+            <h2><?php echo $this->__('Review shopping cart'); ?></h2>
+            <a href="#"><?php echo $this->__('View'); ?></a>
+        </div>
+    </li>
+    <li class="section allow active" id="checkoutStepInit">
+        <div class="step-title">
+            <span class="number">2</span>
+            <h2><?php echo $this->__('Shipping address & payment'); ?></h2>
+            <a href="#"><?php echo $this->__('Edit'); ?></a>
+        </div>
+        <div class="step" id="checkoutStepInitContent">
+            <div>
+                <label id="amazonWidgetsNotice">
+                    <?php echo $this->__('Notice: Please verify your payment information or choose another method.') ?>
+                    <span></span>
+                </label>
+            </div>
+            <div id="addressBookWidgetWrap">
+                <div id="addressBookWidgetCover"></div>
+                <div id="addressBookWidgetDiv"></div>
+            </div>
+            <div id="walletWidgetWrap">
+                <div id="walletWidgetCover"></div>
+                <div id="walletWidgetDiv"></div>
+            </div>
+        </div>
+        <div class="buttons-set">
+            <button title="<?php echo $this->__('Continue'); ?>" type="button"
+                    class="button amz" id="confirmSelection" disabled="disabled">
+                <?php echo $this->__('Continue'); ?>
+            </button>
+            <span class="please-wait">
+                <img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>"
+                     alt="<?php echo $core->quoteEscape($this->__('Loading next step...')) ?>"
+                     title="<?php echo $core->quoteEscape($this->__('Loading next step...')) ?>"
+                     class="v-middle"/> <?php echo $this->__('Loading next step...') ?>
+            </span>
+        </div>
+    </li>
+    <li class="section" id="checkoutStepFinish">
+        <div class="step-title">
+            <span class="number">3</span>
+            <h2><?php echo $this->__('Shipping method & summary'); ?></h2>
+            <a href="#"><?php echo $this->__('Edit'); ?></a>
+        </div>
+        <div class="step" id="checkoutStepFinishContent">
+            <div class="fadeOut">
+                <div class="fadeOutContent">
+                    <span class="please-wait">
+                        <img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>"
+                             alt="<?php echo $core->quoteEscape($this->__('Please wait...')) ?>"
+                             title="<?php echo $core->quoteEscape($this->__('Please wait...')) ?>"
+                             class="v-middle"/> <?php echo $this->__('Please wait...') ?>
+                    </span>
+                </div>
+            </div>
+            <form id="chooseMethod">
+                <label id="shippingMethodsNotice">
+                    <?php echo $this->__('Notice: The shipping method cannot be changed at this time.') ?>
+                </label>
+                <div id="shippingMethodsDiv"></div>
+                <br/>
+            </form>
+            <div id="orderReviewDiv"></div>
+        </div>
+        <div class="buttons-set">
+            <button title="<?php echo $this->__('Place order'); ?>" type="button"
+                    class="button amz" id="placeOrder" disabled="disabled">
+                <?php echo $this->__('Place order'); ?>
+            </button>
+            <span class="please-wait">
+                <img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>"
+                     alt="<?php echo $core->quoteEscape($this->__('Submitting order information...')) ?>"
+                     title="<?php echo $core->quoteEscape($this->__('Submitting order information...')) ?>"
+                     class="v-middle"/> <?php echo $this->__('Submitting order information...') ?>
+            </span>
+        </div>
+    </li>
+</ol>
+<!--suppress JSUnusedLocalSymbols, JSUnusedAssignment -->
+<script>
+    var PayoneCheckoutParams = {
+        expiredAlert: '<?php echo $this->__(
+            'Your session has expired. Please sign in ' .
+            'again by clicking on the Amazon Pay Button.'
+        ); ?>',
+        <?php if ($session->getData('amazon_lock_order')) : ?>
+        amazonOrderReferenceId: '<?php echo $session->getData('amazon_reference_id'); ?>',
+        <?php endif; ?>
+        amazonClientId: '<?php echo $config->getAmzClientId(); ?>',
+        amazonSellerId: '<?php echo $config->getAmzSellerId(); ?>',
+        progressAction: '<?php echo $progressAction; ?>',
+        cartAction: '<?php echo $cartAction; ?>'
+    };
+    var quoteBaseGrandTotal = <?php echo $quote->getBaseGrandTotal(); ?>;
+    var checkQuoteBaseGrandTotal = quoteBaseGrandTotal;
+    var lastPrice;
+</script>
+<!-- Load script Widgets.js from Amazon -->
+<!-- URL changes to https://static-eu.payments-amazon.com/OffAmazonPayments/eur/lpa/js/Widgets.js when mode is live -->
+<?php $useSandbox = $config->getMode() === \Payone_Enum_Mode::TEST ? '/sandbox' : '' ?>
+<script async="async"
+        src='<?php echo "https://static-eu.payments-amazon.com/OffAmazonPayments/eur$useSandbox/lpa/js/Widgets.js" ?>'
+></script>

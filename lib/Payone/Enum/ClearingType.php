@@ -21,11 +21,13 @@
  */
 class Payone_Enum_ClearingType
 {
+    const AMAZONPAY = 'wlt';
     const DEBITPAYMENT = 'elv';
     const CREDITCARD_IFRAME = 'cc';
     const CREDITCARD = 'cc';
     const ADVANCEPAYMENT = 'vor';
     const INVOICE = 'rec';
+    const ONLINEBANKTRANSFERBCT = 'sb';
     const ONLINEBANKTRANSFERPFF = 'sb';
     const ONLINEBANKTRANSFERP24 = 'sb';
     const ONLINEBANKTRANSFERPFC = 'sb';
@@ -46,4 +48,5 @@ class Payone_Enum_ClearingType
     const PAYOLUTIONINSTALLMENT = 'fnc';
     const PAYOLUTION = 'fnc';
     const FINANCING = 'fnc';
+    const PAYMENTGUARANTEEINVOICE = 'rec';
 }

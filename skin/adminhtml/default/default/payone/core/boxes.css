@@ -20,6 +20,11 @@
  * @link            http://www.noovias.com
  */
 
+input.input-text:read-only,
+textarea:read-only {
+    background: #eee !important;
+}
+
 /* menu */
 .menu-payone {
     background: url(images/favicon.png) no-repeat scroll 0 5px;
@@ -186,4 +191,8 @@ tr.payone-odd {
 
 button {
     -webkit-border-fit: border !important;
+}
+
+#payone_payment_template_amazon_pay_amz_return_url + p.note {
+    margin-top: 6px;
 }

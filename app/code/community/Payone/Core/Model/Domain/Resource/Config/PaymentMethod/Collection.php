@@ -42,7 +42,7 @@ class Payone_Core_Model_Domain_Resource_Config_PaymentMethod_Collection
     public function _construct()
     {
         parent::_construct();
-        $this->_init('payone_core/domain_config_paymentMethod');
+        $this->_init('payone_core/domain_config_paymentMethod', 'payone_core/config_paymentMethod');
     }
 
     public function addItem(Varien_Object $item)

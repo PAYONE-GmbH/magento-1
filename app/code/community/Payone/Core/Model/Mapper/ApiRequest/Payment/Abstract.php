@@ -246,7 +246,9 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Abstract
         return $item;
     }
 
-
+    /**
+     * @return float
+     */
     protected function getShippingTaxRate()
     {
         $order = $this->getOrder();
@@ -266,16 +268,15 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Abstract
         $customerTaxClassId = $quote->getCustomerTaxClassId();
         $request = $taxCalculationModel->getRateRequest($shippingAddress, $billingAddress, $customerTaxClassId, $store);
 
-        $shippingTaxClass = $this->helperConfig()->getShippingTaxClassId($storeId);
+        $taxConfig = $factory->getSingletonTaxConfig();
+        $shippingTaxClass = $taxConfig->getShippingTaxClass($storeId);
         if ($shippingTaxClass) {
             $request->setProductClassId($shippingTaxClass);
             return $taxCalculationModel->getRate($request);
-        }
-        else {
+        } else {
             return 0.0;
         }
     }
-
 
     /**
      * Returns the invoice appendix and substitutes the placeholders, as far as possible

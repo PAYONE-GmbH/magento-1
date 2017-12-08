@@ -338,7 +338,7 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
 
         // Multiple Ips could be included, we only send the last one.
         $remoteIps = explode(',', $remoteIp);
-        $ip = array_shift($remoteIps);
+        $ip = array_pop($remoteIps);
         // remove leading Whitespace for Muliple IPs e.g. "0.0.0.0, 1.1.1.1"
         $ip = trim($ip);
         return $ip;
@@ -495,8 +495,9 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
                   $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferIdl ||
                   $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferPostFinanceEfinance ||
                   $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferPostFinanceCard ||
-                  $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferP24)
-        {
+                  $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferP24 ||
+                  $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferBct
+        ) {
             $country = $this->getOrder()->getBillingAddress()->getCountry();
             $payoneOnlinebanktransferType = $info->getPayoneOnlinebanktransferType();
             $iban = $info->getPayoneSepaIban();
@@ -735,12 +736,79 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
 
                 $payment->setTelephonenumber($telephone);
             }
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_AmazonPay) {
+            /** @var \Payone_Core_Model_Session $session */
+            $session = Mage::getSingleton('payone_core/session');
+            /** @var array $paydata */
+            $paydata = $session->getData('amazon_add_paydata');
+            /** @var \Payone_Core_Model_Config_Payment_Method $config */
+            $config = $paymentMethod->getConfig();
+
+            switch ($config->getAmzSyncMode()) {
+                case Payone_Core_Model_System_Config_AmazonSyncMode::ASYNCHRONOUS_ON_FAILURE:
+                    if ($session->getData('amazon_retry_async') === true) {
+                        $paydata['amazon_timeout'] = 1440;
+                    } else {
+                        $session->setData('amazon_retry_async', true);
+                        $paydata['amazon_timeout'] = 0;
+                    }
+                    break;
+                case Payone_Core_Model_System_Config_AmazonSyncMode::ALWAYS_ASYNCHRONOUS:
+                    $paydata['amazon_timeout'] = 1440;
+                    break;
+                case Payone_Core_Model_System_Config_AmazonSyncMode::ALWAYS_SYNCHRONOUS:
+                    $paydata['amazon_timeout'] = 0;
+                    $paydata['cancel_on_timeout'] = 'yes';
+                    break;
+            }
+
+            // Comment out to test 'InvalidPaymentMethod' scenario with the Payone API
+            /*
+            $paydata['authorization_note_for_testing'] = '{
+                "SandboxSimulation": {
+                    "State": "Declined",
+                    "ReasonCode": "InvalidPaymentMethod",
+                    "SoftDecline": "false"
+                }
+            }';
+            */
+
+            $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_AmazonPay([
+                'successurl' => $this->helperUrl()->getSuccessUrl(),
+                'errorurl'   => $this->helperUrl()->getErrorUrl(),
+            ], $paydata);
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_PaymentGuaranteeInvoice) {
+            $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_PaymentGuaranteeInvoice();
+            $payData = new Payone_Api_Request_Parameter_Paydata_Paydata();
+            if ((bool)$info->getPayoneIsb2b() === true) {
+                $payData->addItem(
+                    new Payone_Api_Request_Parameter_Paydata_DataItem(
+                        ['key' => 'b2b', 'data' => 'yes']
+                    )
+                );
+                $payData->addItem(
+                    new Payone_Api_Request_Parameter_Paydata_DataItem(
+                        ['key' => 'company_trade_registry_number', 'data' => $info->getPayoneTradeRegistryNumber()]
+                    )
+                );
+            } else {
+                $birthdayDate = $info->getPayoneCustomerDob();
+                if (empty($birthdayDate)) {
+                    $birthdayDate = $this->getOrder()->getCustomerDob();
+                }
+                if ($birthdayDate) {
+                    $payment->setBirthday($this->formatBirthday($birthdayDate));
+                }
+            }
+            $payment->setPaydata($payData);
+            $payment->setClearingsubtype();
         }
 
         if ($isRedirect === true) {
-            $successurl = $this->helperUrl()->getSuccessUrl();
-            $errorurl = $this->helperUrl()->getErrorUrl();
-            $backurl = $this->helperUrl()->getBackUrl();
+            $encodedOrderId = base64_encode($this->getOrder()->getEntityId());
+            $successurl = $this->helperUrl()->getSuccessUrl() . "reference/{$encodedOrderId}/";
+            $errorurl = $this->helperUrl()->getErrorUrl() . "reference/{$encodedOrderId}/";
+            $backurl = $this->helperUrl()->getBackUrl() . "reference/{$encodedOrderId}/";
 
             $payment->setSuccessurl($successurl);
             $payment->setErrorurl($errorurl);
@@ -774,13 +842,13 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
     /**
      * @return bool|string
      */
-    protected function _getRatePayType() 
+    protected function _getRatePayType()
     {
         $sType = false;
 
         $aPostPayment = Mage::app()->getRequest()->getPost('payment');
 
-        if($aPostPayment && array_key_exists('payone_ratepay_type', $aPostPayment)) {
+        if ($aPostPayment && array_key_exists('payone_ratepay_type', $aPostPayment)) {
             $sType = $aPostPayment['payone_ratepay_type'];
         } else {
             $sType = Payone_Api_Enum_RatepayType::RPV;
@@ -799,78 +867,60 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
 
         if ($paymentMethod instanceof Payone_Core_Model_Payment_Method_CashOnDelivery) {
             $clearingType = Payone_Enum_ClearingType::CASHONDELIVERY;
-        }
-        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Creditcard) {
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Creditcard) {
             $clearingType = Payone_Enum_ClearingType::CREDITCARD;
-        }
-        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_CreditcardIframe) {
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_CreditcardIframe) {
             $clearingType = Payone_Enum_ClearingType::CREDITCARD_IFRAME;
-        }
-        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransfer) {
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransfer) {
             $clearingType = Payone_Enum_ClearingType::ONLINEBANKTRANSFER;
-        }
-        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferSofortueberweisung) {
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferSofortueberweisung) {
             $clearingType = Payone_Enum_ClearingType::ONLINEBANKTRANSFERSOFORT;
-        }
-        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferIdl) {
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferIdl) {
             $clearingType = Payone_Enum_ClearingType::ONLINEBANKTRANSFERIDL;
-        }
-        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferPostFinanceCard) {
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferPostFinanceCard) {
             $clearingType = Payone_Enum_ClearingType::ONLINEBANKTRANSFERPFC;
-        }
-        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferp24) {
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferp24) {
             $clearingType = Payone_Enum_ClearingType::ONLINEBANKTRANSFERP24;
-        }
-        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferPostFinanceEfinance) {
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferPostFinanceEfinance) {
             $clearingType = Payone_Enum_ClearingType::ONLINEBANKTRANSFERPFF;
-        }
-        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferGiropay) {
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferGiropay) {
             $clearingType = Payone_Enum_ClearingType::ONLINEBANKTRANSFERGIROPAY;
-        }
-        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferEps) {
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferEps) {
             $clearingType = Payone_Enum_ClearingType::ONLINEBANKTRANSFEREPS;
-        }
-        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Wallet) {
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferBct) {
+            $clearingType = Payone_Enum_ClearingType::ONLINEBANKTRANSFERBCT;
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Wallet) {
             $clearingType = Payone_Enum_ClearingType::WALLET;
-        }
-        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_WalletPaydirekt) {
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_WalletPaydirekt) {
             $clearingType = Payone_Enum_ClearingType::WALLETPAYDIREKT;
-        }
-        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_WalletPaypalExpress) {
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_WalletPaypalExpress) {
             $clearingType = Payone_Enum_ClearingType::WALLETPAYPALEXPRESS;
-        }
-        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_WalletAliPay) {
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_WalletAliPay) {
             $clearingType = Payone_Enum_ClearingType::WALLETALIPAY;
-        }
-        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Invoice) {
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Invoice) {
             $clearingType = Payone_Enum_ClearingType::INVOICE;
-        }
-        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_AdvancePayment) {
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_AdvancePayment) {
             $clearingType = Payone_Enum_ClearingType::ADVANCEPAYMENT;
-        }
-        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_DebitPayment) {
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_DebitPayment) {
             $clearingType = Payone_Enum_ClearingType::DEBITPAYMENT;
-        }
-        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_SafeInvoice) {
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_SafeInvoice) {
             $clearingType = Payone_Enum_ClearingType::FINANCING;
-        }
-        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Barzahlen) {
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Barzahlen) {
             $clearingType = Payone_Enum_ClearingType::BARZAHLEN;
-        }
-        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Ratepay) {
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Ratepay) {
             $clearingType = Payone_Enum_ClearingType::RATEPAY;
-        }
-        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_PayolutionInvoicing) {
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_PayolutionInvoicing) {
             $clearingType = Payone_Enum_ClearingType::PAYOLUTIONINVOICING;
-        }
-        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_PayolutionDebit) {
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_PayolutionDebit) {
             $clearingType = Payone_Enum_ClearingType::PAYOLUTIONDEBIT;
-        }
-        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_PayolutionInstallment) {
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_PayolutionInstallment) {
             $clearingType = Payone_Enum_ClearingType::PAYOLUTIONINSTALLMENT;
-        }
-        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Payolution) {
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Payolution) {
             $clearingType = Payone_Enum_ClearingType::PAYOLUTION;
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_AmazonPay) {
+            $clearingType = Payone_Enum_ClearingType::AMAZONPAY;
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_PaymentGuaranteeInvoice) {
+            $clearingType = Payone_Enum_ClearingType::PAYMENTGUARANTEEINVOICE;
         }
 
         return $clearingType;

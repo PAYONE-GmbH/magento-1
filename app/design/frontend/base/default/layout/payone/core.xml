@@ -22,6 +22,23 @@
  */
 -->
 <layout>
+    <payone_core_amazonpay_checkout>
+        <remove name="left"/>
+        <remove name="right"/>
+        <remove name="payone.amazon.partner.top_cart.shortcut"/>
+        <remove name="payone.amazon.partner.cart_sidebar.shortcut"/>
+        <reference name="root">
+            <action method="setTemplate"><template>page/1column.phtml</template></action>
+        </reference>
+        <reference name="head">
+            <action method="addJs"><script>payone/core/amazonpay.js</script></action>
+            <action method="addCss"><name>payone/core/amazonpay.css</name></action>
+        </reference>
+        <reference name="content">
+            <block type="payone_core/amazon_pay_checkout" name="amazon.pay.checkout" template="payone/core/amazon/pay/checkout.phtml"/>
+        </reference>
+    </payone_core_amazonpay_checkout>
+
     <payone_core_pexpress_review translate="label">
         <label>Payone PayPal Express Order Review Form</label>
         <remove name="right"/>
@@ -51,27 +68,51 @@
     </payone_core_pexpress_review>
 
     <checkout_cart_index>
+        <reference name="head">
+            <block type="core/template" name="payone_core_checkout_cart_helper" template="payone/core/checkout/cart/helper.phtml" />
+        </reference>
+        <reference name="checkout.cart.top_methods">
+            <block type="payone_core/amazon_pay_shortcut" name="payone.checkout.cart.methods.amazon_pay.top" before="-" template="payone/core/amazon/pay/shortcut.phtml">
+                <action method="setIsQuoteAllowed"><value>1</value></action>
+                <action method="setShowOrPosition"><value>after</value></action>
+            </block>
+        </reference>
         <reference name="checkout.cart.top_methods">
             <block type="payone_core/paypal_express_shortcut" name="payone.checkout.cart.methods.paypal_express.top" before="-" template="payone/core/paypal/express/shortcut.phtml">
                 <action method="setIsQuoteAllowed"><value>1</value></action>
                 <action method="setShowOrPosition"><value>after</value></action>
             </block>
         </reference>
-
+        <reference name="checkout.cart.methods">
+            <block type="payone_core/amazon_pay_shortcut" name="payone.checkout.cart.methods.amazon_pay.bottom" before="-" template="payone/core/amazon/pay/shortcut.phtml">
+                <action method="setIsQuoteAllowed"><value>1</value></action>
+                <action method="setShowOrPosition"><value>after</value></action>
+            </block>
+        </reference>
         <reference name="checkout.cart.methods">
             <block type="payone_core/paypal_express_shortcut" name="payone.checkout.cart.methods.paypal_express.bottom" before="-" template="payone/core/paypal/express/shortcut.phtml">
                 <action method="setIsQuoteAllowed"><value>1</value></action>
                 <action method="setShowOrPosition"><value>after</value></action>
             </block>
         </reference>
-
         <!--<update handle="SHORTCUT_popup" />-->
     </checkout_cart_index>
 
     <default>
+        <reference name="head">
+            <action method="addCss"><name>payone/core/amazonpay_button.css</name></action>
+        </reference>
+        <reference name="topCart.extra_actions">
+            <block type="payone_core/amazon_pay_shortcut" name="payone.amazon.partner.top_cart.shortcut"
+                   template="payone/core/amazon/pay/shortcut.phtml"/>
+        </reference>
         <reference name="topCart.extra_actions">
             <block type="payone_core/paypal_express_shortcut" name="payone.paypal.partner.top_cart.shortcut"
                    template="payone/core/paypal/express/shortcut.phtml"/>
+        </reference>
+        <reference name="cart_sidebar.extra_actions">
+            <block type="payone_core/amazon_pay_shortcut" name="payone.amazon.partner.cart_sidebar.shortcut"
+                   template="payone/core/amazon/pay/shortcut.phtml"/>
         </reference>
         <reference name="cart_sidebar.extra_actions">
             <block type="payone_core/paypal_express_shortcut" name="payone.paypal.partner.cart_sidebar.shortcut"
