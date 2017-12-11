@@ -45,7 +45,8 @@ $_colspan = $_colspan > 1 ? 'colspan="' . $_colspan . '"' : '';
                 <?php $aRow = $_row->getData(); ?>
                 <tr id="<?php echo $aRow['_id']; ?>">
                     <td>
-                        <input type="text" style="width:60px;" class="input-text" value="<?php echo $aRow['ratepay_shopid']; ?>" name="groups[template_ratepay][fields][ratepay_config][value][<?php echo $aRow['_id']; ?>][ratepay_shopid]">
+                        <input type="text" style="width:60px;" class="input-text required-entry" value="<?php echo $aRow['ratepay_shopid']; ?>" name="groups[template_ratepay][fields][ratepay_config][value][<?php echo $aRow['_id']; ?>][ratepay_shopid]">
+                        <span class="required">*</span>
                         <br>
                         <?php $aShopConfig = $this->getRatePayShopConfig($aRow['ratepay_shopid'], $aRow['ratepay_currency']); ?>
                         <?php if ($aShopConfig): ?>
@@ -78,7 +79,8 @@ $_colspan = $_colspan > 1 ? 'colspan="' . $_colspan . '"' : '';
                         <?php endif;?>
                     </td>
                     <td>
-                        <input type="text" style="width:60px;" class="input-text" value="<?php echo $aRow['ratepay_currency']; ?>" name="groups[template_ratepay][fields][ratepay_config][value][<?php echo $aRow['_id']; ?>][ratepay_currency]">
+                        <input type="text" style="width:60px;" class="input-text required-entry" value="<?php echo $aRow['ratepay_currency']; ?>" name="groups[template_ratepay][fields][ratepay_config][value][<?php echo $aRow['_id']; ?>][ratepay_currency]">
+                        <span class="required">*</span>
                     </td>
                     <td>
                         <button type="button" class="scalable delete" onclick="arrayRow<?php echo $_htmlId ?>.del('<?php echo $aRow['_id']; ?>')"><span><span><span>Delete</span></span></span></button>
@@ -114,6 +116,7 @@ $_colspan = $_colspan > 1 ? 'colspan="' . $_colspan . '"' : '';
                 <?php foreach ($this->_columns as $columnName => $column):?>
                     +'<td>'
                         +'<?php echo Mage::helper('core')->jsQuoteEscape($this->_renderCellTemplate($columnName)) ?>'
+                    +'<span class="required"> *<\/span>'
                     +'<\/td>'
                 <?php endforeach;?>
                 +'<td><button onclick="arrayRow<?php echo $_htmlId ?>.del(\'#{_id}\')" class="scalable delete" type="button"><span><span><span><?php echo Mage::helper('core')->jsQuoteEscape(Mage::helper('adminhtml')->__('Delete')) ?><\/span><\/span><\/span><\/button><\/td>'
@@ -138,6 +141,13 @@ $_colspan = $_colspan > 1 ? 'colspan="' . $_colspan . '"' : '';
             } else { // insert after specified row
                 Element.insert($(insertAfterId), {after: this.template.evaluate(templateData)});
             }
+
+            // Turns the shopid and currency newly created fields as required
+            var inputs = $(templateData._id).getElementsByTagName('input');
+            for (var i = 0, len = inputs.length; i < len; i++) {
+                inputs[i].classList.add('required-entry');
+            }
+
             this.rowsCount += 1;
         },
         del : function(rowId) {
@@ -175,5 +185,15 @@ $_colspan = $_colspan > 1 ? 'colspan="' . $_colspan . '"' : '';
     <?php if ($this->getElement()->getDisabled()):?>
     toggleValueElements({checked:true}, $('grid<?php echo $_htmlId ?>').parentNode);
     <?php endif;?>
+
+    Object.extend(Validation, {
+        insertAdvice : function(elm, advice){
+            var referenceElement = elm.parentNode.getElementsByClassName('required')[0];
+            if (!referenceElement) {
+                referenceElement = elm;
+            }
+            Element.insert(referenceElement, {'after': advice});
+        }
+    });
     //]]>
 </script>
