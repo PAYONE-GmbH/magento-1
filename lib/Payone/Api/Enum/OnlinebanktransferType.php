@@ -39,5 +39,5 @@ class Payone_Api_Enum_OnlinebanktransferType
     const POSTFINANCE_CARD  = 'PFC';
     const IDEAL = 'IDL';
     const P24 = 'P24';
-
+    const BANCONTACT = 'BCT';
 }

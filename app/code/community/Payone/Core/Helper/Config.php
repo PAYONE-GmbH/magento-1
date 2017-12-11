@@ -183,11 +183,6 @@ class Payone_Core_Helper_Config
         return $config;
     }
 
-    public function getShippingTaxClassId($storeId)
-    {
-        return $this->getStoreConfig(Mage_Tax_Model_Config::CONFIG_XML_PATH_SHIPPING_TAX_CLASS, $storeId);
-    }
-
     /**
      * Retrieve the creditrating sample counter from config
      *

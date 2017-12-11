@@ -35,12 +35,14 @@ class Payone_Core_Model_System_Config_PaymentMethodCode extends Payone_Core_Mode
     const PREFIX = 'payone_';
 
     const ADVANCEPAYMENT = 'payone_advance_payment';
+    const AMAZONPAY = 'payone_amazon_pay';
     const CASHONDELIVERY = 'payone_cash_on_delivery';
     const CREDITCARD = 'payone_creditcard';
     const CREDITCARD_IFRAME = 'payone_creditcard_iframe';
     const DEBITPAYMENT = 'payone_debit_payment';
     const INVOICE = 'payone_invoice';
     const SAFEINVOICE = 'payone_safe_invoice';
+    const ONLINEBANKTRANSFERBCT = 'payone_online_bank_transfer_bct';
     const ONLINEBANKTRANSFERGIROPAY = 'payone_online_bank_transfer_giropay';
     const ONLINEBANKTRANSFERP24 = 'payone_online_bank_transfer_p24';
     const ONLINEBANKTRANSFEREPS = 'payone_online_bank_transfer_eps';
@@ -56,6 +58,7 @@ class Payone_Core_Model_System_Config_PaymentMethodCode extends Payone_Core_Mode
     const PAYOLUTIONINVOICING = 'payone_payolution_invoicing';
     const PAYOLUTIONDEBIT = 'payone_payolution_debit';
     const PAYOLUTIONINSTALLMENT = 'payone_payolution_installment';
+    const PAYMENTGUARANTEEINVOICE = 'payone_payment_guarantee_invoice';
     const WALLETPAYDIREKT = 'payone_wallet_paydirekt';
     const WALLETPAYPALEXPRESS = 'payone_wallet_paypal_express';
     const WALLETALIPAY = 'payone_wallet_alipay';
@@ -67,6 +70,7 @@ class Payone_Core_Model_System_Config_PaymentMethodCode extends Payone_Core_Mode
     {
         return array(
             self::ADVANCEPAYMENT => 'Advance Payment',
+            self::AMAZONPAY => 'Amazon Pay',
             self::CASHONDELIVERY => 'Cash on Delivery',
             self::CREDITCARD => 'Creditcard',
             self::CREDITCARD_IFRAME => 'Creditcard Channel Frontend',
@@ -81,6 +85,7 @@ class Payone_Core_Model_System_Config_PaymentMethodCode extends Payone_Core_Mode
             self::PAYOLUTIONINVOICING => 'Payolution Invoicing',
             self::PAYOLUTIONDEBIT => 'Payolution Debit',
             self::PAYOLUTIONINSTALLMENT => 'Payolution Installment',
+            self::PAYMENTGUARANTEEINVOICE => 'Invoice with Payment Guarantee',
             self::WALLETPAYDIREKT => 'Paydirekt',
             self::WALLETPAYPALEXPRESS => 'Paypal Express',
             self::WALLETALIPAY => 'AliPay',
@@ -90,7 +95,8 @@ class Payone_Core_Model_System_Config_PaymentMethodCode extends Payone_Core_Mode
             self::ONLINEBANKTRANSFERIDL => 'Ideal',
             self::ONLINEBANKTRANSFERPFF => 'PostFinance E-Finance',
             self::ONLINEBANKTRANSFERPFC => 'PostFinance Card',
-            self::ONLINEBANKTRANSFERP24 => 'Przelewy24'
+            self::ONLINEBANKTRANSFERP24 => 'Przelewy24',
+            self::ONLINEBANKTRANSFERBCT => 'Bancontact',
         );
     }
 }

@@ -74,19 +74,14 @@ class Payone_Core_Model_Payment_Method_WalletPaydirekt extends Payone_Core_Model
 
         return $this->matchingConfigs;
     }
-    
+
     /**
-     * @note Getter is
      * @param $redirectUrl
      */
     public function setRedirectUrl($redirectUrl)
     {
-        if(stripos($redirectUrl, 'paypal') !== false) {
-            $oSession = Mage::getSingleton('checkout/session');
-            $oSession->setPayoneIsRedirectedToPayPal(true);
-        }
-
+        $oSession = Mage::getSingleton('checkout/session');
+        $oSession->setPayoneExternalCheckoutActive(true);
         $this->redirectUrl = $redirectUrl;
     }
-    
 }

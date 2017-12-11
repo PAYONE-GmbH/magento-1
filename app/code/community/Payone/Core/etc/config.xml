@@ -29,7 +29,7 @@
 <config>
     <modules>
         <Payone_Core>
-            <version>4.0.1</version>
+            <version>4.1.0</version>
         </Payone_Core>
     </modules>
 
@@ -330,6 +330,15 @@
         </template>
 
         <events>
+            <controller_action_predispatch>
+                <observers>
+                    <payone_core_observer>
+                        <type>singleton</type>
+                        <class>payone_core/observer_checkout_onepage_payment_external</class>
+                        <method>maintainCheckoutSession</method>
+                    </payone_core_observer>
+                </observers>
+            </controller_action_predispatch>
             <sales_quote_address_validate_after>
                 <observers>
                     <payone_core_observer>
@@ -610,6 +619,11 @@
 
     <default>
         <payment>
+            <payone_amazon_pay translate="title" module="payone_core">
+                <title>PAYONE - Amazon Pay</title>
+                <model>payone_core/payment_method_amazonPay</model>
+                <group>payone</group>
+            </payone_amazon_pay>
             <payone_creditcard translate="title" module="payone_core">
                 <title>PAYONE - CreditCard</title>
                 <model>payone_core/payment_method_creditcard</model>
@@ -681,7 +695,7 @@
                 <group>payone</group>
             </payone_online_bank_transfer_sofortueberweisung>
             <payone_online_bank_transfer_giropay translate="title" module="payone_core">
-                <title>PAYONE - Sofortüberweisung</title>
+                <title>PAYONE - Giropay</title>
                 <model>payone_core/payment_method_onlineBankTransferGiropay</model>
                 <group>payone</group>
             </payone_online_bank_transfer_giropay>
@@ -691,7 +705,7 @@
                 <group>payone</group>
             </payone_online_bank_transfer_eps>
             <payone_online_bank_transfer_idl translate="title" module="payone_core">
-                <title>PAYONE - eps Online-Überweisung</title>
+                <title>PAYONE - iDEAL</title>
                 <model>payone_core/payment_method_onlineBankTransferIdl</model>
                 <group>payone</group>
             </payone_online_bank_transfer_idl>
@@ -710,6 +724,11 @@
                 <model>payone_core/payment_method_onlineBankTransferP24</model>
                 <group>payone</group>
             </payone_online_bank_transfer_p24>
+            <payone_online_bank_transfer_bct translate="title" module="payone_core">
+                <title>PAYONE - Bancontact</title>
+                <model>payone_core/payment_method_onlineBankTransferBct</model>
+                <group>payone</group>
+            </payone_online_bank_transfer_bct>
             <payone_advance_payment translate="title" module="payone_core">
                 <title>PAYONE - AdvancePayment</title>
                 <model>payone_core/payment_method_advancePayment</model>
@@ -720,6 +739,11 @@
                 <model>payone_core/payment_method_wallet</model>
                 <group>payone</group>
             </payone_wallet>
+            <payone_payment_guarantee_invoice translate="title" module="payone_core">
+                <title>PAYONE - Invoice with Payment Guarantee</title>
+                <model>payone_core/payment_method_paymentGuaranteeInvoice</model>
+                <group>payone</group>
+            </payone_payment_guarantee_invoice>
             <payone_wallet_paydirekt translate="title" module="payone_core">
                 <title>PAYONE - Paydirekt</title>
                 <model>payone_core/payment_method_walletPaydirekt</model>
@@ -737,6 +761,9 @@
             </payone_wallet_alipay>
         </payment>
         <payone_payment>
+            <template_amazon_pay>
+                <use_global>1</use_global>
+            </template_amazon_pay>
             <template_creditcard>
                 <use_global>1</use_global>
             </template_creditcard>
@@ -774,6 +801,9 @@
             <template_online_bank_transfer_p24>
                 <use_global>1</use_global>
             </template_online_bank_transfer_p24>
+            <template_online_bank_transfer_bct>
+                <use_global>1</use_global>
+            </template_online_bank_transfer_bct>
             <template_safe_invoice>
                 <types>BSV</types>
                 <use_global>1</use_global>
@@ -859,6 +889,7 @@
                 <wallet_paypal_express>a:1:{s:18:"_1343137411652_652";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</wallet_paypal_express>
                 <wallet_alipay>a:1:{s:18:"_1343137411652_652";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</wallet_alipay>
                 <financing>a:1:{s:18:"_1468430123551_512";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</financing>
+                <amazon_pay>a:1:{s:18:"_1499859127882_882";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</amazon_pay>
             </status_mapping>
         </payone_general>
         <payone_protect>
