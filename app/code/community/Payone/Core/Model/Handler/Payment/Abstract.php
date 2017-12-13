@@ -115,9 +115,12 @@ abstract class Payone_Core_Model_Handler_Payment_Abstract
 
         if ($response->isError()) {
             return $this;
+        } elseif ($response->isPending()) {
+            $order->setState(Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW);
+            $order->setStatus(Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW);
         }
 
-        if ($response->isApproved()) {
+        if ($response->isApproved() || $response->isPending()) {
             $this->sendAvsMail($response);
         } elseif ($response->isRedirect()) {
             $sRedirectUrl = $response->getRedirecturl();

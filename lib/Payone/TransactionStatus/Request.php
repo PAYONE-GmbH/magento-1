@@ -103,6 +103,10 @@ class Payone_TransactionStatus_Request extends Payone_TransactionStatus_Request_
     /**
      * @var string
      */
+    protected $transaction_status = NULL;
+    /**
+     * @var string
+     */
     protected $failedcause = NULL;
 
     // Zusätzliche Parameter Contract bei Statusmeldung eines Zahlungsvorgangs
@@ -146,7 +150,7 @@ class Payone_TransactionStatus_Request extends Payone_TransactionStatus_Request_
      */
     protected $invoice_deliveryenddate = NULL;
 
-    
+
     /**
      * @var string
      */
@@ -179,7 +183,7 @@ class Payone_TransactionStatus_Request extends Payone_TransactionStatus_Request_
      * @var string
      */
     protected $clearing_bankname = NULL;
-    
+
 
     /** @var string */
     protected $clearing_legalnote = NULL;
@@ -317,6 +321,22 @@ class Payone_TransactionStatus_Request extends Payone_TransactionStatus_Request_
     public function getCustomerid()
     {
         return $this->customerid;
+    }
+
+    /**
+     * @param string $transaction_status
+     */
+    public function setTransactionStatus($transaction_status)
+    {
+        $this->transaction_status = $transaction_status;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTransactionStatus()
+    {
+        return $this->transaction_status;
     }
 
     /**

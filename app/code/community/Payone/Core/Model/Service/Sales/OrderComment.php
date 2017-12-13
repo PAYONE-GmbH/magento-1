@@ -44,21 +44,15 @@ class Payone_Core_Model_Service_Sales_OrderComment extends Payone_Core_Model_Ser
     public function addByApiResponse(
         Mage_Sales_Model_Order $order,
         Payone_Api_Response_Interface $response
-) 
-    { 
-     
-     
-     
-     
-     
-     
-     
-     
-    
-    
+)
+    {
         // Preauthorization
         if ($response instanceof Payone_Api_Response_Preauthorization_Approved) {
             $comment = 'PAYONE successfully processed the payment-request.';
+        }
+        // Pending preauthorization
+        elseif ($response instanceof Payone_Api_Response_Preauthorization_Pending) {
+            $comment = 'PAYONE could not process the payment-request yet. Please wait for further updates.';
         }
         // Authorization
         elseif ($response instanceof Payone_Api_Response_Authorization_Approved) {
@@ -96,20 +90,12 @@ class Payone_Core_Model_Service_Sales_OrderComment extends Payone_Core_Model_Ser
     public function addByTransactionStatus(
         Mage_Sales_Model_Order $order,
         Payone_Core_Model_Domain_Protocol_TransactionStatus $transactionStatus
-    ) { 
-     
-     
-     
-     
-     
-     
-     
-     
-     
-    
-    
+    ) {
         if ($transactionStatus->isAppointed()) {
             $comment = 'PAYONE accepted the payment-request.';
+        }
+        elseif ($transactionStatus->isPending()) {
+            $comment = 'PAYONE did not accept the payment-request yet. Please wait for further updates.';
         }
         elseif ($transactionStatus->isCapture()) {
             $comment = 'PAYONE confirmed the collection.';

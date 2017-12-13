@@ -50,6 +50,9 @@ class Payone_Api_Mapper_Response_Preauthorization
         elseif ($this->isRedirect()) {
             $response = new Payone_Api_Response_Preauthorization_Redirect($params);
         }
+        elseif ($this->isPending()) {
+            $response = new Payone_Api_Response_Preauthorization_Pending($params);
+        }
         elseif ($this->isError()) {
             $response = new Payone_Api_Response_Error($params);
         }

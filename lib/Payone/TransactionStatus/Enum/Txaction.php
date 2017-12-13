@@ -33,6 +33,7 @@
 class Payone_TransactionStatus_Enum_Txaction
 {
     const APPOINTED = 'appointed';
+    const PENDING = 'pending';
     const CAPTURE = 'capture';
     const PAID = 'paid';
     const UNDERPAID = 'underpaid';

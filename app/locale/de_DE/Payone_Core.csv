@@ -279,12 +279,14 @@
 "I want to grant the mandate (transmitted electronically)","Ich möchte das Mandat erteilen (elektronische Übermittlung)"
 
 "PAYONE successfully processed the payment-request.","Die Zahlungsanfrage wurde von PAYONE erfolgreich bearbeitet"
+"PAYONE could not process the payment-request yet. Please wait for further updates.","Die Zahlungsanfrage wurde von PAYONE noch nicht abschließend bearbeitet. Bitte warten Sie auf weitere Meldungen."
 "PAYONE successfully processed and confirmed the payment-request.","Die Zahlungsanfrage wurde von PAYONE erfolgreich bearbeitet und bestätigt."
 "The payment-request has been forwarded.","Die Zahlungsanfrage wurde weitergeleitet."
 "The payment-request was incorrect. Please check the protocol.","Die Zahlungsanfrage war Fehlerhaft. Bitte prüfen sie das Protokoll."
 "PAYONE successfully processed the capture-request.","Die Anfrage zum Geldeinzug wurde von PAYONE erfolgreich verarbeitet."
 
 "PAYONE accepted the payment-request.","Die Zahlungsanfrage wurde von PAYONE angenommen."
+"PAYONE did not accept the payment-request yet. Please wait for further updates.","Die Zahlungsanfrage wurde von PAYONE noch nicht angenommen. Bitte warten Sie auf weitere Meldungen."
 "PAYONE confirmed the collection.","Der Geldeinzug wurde von PAYONE bestätigt."
 "PAYONE confirmed the claim.","Die Forderungsverbuchung wurde von PAYONE bestätigt."
 "The payment was rejected.","Die Zahlung wurde zurückgewiesen."
@@ -557,6 +559,7 @@
 "CREDITCARD_CHARGEBACK","Kreditkarten Chargeback"
 "CREDITCARD_NOT_COLLECTABLE","Kreditkarte nicht einziehbar"
 
+"PENDING","Überprüfung (pending)"
 "APPOINTED","Erfolg (appointed)"
 "CAPTURE","Einzug (capture)"
 "PAID","Zahlung (paid)"

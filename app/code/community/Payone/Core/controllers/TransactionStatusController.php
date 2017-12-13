@@ -121,8 +121,8 @@ class Payone_Core_TransactionStatusController extends Payone_Core_Controller_Abs
     {
         return $this->helperConfig()->getConfigMisc($storeId)->getTransactionstatusProcessing();
     }
-    
-    protected function _forwardStatus($oOrder) 
+
+    protected function _forwardStatus($oOrder)
     {
         $sAction = $this->getRequest()->getParam('txaction');
 
@@ -138,8 +138,8 @@ class Payone_Core_TransactionStatusController extends Payone_Core_Controller_Abs
             $this->_forwardRequest($aHost);
         }
     }
-    
-    protected function _addParam($sKey, $mValue) 
+
+    protected function _addParam($sKey, $mValue)
     {
         $sParams = '';
         if(is_array($mValue)) {
@@ -152,20 +152,20 @@ class Payone_Core_TransactionStatusController extends Payone_Core_Controller_Abs
 
         return $sParams;
     }
-    
-    protected function _forwardRequest($aHost) 
+
+    protected function _forwardRequest($aHost)
     {
         if(array_key_exists('url', $aHost) === false) {
             return;
         }
 
         $sUrl = $aHost['url'];
-        
+
         $iTimeout = 15;
         if(array_key_exists('timeout', $aHost) !== false) {
             $iTimeout = $aHost['timeout'];
         }
-        
+
         $sParams = '';
         $aRequest = Mage::app()->getRequest()->getParams();
         foreach($aRequest as $sKey => $mValue) {
@@ -194,7 +194,7 @@ class Payone_Core_TransactionStatusController extends Payone_Core_Controller_Abs
             fwrite($oLog, date('[Y-m-d H:i:s]').' - Curl-Error-Nr: '.$sCurlErrorNr.' - Message: '.$sCurlError."\n");
             fclose($oLog);
         }
-        
+
         curl_close($oCurl);
     }
 

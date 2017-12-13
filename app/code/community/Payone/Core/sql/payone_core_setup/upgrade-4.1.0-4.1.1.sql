@@ -12,6 +12,12 @@ ALTER TABLE `{{payone_config_payment_method}}`
   ADD `amz_button_lang` INT NULL COMMENT 'amz_button_lang',
   ADD `amz_sync_mode` INT NULL COMMENT 'amz_sync_mode';
 
+ALTER TABLE `{{payone_transaction}}`
+  ADD `transaction_status` VARCHAR(64) NULL;
+
+ALTER TABLE `{{payone_protocol_transactionstatus}}`
+  ADD `transaction_status` VARCHAR(64) NULL;
+
 ALTER TABLE `{{sales_flat_order_payment}}`
   ADD `payone_amz_order_reference` VARCHAR(255) NULL COMMENT 'Amazon Order Reference';
 

@@ -49,6 +49,7 @@ class Payone_Core_Model_Service_Protocol_TransactionStatus_Export
         'sequencenumber',
         'balance',
         'receivable',
+        'transaction_status',
         'failedcause',
         'currency',
         'userid',
