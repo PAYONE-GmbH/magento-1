@@ -93,6 +93,20 @@ $types = $this->getTypes();
                 </div>
             </li>
         <?php endif;?>
+        <?php if ($this->isB2BMode()) { ?>
+            <div id="<?php echo $code; ?>_b2b_wrap" class="field">
+                <div class="input-box">
+                    <label
+                            for="<?php echo $code ?>_trade_registry_number"><?php echo $this->__('Company trade registry number') ?>
+                        <span class="required">*</span>
+                    </label>
+                    <br class="clear"/>
+                    <input type="text" id="<?php echo $code ?>_trade_registry_number"
+                           name="payment[payone_trade_registry_number]"
+                           value="" title="" class="required-entry input-text no-submit"/>
+                </div>
+            </div>
+        <?php } ?>
         <?php if ($this->isTelephoneRequired()) : ?>
             <li class="fields">
                 <div class="field">
@@ -111,6 +125,7 @@ $types = $this->getTypes();
             <input type="hidden" name="payment[payone_config_payment_method_id]"  id="<?php echo $code ?>_config_id" value="<?php echo $configId; ?>"/>
             <input type="hidden" id="ratePayShopId" name="payment[payone_ratepay_shop_id]" value="<?php echo $ratePayShopId; ?>"/>
             <input type="hidden" id="ratePayCurrency" name="payment[payone_ratepay_currency]" value="<?php echo $ratePayCurrency; ?>"/>
+            <input type="hidden" name="payment[payone_isb2b]" value="<?php echo (int)$this->isB2BMode(); ?>"/>
             <?php 
                 $sDeviceIdentToken = $this->getRatePayDeviceFingerprint();
                 $sDeviceIdentId = $this->getRatePayDeviceFingerprintSnippetId();
