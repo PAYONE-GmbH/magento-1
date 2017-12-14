@@ -49,6 +49,7 @@
 "PAYOLUTION_ACCEPTANCE_3"," can be revoked for the future any time."
 
 "PENDING","Review (pending)"
+"FAILED","Error (failed)"
 "APPOINTED","Success (appointed)"
 "CAPTURE","Collection (capture)"
 "PAID","Payment (paid)"

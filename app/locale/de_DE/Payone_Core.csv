@@ -287,6 +287,7 @@
 
 "PAYONE accepted the payment-request.","Die Zahlungsanfrage wurde von PAYONE angenommen."
 "PAYONE did not accept the payment-request yet. Please wait for further updates.","Die Zahlungsanfrage wurde von PAYONE noch nicht angenommen. Bitte warten Sie auf weitere Meldungen."
+"PAYONE could not accept the payment-request. The transaction failed.","Die Zahlungsanfrage konnte von PAYONE nicht angenommen werden. Die Transaktion ist fehlgeschlagen."
 "PAYONE confirmed the collection.","Der Geldeinzug wurde von PAYONE bestätigt."
 "PAYONE confirmed the claim.","Die Forderungsverbuchung wurde von PAYONE bestätigt."
 "The payment was rejected.","Die Zahlung wurde zurückgewiesen."
@@ -560,6 +561,7 @@
 "CREDITCARD_NOT_COLLECTABLE","Kreditkarte nicht einziehbar"
 
 "PENDING","Überprüfung (pending)"
+"FAILED","Fehler (failed)"
 "APPOINTED","Erfolg (appointed)"
 "CAPTURE","Einzug (capture)"
 "PAID","Zahlung (paid)"

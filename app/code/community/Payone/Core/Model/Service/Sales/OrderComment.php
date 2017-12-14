@@ -97,6 +97,9 @@ class Payone_Core_Model_Service_Sales_OrderComment extends Payone_Core_Model_Ser
         elseif ($transactionStatus->isPending()) {
             $comment = 'PAYONE did not accept the payment-request yet. Please wait for further updates.';
         }
+        elseif ($transactionStatus->isFailed()) {
+            $comment = 'PAYONE could not accept the payment-request. The transaction failed.';
+        }
         elseif ($transactionStatus->isCapture()) {
             $comment = 'PAYONE confirmed the collection.';
         }

@@ -211,6 +211,14 @@ class Payone_Core_Model_Domain_Protocol_TransactionStatus extends Mage_Core_Mode
     /**
      * @return bool
      */
+    public function isFailed()
+    {
+        return $this->getTxaction() == Payone_TransactionStatus_Enum_Txaction::FAILED;
+    }
+
+    /**
+     * @return bool
+     */
     public function isCapture()
     {
         return $this->getTxaction() == Payone_TransactionStatus_Enum_Txaction::CAPTURE;

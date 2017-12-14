@@ -110,6 +110,7 @@ if ($useSqlInstaller) {
         'LENGTH'   => 64,
         'NULLABLE' => true,
         'DEFAULT'  => null,
+        'COMMENT'  => 'Transaction status',
     ]);
 
     // Alter table payone_protocol_transactionstatus
@@ -118,6 +119,7 @@ if ($useSqlInstaller) {
         'LENGTH'   => 64,
         'NULLABLE' => true,
         'DEFAULT'  => null,
+        'COMMENT'  => 'Transaction status',
     ]);
 
     // Alter table sales_flat_order_payment
