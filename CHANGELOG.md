@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.1.1
+**Features**
+
+* Handle Ratepay unauthorized payment response by disabling the payment method for the customer
+* Allow to send registration number instead of birthdate for B2B cases
+
 ## 4.1.0
 **Feature**
 
