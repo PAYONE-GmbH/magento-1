@@ -29,7 +29,7 @@
 <config>
     <modules>
         <Payone_Core>
-            <version>4.1.0</version>
+            <version>4.1.1</version>
         </Payone_Core>
     </modules>
 
@@ -78,6 +78,9 @@
                     <ratepay_config>
                         <table>payone_ratepay_config</table>
                     </ratepay_config>
+                    <paymentBan>
+                        <table>payone_payment_ban</table>
+                    </paymentBan>
                 </entities>
             </payone_core_resource>
 

@@ -57,26 +57,64 @@ class Payone_Core_Block_Checkout_Onepage_Payment_Methods
 
         $allowedMethods = $this->getAllowedMethods();
 
-        // All Methods are allowed
-        if ($allowedMethods === true) {
-            return $this->methods;
+        // List of allowed methods has to be rewritten
+        if ($allowedMethods !== true) {
+            $result = array();
+            foreach ($this->methods as $method) {
+                /**
+                 * @var $method Mage_Payment_Model_Method_Abstract
+                 */
+                $methodAvailable = $allowedMethods->getData($method->getCode());
+                if ($methodAvailable == 1) {
+                    $result[] = $method;
+                }
+            }
+
+            // Overwrite Methods with the above created result array
+            $this->methods = $result;
         }
 
-        $result = array();
-        foreach ($this->methods as $method) {
-            /**
-             * @var $method Mage_Payment_Model_Method_Abstract
-             */
-            $methodAvailable = $allowedMethods->getData($method->getCode());
-            if ($methodAvailable == 1) {
-                $result[] = $method;
+        $aRestrictedMethods = $this->getRestrictedMethods();
+        if (!empty($aRestrictedMethods)) {
+            $this->methods = array_filter(
+                $this->methods,
+                function (Mage_Payment_Model_Method_Abstract $oMethod) use ($aRestrictedMethods)
+                {
+                    return !in_array($oMethod->getCode(), $aRestrictedMethods);
+                }
+            );
+        }
+
+        return $this->methods;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRestrictedMethods()
+    {
+        $aRestrictedMethods = array();
+
+        /** @var Payone_Core_Model_Domain_PaymentBan $ratePayBan */
+        $ratePayBan = Mage::getModel('payone_core/domain_paymentBan');
+        $ratePayBan = $ratePayBan->loadByCustomerIdPaymentMethod(
+            $this->getQuote()->getCustomerId(),
+            Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAY
+        );
+        if ($ratePayBan) {
+            $dtToday = new DateTime();
+            $dtBanStartDate = new DateTime($ratePayBan->getFromDate());
+            $dtBanEndDate = new DateTime($ratePayBan->getToDate());
+
+            if (
+                $dtToday->getTimestamp() > $dtBanStartDate->getTimestamp()
+                && $dtToday->getTimestamp() < $dtBanEndDate->getTimestamp()
+            ) {
+                $aRestrictedMethods[] = Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAY;
             }
         }
 
-        // Overwrite Methods with the above created result array
-        $this->methods = $result;
-
-        return $this->methods;
+        return $aRestrictedMethods;
     }
 
     /**

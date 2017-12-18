@@ -117,11 +117,29 @@ abstract class Payone_Core_Model_Service_Payment_Abstract
                     $this->_aAmazonErrors[$response->getErrorcode()],
                     $response->getErrorcode()
                 );
+            } elseif ($response->getErrorcode() == 401) {
+                /** @var Payone_Core_Model_Domain_PaymentBan $oPaymentBan */
+                $oPaymentBan = Mage::getModel('payone_core/domain_paymentBan');
+                $oPaymentBan = $oPaymentBan->loadByCustomerIdPaymentMethod(
+                    $payment->getOrder()->getCustomerId(),
+                    $payment->getMethod()
+                );
+                $oPaymentBan->setCustomerId($payment->getOrder()->getCustomerId());
+                $oPaymentBan->setPaymentMethod($payment->getMethod());
+                $oPaymentBan->setFromDate((new DateTime())->format(DATE_ISO8601));
+                $oPaymentBan->setToDate((new DateTime('+1day'))->format(DATE_ISO8601));
+                $oPaymentBan->save();
+
+                throw new Mage_Payment_Model_Info_Exception(
+                    $this->helper()->__($response->getCustomermessage())
+                );
             } else {
                 $session->unsetData('amazon_retry_async');
-                $this->throwMageException($response->getErrorcode() . ': ' . $this->helper()->__(
-                    $response->getErrormessage()
-                ));
+                $this->throwMageException(
+                    '[' . $response->getErrorcode() . ': ' .
+                    $this->helper()->__($response->getErrormessage()) . '] - ' .
+                    $this->helper()->__($response->getCustomermessage())
+                );
             }
         } elseif ($request instanceof Payone_Api_Request_Authorization_Abstract &&
             $oMethodInstance->getCode() == 'payone_amazon_pay' &&
