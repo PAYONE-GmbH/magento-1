@@ -26,7 +26,7 @@
 
 $installer = $this;
 $installer->startSetup();
-$tablePaymentBan = $this->getTable('payone_core/payment_ban');
+$tablePaymentBan = $this->getTable('payone_core/paymentBan');
 
 /** @var $helper Payone_Core_Helper_Data */
 $helper = Mage::helper('payone_core');
