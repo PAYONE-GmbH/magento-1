@@ -268,10 +268,22 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
         $this->quote->getShippingAddress()
             ->setData('should_ignore_validation', true);
         $this->quote->collectTotals()->save();
-        $this->quote->setCustomerId(null)
-            ->setCustomerEmail($this->quote->getBillingAddress()->getEmail())
-            ->setCustomerIsGuest(true)
-            ->setCustomerGroupId(\Mage_Customer_Model_Group::NOT_LOGGED_IN_ID);
+        if (Mage::getSingleton('customer/session')->isLoggedIn()) {
+            $customer = Mage::getSingleton('customer/session')->getCustomer();
+            $customerId = $customer->getId();
+            $customerEmail = $customer->getEmail();
+            $customerGroupId = Mage::getSingleton('customer/session')->getCustomerGroupId();
+            $this->quote->setCustomerId($customerId)
+                ->setCustomerEmail($customerEmail)
+                ->setCustomerIsGuest(false)
+                ->setCustomerGroupId($customerGroupId);
+        }
+        else {
+            $this->quote->setCustomerId(null)
+                ->setCustomerEmail($this->quote->getBillingAddress()->getEmail())
+                ->setCustomerIsGuest(true)
+                ->setCustomerGroupId(\Mage_Customer_Model_Group::NOT_LOGGED_IN_ID);
+        }
         /** @var \Payone_Core_Model_Session $session */
         $session = Mage::getSingleton('payone_core/session');
         $session->setData('amazon_add_paydata', [
