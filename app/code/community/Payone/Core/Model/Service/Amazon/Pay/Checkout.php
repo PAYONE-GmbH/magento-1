@@ -280,6 +280,8 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
         }
         else {
             $this->quote->setCustomerId(null)
+                ->setCustomerFirstname($this->quote->getBillingAddress()->getFirstname())
+                ->setCustomerLastname($this->quote->getBillingAddress()->getLastname())
                 ->setCustomerEmail($this->quote->getBillingAddress()->getEmail())
                 ->setCustomerIsGuest(true)
                 ->setCustomerGroupId(\Mage_Customer_Model_Group::NOT_LOGGED_IN_ID);
