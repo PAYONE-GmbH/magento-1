@@ -85,7 +85,9 @@ if (!empty($config)) :
 <?php if ($this::$counter <= 1) : ?>
     <!-- Load script Widgets.js from Amazon -->
     <!-- URL changes to https://static-eu.payments-amazon.com/OffAmazonPayments/eur/lpa/js/Widgets.js when mode=live -->
-    <script async="async" src='https://static-eu.payments-amazon.com/OffAmazonPayments/eur/sandbox/lpa/js/Widgets.js'
+    <?php $useSandbox = $config->getMode() === \Payone_Enum_Mode::TEST ? '/sandbox' : '' ?>
+    <script async="async"
+            src='<?php echo "https://static-eu.payments-amazon.com/OffAmazonPayments/eur$useSandbox/lpa/js/Widgets.js" ?>'
     ></script>
 <?php endif; ?>
 <?php endif; ?>
