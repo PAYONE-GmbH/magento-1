@@ -280,6 +280,7 @@
 
 "PAYONE successfully processed the payment-request.","Die Zahlungsanfrage wurde von PAYONE erfolgreich bearbeitet"
 "PAYONE successfully processed and confirmed the payment-request.","Die Zahlungsanfrage wurde von PAYONE erfolgreich bearbeitet und bestätigt."
+"PAYONE confirmed the cancellation.","Die Stornierung wurde von Payone bestätigt."
 "The payment-request has been forwarded.","Die Zahlungsanfrage wurde weitergeleitet."
 "The payment-request was incorrect. Please check the protocol.","Die Zahlungsanfrage war Fehlerhaft. Bitte prüfen sie das Protokoll."
 "PAYONE successfully processed the capture-request.","Die Anfrage zum Geldeinzug wurde von PAYONE erfolgreich verarbeitet."

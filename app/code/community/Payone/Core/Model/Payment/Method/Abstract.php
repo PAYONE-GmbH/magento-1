@@ -179,9 +179,11 @@ abstract class Payone_Core_Model_Payment_Method_Abstract
         if ($this->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::CREDITCARD
             || $this->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::SAFEINVOICE
             || $this->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::AMAZONPAY
+            || $this->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAY
         ) {
             // Capture with amount=0, to notify PAYONE that the order is complete (invoiced/cancelled all items)
             // Only works with Creditcard at the moment (15.10.2013)
+            // Add Ratepay support (08.01.2018)
             $this->helperRegistry()->registerPaymentCancel($this->getInfoInstance());
             $this->capture($payment, 0.0000);
         }
