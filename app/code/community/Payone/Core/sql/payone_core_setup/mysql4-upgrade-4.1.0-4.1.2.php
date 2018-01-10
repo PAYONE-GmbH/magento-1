@@ -27,6 +27,7 @@
 $installer = $this;
 $installer->startSetup();
 $tablePaymentBan = $this->getTable('payone_core/paymentBan');
+$tableOrderPayment = $this->getTable('sales/order_payment');
 
 /** @var $helper Payone_Core_Helper_Data */
 $helper = Mage::helper('payone_core');
@@ -37,6 +38,7 @@ if ($useSqlInstaller) {
 
     $installSqlConfig = array(
         '{{payone_payment_ban}}' => $tablePaymentBan,
+        '{{sales_flat_order_payment}}' => $tableOrderPayment,
     );
 
     $installSql = str_replace(array_keys($installSqlConfig), array_values($installSqlConfig), $sql);
@@ -44,6 +46,16 @@ if ($useSqlInstaller) {
 }
 else {
     $connection = $installer->getConnection();
+
+    $connection->addColumn(
+        $tableOrderPayment, 'payone_vat_id',
+        array(
+            'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
+            'LENGTH' => 64,
+            'NULLABLE' => false,
+            'COMMENT' => 'VAT ID number',
+            'DEFAULT' => '')
+    );
 
     $table = $connection->newTable($tablePaymentBan);
 

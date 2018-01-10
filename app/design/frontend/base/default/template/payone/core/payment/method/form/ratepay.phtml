@@ -105,6 +105,16 @@ $types = $this->getTypes();
                            name="payment[payone_trade_registry_number]"
                            value="" title="" class="required-entry input-text no-submit"/>
                 </div>
+                <div class="input-box">
+                    <label
+                            for="<?php echo $code ?>_vat_id"><?php echo $this->__('VAT ID number') ?>
+                        <span class="required">*</span>
+                    </label>
+                    <br class="clear"/>
+                    <input type="text" id="<?php echo $code ?>_vat_id"
+                           name="payment[payone_vat_id]"
+                           value="" title="" class="required-entry input-text no-submit"/>
+                </div>
             </div>
         <?php } ?>
         <?php if ($this->isTelephoneRequired()) : ?>

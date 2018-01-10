@@ -672,6 +672,11 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
                         array('key' => 'company_id', 'data' => $info->getPayoneTradeRegistryNumber())
                     )
                 );
+                $payData->addItem(
+                    new Payone_Api_Request_Parameter_Paydata_DataItem(
+                        array('key' => 'vat_id', 'data' => $info->getPayoneVatId())
+                    )
+                );
             } else {
                 $birthdayDate = $info->getPayoneCustomerDob();
                 if (empty($birthdayDate)) {
