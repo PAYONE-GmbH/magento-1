@@ -117,7 +117,7 @@ abstract class Payone_Core_Model_Service_Payment_Abstract
                     $this->_aAmazonErrors[$response->getErrorcode()],
                     $response->getErrorcode()
                 );
-            } elseif ($response->getErrorcode() == 401) {
+            } elseif ($response->getErrorcode() == 307) {
                 /** @var Payone_Core_Model_Domain_PaymentBan $oPaymentBan */
                 $oPaymentBan = Mage::getModel('payone_core/domain_paymentBan');
                 $oPaymentBan = $oPaymentBan->loadByCustomerIdPaymentMethod(
