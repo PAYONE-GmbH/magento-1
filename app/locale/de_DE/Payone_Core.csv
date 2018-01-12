@@ -130,6 +130,7 @@
 "Required when using Klarna","Pflicht bei Verwendung von Klarna"
 "Klarna Campaign Code","Klarna Kampagnen-Code"
 "Save payment data for logged in customer","Zahlungsdaten für angemeldete Benutzer speichern"
+"Enable Credit Card type auto recognition","Automatische Erkennung des Kreditkartentyps"
 "SOFORT Ueberweisung: Display IBAN/BIC inputs","SOFORT Überweisung: IBAN/BIC Felder anzeigen"
 "Scope","Geltungsbereich"
 "Countries","Länder"

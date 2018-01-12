@@ -1020,6 +1020,15 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </customer_form_data_save>
+                        <cc_type_auto_recognition translate="label,comment">
+                            <label>Enable Credit Card type auto recognition</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>290</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </cc_type_auto_recognition>
                     </fields>
                 </template_creditcard>
                 <template_debit_payment translate="label" module="payone_core">
