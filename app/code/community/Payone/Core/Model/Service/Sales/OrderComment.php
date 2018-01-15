@@ -44,8 +44,7 @@ class Payone_Core_Model_Service_Sales_OrderComment extends Payone_Core_Model_Ser
     public function addByApiResponse(
         Mage_Sales_Model_Order $order,
         Payone_Api_Response_Interface $response
-)
-    {
+    ) {
         // Preauthorization
         if ($response instanceof Payone_Api_Response_Preauthorization_Approved) {
             $comment = 'PAYONE successfully processed the payment-request.';
@@ -66,7 +65,14 @@ class Payone_Core_Model_Service_Sales_OrderComment extends Payone_Core_Model_Ser
         }
         // Capture
         elseif ($response instanceof Payone_Api_Response_Capture_Approved) {
-            $comment = 'PAYONE successfully processed the capture-request.';
+            /** @var Payone_Core_Helper_Registry $registry */
+            $registry = Mage::helper('payone_core/registry');
+            if ($registry->isPaymentCancelRegistered($order->getPayment())) {
+                $comment = 'PAYONE confirmed the cancellation.';
+            }
+            else {
+                $comment = 'PAYONE successfully processed the capture-request.';
+            }
         }
         // Debit
         elseif ($response instanceof Payone_Api_Response_Debit_Approved) {
