@@ -323,7 +323,7 @@ abstract class Payone_Core_Model_Handler_Payment_Abstract
 
                 $helperEmail = $this->helperEmail();
                 $helperEmail->setStoreId($storeId);
-                $result = $helperEmail->send($configEmailAvs, array('response' => $responseMailObject));
+                $result = $helperEmail->sendByConfig($configEmailAvs, array('response' => $responseMailObject));
             }
         }
     }

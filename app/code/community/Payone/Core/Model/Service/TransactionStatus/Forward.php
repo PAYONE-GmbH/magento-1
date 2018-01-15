@@ -59,6 +59,7 @@ class Payone_Core_Model_Service_TransactionStatus_Forward extends Payone_Core_Mo
         'receivable',
         'transaction_status',
         'failedcause',
+        'reasoncode',
         'currency',
         'userid',
         'customerid',

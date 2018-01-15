@@ -49,6 +49,7 @@
  * @method setClearingtype(string $type)
  * @method string getClearingtype()
  * @method string getTransactionStatus()
+ * @method string getReasoncode()
  */
 class Payone_Core_Model_Domain_Protocol_TransactionStatus extends Mage_Core_Model_Abstract
 {
@@ -158,6 +159,7 @@ class Payone_Core_Model_Domain_Protocol_TransactionStatus extends Mage_Core_Mode
                 'balance',
                 'transaction_status',
                 'failedcause',
+                'reasoncode',
                 'productid',
                 'accessid',
                 'reminderlevel',

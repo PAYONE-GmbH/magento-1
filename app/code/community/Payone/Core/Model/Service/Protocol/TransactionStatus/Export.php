@@ -51,6 +51,7 @@ class Payone_Core_Model_Service_Protocol_TransactionStatus_Export
         'receivable',
         'transaction_status',
         'failedcause',
+        'reasoncode',
         'currency',
         'userid',
         'customerid',

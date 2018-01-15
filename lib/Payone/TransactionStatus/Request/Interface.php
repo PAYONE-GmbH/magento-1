@@ -129,6 +129,16 @@ interface Payone_TransactionStatus_Request_Interface
     public function getFailedcause();
 
     /**
+     * @param string $reasoncode
+     */
+    public function setReasoncode($reasoncode);
+
+    /**
+     * @return string
+     */
+    public function getReasoncode();
+
+    /**
      * @param string $invoice_date
      */
     public function setInvoiceDate($invoice_date);

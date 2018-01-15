@@ -326,6 +326,16 @@
                     <file>payone/core/avs_template.phtml</file>
                     <type>html</type>
                 </payone_misc_email_avs_template>
+                <payone_amazon_soft_decline translate="label" module="payone_core">
+                    <label>Please update your payment information</label>
+                    <file>payone/core/amazon_soft_decline.phtml</file>
+                    <type>html</type>
+                </payone_amazon_soft_decline>
+                <payone_amazon_hard_decline translate="label" module="payone_core">
+                    <label>Please contact us about your order</label>
+                    <file>payone/core/amazon_hard_decline.phtml</file>
+                    <type>html</type>
+                </payone_amazon_hard_decline>
             </email>
         </template>
 
@@ -467,6 +477,24 @@
                     </payone_core_observer_invoiceCreate>
                 </observers>
             </payone_core_transactionstatus_paid>
+            <payone_core_transactionstatus_pending>
+                <observers>
+                    <payone_core_observer_pending>
+                        <type>singleton</type>
+                        <class>payone_core/observer_transactionStatus_pending</class>
+                        <method>onPending</method>
+                    </payone_core_observer_pending>
+                </observers>
+            </payone_core_transactionstatus_pending>
+            <payone_core_transactionstatus_failed>
+                <observers>
+                    <payone_core_observer_failed>
+                        <type>singleton</type>
+                        <class>payone_core/observer_transactionStatus_failed</class>
+                        <method>onFailed</method>
+                    </payone_core_observer_failed>
+                </observers>
+            </payone_core_transactionstatus_failed>
             <payone_core_transactionstatus_reminder>
                 <observers>
                     <payone_core_observer_reminder>

@@ -106,20 +106,34 @@ if ($useSqlInstaller) {
 
     // Alter table payone_transaction
     $connection->addColumn($tableTransaction, 'transaction_status', [
-        'TYPE'     => Varien_Db_Ddl_Table::TYPE_VARCHAR,
+        'TYPE'     => Varien_Db_Ddl_Table::TYPE_TEXT,
         'LENGTH'   => 64,
         'NULLABLE' => true,
         'DEFAULT'  => null,
         'COMMENT'  => 'Transaction status',
     ]);
+    $connection->addColumn($tableTransaction, 'reasoncode', [
+        'TYPE'     => Varien_Db_Ddl_Table::TYPE_TEXT,
+        'LENGTH'   => 64,
+        'NULLABLE' => true,
+        'DEFAULT'  => null,
+        'COMMENT'  => 'Reasoncode',
+    ]);
 
     // Alter table payone_protocol_transactionstatus
     $connection->addColumn($tableProtocolTxStatus, 'transaction_status', [
-        'TYPE'     => Varien_Db_Ddl_Table::TYPE_VARCHAR,
+        'TYPE'     => Varien_Db_Ddl_Table::TYPE_TEXT,
         'LENGTH'   => 64,
         'NULLABLE' => true,
         'DEFAULT'  => null,
         'COMMENT'  => 'Transaction status',
+    ]);
+    $connection->addColumn($tableProtocolTxStatus, 'reasoncode', [
+        'TYPE'     => Varien_Db_Ddl_Table::TYPE_TEXT,
+        'LENGTH'   => 64,
+        'NULLABLE' => true,
+        'DEFAULT'  => null,
+        'COMMENT'  => 'Reasoncode',
     ]);
 
     // Alter table sales_flat_order_payment
