@@ -41,6 +41,19 @@ class Payone_Core_Model_Domain_PaymentBan extends Mage_Core_Model_Abstract
 
     /**
      * @param int $customerId
+     * @return Payone_Core_Model_Domain_PaymentBan[]
+     */
+    public function loadByCustomerId($customerId)
+    {
+        $collection = Mage::getModel('payone_core/domain_paymentBan')->getCollection();
+        $collection->addFieldToFilter('customer_id', array('eq' => $customerId));
+        $result = $collection->load();
+
+        return $result->getItems();
+    }
+
+    /**
+     * @param int $customerId
      * @param string $paymentMethod
      * @return Payone_Core_Model_Domain_PaymentBan
      */

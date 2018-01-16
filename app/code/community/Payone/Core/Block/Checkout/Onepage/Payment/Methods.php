@@ -95,22 +95,19 @@ class Payone_Core_Block_Checkout_Onepage_Payment_Methods
     {
         $aRestrictedMethods = array();
 
-        /** @var Payone_Core_Model_Domain_PaymentBan $ratePayBan */
-        $ratePayBan = Mage::getModel('payone_core/domain_paymentBan');
-        $ratePayBan = $ratePayBan->loadByCustomerIdPaymentMethod(
-            $this->getQuote()->getCustomerId(),
-            Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAY
-        );
-        if ($ratePayBan) {
+        /** @var Payone_Core_Model_Domain_PaymentBan $paymentBanModel */
+        $paymentBanModel = Mage::getModel('payone_core/domain_paymentBan');
+        $paymentBans = $paymentBanModel->loadByCustomerId($this->getQuote()->getCustomerId());
+        foreach ($paymentBans as $paymentBan) {
             $dtToday = new DateTime();
-            $dtBanStartDate = new DateTime($ratePayBan->getFromDate());
-            $dtBanEndDate = new DateTime($ratePayBan->getToDate());
+            $dtBanStartDate = new DateTime($paymentBan->getFromDate());
+            $dtBanEndDate = new DateTime($paymentBan->getToDate());
 
             if (
                 $dtToday->getTimestamp() > $dtBanStartDate->getTimestamp()
                 && $dtToday->getTimestamp() < $dtBanEndDate->getTimestamp()
             ) {
-                $aRestrictedMethods[] = Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAY;
+                $aRestrictedMethods[] = $paymentBan->getPaymentMethod();
             }
         }
 
