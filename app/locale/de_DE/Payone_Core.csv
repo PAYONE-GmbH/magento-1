@@ -1097,6 +1097,8 @@
 "PAYONE_TOOLTIP_CUSTOMERMESSAGE","Ja - die von RatePay gesendete Fehlermeldung anzeigen<br>Nein - eine allgemeine Fehlermeldung anzeigen"
 "Enter currency in ISO 4217 form - i.e. EUR or USD","Waehrung bitte in ISO 4217 Form eingeben - z.B. EUR oder USD"
 
+"PAYONE_AMAZON_SYNC_MODE","– Asynchronous On Failure (recommended, default): If a synchronous transaction fails, the transaction will be retried with an asynchronous request.<br>– Always Synchronous: Always try synchronous transactions. These might have lower acceptance rates with Amazon. However, you will receive an instant confirmation of the transaction and you will be able to continue right away."
+
 "PYV","Rechnungskauf"
 "PYM","Monatliche Rechnung"
 "PYS","Ratenzahlung"

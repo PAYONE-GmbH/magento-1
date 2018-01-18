@@ -25,4 +25,15 @@ class Payone_Core_Model_System_Config_AmazonSyncMode extends Payone_Core_Model_S
     const ASYNCHRONOUS_ON_FAILURE = 0;
     const ALWAYS_ASYNCHRONOUS = 1;
     const ALWAYS_SYNCHRONOUS = 2;
+
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
+        return array(
+            self::ASYNCHRONOUS_ON_FAILURE => 'Asynchronous On Failure',
+            self::ALWAYS_SYNCHRONOUS => 'Always Synchronous',
+        );
+    }
 }
