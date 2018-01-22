@@ -38,6 +38,9 @@ class Payone_Api_Request_Parameter_Authorization_PaymentMethod_AmazonPay
     /** @var string $errorurl */
     protected $errorurl = null;
 
+    /** @var string $api_version */
+    protected $api_version = null;
+
     /**
      * Payone_Api_Request_Parameter_Authorization_PaymentMethod_AmazonPay constructor.
      *
@@ -60,6 +63,7 @@ class Payone_Api_Request_Parameter_Authorization_PaymentMethod_AmazonPay
         }
         $this->setWallettype();
         $this->setWorkorderid();
+        $this->setApiVersion();
     }
 
     /**
@@ -136,5 +140,18 @@ class Payone_Api_Request_Parameter_Authorization_PaymentMethod_AmazonPay
     public function getErrorurl()
     {
         return $this->errorurl;
+    }
+
+    public function setApiVersion()
+    {
+        $this->api_version = '3.10';
+    }
+
+    /**
+     * @return string
+     */
+    public function getApiVersion()
+    {
+        return $this->api_version;
     }
 }

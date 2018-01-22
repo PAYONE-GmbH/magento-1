@@ -65,6 +65,11 @@ interface Payone_Api_Response_Interface extends Payone_Protocol_Filter_Filterabl
     /**
      * @return bool
      */
+    public function isPending();
+
+    /**
+     * @return bool
+     */
     public function isRedirect();
 
     /**
