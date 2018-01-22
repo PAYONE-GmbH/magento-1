@@ -28,21 +28,11 @@ class Payone_Core_Block_Amazon_Pay_Shortcut extends Mage_Core_Block_Template
     public static $counter = 0;
 
     /**
-     * Whether the block should be eventually rendered
+     * Whether the popup mode should be used
      *
      * @var bool
      */
-    protected $_hasSecureConnection = false;
-
-    protected function _beforeToHtml()
-    {
-        $result = parent::_beforeToHtml();
-
-        if (Mage::app()->getStore()->isCurrentlySecure()) {
-            $this->_hasSecureConnection = true;
-        }
-        return $result;
-    }
+    protected $_usePopupMode = null;
 
     /**
      * Render the block if needed
@@ -82,8 +72,19 @@ class Payone_Core_Block_Amazon_Pay_Shortcut extends Mage_Core_Block_Template
     /**
      * @return bool
      */
-    public function hasSecureConnection()
+    public function usePopupMode()
     {
-        return $this->_hasSecureConnection;
+        if ($this->_usePopupMode === null) {
+            $this->_usePopupMode = false;
+            if (Mage::app()->getStore()->isCurrentlySecure()) {
+                $this->_usePopupMode = true;
+            }
+
+            if(strpos($_SERVER['HTTP_USER_AGENT'], 'FBAN/') !== false || strpos($_SERVER['HTTP_X_REQUESTED_WITH'], 'com.facebook.') !== false) {
+                // dont use popup mode for Facebook-in-app-browsers, since it doesnt work there
+                $this->_usePopupMode = false;
+            }
+        }
+        return $this->_usePopupMode;
     }
 }

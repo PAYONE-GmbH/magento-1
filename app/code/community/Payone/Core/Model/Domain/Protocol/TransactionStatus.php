@@ -48,6 +48,8 @@
  * @method string getSequencenumber()
  * @method setClearingtype(string $type)
  * @method string getClearingtype()
+ * @method string getTransactionStatus()
+ * @method string getReasoncode()
  */
 class Payone_Core_Model_Domain_Protocol_TransactionStatus extends Mage_Core_Model_Abstract
 {
@@ -155,7 +157,9 @@ class Payone_Core_Model_Domain_Protocol_TransactionStatus extends Mage_Core_Mode
                 'sequencenumber',
                 'receivable',
                 'balance',
+                'transaction_status',
                 'failedcause',
+                'reasoncode',
                 'productid',
                 'accessid',
                 'reminderlevel',
@@ -196,6 +200,22 @@ class Payone_Core_Model_Domain_Protocol_TransactionStatus extends Mage_Core_Mode
     public function isAppointed()
     {
         return $this->getTxaction() == Payone_TransactionStatus_Enum_Txaction::APPOINTED;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPending()
+    {
+        return $this->getTxaction() == Payone_TransactionStatus_Enum_Txaction::PENDING;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFailed()
+    {
+        return $this->getTxaction() == Payone_TransactionStatus_Enum_Txaction::FAILED;
     }
 
     /**
@@ -307,8 +327,8 @@ class Payone_Core_Model_Domain_Protocol_TransactionStatus extends Mage_Core_Mode
     {
         $this->setProcessingStatus(self::STATUS_ERROR);
     }
-    
-    public function getRawRequestArray() 
+
+    public function getRawRequestArray()
     {
         if(!empty($this->_data['raw_request'])) {
             $aRaw = unserialize($this->_data['raw_request']);

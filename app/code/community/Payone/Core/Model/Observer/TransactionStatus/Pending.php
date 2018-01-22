@@ -26,11 +26,11 @@
  * @category        Payone
  * @package         Payone_Core_Model
  * @subpackage      Observer
- * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
+ * @copyright       Copyright (c) 2017 <kontakt@fatchip.de> - www.fatchip.com
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
- * @link            http://www.noovias.com
+ * @link            http://www.fatchip.com
  */
-class Payone_Core_Model_Observer_TransactionStatus_OrderConfirmation
+class Payone_Core_Model_Observer_TransactionStatus_Pending
     extends Payone_Core_Model_Observer_Abstract
 {
     /**
@@ -44,14 +44,25 @@ class Payone_Core_Model_Observer_TransactionStatus_OrderConfirmation
     /** @var $transactionStatus Payone_Core_Model_Domain_Protocol_TransactionStatus */
     private $transactionStatus = null;
 
+    /** @var $method Payone_Core_Model_Payment_Method_Abstract */
+    private $method = null;
+
     /**
      * @param Varien_Event_Observer $observer
      */
-    public function onAppointed(Varien_Event_Observer $observer)
+    public function onPending(Varien_Event_Observer $observer)
     {
         $this->initData($observer);
         if (!$this->order->getData('payone_prevent_confirmation') && !$this->order->getEmailSent()) {
             $this->getServiceOrderConfirmation()->sendMail($this->order);
+        }
+
+        if( $this->method instanceof Payone_Core_Model_Payment_Method_AmazonPay &&
+            $this->transactionStatus->getTransactionStatus() == 'pending' &&
+            $this->transactionStatus->getReasoncode() == '981'
+        ) {
+            $aParameters = array('store' => $this->order->getStore());
+            $this->helperEmail()->send('general', $this->order->getCustomerEmail(), false, 'payone_amazon_soft_decline', $aParameters);
         }
     }
 
@@ -64,9 +75,8 @@ class Payone_Core_Model_Observer_TransactionStatus_OrderConfirmation
 
         /** @var $transactionStatus Payone_Core_Model_Domain_Protocol_TransactionStatus */
         $this->transactionStatus = $event->getTransactionStatus();
-
-        $order = $this->getOrderByTransactionStatus($this->transactionStatus);
-        $this->order = $order;
+        $this->order = $this->getOrderByTransactionStatus($this->transactionStatus);
+        $this->method = $this->order->getPayment()->getMethodInstance();
     }
 
     /**

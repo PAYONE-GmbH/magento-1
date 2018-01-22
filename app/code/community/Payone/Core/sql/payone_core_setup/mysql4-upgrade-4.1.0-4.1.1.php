@@ -28,6 +28,8 @@ $installer = $this;
 $installer->startSetup();
 
 $tablePaymentMethod = $this->getTable('payone_core/config_payment_method');
+$tableTransaction = $this->getTable('payone_core/transaction');
+$tableProtocolTxStatus = $this->getTable('payone_core/protocol_transactionStatus');
 $tableOrderPayment = $this->getTable('sales/order_payment');
 $tableOrder = $this->getTable('sales/order');
 
@@ -36,10 +38,12 @@ $helper = Mage::helper('payone_core');
 $useSqlInstaller = $helper->mustUseSqlInstaller();
 
 if ($useSqlInstaller) {
-    $sql = file_get_contents(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'upgrade-3.7.8-3.8.0.sql');
+    $sql = file_get_contents(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'upgrade-4.1.0-4.1.1.sql');
 
     $installSqlConfig = [
         '{{payone_config_payment_method}}' => $tablePaymentMethod,
+        '{{payone_transaction}}' => $tableTransaction,
+        '{{payone_protocol_transactionstatus}}' => $tableProtocolTxStatus,
         '{{sales_flat_order_payment}}' => $tableOrderPayment,
         '{{sales_flat_order}}' => $tableOrder,
     ];
@@ -98,6 +102,38 @@ if ($useSqlInstaller) {
         'NULLABLE' => true,
         'DEFAULT'  => null,
         'COMMENT'  => 'amz_sync_mode',
+    ]);
+
+    // Alter table payone_transaction
+    $connection->addColumn($tableTransaction, 'transaction_status', [
+        'TYPE'     => Varien_Db_Ddl_Table::TYPE_TEXT,
+        'LENGTH'   => 64,
+        'NULLABLE' => true,
+        'DEFAULT'  => null,
+        'COMMENT'  => 'Transaction status',
+    ]);
+    $connection->addColumn($tableTransaction, 'reasoncode', [
+        'TYPE'     => Varien_Db_Ddl_Table::TYPE_TEXT,
+        'LENGTH'   => 64,
+        'NULLABLE' => true,
+        'DEFAULT'  => null,
+        'COMMENT'  => 'Reasoncode',
+    ]);
+
+    // Alter table payone_protocol_transactionstatus
+    $connection->addColumn($tableProtocolTxStatus, 'transaction_status', [
+        'TYPE'     => Varien_Db_Ddl_Table::TYPE_TEXT,
+        'LENGTH'   => 64,
+        'NULLABLE' => true,
+        'DEFAULT'  => null,
+        'COMMENT'  => 'Transaction status',
+    ]);
+    $connection->addColumn($tableProtocolTxStatus, 'reasoncode', [
+        'TYPE'     => Varien_Db_Ddl_Table::TYPE_TEXT,
+        'LENGTH'   => 64,
+        'NULLABLE' => true,
+        'DEFAULT'  => null,
+        'COMMENT'  => 'Reasoncode',
     ]);
 
     // Alter table sales_flat_order_payment

@@ -61,22 +61,37 @@ class Payone_Core_Helper_Email extends Payone_Core_Helper_Abstract
         $storeId = $this->getStoreId();
         $config = $this->helperConfig()->getConfigMisc($storeId)->getEmailError();
 
-        return $this->send($config, $parameters);
+        return $this->sendByConfig($config, $parameters);
     }
 
     /**
+     * Send email with configuration object
      *
      * @param Payone_Core_Model_Config_Misc_Email_Interface $config
      * @param array $parameters
      * @return bool
      */
-    public function send(Payone_Core_Model_Config_Misc_Email_Interface $config, array $parameters = array())
+    public function sendByConfig(Payone_Core_Model_Config_Misc_Email_Interface $config, array $parameters = array())
     {
         if (!$config->isEnabled()) {
             return false;
         }
+        return $this->send($config->getFrom(), $config->getTo(), $config->getBcc(), $config->getTemplate(), $parameters);
+    }
 
-        if ($config->getFrom() == '' or $config->getTo() == '') {
+    /**
+     * Send email
+     *
+     * @param string $sFrom
+     * @param string $sTo
+     * @param string $sBcc
+     * @param string $sTemplate
+     * @param array $parameters
+     * @return bool
+     */
+    public function send($sFrom, $sTo, $sBcc, $sTemplate, array $parameters = array())
+    {
+        if ($sFrom == '' || $sTo == '') {
             return false;
         }
 
@@ -86,36 +101,35 @@ class Payone_Core_Helper_Email extends Payone_Core_Helper_Abstract
         $emailTemplate = $this->getEmailTemplate();
 
         // From
-        $identFrom = $this->getTransEmailIdentity($config->getFrom());
-        $emailTemplate->setSenderName($identFrom['name']);
-        $emailTemplate->setSenderEmail($identFrom['email']);
+        if (strpos($sFrom, '@') === false) {
+            $identFrom = $this->getTransEmailIdentity($sFrom);
+            $emailTemplate->setSenderName($identFrom['name']);
+            $emailTemplate->setSenderEmail($identFrom['email']);
+        } else {
+            $emailTemplate->setSenderEmail($sFrom);
+        }
 
         // To
-        $identTo = $this->getTransEmailIdentity($config->getTo());
-        $names = array(
-            $identTo['name']
-        );
-        $emails = array(
-            $identTo['email']
-        );
+        if (strpos($sTo, '@') === false) {
+            $identTo = $this->getTransEmailIdentity($sTo);
+            $names = array($identTo['name']);
+            $emails = array($identTo['email']);
+        } else {
+            $names = array();
+            $emails = array($sTo);
+        }
 
-        // Bcc
-        $bcc = $config->getBcc();
-        if ($bcc != '') {
-            $bccArray = explode(',', $bcc);
-
+        if (!empty($sBcc)) {
+            $bccArray = explode(',', $sBcc);
             foreach ($bccArray as $key => $bccEmail) {
                 if ($bccEmail == '') {
                     continue;
                 }
-
                 array_push($emails, $bccEmail);
             }
         }
 
-        // Template
-        $template = $config->getTemplate();
-        $emailTemplate->loadDefault($template);
+        $emailTemplate->loadDefault($sTemplate);
 
         // Send Mail
         return $emailTemplate->send($emails, $names, $parameters);

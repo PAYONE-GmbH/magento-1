@@ -14,7 +14,7 @@
  *
  * @category        Payone
  * @package         Payone_Api
- * @subpackage      Enum
+ * @subpackage      Response
  * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
  * @author          Matthias Walter <info@noovias.com>
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
@@ -25,20 +25,12 @@
  *
  * @category        Payone
  * @package         Payone_Api
- * @subpackage      Enum
- * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
+ * @subpackage      Response
+ * @copyright       Copyright (c) 2017 <kontakt@fatchip.de> - www.fatchip.de
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
- * @link            http://www.noovias.com
+ * @link            https://www.fatchip.de
  */
-class Payone_Api_Enum_ResponseType
+class Payone_Api_Response_Preauthorization_Pending
+    extends Payone_Api_Response_Authorization_Abstract
 {
-    const APPROVED = 'APPROVED';
-    const PENDING = 'PENDING';
-    const REDIRECT = 'REDIRECT';
-    const VALID = 'VALID';
-    const INVALID = 'INVALID';
-    const BLOCKED = 'BLOCKED';
-    const ENROLLED = 'ENROLLED';
-    const ERROR = 'ERROR';
-    const OK = 'OK'; //GenericPayment Requests
 }
