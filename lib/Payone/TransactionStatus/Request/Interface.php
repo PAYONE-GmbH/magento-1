@@ -109,6 +109,16 @@ interface Payone_TransactionStatus_Request_Interface
     public function getCustomerid();
 
     /**
+     * @param string $transaction_status
+     */
+    public function setTransactionStatus($transaction_status);
+
+    /**
+     * @return string
+     */
+    public function getTransactionStatus();
+
+    /**
      * @param string $failedcause
      */
     public function setFailedcause($failedcause);
@@ -117,6 +127,16 @@ interface Payone_TransactionStatus_Request_Interface
      * @return string
      */
     public function getFailedcause();
+
+    /**
+     * @param string $reasoncode
+     */
+    public function setReasoncode($reasoncode);
+
+    /**
+     * @return string
+     */
+    public function getReasoncode();
 
     /**
      * @param string $invoice_date

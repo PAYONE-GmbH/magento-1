@@ -1,7 +1,7 @@
 {
     "name": "payone-gmbh/magento-1",
     "type": "magento-module",
-    "license": "GPL-3.0+",
+    "license": "GPL-3.0-or-later",
     "description": "Payone Magento Extension",
     "keywords": ["payment", "Magento", "Payone"],
     "homepage": "http://www.payone.de",

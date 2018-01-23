@@ -280,6 +280,7 @@
 "I want to grant the mandate (transmitted electronically)","Ich möchte das Mandat erteilen (elektronische Übermittlung)"
 
 "PAYONE successfully processed the payment-request.","Die Zahlungsanfrage wurde von PAYONE erfolgreich bearbeitet"
+"PAYONE could not process the payment-request yet. Please wait for further updates.","Die Zahlungsanfrage wurde von PAYONE noch nicht abschließend bearbeitet. Bitte warten Sie auf weitere Meldungen."
 "PAYONE successfully processed and confirmed the payment-request.","Die Zahlungsanfrage wurde von PAYONE erfolgreich bearbeitet und bestätigt."
 "PAYONE confirmed the cancellation.","Die Stornierung wurde von Payone bestätigt."
 "The payment-request has been forwarded.","Die Zahlungsanfrage wurde weitergeleitet."
@@ -287,6 +288,8 @@
 "PAYONE successfully processed the capture-request.","Die Anfrage zum Geldeinzug wurde von PAYONE erfolgreich verarbeitet."
 
 "PAYONE accepted the payment-request.","Die Zahlungsanfrage wurde von PAYONE angenommen."
+"PAYONE did not accept the payment-request yet. Please wait for further updates.","Die Zahlungsanfrage wurde von PAYONE noch nicht angenommen. Bitte warten Sie auf weitere Meldungen."
+"PAYONE could not accept the payment-request. The transaction failed.","Die Zahlungsanfrage konnte von PAYONE nicht angenommen werden. Die Transaktion ist fehlgeschlagen."
 "PAYONE confirmed the collection.","Der Geldeinzug wurde von PAYONE bestätigt."
 "PAYONE confirmed the claim.","Die Forderungsverbuchung wurde von PAYONE bestätigt."
 "The payment was rejected.","Die Zahlung wurde zurückgewiesen."
@@ -559,6 +562,8 @@
 "CREDITCARD_CHARGEBACK","Kreditkarten Chargeback"
 "CREDITCARD_NOT_COLLECTABLE","Kreditkarte nicht einziehbar"
 
+"PENDING","Überprüfung (pending)"
+"FAILED","Fehler (failed)"
 "APPOINTED","Erfolg (appointed)"
 "CAPTURE","Einzug (capture)"
 "PAID","Zahlung (paid)"
@@ -1093,6 +1098,8 @@
 "Show detailed error-messages","Detaillierte Fehlermeldungen anzeigen"
 "PAYONE_TOOLTIP_CUSTOMERMESSAGE","Ja - die von RatePay gesendete Fehlermeldung anzeigen<br>Nein - eine allgemeine Fehlermeldung anzeigen"
 "Enter currency in ISO 4217 form - i.e. EUR or USD","Waehrung bitte in ISO 4217 Form eingeben - z.B. EUR oder USD"
+
+"PAYONE_AMAZON_SYNC_MODE","– Asynchronous On Failure (recommended, default): If a synchronous transaction fails, the transaction will be retried with an asynchronous request.<br>– Always Synchronous: Always try synchronous transactions. These might have lower acceptance rates with Amazon. However, you will receive an instant confirmation of the transaction and you will be able to continue right away."
 
 "PYV","Rechnungskauf"
 "PYM","Monatliche Rechnung"

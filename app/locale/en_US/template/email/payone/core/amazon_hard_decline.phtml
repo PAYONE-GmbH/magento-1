@@ -1,0 +1,25 @@
+<!--@subject Please contact us about your order @-->
+<!--@vars
+{"store url=\"\"":"Store Url",
+"var logo_url":"Email Logo Image Url",
+"var logo_alt":"Email Logo Image Alt",
+"var store.getFrontendName()":"Store Name",
+@-->
+<!--@styles
+@-->
+
+{{template config_path="design/email/header"}}
+{{inlinecss file="email-inline.css"}}
+
+<p>
+    Valued customer,<br><br>
+
+    Unfortunately Amazon Pay declined the payment for your order in our online shop {{var store.getFrontendName()}}.<br>
+    Please contact us.<br><br>
+
+    Kind regards,<br><br>
+
+    {{var store.getFrontendName()}}
+</p>
+
+{{template config_path="design/email/footer"}}

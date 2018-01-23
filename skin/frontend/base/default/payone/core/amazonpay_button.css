@@ -24,6 +24,14 @@
     margin-bottom: -2px;
 }
 
+.page-title.amazon-button H1 {
+    padding-bottom: 22px;
+}
+
+.page-title.amazon-button .amazon-checkout-button {
+    float:right;
+}
+
 @media only screen and (max-width: 740px) {
     .amazon-or,
     .amazon-checkout-button {
