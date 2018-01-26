@@ -180,5 +180,35 @@
         </reference>
     </adminhtml_payonecore_configuration_wizard_page_finish>
 
+    <adminhtml_payonecore_system_config_logos_iframe>
+        <update handle="payone_core_iframe" />
+        <reference name="head">
+            <action method="addJs"><script>prototype/window.js</script></action>
+            <action method="addItem"><type>js_css</type><name>prototype/windows/themes/default.css</name></action>
+            <action method="addItem"><type>js_css</type><name>prototype/windows/themes/payone.css</name></action>
+        </reference>
+        <reference name="content">
+            <block type="core/template"
+                   name="payone.config.tooltip"
+                   template="payone/core/system/config/tooltip/window.phtml" />
+        </reference>
+    </adminhtml_payonecore_system_config_logos_iframe>
+
+    <adminhtml_payonecore_system_config_logos_index>
+        <update handle="adminhtml_payonecore_system_config_logos_iframe" />
+        <reference name="content">
+            <block type="payone_core/adminhtml_system_config_logos"
+                   name="payone.core.logos"
+                   template="payone/core/system/config/logos/grid/container.phtml" />
+        </reference>
+    </adminhtml_payonecore_system_config_logos_index>
+
+    <adminhtml_payonecore_system_config_logos_edit>
+        <update handle="adminhtml_payonecore_system_config_logos_iframe" />
+        <reference name="content">
+            <block type="payone_core/adminhtml_system_config_logos_edit"
+                   name="payone.core.logos.edit" />
+        </reference>
+    </adminhtml_payonecore_system_config_logos_edit>
 
 </layout>

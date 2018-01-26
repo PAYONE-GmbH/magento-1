@@ -30,6 +30,33 @@
 $code = $this->getMethodCode();
 $iCheckValidation = (int)$this->showCvcInput();
 ?>
+<script type="text/javascript">
+    <?php
+    $config = $this->getLogoConfig();
+    $logoConfigMap = '';
+    foreach ($config as $entry) {
+        $logoConfigMap .= strtolower($entry['type']) . ': {'
+            . 'size:"' . $entry['size'] . '",'
+            . 'url:"' . $entry['url'] . '"'
+            . '},';
+    }
+
+    $config = $this->getLogoSizeMap();
+    $logoSizeMap = '';
+    foreach ($config as $key => $entry) {
+        $logoSizeMap .= strtolower($key) . ': {'
+            . 'w:"' . $entry[0] . '",'
+            . 'h:"' . $entry[1] . '"'
+            . '},';
+    }
+
+    ?>
+    var logoConfig = {<?php echo $logoConfigMap ?>};
+    var logoSizes = {<?php echo $logoSizeMap ?>};
+
+    payone.logoConfig = logoConfig;
+    payone.logoSizes = logoSizes;
+</script>
 <fieldset class="form-list">
     <?php if($this->getCCRequestType() == 'AJAX') { ?>
         <ul id="payment_form_<?php echo $code ?>" style="display:none">
@@ -54,7 +81,7 @@ $iCheckValidation = (int)$this->showCvcInput();
                         <span class="required">*</span>
                     </label><br class="clear"/>
                     <select id="<?php echo $code ?>_cc_type_select" name="<?php echo $code ?>_cc_type_select"
-                            onchange=" payone.displayCheckCvc(this);payoneChangedCreditCardInfo();" class="no-submit required-entry">
+                            onchange=" payone.displayCheckCvc(this);payoneChangedCreditCardInfo();payone.updateCcLogo();" class="no-submit required-entry">
                         <option value=""><?php echo $this->__('--Please Select--') ?></option>
                         <?php
                         foreach ($this->getTypes() as $key => $type) :
@@ -336,7 +363,6 @@ $iCheckValidation = (int)$this->showCvcInput();
                 echo $sVarname." = '".$sValue."';";
             }
             ?>
-
             var iframes = payone.initHosted(fieldconfig, '<?php echo $code ?>_cc_type_select');
         </script>
     <?php } ?>

@@ -77,9 +77,14 @@
                             <sort_order>40</sort_order>
                             <action>adminhtml/system_config/edit/section/payone_misc/</action>
                         </misc>
+                        <logos module="payone_core">
+                            <title>Logos</title>
+                            <sort_order>50</sort_order>
+                            <action>adminhtml/system_config/edit/section/payone_logos/</action>
+                        </logos>
                         <configuration_export module="payone_core">
                             <title>Export Configuration</title>
-                            <sort_order>50</sort_order>
+                            <sort_order>60</sort_order>
                             <action>adminhtml/payonecore_system_configuration/export</action>
                         </configuration_export>
                     </children>
@@ -121,6 +126,10 @@
                                         <title>Misc</title>
                                         <sort_order>40</sort_order>
                                     </payone_misc>
+                                    <payone_logos>
+                                        <title>Logos</title>
+                                        <sort_order>50</sort_order>
+                                    </payone_logos>
                                 </children>
                             </config>
                         </children>

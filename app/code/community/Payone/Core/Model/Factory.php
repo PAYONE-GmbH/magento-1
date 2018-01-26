@@ -1746,4 +1746,25 @@ class Payone_Core_Model_Factory
         $configData = Mage::getModel('core/config_data');
         return $configData;
     }
+
+    /**
+     * @return Payone_Core_Model_Domain_Config_Logos
+     */
+    public function getModelDomainConfigLogos()
+    {
+        /** @var $model Payone_Core_Model_Domain_Config_Logos */
+        $model = Mage::getModel('payone_core/domain_config_logos');
+
+        return $model;
+    }
+
+    /**
+     * @return Payone_Core_Model_System_Config_LogoSize
+     */
+    public function getModelLogoSize()
+    {
+        /** @var Payone_Core_Model_System_Config_LogoSize $model */
+        $model = Mage::getModel('payone_core/system_config_logoSize');
+        return $model;
+    }
 }

@@ -274,7 +274,6 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
         return $this->advancePayment;
     }
 
-
     /**
      * @param $amazonPay
      */
@@ -523,7 +522,6 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
         $this->onlineBankTransferSofortueberweisung = $onlineBankTransferSofortueberweisung;
     }
 
-
     /**
      * @return $onlineBankTransferSofortueberweisung|null
      */
@@ -747,6 +745,7 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
     {
         $this->financing = $financing;
     }
+
     /**
      * @return $financing|null
      */

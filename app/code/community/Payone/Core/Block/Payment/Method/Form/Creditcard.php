@@ -479,5 +479,34 @@ class Payone_Core_Block_Payment_Method_Form_Creditcard
 
         return $gateways;
     }
-    
+
+    public function getLogoConfig()
+    {
+        $configValue = Mage::getStoreConfig('payone_misc/payment_method_logo_mapping');
+        /** @var Payone_Core_Model_Config_Misc_PaymentMethodLogoMapping $configModel */
+        $configModel = Mage::getModel('payone_core/config_misc_paymentMethodLogoMapping');
+        $configModel->init($configValue);
+        $aConfig = $configModel->getConfig();
+
+        /** @var Payone_Core_Model_Domain_Config_Logos $logoModel */
+        $logoModel = $this->getFactory()->getModelDomainConfigLogos();
+        foreach ($aConfig as &$entry) {
+            $logo = $logoModel->getLogoById($entry['logo_id']);
+            if (!empty($logo)) {
+                $entry['url'] = $logo->getPath();
+                if($logo->getType() == Payone_Core_Model_System_Config_LogoType::FILE) {
+                    $entry['url'] = Mage::getBaseUrl('media') . $entry['url'];
+                }
+            }
+        }
+
+        return $aConfig;
+    }
+
+    public function getLogoSizeMap ()
+    {
+        /** @var Payone_Core_Model_System_Config_LogoSize $model */
+        $model = $this->getFactory()->getModelLogoSize();
+        return $model->toPixelSize();
+    }
 }

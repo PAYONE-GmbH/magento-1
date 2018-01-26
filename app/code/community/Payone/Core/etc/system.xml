@@ -2408,7 +2408,63 @@
                         </template>
                     </fields>
                 </email_avs>
+                <payment_method_logo_mapping>
+                    <label>Payment Method - Logo mapping</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>60</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <hint translate="label">
+                            <label>Payment Method - Logo mapping</label>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <hint>
+                                <template>payone/core/system/config/hint/logos.phtml</template>
+                            </hint>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_info</frontend_model>
+                        </hint>
+                        <config>
+                            <hint>
+                                <template>payone/core/system/config/hint/logos.phtml</template>
+                            </hint>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_paymentLogosMapping</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </config>
+                    </fields>
+                </payment_method_logo_mapping>
             </groups>
         </payone_misc>
+
+        <payone_logos translate="label" module="payone_core">
+            <label>Logos</label>
+            <tab>payone</tab>
+            <header_css>payone-config-header</header_css>
+            <frontend_type>text</frontend_type>
+            <frontend_model>payone_core/adminhtml_system_config_form_logos</frontend_model>
+            <sort_order>140</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <hint>
+                    <sort_order>0</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <hint>
+                        <template>payone/core/system/config/hint/logos.phtml</template>
+                    </hint>
+                    <frontend_model>payone_core/adminhtml_system_config_hint</frontend_model>
+                </hint>
+            </groups>
+        </payone_logos>
     </sections>
 </config>
