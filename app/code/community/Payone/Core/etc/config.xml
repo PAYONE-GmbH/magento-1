@@ -29,7 +29,7 @@
 <config>
     <modules>
         <Payone_Core>
-            <version>4.1.1</version>
+            <version>4.1.2</version>
         </Payone_Core>
     </modules>
 
@@ -78,6 +78,9 @@
                     <ratepay_config>
                         <table>payone_ratepay_config</table>
                     </ratepay_config>
+                    <paymentBan>
+                        <table>payone_payment_ban</table>
+                    </paymentBan>
                 </entities>
             </payone_core_resource>
 
@@ -272,6 +275,10 @@
                     <!-- Trade registry number -->
                     <to_order_payment>*</to_order_payment>
                 </payone_trade_registry_number>
+                <payone_vat_id>
+                    <!-- VAT Id number -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_vat_id>
                 <payone_cardexpiredate>
                     <!-- Creditcard cardexpiredate -->
                     <to_order_payment>*</to_order_payment>
