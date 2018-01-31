@@ -36,6 +36,7 @@ class Payone_Core_Model_System_Config_OrderStatus extends Payone_Core_Model_Syst
         Mage_Sales_Model_Order::STATE_PROCESSING,
         Mage_Sales_Model_Order::STATE_HOLDED,
         Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW,
+        Mage_Sales_Model_Order::STATE_CANCELED,
     );
 
     /**

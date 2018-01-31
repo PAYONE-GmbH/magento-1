@@ -6,6 +6,13 @@
 * Handle Ratepay unauthorized payment response by disabling the payment method for the customer
 * Allow to send registration number instead of birthdate for B2B cases
 
+## 4.1.1
+**Feature**
+
+* Completed Amazon Pay background processes
+* RatePay orders can now be properly reversed
+
+
 ## 4.1.0
 **Feature**
 

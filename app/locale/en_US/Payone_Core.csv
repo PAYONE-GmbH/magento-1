@@ -44,6 +44,23 @@
 "PAYONE_PAYOLUTION_API_ERRORMESSAGE","This transaction could not be performed. This may have different causes, such as invalid user input, an unknown address or a temporary technical problem. Please validate your data or choose an alternative payment method."
 "PAYONE_CREDITCARD_VALIDITY_TOO_LOW","This transaction could not be performed. Please select another payment method."
 
+"PAYONE_AMAZON_SYNC_MODE","– Asynchronous On Failure (recommended, default): If a synchronous transaction fails, the transaction will be retried with an asynchronous request.<br>– Always Synchronous: Always try synchronous transactions. These might have lower acceptance rates with Amazon. However, you will receive an instant confirmation of the transaction and you will be able to continue right away."
+
 "PAYOLUTION_ACCEPTANCE_1","I agree with the transmission of the necessary data to payolution which is needed for processing the purchase, the identity-check and the credit rating."
 "PAYOLUTION_ACCEPTANCE_2","My"
 "PAYOLUTION_ACCEPTANCE_3"," can be revoked for the future any time."
+
+"PENDING","Review (pending)"
+"FAILED","Error (failed)"
+"APPOINTED","Success (appointed)"
+"CAPTURE","Collection (capture)"
+"PAID","Payment (paid)"
+"UNDERPAID","Underpayment (underpaid)"
+"CANCELATION","Return debit (cancelation)"
+"REFUND","Reimbursement (refund)"
+"DEBIT","Claim (debit)"
+"REMINDER","Dunning status (reminder)"
+"VAUTHORIZATION","Posting (vauthorization)"
+"VSETTLEMENT","Settlement (vsettlement)"
+"TRANSFER","Reposting (transfer)"
+"INVOICE","Voucher (invoice)"

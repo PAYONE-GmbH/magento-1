@@ -103,7 +103,15 @@ class Payone_TransactionStatus_Request extends Payone_TransactionStatus_Request_
     /**
      * @var string
      */
+    protected $transaction_status = NULL;
+    /**
+     * @var string
+     */
     protected $failedcause = NULL;
+    /**
+     * @var string
+     */
+    protected $reasoncode = NULL;
 
     // Zusätzliche Parameter Contract bei Statusmeldung eines Zahlungsvorgangs
 
@@ -146,7 +154,7 @@ class Payone_TransactionStatus_Request extends Payone_TransactionStatus_Request_
      */
     protected $invoice_deliveryenddate = NULL;
 
-    
+
     /**
      * @var string
      */
@@ -179,7 +187,7 @@ class Payone_TransactionStatus_Request extends Payone_TransactionStatus_Request_
      * @var string
      */
     protected $clearing_bankname = NULL;
-    
+
 
     /** @var string */
     protected $clearing_legalnote = NULL;
@@ -320,6 +328,22 @@ class Payone_TransactionStatus_Request extends Payone_TransactionStatus_Request_
     }
 
     /**
+     * @param string $transaction_status
+     */
+    public function setTransactionStatus($transaction_status)
+    {
+        $this->transaction_status = $transaction_status;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTransactionStatus()
+    {
+        return $this->transaction_status;
+    }
+
+    /**
      * @param string $failedcause
      */
     public function setFailedcause($failedcause)
@@ -333,6 +357,22 @@ class Payone_TransactionStatus_Request extends Payone_TransactionStatus_Request_
     public function getFailedcause()
     {
         return $this->failedcause;
+    }
+
+    /**
+     * @param string $reasoncode
+     */
+    public function setReasoncode($reasoncode)
+    {
+        $this->reasoncode = $reasoncode;
+    }
+
+    /**
+     * @return string
+     */
+    public function getReasoncode()
+    {
+        return $this->reasoncode;
     }
 
     /**

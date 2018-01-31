@@ -37,6 +37,12 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
      */
     protected $advancePayment = null;
     /**
+     * Payment method amazon_pay
+     *
+     * @var null
+     */
+    protected $amazonPay = null;
+    /**
      * Payment method cash_on_delivery
      *
      * @var null
@@ -268,6 +274,27 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
         return $this->advancePayment;
     }
 
+
+    /**
+     * @param $amazonPay
+     */
+    public function setAmazonPay($amazonPay)
+    {
+        if (is_string($amazonPay)) {
+            $amazonPay = $this->initValue($amazonPay);
+        }
+
+        $this->amazonPay = $amazonPay;
+    }
+
+    /**
+     * @return $amazonPay|null
+     */
+    public function getAmazonPay()
+    {
+        return $this->amazonPay;
+    }
+
     /**
      * @param $cashOnDelivery
      */
@@ -496,6 +523,7 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
         $this->onlineBankTransferSofortueberweisung = $onlineBankTransferSofortueberweisung;
     }
 
+
     /**
      * @return $onlineBankTransferSofortueberweisung|null
      */
@@ -503,7 +531,6 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
     {
         return $this->onlineBankTransferSofortueberweisung;
     }
-
 
     /**
      * @param $onlineBankTransfer
@@ -720,7 +747,6 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
     {
         $this->financing = $financing;
     }
-
     /**
      * @return $financing|null
      */

@@ -17,6 +17,11 @@ Documentation for Magento: http://www.payone.com/uploads/media/PAYONE_Documentat
 Videoguide: Installation and configuration: https://www.youtube.com/playlist?list=PLlzKa20PSzukaPBvUhxxpo3oqNs0mUkpa<br>
 More information about Magento on https://www.payone.com/magento
 
+## Related projects
+Related projects can provide additional features and perks that can't be included in the main package for various reasons. These projects are not officially supported by BS PAYONE and can cause unexpected changes in module behavior. Support, if any, is given in the respective projects alone:
+
+* [Pragmatic-Apps/magento1-payone-postponecapture](https://github.com/Pragmatic-Apps/magento1-payone-postponecapture): Provides automatic capture when an order is shipped for Payolution payment methods.
+
 ## Contact
 BS PAYONE GmbH<br>
 Office Kiel<br>
