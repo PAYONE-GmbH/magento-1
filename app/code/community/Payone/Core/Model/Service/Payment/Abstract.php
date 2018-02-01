@@ -69,7 +69,8 @@ abstract class Payone_Core_Model_Service_Payment_Abstract
      * @var array
      */
     protected $aRestrictableMethods = array(
-        Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAY => array(307)
+        Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAY => array(307),
+        Payone_Core_Model_System_Config_PaymentMethodCode::PAYMENTGUARANTEEINVOICE => array(351)
     );
 
     /**
