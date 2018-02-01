@@ -34,7 +34,7 @@ class Payone_Core_Block_Adminhtml_System_Config_Form_Field_AmazonConfig
 
         if ($element->getId() === 'payone_payment_template_amazon_pay_amz_js_origin') {
             $url = parse_url($this->getFrontendUrl());
-            $element->setData('value', 'https://' . $url['host'] . ($url['port'] ? ':' . $url['port'] : ''));
+            $element->setData('value', 'https://' . $url['host'] . (empty($url['port']) ? '' : ':' . $url['port']));
         } elseif ($element->getId() === 'payone_payment_template_amazon_pay_amz_return_url') {
             $element->setData('value', $this->getFrontendUrl('payone_core/amazonpay/checkout'));
         }
