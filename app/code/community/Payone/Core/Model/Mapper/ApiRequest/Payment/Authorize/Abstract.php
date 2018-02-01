@@ -661,14 +661,33 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
                 )
             );
 
-            $payment->setPaydata($payData);
-
-            $birthdayDate = $info->getPayoneCustomerDob();
-            if (empty($birthdayDate)) {
-                $birthdayDate = $this->getOrder()->getCustomerDob();
+            if ((bool)$info->getPayoneIsb2b() === true) {
+                $payData->addItem(
+                    new Payone_Api_Request_Parameter_Paydata_DataItem(
+                        array('key' => 'b2b', 'data' => 'yes')
+                    )
+                );
+                $payData->addItem(
+                    new Payone_Api_Request_Parameter_Paydata_DataItem(
+                        array('key' => 'company_id', 'data' => $info->getPayoneTradeRegistryNumber())
+                    )
+                );
+                $payData->addItem(
+                    new Payone_Api_Request_Parameter_Paydata_DataItem(
+                        array('key' => 'vat_id', 'data' => $info->getPayoneVatId())
+                    )
+                );
+            } else {
+                $birthdayDate = $info->getPayoneCustomerDob();
+                if (empty($birthdayDate)) {
+                    $birthdayDate = $this->getOrder()->getCustomerDob();
+                }
+                if ($birthdayDate) {
+                    $payment->setBirthday($this->formatBirthday($birthdayDate));
+                }
             }
 
-            $payment->setBirthday($this->formatBirthday($birthdayDate));
+            $payment->setPaydata($payData);
             
             $telephone = $info->getPayoneCustomerTelephone();
             if (empty($telephone)) {

@@ -46,8 +46,9 @@ class Payone_Core_Block_Payment_Method_Form_Ratepay extends Payone_Core_Block_Pa
     {
         // required for all countries
         // required only if customer didn't enter Dob in previous checkout step
+        // and if process is not B2B
         $customerDob = $this->getQuote()->getCustomerDob();
-        if (empty($customerDob)) {
+        if (empty($customerDob) && !$this->isB2BMode()) {
             return true;
         }
 
@@ -170,5 +171,17 @@ class Payone_Core_Block_Payment_Method_Form_Ratepay extends Payone_Core_Block_Pa
             return 0;
         }
     }
-    
+
+    /**
+     * Checks if the quote was created as B2B
+     * B2B = Company name is provided in the billing address
+     *
+     * @return bool
+     */
+    public function isB2BMode()
+    {
+        $sCompany = $this->getQuote()->getBillingAddress()->getCompany();
+
+        return !empty($sCompany);
+    }
 }
