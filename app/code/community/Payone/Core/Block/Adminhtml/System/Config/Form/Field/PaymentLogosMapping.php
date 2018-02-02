@@ -50,7 +50,7 @@ class Payone_Core_Block_Adminhtml_System_Config_Form_Field_PaymentLogosMapping
     {
         $this->addColumn(
             'method', array(
-            'label' => Mage::helper('payone_core')->__('Method'),
+            'label' => Mage::helper('payone_core')->__('PAYONE Method'),
             'style' => 'width:175px;',
             )
         );
@@ -64,7 +64,7 @@ class Payone_Core_Block_Adminhtml_System_Config_Form_Field_PaymentLogosMapping
 
         $this->addColumn(
             'size', array(
-                'label' => Mage::helper('payone_core')->__('Size'),
+                'label' => Mage::helper('payone_core')->__('Adjusted maximum size'),
                 'style' => 'width:125px',
             )
         );

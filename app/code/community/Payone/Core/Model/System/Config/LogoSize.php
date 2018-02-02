@@ -44,11 +44,11 @@ class Payone_Core_Model_System_Config_LogoSize extends Payone_Core_Model_System_
     public function toArray()
     {
         return array(
-            self::EXTRA_SMALL => 'Extra Small (xs)',
-            self::SMALL => 'Small (s)',
-            self::MEDIUM => 'Medium (m)',
-            self::LARGE => 'Large (l)',
-            self::EXTRA_LARGE => 'Extra Large (xl)',
+            self::EXTRA_SMALL => Mage::helper('payone_core')->__('Extra small') . ' (xs)',
+            self::SMALL => Mage::helper('payone_core')->__('Small') . ' (s)',
+            self::MEDIUM => Mage::helper('payone_core')->__('Medium') . ' (m)',
+            self::LARGE => Mage::helper('payone_core')->__('Large') . ' (l)',
+            self::EXTRA_LARGE => Mage::helper('payone_core')->__('Extra large') . ' (xl)',
         );
     }
 

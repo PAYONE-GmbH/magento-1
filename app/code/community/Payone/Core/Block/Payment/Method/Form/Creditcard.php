@@ -490,17 +490,25 @@ class Payone_Core_Block_Payment_Method_Form_Creditcard
 
         /** @var Payone_Core_Model_Domain_Config_Logos $logoModel */
         $logoModel = $this->getFactory()->getModelDomainConfigLogos();
-        foreach ($aConfig as &$entry) {
+
+        $validLogoConfig = array();
+        foreach ($configModel->getConfig() as $key => $entry) {
             $logo = $logoModel->getLogoById($entry['logo_id']);
-            if (!empty($logo)) {
-                $entry['url'] = $logo->getPath();
+            if (!empty($logo) && $logo->getEnabled() == 1) {
+                $validLogoConfig[$key] = array(
+                    'method' => $entry['method'],
+                    'size' => $entry['size'],
+                    'type' => $entry['type'],
+                    'logo_id' => $entry['logo_id']
+                );
+                $validLogoConfig[$key]['url'] = $logo->getPath();
                 if($logo->getType() == Payone_Core_Model_System_Config_LogoType::FILE) {
-                    $entry['url'] = Mage::getBaseUrl('media') . $entry['url'];
+                    $validLogoConfig[$key]['url'] = Mage::getBaseUrl('media') . $validLogoConfig[$key]['url'];
                 }
             }
         }
 
-        return $aConfig;
+        return $validLogoConfig;
     }
 
     public function getLogoSizeMap ()
@@ -508,5 +516,10 @@ class Payone_Core_Block_Payment_Method_Form_Creditcard
         /** @var Payone_Core_Model_System_Config_LogoSize $model */
         $model = $this->getFactory()->getModelLogoSize();
         return $model->toPixelSize();
+    }
+
+    public function getCreditCardRecognitionConfig ()
+    {
+        return $this->getConfigGeneral()->getPaymentCreditcard()->getCcTypeAutoRecognition();
     }
 }

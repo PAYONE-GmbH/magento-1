@@ -92,6 +92,8 @@ class Payone_Core_Block_Adminhtml_System_Config_Logos_Grid
                 'index' => 'image',
                 'width' => '100px',
                 'renderer' => 'Payone_Core_Block_Adminhtml_System_Config_ImageRenderer',
+                'filter' => false,
+                'sortable' => false,
             )
         );
 
@@ -102,7 +104,6 @@ class Payone_Core_Block_Adminhtml_System_Config_Logos_Grid
                 'align' => 'left',
                 'index' => 'label',
                 'filter' => false,
-                'sortable' => false,
             )
         );
 
@@ -113,7 +114,6 @@ class Payone_Core_Block_Adminhtml_System_Config_Logos_Grid
                 'align' => 'left',
                 'index' => 'size',
                 'filter' => false,
-                'sortable' => false,
             )
         );
 
@@ -124,18 +124,16 @@ class Payone_Core_Block_Adminhtml_System_Config_Logos_Grid
                 'align' => 'left',
                 'index' => 'type',
                 'filter' => false,
-                'sortable' => false,
             )
         );
 
         $this->addColumn(
             'path',
             array(
-                'header' => $this->helperPayoneCore()->__('Path'),
+                'header' => $this->helperPayoneCore()->__('Image path'),
                 'align' => 'left',
                 'index' => 'path',
                 'filter' => false,
-                'sortable' => false,
             )
         );
 
@@ -149,7 +147,6 @@ class Payone_Core_Block_Adminhtml_System_Config_Logos_Grid
                 'type' => 'options',
                 'options' => $this->getPayoneFactory()->getModelSystemConfigStatus()->toSelectArray(),
                 'filter' => false,
-                'sortable' => false,
             )
         );
 

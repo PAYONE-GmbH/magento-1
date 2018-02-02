@@ -285,7 +285,7 @@ class Payone_Core_Model_Config_Payment_Method
      * @var int
      */
     protected $amz_sync_mode = 0;
-    
+
     /**
      * Check if Method can be used in Country
      *
