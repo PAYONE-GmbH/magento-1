@@ -819,6 +819,16 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
                     $payment->setBirthday($this->formatBirthday($birthdayDate));
                 }
             }
+
+            $payData->addItem(
+                new Payone_Api_Request_Parameter_Paydata_DataItem(
+                    array(
+                        'key' => 'businessrelation',
+                        'data' => ((bool)$info->getPayoneIsb2b() === true) ? 'b2b' : 'b2c'
+                    )
+                )
+            );
+
             $payment->setPaydata($payData);
             $payment->setClearingsubtype();
         }
