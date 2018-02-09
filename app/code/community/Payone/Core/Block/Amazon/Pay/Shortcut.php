@@ -80,9 +80,20 @@ class Payone_Core_Block_Amazon_Pay_Shortcut extends Mage_Core_Block_Template
                 $this->_usePopupMode = true;
             }
 
-            if(strpos($_SERVER['HTTP_USER_AGENT'], 'FBAN/') !== false || strpos($_SERVER['HTTP_X_REQUESTED_WITH'], 'com.facebook.') !== false) {
-                // dont use popup mode for Facebook-in-app-browsers, since it doesnt work there
-                $this->_usePopupMode = false;
+            // check for Facebook-in-app-browser on iOS and Instagram-in-app-browser on iOS & ANDROID with HTTP_USER_AGENT
+            if(isset($_SERVER['HTTP_USER_AGENT'])){
+                if(strpos($_SERVER['HTTP_USER_AGENT'], 'FBAN/') !== false || strpos($_SERVER['HTTP_USER_AGENT'], 'Instagram') !== false) {
+                    // dont use popup mode for Facebook-in-app-browser & Instagram-in-app-browser since it doesnt work there
+                    $this->_usePopupMode = false;
+                }
+            }
+
+            // check for Facebook-in-app browser on ANDROID with HTTP_X_REQUESTED_WITH
+            if(isset($_SERVER['HTTP_X_REQUESTED_WITH'])){
+                if(strpos($_SERVER['HTTP_X_REQUESTED_WITH'], 'com.facebook.') !== false) {
+                    // dont use popup mode for Facebook-in-app-browsers, since it doesnt work there
+                    $this->_usePopupMode = false;
+                }
             }
         }
         return $this->_usePopupMode;
