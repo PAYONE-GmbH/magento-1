@@ -1215,3 +1215,11 @@ VAT ID number,Umsatzsteuer-ID
 "Image", "Bild"
 "Label", "Titel"
 "Image path", "Dateipfad"
+
+"When Enabled, the credit card type is recognized through card number. If Disabled, the type selector is always displayed.","<Übersetzen>"
+"This table shows the mapping between active payment methods and active logos. The original size is shown next to the logo name, but it can be resized (reduction only) in the third column.","<Übersetzen>"
+"Logo creation page","Logo-Erstellungsseite"
+"This section allows to register logo pictures.","In diesem Bereich können Sie Logo-Bilder registrieren."
+"If set to inactive, this logo will not be displayed and not selectable in the mapping page.","If set to inactive, this logo will not be displayed and not selectable in the mapping page.","<Übersetzen>"
+"If type is Online Image : Use the URL to online image. <br/> If type is Filesystem : Use the name of the file on the server, if already uploaded. It should be in the media directory.","If type is Online Image : Use the URL to online image. <br/> If type is Filesystem : Use the name of the file on the server, if already uploaded. It should be in the media directory.","<Übersetzen>"
+"Use only with Filesystem image type.","Verwenden Sie nur mit den Filesystem Image-Typ."

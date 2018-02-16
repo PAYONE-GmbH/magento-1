@@ -35,6 +35,7 @@ class Payone_Core_Block_Adminhtml_System_Config_Logos_Edit_Form extends Mage_Adm
             'title'     => Mage::helper('checkout')->__('Active'),
             'required'  => true,
             'options'	=> $this->_getYesNoArray(),
+            'note'   => Mage::helper('checkout')->__('If set to inactive, this logo will not be displayed and not selectable in the mapping page.')
         ));
         $fieldset->addField('label', 'text', array(
             'name'      => 'label',
@@ -60,11 +61,13 @@ class Payone_Core_Block_Adminhtml_System_Config_Logos_Edit_Form extends Mage_Adm
             'name'      => 'path',
             'label'     => Mage::helper('checkout')->__('Path'),
             'title'     => Mage::helper('checkout')->__('Path'),
+            'note'      => Mage::helper('checkout')->__('If type is Online Image : Use the URL to online image. <br/> If type is Filesystem : Use the name of the file on the server, if already uploaded. It should be in the media directory.'),
         ));
         $fieldset->addField('fileinputname', 'image', array(
             'name'      => 'fileinputname',
             'label'     => Mage::helper('checkout')->__('Upload'),
             'title'     => Mage::helper('checkout')->__('Upload'),
+            'note'      => Mage::helper('checkout')->__('Use only with Filesystem image type.'),
         ));
 
         $form->setValues($model->getData());
