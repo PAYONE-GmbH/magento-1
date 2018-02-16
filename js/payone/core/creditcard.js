@@ -278,7 +278,8 @@ PAYONE.Service.CreditCardCheck = function (handler, form, config) {
                 changeDisplayCcTypeSelect(useMethodAjax, 'inline');
             }
 
-            if (this.ccTypeAutoRecognition == 1) {
+            // FIXME : Iframe Recognition does not work. Selector must stay displayed
+            if (this.ccTypeAutoRecognition == 1 && useMethodAjax) {
                 changeDisplayCcTypeSelect(useMethodAjax, 'none');
             }
             else {
