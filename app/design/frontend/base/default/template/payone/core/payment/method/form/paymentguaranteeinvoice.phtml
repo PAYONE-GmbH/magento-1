@@ -41,6 +41,7 @@ $paymentConfigId = $this->getPaymentConfig()->getId();
                                value="" title="" class="required-entry input-text no-submit"/>
                     </div>
                 </div>
+                <input type="hidden" name="payment[payone_isb2b]" value="<?php echo (int)$this->isB2BMode(); ?>"/>
             <?php } ?>
             <?php if ($this->showBirthdayFields()) : ?>
                 <div id="<?php echo $code; ?>_birthday_wrap" class="field">
@@ -83,6 +84,7 @@ $paymentConfigId = $this->getPaymentConfig()->getId();
             <input type="hidden"
                    name="payment[payone_config_payment_method_id]"
                    value="<?php echo $paymentConfigId; ?>"/>
+            <input type="hidden" name="payment[payone_isb2b]" value="<?php echo (int)$this->isB2BMode(); ?>"/>
         </li>
     </ul>
 </fieldset>

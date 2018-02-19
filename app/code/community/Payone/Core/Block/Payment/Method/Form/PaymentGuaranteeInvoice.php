@@ -40,20 +40,16 @@ class Payone_Core_Block_Payment_Method_Form_PaymentGuaranteeInvoice
     }
 
     /**
+     * Checks if the quote was created as B2B
+     * B2B = Company name is provided in the billing address
+     *
      * @return bool
      */
     public function isB2BMode()
     {
-        /** @var Payone_Core_Model_Payment_Method_PaymentGuaranteeInvoice $method */
-        $method = $this->getMethod();
-        if ($method->getConfig()->getB2bMode()) {
-            $sCompany = $this->getQuote()->getBillingAddress()->getCompany();
-            if ($sCompany) {
-                return true;
-            }
-        }
+        $sCompany = $this->getQuote()->getBillingAddress()->getCompany();
 
-        return false;
+        return !empty($sCompany);
     }
 
     /**
