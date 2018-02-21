@@ -266,7 +266,7 @@ class Payone_Core_Checkout_Onepage_PaymentController extends Payone_Core_Control
             if($oContent) {
                 $this->getResponse()
                     ->clearHeaders()
-                    ->setHeader('Content-Type', 'application/pdf')
+                    ->setHeader('Content-Type', 'application/pdf', true)
                     ->setHeader('Content-Disposition', 'attachment; filename="'.$sFilename.'"')
                     ->setBody($oContent);
                 return;

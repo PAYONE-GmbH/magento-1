@@ -216,7 +216,7 @@ class Payone_Core_Adminhtml_Payonecore_System_Config_PaymentController
 
     public function initAmazonAction()
     {
-        $this->getResponse()->setHeader('Content-Type', 'application/json');
+        $this->getResponse()->setHeader('Content-Type', 'application/json', true);
 
         $id = $this->getRequest()->getParam('id');
         $configHelper = $this->getFactory()->helperConfig();

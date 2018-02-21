@@ -60,7 +60,7 @@ class Payone_Core_AmazonPayController extends Payone_Core_Controller_Abstract
     public function progressAction()
     {
         $response = $this->getResponse();
-        $response->setHeader('Content-Type', 'application/json');
+        $response->setHeader('Content-Type', 'application/json', true);
         $params = $this->getRequest()->getParams();
         $checkoutSteps = [
             'confirmSelection',
