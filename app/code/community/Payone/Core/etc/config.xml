@@ -925,6 +925,7 @@
                 <wallet_alipay>a:1:{s:18:"_1343137411652_652";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</wallet_alipay>
                 <financing>a:1:{s:18:"_1468430123551_512";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</financing>
                 <amazon_pay>a:1:{s:18:"_1499859127882_882";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</amazon_pay>
+                <payment_guarantee_invoice>a:1:{s:18:"_1499859127882_882";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</payment_guarantee_invoice>
             </status_mapping>
         </payone_general>
         <payone_protect>
