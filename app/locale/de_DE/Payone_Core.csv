@@ -836,6 +836,10 @@
 "Here you can configure which types of online wallets are available during checkout.","Hier können Sie definieren welche Walletarten Sie im Checkout anbieten wollen."
 "Currently, only PayPal Express is supported.","Aktuell steht hier nur die Walletart PayPal Express zur Verfügung.",
 
+"Activate Overcapture","Overcapture zulassen"
+"When set to <b>yes</b>, this option allows the overcapture mechanism.","Wenn sie auf <b>Ja</b> gesetzt ist, erlaubt diese Option den Overcapture Mechanismus."
+"This option can only be used after consulting Paydirekt.","Diese Option kann nur nach Rücksprache mit Paydirekt verwendet werden."
+"<b>Warning:</b> This option can only be used after consulting Paydirekt.","<b>Warning:</b> Diese Option kann nur nach Rücksprache mit Paydirekt verwendet werden."
 
 "TEMPLATE","/app/design/adminhtml/default/default/template/payone/core/system/config/tooltip/protect/addresscheck.phtml"
 "Here you can activate address validation with the following configuration options.","Hier aktivieren Sie die Prüfung der Adresse mit allen folgenden Konfigurationsmöglichkeiten."
