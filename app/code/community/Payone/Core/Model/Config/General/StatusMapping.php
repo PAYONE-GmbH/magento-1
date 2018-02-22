@@ -182,6 +182,13 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
     protected $financing = null;
 
     /**
+     * Payment method payment_guarantee_invoice
+     *
+     * @var null
+     */
+    protected $paymentGuaranteeInvoice = null;
+
+    /**
      * @param array $data
      */
     public function init(array $data)
@@ -753,5 +760,21 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
     public function getFinancing()
     {
         return $this->financing;
+    }
+
+    /**
+     * @param null $paymentGuaranteeInvoice
+     */
+    public function setPaymentGuaranteeInvoice($paymentGuaranteeInvoice)
+    {
+        $this->paymentGuaranteeInvoice = $paymentGuaranteeInvoice;
+    }
+
+    /**
+     * @return null
+     */
+    public function getPaymentGuaranteeInvoice()
+    {
+        return $this->paymentGuaranteeInvoice;
     }
 }
