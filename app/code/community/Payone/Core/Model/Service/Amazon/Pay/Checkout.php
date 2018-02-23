@@ -255,7 +255,7 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
         $checkoutHelper = Mage::helper('checkout');
         $requiredAgreements = $checkoutHelper->getRequiredAgreementIds();
         if ($requiredAgreements) {
-            $postedAgreements = array_keys(count($params['agreement']) ? $params['agreement'] : []);
+            $postedAgreements = array_keys(isset($params['agreement']) ? $params['agreement'] : []);
             $diff = array_diff($requiredAgreements, $postedAgreements);
             if ($diff) {
                 $agreementsErrorMessage = Mage::helper('payone_core')
