@@ -71,7 +71,7 @@ class Payone_Core_RatepayController extends Mage_Core_Controller_Front_Action
         
         $this->getResponse()
             ->clearHeaders()
-            ->setHeader('Content-Type', 'text/html')
+            ->setHeader('Content-Type', 'text/html', true)
             ->setBody($html);
         return;
     }
@@ -121,7 +121,7 @@ class Payone_Core_RatepayController extends Mage_Core_Controller_Front_Action
         
         $this->getResponse()
             ->clearHeaders()
-            ->setHeader('Content-Type', 'text/html')
+            ->setHeader('Content-Type', 'text/html', true)
             ->setBody($html);
         return;
     }
