@@ -480,4 +480,8 @@ class Payone_Core_Block_Payment_Method_Form_Creditcard
         return $gateways;
     }
     
+    public function getCreditCardRecognitionConfig ()
+    {
+        return $this->getConfigGeneral()->getPaymentCreditcard()->getCcTypeAutoRecognition();
+    }
 }

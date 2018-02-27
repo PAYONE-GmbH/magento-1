@@ -30,6 +30,10 @@
 $code = $this->getMethodCode();
 $iCheckValidation = (int)$this->showCvcInput();
 ?>
+<script type="text/javascript">
+    var ccTypeAutoRecognition = '<?php echo $this->getCreditCardRecognitionConfig() ?>';
+    payone.ccTypeAutoRecognition = ccTypeAutoRecognition;
+</script>
 <fieldset class="form-list">
     <?php if($this->getCCRequestType() == 'AJAX') { ?>
         <ul id="payment_form_<?php echo $code ?>" style="display:none">
@@ -173,6 +177,7 @@ $iCheckValidation = (int)$this->showCvcInput();
                             </option>
                         <?php endforeach; ?>
                     </select>
+                    <span id="<?php echo $code ?>_cc_type_logo"><img style="display: inline; vertical-align: bottom" src="" /></span>
                     <input type="hidden" id="<?php echo $code ?>_cc_type" name="payment[cc_type]" value="<?php echo $this->getCreditCardType();?>" class=""/>
                 </div>
             </li>
@@ -183,20 +188,20 @@ $iCheckValidation = (int)$this->showCvcInput();
                     <span class="inputIframe" id="cardpan"></span>
                 </div>
             </li>
-                <li>
-                    <div class="input-box" id="<?php echo $code ?>_cc_cid_div"
-                        <label for="cvcInput"><?php echo $this->__('Card Verification Number') ?>&nbsp;<span class="required">*</span></label><br class="clear"/>
-                        <span id="cardcvc2" class="inputIframe"></span>
+            <li>
+                <div class="input-box" id="<?php echo $code ?>_cc_cid_div"
+                    <label for="cvcInput"><?php echo $this->__('Card Verification Number') ?>&nbsp;<span class="required">*</span></label><br class="clear"/>
+                    <span id="cardcvc2" class="inputIframe"></span>
 
-                        <a href="#" class="cvv-payone-what-is-this"><?php echo $this->__('What is this?') ?></a>
+                    <a href="#" class="cvv-payone-what-is-this"><?php echo $this->__('What is this?') ?></a>
 
-                        <div class="tool-tip" id="payment-tool-tip-payone" style="display:none;">
-                            <div class="tool-tip-payone-content">
-                                <img src="<?php echo $this->getSkinUrl('images/payone/cvv.gif') ?>" alt="<?php echo Mage::helper('core')->quoteEscape($this->__('Card Verification Number Visual Reference')) ?>" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Card Verification Number Visual Reference')) ?>" />
-                            </div>
+                    <div class="tool-tip" id="payment-tool-tip-payone" style="display:none;">
+                        <div class="tool-tip-payone-content">
+                            <img src="<?php echo $this->getSkinUrl('images/payone/cvv.gif') ?>" alt="<?php echo Mage::helper('core')->quoteEscape($this->__('Card Verification Number Visual Reference')) ?>" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Card Verification Number Visual Reference')) ?>" />
                         </div>
                     </div>
-                </li>
+                </div>
+            </li>
             <li>
                 <div class="input-box">
                     <label for="expireInput"><?php echo $this->__('Expiration Date') ?>&nbsp;<span class="required">*</span></label>
@@ -239,7 +244,9 @@ $iCheckValidation = (int)$this->showCvcInput();
             </li>
         </ul>
         <script>
-            var request, fieldconfig;
+            var request, fieldconfig, supportedCardtypes, ccTypeAutoRecognition;
+            ccTypeAutoRecognition = '<?php echo $this->getCreditCardRecognitionConfig() ?>';
+            supportedCardtypes = ["V", "M"];
             fieldconfig = {
                 fields: {
                     cardpan: {
@@ -312,6 +319,23 @@ $iCheckValidation = (int)$this->showCvcInput();
                         width: "<?php echo $this->getHostedParam('Iframe_width'); ?>",
                         height: "<?php echo $this->getHostedParam('Iframe_height'); ?>"
                     }
+                },
+                autoCardtypeDetection: {
+                    supportedCardtypes: supportedCardtypes,
+                    callback: function(detectedCardtype) {
+                        detectedCardtype = detectedCardtype.toString();
+                        var elementCcType = $('payone_creditcard_cc_type_select');
+                        var url = 'https://cdn.pay1.de/cc/' + detectedCardtype.toLowerCase() + '/s/default.png';
+
+                        var image = $('payone_creditcard_cc_type_logo').children[0];
+                        image.style.display = 'none';
+                        image.src = url;
+                        if (supportedCardtypes.include(detectedCardtype)) {
+                            elementCcType.value = "3_" + detectedCardtype;
+                            image.style.display = 'inline';
+                        }
+                    },
+                    deactivate: (ccTypeAutoRecognition != 1)
                 },
 
                 <?php if($this->getHostedParam('Errors_active') == "true") { ?>
