@@ -64,23 +64,25 @@ if (!empty($config)) :
             });
         };
     }
-    window.onAmazonPaymentsReadyArray.push(function () {
-        // render the button here
-        var authRequest, loginOptions;
-        OffAmazonPayments.Button('<?php echo $buttonIdentifier; ?>', '<?php echo $config->getAmzSellerId(); ?>', {
-            type: '<?php echo $buttonType; ?>',
-            color: '<?php echo $buttonColor; ?>',
-            language: '<?php echo $buttonLanguage; ?>',
-            size: 'medium',
-            authorization: function () {
-                loginOptions = {
-                    scope: 'payments:billing_address payments:shipping_address payments:widget profile',
-                    popup: <?php echo $this->usePopupMode() ? 'true' : 'false' ?>
-                };
-                authRequest = amazon.Login.authorize(loginOptions, '<?php echo $returnUrl; ?>');
-            }
+    if (document.getElementById('<?php echo $buttonIdentifier; ?>')) {
+        window.onAmazonPaymentsReadyArray.push(function () {
+            // render the button here
+            var authRequest, loginOptions;
+            OffAmazonPayments.Button('<?php echo $buttonIdentifier; ?>', '<?php echo $config->getAmzSellerId(); ?>', {
+                type: '<?php echo $buttonType; ?>',
+                color: '<?php echo $buttonColor; ?>',
+                language: '<?php echo $buttonLanguage; ?>',
+                size: 'medium',
+                authorization: function () {
+                    loginOptions = {
+                        scope: 'payments:billing_address payments:shipping_address payments:widget profile',
+                        popup: <?php echo $this->usePopupMode() ? 'true' : 'false' ?>
+                    };
+                    authRequest = amazon.Login.authorize(loginOptions, '<?php echo $returnUrl; ?>');
+                }
+            });
         });
-    });
+    }
 </script>
 <?php if ($this::$counter <= 1) : ?>
     <!-- Load script Widgets.js from Amazon -->
