@@ -325,14 +325,9 @@ $iCheckValidation = (int)$this->showCvcInput();
                     callback: function(detectedCardtype) {
                         detectedCardtype = detectedCardtype.toString();
                         var elementCcType = $('payone_creditcard_cc_type_select');
-                        var url = 'https://cdn.pay1.de/cc/' + detectedCardtype.toLowerCase() + '/s/default.png';
-
-                        var image = $('payone_creditcard_cc_type_logo').children[0];
-                        image.style.display = 'none';
-                        image.src = url;
                         if (supportedCardtypes.include(detectedCardtype)) {
                             elementCcType.value = "3_" + detectedCardtype;
-                            image.style.display = 'inline';
+                            elementCcType.onchange();
                         }
                     },
                     deactivate: (ccTypeAutoRecognition != 1)
