@@ -52,9 +52,7 @@ class Payone_Core_Block_Adminhtml_Sales_Order_View_Tab_TransactionStatus
 
     public function getTabLabel()
     {
-        return '<span class="payone-tab">' .
-                Mage::helper('payone_core')->__('Protocol - Transaction') .
-                '</span>';
+        return "[BS Payone] " . Mage::helper('payone_core')->__('Protocol - Transaction');
     }
 
     public function isHidden()
