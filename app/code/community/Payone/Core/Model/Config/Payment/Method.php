@@ -285,7 +285,13 @@ class Payone_Core_Model_Config_Payment_Method
      * @var int
      */
     protected $amz_sync_mode = 0;
-    
+
+    /**
+     * @var int
+     *
+     */
+    protected $wallet_paydirekt_enable_overcapture = 0;
+
     /**
      * Check if Method can be used in Country
      *
@@ -1361,5 +1367,21 @@ class Payone_Core_Model_Config_Payment_Method
     public function getAmzSyncMode()
     {
         return $this->amz_sync_mode;
+    }
+
+    /**
+     * @param int $wallet_paydirekt_enable_overcapture
+     */
+    public function setWalletPaydirektEnableOvercapture($wallet_paydirekt_enable_overcapture)
+    {
+        $this->wallet_paydirekt_enable_overcapture = $wallet_paydirekt_enable_overcapture;
+    }
+
+    /**
+     * @return int
+     */
+    public function getWalletPaydirektEnableOvercapture()
+    {
+        return $this->wallet_paydirekt_enable_overcapture;
     }
 }
