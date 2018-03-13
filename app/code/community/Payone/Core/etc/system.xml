@@ -1399,7 +1399,18 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    <fields></fields>
+                    <fields>
+                        <wallet_paydirekt_enable_overcapture translate="label,comment">
+                            <label>Activate Overcapture</label>
+                            <comment>This option can only be used after consulting Paydirekt.</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>300</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </wallet_paydirekt_enable_overcapture>
+                    </fields>
                 </template_wallet_paydirekt>
                 <template_wallet_paypal_express translate="label" module="payone_core">
                     <label>Paypal Express</label>

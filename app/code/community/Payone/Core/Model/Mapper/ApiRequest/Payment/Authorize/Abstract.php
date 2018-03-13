@@ -547,19 +547,28 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
         //Wallet PayDirekt
         elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_WalletPaydirekt) {
             $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_Wallet();
+            $payData = new Payone_Api_Request_Parameter_Paydata_Paydata();
+
+            if ($paymentMethod->getConfig()->getWalletPaydirektEnableOvercapture()) {
+                $payData->addItem(
+                    new Payone_Api_Request_Parameter_Paydata_DataItem(
+                        array('key' => 'over_capture', 'data' => 'yes')
+                    )
+                );
+            }
 
             $payment->setWallettype(Payone_Api_Enum_WalletType::PAYDIREKT);
             $isRedirect = true;
 
             if ($this->_getWalletType() == 'PDT' && $this->getOrder()->getIsVirtual()) { // is Paydirekt and virtual/download?
-                $payData = new Payone_Api_Request_Parameter_Paydata_Paydata();
                 $payData->addItem(
                     new Payone_Api_Request_Parameter_Paydata_DataItem(
                         array('key' => 'shopping_cart_type', 'data' => 'DIGITAL')
                     )
                 );
-                $payment->setPaydata($payData);
             }
+
+            $payment->setPaydata($payData);
         }
         //Wallet PayPal Express
         elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_WalletPaypalExpress) {
@@ -650,11 +659,13 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
                     array('key' => 'customer_allow_credit_inquiry', 'data' => 'yes') // hardcoded by concept
                 )
             );
-            $payData->addItem(
-                new Payone_Api_Request_Parameter_Paydata_DataItem(
-                    array('key' => 'device_token', 'data' => $checkoutSession->getRatePayFingerprint()) 
-                )
-            );
+            if ($checkoutSession->getRatePayFingerprint()) { // MAGE-347 only in frontend
+                $payData->addItem(
+                    new Payone_Api_Request_Parameter_Paydata_DataItem(
+                        array('key' => 'device_token', 'data' => $checkoutSession->getRatePayFingerprint())
+                    )
+                );
+            }
             $payData->addItem(
                 new Payone_Api_Request_Parameter_Paydata_DataItem(
                     array('key' => 'shop_id', 'data' => $info->getPayoneRatepayShopId())
