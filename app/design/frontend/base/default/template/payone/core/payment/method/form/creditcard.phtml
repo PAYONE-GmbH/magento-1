@@ -325,9 +325,18 @@ $iCheckValidation = (int)$this->showCvcInput();
                     callback: function(detectedCardtype) {
                         detectedCardtype = detectedCardtype.toString();
                         var elementCcType = $('payone_creditcard_cc_type_select');
+                        var pattern = '.*_' + detectedCardtype;
+
                         if (supportedCardtypes.include(detectedCardtype)) {
-                            elementCcType.value = "3_" + detectedCardtype;
-                            elementCcType.onchange();
+                            for(i = 0; i < elementCcType.options.length; i++){
+                                var value = elementCcType.options[i].value;
+                                if (value.match(pattern)) {
+                                    elementCcType.value = value;
+                                    elementCcType.onchange();
+
+                                    break;
+                                }
+                            }
                         }
                     },
                     deactivate: (ccTypeAutoRecognition != 1)
