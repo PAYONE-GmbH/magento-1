@@ -33,7 +33,7 @@ $helper = Mage::helper('payone_core');
 $useSqlInstaller = $helper->mustUseSqlInstaller();
 
 if ($useSqlInstaller) {
-    $sql = file_get_contents(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'upgrade-4.1.2-4.1.3.sql');
+    $sql = file_get_contents(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'upgrade-4.1.3-4.1.4.sql');
 
     $installSqlConfig = array(
         '{{payone_config_payment_method}}' => $tablePaymentMethod
