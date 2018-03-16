@@ -867,13 +867,11 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
         if($aPostPayment && array_key_exists('payone_wallet_type', $aPostPayment)) {
             $sType = $aPostPayment['payone_wallet_type'];
         } else {
-            $sType = Payone_Api_Enum_WalletType::PAYPAL_EXPRESS;
-        }
-
-        if($aPostPayment && array_key_exists('payone_wallet_paydirekt_type', $aPostPayment)) {
-            $sType = $aPostPayment['payone_wallet_paydirekt_type'];
-        } else {
-            $sType = Payone_Api_Enum_WalletType::PAYPAL_EXPRESS;
+            if($aPostPayment && array_key_exists('payone_wallet_paydirekt_type', $aPostPayment)) {
+                $sType = $aPostPayment['payone_wallet_paydirekt_type'];
+            } else {
+                $sType = Payone_Api_Enum_WalletType::PAYPAL_EXPRESS;
+            }
         }
 
         return $sType;
