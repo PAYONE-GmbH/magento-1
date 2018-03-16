@@ -33,6 +33,8 @@ PAYONE.Service.CreditCardCheck = function (handler, form, config) {
     this.origMethod = '';
     this.iframes = false;
     this.ccTypeAutoRecognition = 0;
+    this.configActivatedCcTypes = '';
+    this.supportedCardTypes = null;
 
     /**
      * Enhances payment.save and runs Validate and CreditCardCheck for CreditCards
@@ -232,6 +234,14 @@ PAYONE.Service.CreditCardCheck = function (handler, form, config) {
         }
 
         return this.config;
+    };
+
+    this.getSupportedCardTypes = function () {
+        if (this.supportedCardTypes === null) {
+            this.supportedCardTypes = this.configActivatedCcTypes.split(',');
+        }
+
+        return this.supportedCardTypes;
     };
 };
 

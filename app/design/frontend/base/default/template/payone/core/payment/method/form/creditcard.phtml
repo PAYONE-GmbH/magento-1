@@ -31,8 +31,8 @@ $code = $this->getMethodCode();
 $iCheckValidation = (int)$this->showCvcInput();
 ?>
 <script type="text/javascript">
-    var ccTypeAutoRecognition = '<?php echo $this->getCreditCardRecognitionConfig() ?>';
-    payone.ccTypeAutoRecognition = ccTypeAutoRecognition;
+    payone.ccTypeAutoRecognition = '<?php echo $this->getCreditCardRecognitionConfig() ?>';
+    payone.configActivatedCcTypes = '<?php echo implode(',', $this->getRawCcType()) ?>';
 </script>
 <fieldset class="form-list">
     <?php if($this->getCCRequestType() == 'AJAX') { ?>
@@ -244,9 +244,10 @@ $iCheckValidation = (int)$this->showCvcInput();
             </li>
         </ul>
         <script>
-            var request, fieldconfig, supportedCardtypes, ccTypeAutoRecognition;
-            ccTypeAutoRecognition = '<?php echo $this->getCreditCardRecognitionConfig() ?>';
-            supportedCardtypes = ["V", "M"];
+            var request, fieldconfig, ccTypeAutoRecognition;
+            ccTypeAutoRecognition = payone.ccTypeAutoRecognition ;
+            supportedCardtypes = payone.getSupportedCardTypes();
+
             fieldconfig = {
                 fields: {
                     cardpan: {

@@ -484,4 +484,17 @@ class Payone_Core_Block_Payment_Method_Form_Creditcard
     {
         return $this->getConfigGeneral()->getPaymentCreditcard()->getCcTypeAutoRecognition();
     }
+
+    public function getRawCcType()
+    {
+        $ccTypes = array();
+        foreach (array_keys($this->getTypes()) as $configCcType) {
+            $typeDetails = explode('_', $configCcType);
+            if(isset($typeDetails[1])) {
+                array_push($ccTypes, $typeDetails[1]);
+            }
+        }
+
+        return $ccTypes;
+    }
 }
