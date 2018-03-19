@@ -1203,3 +1203,5 @@
 "Notice: Please verify your payment information or choose another method.","Hinweis: Bitte überprüfen Sie Ihre Daten oder wählen Sie eine andere Zahlart."
 "Notice: The shipping method cannot be changed at this time.","Hinweis: Die Versandart kann zu diesem Zeitpunkt nicht geändert werden."
 "Your session has expired. Please sign in again by clicking on the Amazon Pay Button.","Ihre Sitzung ist abgelaufen. Bitte loggen Sie sich erneut ein, indem Sie auf den Amazon Pay Button klicken."
+"Enable Credit Card type auto recognition","Kreditkartennummer automatische Erkennung aktivieren"
+"When Enabled, the credit card type is recognized through card number. If Disabled, the type selector is always displayed.","<Übersetzen>"

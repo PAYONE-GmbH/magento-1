@@ -32,6 +32,9 @@ PAYONE.Service.CreditCardCheck = function (handler, form, config) {
     this.config = config;
     this.origMethod = '';
     this.iframes = false;
+    this.ccTypeAutoRecognition = 0;
+    this.configActivatedCcTypes = '';
+    this.supportedCardTypes = null;
 
     /**
      * Enhances payment.save and runs Validate and CreditCardCheck for CreditCards
@@ -72,6 +75,7 @@ PAYONE.Service.CreditCardCheck = function (handler, form, config) {
             if(elementCcType.length > 1 && $('payone_cc_check_validation_types').value.indexOf(ccType) != -1){
                 iFrameCvc.hide();
              }
+            updateCcLogo(ccType);
         }
 
         aConfig = this.getConfig();
@@ -95,11 +99,12 @@ PAYONE.Service.CreditCardCheck = function (handler, form, config) {
                     iFrameCvc.show();
                 }
                 iframes.setCardType(ccType); // on change: set new type of credit card to process
+                updateCcLogo(ccType);
             }
         };
         this.iframes = iframes;
         return iframes;
-    }
+    };
 
     /**
      * Trigger CVC Code as configured
@@ -229,6 +234,14 @@ PAYONE.Service.CreditCardCheck = function (handler, form, config) {
         }
 
         return this.config;
+    };
+
+    this.getSupportedCardTypes = function () {
+        if (this.supportedCardTypes === null) {
+            this.supportedCardTypes = this.configActivatedCcTypes.split(',');
+        }
+
+        return this.supportedCardTypes;
     };
 };
 
@@ -481,3 +494,12 @@ function processPayoneResponseCCHosted(response)
 {
     payone.handleResponseCreditcardCheck(response, true);
 }
+
+function updateCcLogo(detectedCardtype)
+{
+    var url = 'https://cdn.pay1.de/cc/' + detectedCardtype.toLowerCase() + '/s/default.png';
+    var image = $('payone_creditcard_cc_type_logo').children[0];
+    image.style.display = 'none';
+    image.src = url;
+    image.style.display = 'inline';
+};
