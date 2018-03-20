@@ -1,5 +1,24 @@
 # Changelog
 
+## 4.1.4
+**Features**
+
+* RatePay B2B Invoice added
+* In case of guaratee rejection, Payone Safe Invoice is not displayed again to the customer
+* Enforce Amazon Pay redirect mode for in-app browsers (#161, thanks @gndk)
+* Sending the overcapture flag for PayDirekt now possible
+* RatePay backend orders are now possible
+* Automatically recognize credit card type after 6 digits of PAN
+
+**Bugfixes**
+* Fixed wrong license identifier in composer.json
+* Fixed missing modman directive (#176, thanks @tim-bezhashvyly)
+* Fixed "undefined index" problems (#152, thanks @norgeindian; #168, thanks @Schrank)
+* Headers are now set correctly when using FastCGI
+* Fixed some bugs introduced with Mage 1.9.3.x (#165)
+* Re-activated the conversion of reference parameters for PayDirekt to honor disallowed chars
+* Removed HTML from backend labels for 1.9.3.8 compat
+
 ## 4.1.2
 **Features**
 
