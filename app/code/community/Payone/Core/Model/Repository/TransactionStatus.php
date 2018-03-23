@@ -51,6 +51,18 @@ class Payone_Core_Model_Repository_TransactionStatus
         return $sString === mb_convert_encoding(mb_convert_encoding($sString, "UTF-32", "UTF-8"), "UTF-8", "UTF-32");
     }
 
+    public function encodeElement($mElement)
+    {
+        if (is_array($mElement)) {
+            foreach ($mElement as $sKey => $mValue) {
+                $mElement[$sKey] = $this->encodeElement($mValue);
+            }
+        } elseif (is_scalar($mElement) && !$this->isUTF8($mElement)) {
+            $mElement = utf8_encode($mElement);
+        }
+        return $mElement;
+    }
+
     /**
      * @param Payone_TransactionStatus_Request_Interface $request
      * @param Payone_TransactionStatus_Response_Interface $response
@@ -74,7 +86,8 @@ class Payone_Core_Model_Repository_TransactionStatus
         }
 
         $aRequest = Mage::app()->getRequest()->getParams();
-        $data['raw_request'] = serialize($aRequest);
+        $aRequest = $this->encodeElement($aRequest);
+        $data['raw_request'] = json_encode($aRequest);
         if (!$this->isUTF8($data['raw_request'])) {
             $data['raw_request'] = utf8_encode($data['raw_request']);
         }

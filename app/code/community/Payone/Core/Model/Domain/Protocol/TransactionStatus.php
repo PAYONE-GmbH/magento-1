@@ -331,7 +331,13 @@ class Payone_Core_Model_Domain_Protocol_TransactionStatus extends Mage_Core_Mode
     public function getRawRequestArray()
     {
         if(!empty($this->_data['raw_request'])) {
-            $aRaw = unserialize($this->_data['raw_request']);
+            $aRaw = json_decode($this->_data['raw_request'], true);
+            if (!$aRaw) { // request used to be serialized in prior versions -> try to unserialize
+                $aRaw = unserialize($this->_data['raw_request']);
+                if (!$aRaw) { // if unserialize didnt work, try it again with utf8_decode
+                    $aRaw = unserialize(utf8_decode($this->_data['raw_request']));
+                }
+            }
             if($aRaw) {
                 return $aRaw;
             }
