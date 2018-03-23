@@ -73,7 +73,10 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Capture
         }
 
         $paymentMethod = $this->getPaymentMethod();
-        if($paymentMethod instanceof Payone_Core_Model_Payment_Method_Ratepay) {
+        if (
+            $paymentMethod instanceof Payone_Core_Model_Payment_Method_Ratepay ||
+            $paymentMethod instanceof Payone_Core_Model_Payment_Method_RatepayDirectDebit
+        ) {
             $info = $paymentMethod->getInfoInstance();
 
             $payData = new Payone_Api_Request_Parameter_Paydata_Paydata();

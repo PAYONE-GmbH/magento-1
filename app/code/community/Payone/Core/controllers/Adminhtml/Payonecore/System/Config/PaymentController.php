@@ -149,7 +149,10 @@ class Payone_Core_Adminhtml_Payonecore_System_Config_PaymentController
                 );
                 Mage::getSingleton('adminhtml/session')->setFormData(false);
 
-                if ($model->getCode() == 'ratepay' && $model->getId()) {
+                if (
+                    ($model->getCode() == 'ratepay' || $model->getCode() == 'ratepay_direct_debit') &&
+                    $model->getId()
+                ) {
                     // redirect to edit-page so that the ratepay shop-IDs get requested from API
                     $this->_redirect('*/*/edit', array('id' => $model->getId(), '_current' => true));
                     return;
