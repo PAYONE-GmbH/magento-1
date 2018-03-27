@@ -78,6 +78,18 @@ class Payone_Core_Model_Service_TransactionStatus_Execute extends Payone_Core_Mo
     {
         $storeId = $transactionStatus->getStoreId();
 
+        /**
+         * Check if the Store ID exists, if not fetch the order from the reference
+         */
+        if (is_null($storeId)) {
+            $order = $this->getFactory()->getModelSalesOrder();
+            $order->loadByIncrementId($transactionStatus->getReference());
+
+            if ($order && $order->getId()) {
+                $storeId = $order->getStoreId();
+            }
+        }
+
         $this->helper()->logCronjobMessage("ID: {$transactionStatus->getId()} - Execute - Execute TransactionStatus action: {$transactionStatus->getTxaction()} - store-id: {$storeId}", $storeId);
 
         $storeBefore = $this->getApp()->getStore();
