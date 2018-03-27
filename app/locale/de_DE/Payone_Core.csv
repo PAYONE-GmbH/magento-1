@@ -1212,7 +1212,7 @@
 "Ratepay Direct Debit","Ratepay Lastschrift"
 "Creditors ID: ","Gläubiger-ID: "
 "Mandate reference: (will be sent after the purchase)","Mandatsreferenz: (wird nach Kaufabschluss übermittelt)"
-"Please enter your bank details:","Bitte geben Sie Ihre Bankdatenein:"
+"Please enter your bank details:","Bitte geben Sie Ihre Bankdaten ein:"
 "Entered IBAN is not from an authorised SEPA country.","Die eingegebene IBAN stammt nicht von einem autorisierten SEPA-Land."
 "Read the consent to the SEPA mandate","Einwilligungserklärung zum SEPA-Mandat lesen"
 "I hereby consent to the forwarding of my data to %s according to %s and authorize them to collect payments related to this purchase contract from my account mentioned above by direct debit.","Ich willige hiermit in die Weiterleitung meiner Daten an %s gemäß %s ein und ermächtige diese, mit diesem Kaufvertrag in Zusammenhang stehende Zahlungen von meinem o.a. Konto mittels Lastschrift einzuziehen."

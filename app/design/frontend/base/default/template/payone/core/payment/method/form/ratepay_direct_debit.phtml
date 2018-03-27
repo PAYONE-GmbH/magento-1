@@ -60,7 +60,7 @@ $accountOwner = $this->getAccountOwner();
         </li>
 
         <p>
-            <?php echo $this->__('Bitte geben Sie Ihre Bankdatenein:'); ?>
+            <?php echo $this->__('Please enter your bank details:'); ?>
         </p>
 
         <li class="fields">
@@ -89,14 +89,14 @@ $accountOwner = $this->getAccountOwner();
                        value="<?php echo $this->strToXXX($this->getSavedCustomerData('payone_sepa_iban'));?>"
                        autocomplete="off" maxlength="34"
                        onchange="inputToUppaerCaseAndNumbers(this); copyDebitPaymentSepaIban('<?php echo $code ?>'); checkIbanSEPACode('<?php echo $code ?>','<?php echo $allowedSEPACountries; ?>');"
-                       oninput="inputToUppaerCaseAndNumbers(this); copyDebitPaymentSepaIban('<?php echo $code ?>'); checkIbanSEPACode('<?php echo $code ?>', '<?php echo $allowedSEPACountries; ?>');"/>
+                       oninput="inputToUppaerCaseAndNumbers(this); copyDebitPaymentSepaIban('<?php echo $code ?>'); checkIbanSEPACode('<?php echo $code ?>', '<?php echo $allowedSEPACountries; ?>');toggleBicField(this, '<?php echo $code ?>')"/>
                 <input type="hidden" id="<?php echo $code ?>_sepa_iban" name="payment[payone_sepa_iban]"
                        value="<?php echo $this->getSavedCustomerData('payone_sepa_iban');?>">
             </div>
         </li>
 
-        <li id="input_box_payone_sepa_bic">
-            <div class="input-box">
+        <li class="fields" id="<?php echo $code ?>_section_sepa_bic">
+            <div class="field">
                 <label for="<?php echo $code ?>_sepa_bic">
                     <?php echo $this->__('BIC') ?>
                 </label>

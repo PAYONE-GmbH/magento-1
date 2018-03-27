@@ -726,7 +726,7 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
 
             if (!empty($iban)) {
                 $payment->setIban(strtoupper($iban));
-                if(!empty($bic)) {
+                if(!empty($bic) && strtoupper(substr($iban,0,2)) !== 'DE') {
                     $payment->setBic(strtoupper($bic)); // ensure bic and iban are sent uppercase
                 }
             }

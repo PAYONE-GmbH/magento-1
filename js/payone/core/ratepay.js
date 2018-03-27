@@ -240,3 +240,16 @@ function toggleRatepayDirectDebitOverlay(sCode)
     var element = document.getElementById(sCode + '_overlay');
     element.toggle();
 }
+
+function toggleBicField(ibanEl, sCode)
+{
+    var countryCode = ibanEl.value.substring(0,2);
+    var bicEl = $(sCode + '_section_sepa_bic');
+
+    if (countryCode === 'DE') {
+        bicEl.hide()
+    }
+    else {
+        bicEl.show()
+    }
+}
