@@ -133,6 +133,12 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
      */
     protected $ratepay = null;
     /**
+     * Payment method $ratepayDirectDebit
+     *
+     * @var null
+     */
+    protected $ratepayDirectDebit = null;
+    /**
      * Payment method payolution
      *
      * @var null
@@ -617,6 +623,26 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
     public function getRatepay()
     {
         return $this->ratepay;
+    }
+
+    /**
+     * @param $ratepayDirectDebit
+     */
+    public function setRatepayDirectDebit($ratepayDirectDebit)
+    {
+        if (is_string($ratepayDirectDebit)) {
+            $ratepayDirectDebit = $this->initValue($ratepayDirectDebit);
+        }
+
+        $this->ratepayDirectDebit = $ratepayDirectDebit;
+    }
+
+    /**
+     * @return $ratepayDirectDebit|null
+     */
+    public function getRatepayDirectDebit()
+    {
+        return $this->ratepayDirectDebit;
     }
 
     /**

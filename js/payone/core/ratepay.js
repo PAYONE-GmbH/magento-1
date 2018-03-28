@@ -195,3 +195,61 @@ Validation.add(
     return true;
     }
 );
+
+/**
+ *
+ * @param code
+ * @param allowedCountryCodesList
+ */
+function checkIbanSEPACode(code, allowedCountryCodesList)
+{
+    var ibanEl = $(code + '_sepa_iban');
+    if (!ibanEl || typeof ibanEl === 'undefined') {
+        return;
+    }
+
+    var value = ibanEl.value;
+    if (value.length < 2) {
+        return;
+    }
+
+    var allowedCountryCodes = JSON.parse(allowedCountryCodesList.toUpperCase());
+    var countryCode = value.substring(0, 2).toUpperCase();
+    var validationAdvice = $("advice-validate-sepa-iban-countrycode");
+    if (allowedCountryCodes.indexOf(countryCode) === -1) {
+        ibanEl.value = "";
+        ibanEl.addClassName("validation-failed");
+        if (!validationAdvice || typeof validationAdvice === 'undefined') {
+            var valText = Translator.translate("Entered IBAN is not from an authorised SEPA country.");
+            ibanEl.insert(
+                {
+                    after: '<div class="validation-advice" id="advice-validate-sepa-iban-countrycode">' + valText + '</div>'
+                }
+            );
+        }
+    } else {
+        ibanEl.removeClassName('validation-failed');
+        if (validationAdvice && typeof validationAdvice !== 'undefined') {
+            validationAdvice.remove();
+        }
+    }
+}
+
+function toggleRatepayDirectDebitOverlay(sCode)
+{
+    var element = document.getElementById(sCode + '_overlay');
+    element.toggle();
+}
+
+function toggleBicField(ibanEl, sCode)
+{
+    var countryCode = ibanEl.value.substring(0,2);
+    var bicEl = $(sCode + '_section_sepa_bic');
+
+    if (countryCode === 'DE') {
+        bicEl.hide()
+    }
+    else {
+        bicEl.show()
+    }
+}

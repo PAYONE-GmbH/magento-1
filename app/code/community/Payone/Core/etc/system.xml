@@ -472,6 +472,15 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </ratepay>
+                        <ratepay_direct_debit translate="label">
+                            <label>Ratepay Direct Debit</label>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_statusMapping</frontend_model>
+                            <backend_model>payone_core/system_config_backend_serialized_array</backend_model>
+                            <sort_order>105</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </ratepay_direct_debit>
                         <financing translate="label">
                             <label>Finanzierung</label>
                             <frontend_model>payone_core/adminhtml_system_config_form_field_statusMapping</frontend_model>
@@ -1505,6 +1514,36 @@
                         </show_customermessage>
                     </fields>
                 </template_ratepay>
+                <template_ratepay_direct_debit translate="label" module="payone_core">
+                    <label>Ratepay Direct Debit</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>8</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <ratepay_config translate="label,comment">
+                            <label>RatePay Shop-IDs</label>
+                            <comment>Required</comment>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_ratePayDirectDebitStoreIds</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <sort_order>250</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </ratepay_config>
+                        <show_customermessage translate="label,tooltip">
+                            <label>Show detailed error-messages</label>
+                            <tooltip>PAYONE_TOOLTIP_CUSTOMERMESSAGE</tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>270</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </show_customermessage>
+                    </fields>
+                </template_ratepay_direct_debit>
                 <template_payolution translate="label" module="payone_core">
                     <label>Payolution</label>
                     <frontend_type>text</frontend_type>
