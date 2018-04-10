@@ -189,7 +189,7 @@ $iCheckValidation = (int)$this->showCvcInput();
                 </div>
             </li>
             <li>
-                <div class="input-box" id="<?php echo $code ?>_cc_cid_div"
+                <div class="input-box" id="<?php echo $code ?>_cc_cid_div">
                     <label for="cvcInput"><?php echo $this->__('Card Verification Number') ?>&nbsp;<span class="required">*</span></label><br class="clear"/>
                     <span id="cardcvc2" class="inputIframe"></span>
 
@@ -240,6 +240,7 @@ $iCheckValidation = (int)$this->showCvcInput();
                 <input type="hidden" id="<?php echo $code ?>_config_cvc" name="payment[payone_config_cvc]"
                        value="<?php echo $this->escapeHtml($this->getCvcJson()); ?>" class=""/>
                 <input type="hidden" id="payone_cc_check_validation" value="1"/>
+                <input type="hidden" id="payone_cc_use_cvc" value="<?php echo $iCheckValidation; ?>"/>
                 <input type="hidden" id="payone_cc_check_validation_types" value="<?php echo $this->escapeHtml(($hideCvcTypes)); ?>"/>
             </li>
         </ul>
@@ -265,23 +266,21 @@ $iCheckValidation = (int)$this->showCvcInput();
                             }
                         <?php } ?>
                     },
-                    <?php if($iCheckValidation == '1') { ?>
-                        cardcvc2: {
-                            selector: "cardcvc2", // put name of your div-container here
-                            type: "<?php echo $this->getHostedParam('CVC_type'); ?>", // text (default), password, tel
-                            size: "<?php echo $this->getHostedParam('CVC_count'); ?>",
-                            maxlength: "<?php echo $this->getHostedParam('CVC_max'); ?>",
-                            <?php if($this->getHostedParam('CVC_style') == "custom") { ?>
-                                style: "<?php echo $this->getHostedParam('CVC_css'); ?>",
-                            <?php } ?>
-                            <?php if($this->getHostedParam('CVC_iframe') == "custom") { ?>
-                                iframe: {
-                                    width: "<?php echo $this->getHostedParam('CVC_width'); ?>",
-                                    height: "<?php echo $this->getHostedParam('CVC_height'); ?>"
-                                }
-                            <?php } ?>
-                        },
-                    <?php } ?>
+                    cardcvc2: {
+                        selector: "cardcvc2", // put name of your div-container here
+                        type: "<?php echo $this->getHostedParam('CVC_type'); ?>", // text (default), password, tel
+                        size: "<?php echo $this->getHostedParam('CVC_count'); ?>",
+                        maxlength: "<?php echo $this->getHostedParam('CVC_max'); ?>",
+                        <?php if($this->getHostedParam('CVC_style') == "custom") { ?>
+                            style: "<?php echo $this->getHostedParam('CVC_css'); ?>",
+                        <?php } ?>
+                        <?php if($this->getHostedParam('CVC_iframe') == "custom") { ?>
+                            iframe: {
+                                width: "<?php echo $this->getHostedParam('CVC_width'); ?>",
+                                height: "<?php echo $this->getHostedParam('CVC_height'); ?>"
+                            }
+                        <?php } ?>
+                    },
                     cardexpiremonth: {
                         selector: "cardexpiremonth", // put name of your div-container here
                         type: "<?php echo $this->getHostedParam('Month_type'); ?>",

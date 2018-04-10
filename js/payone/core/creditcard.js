@@ -64,6 +64,8 @@ PAYONE.Service.CreditCardCheck = function (handler, form, config) {
         var configId = false;
         var elementCcType = $('payone_creditcard_cc_type_select');
         var iFrameCvc = $("payone_creditcard_cc_cid_div");
+        var configUseCvc = $("payone_cc_use_cvc");
+
         if (elementCcType != undefined) {
 
             var ccTypeConfigKey = elementCcType.value;
@@ -72,9 +74,14 @@ PAYONE.Service.CreditCardCheck = function (handler, form, config) {
             var ccType = ccTypeSplit[1];
             $("payone_creditcard_cc_type").setValue(ccType);
 
-            if(elementCcType.length > 1 && $('payone_cc_check_validation_types').value.indexOf(ccType) != -1){
+            if (configUseCvc.value === '0') {
                 iFrameCvc.hide();
-             }
+            }
+            else {
+                if (elementCcType.length > 1 && $('payone_cc_check_validation_types').value.indexOf(ccType) != -1) {
+                    iFrameCvc.hide();
+                }
+            }
             updateCcLogo(ccType);
         }
 
@@ -93,7 +100,7 @@ PAYONE.Service.CreditCardCheck = function (handler, form, config) {
                 var ccTypeSplit = ccTypeConfigKey.split('_');
                 var ccType = ccTypeSplit[1];
                 var selectedValueIFrame = ccTypeConfigKey.substring(ccTypeConfigKey.indexOf("_") + 1);
-                if($('payone_cc_check_validation_types').value.indexOf(selectedValueIFrame) != -1){
+                if($('payone_cc_check_validation_types').value.indexOf(selectedValueIFrame) != -1 || configUseCvc.value === '0'){
                     iFrameCvc.hide();
                 } else {
                     iFrameCvc.show();
