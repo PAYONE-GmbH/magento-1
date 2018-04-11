@@ -39,6 +39,11 @@ class Payone_Api_Request_Parameter_Authorization_PaymentMethod_PaymentGuaranteeI
      */
     protected $birthday = null;
 
+    /**
+     * @var string
+     */
+    protected $businessrelation = null;
+
     public function setClearingsubtype()
     {
         $this->clearingsubtype = 'POV';
@@ -82,5 +87,21 @@ class Payone_Api_Request_Parameter_Authorization_PaymentMethod_PaymentGuaranteeI
     public function getBirthday()
     {
         return $this->birthday;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBusinessrelation()
+    {
+        return $this->businessrelation;
+    }
+
+    /**
+     * @param string $businessrelation
+     */
+    public function setBusinessrelation($businessrelation)
+    {
+        $this->businessrelation = $businessrelation;
     }
 }

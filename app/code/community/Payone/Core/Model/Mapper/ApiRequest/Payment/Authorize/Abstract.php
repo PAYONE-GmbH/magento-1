@@ -912,14 +912,12 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
                 }
             }
 
-            $payData->addItem(
-                new Payone_Api_Request_Parameter_Paydata_DataItem(
-                    array(
-                        'key' => 'businessrelation',
-                        'data' => ((bool)$info->getPayoneIsb2b() === true) ? 'b2b' : 'b2c'
-                    )
-                )
-            );
+            if((bool)$info->getPayoneIsb2b() === true) {
+                $payment->setBusinessRelation(Payone_Api_Enum_BusinessRelationType::B2B);
+            }
+            else{
+                $payment->setBusinessRelation(Payone_Api_Enum_BusinessRelationType::B2C);
+            }
 
             $payment->setPaydata($payData);
             $payment->setClearingsubtype();
