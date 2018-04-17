@@ -76,7 +76,8 @@ class Payone_Core_Model_Observer_Checkout_Onepage_Payment_External extends Payon
                     $quoteId = $oSession->getLastQuoteId();
                     $oQuote = $this->getFactory()->getModelSalesQuote();
                     $oQuote->load($quoteId);
-                    if ($oQuote && $oQuote->getId()) {
+                    $blCancellationFlag = $oSession->getData('order_got_canceled');
+                    if ($oQuote && $oQuote->getId() && $blCancellationFlag !== true) {
                         $oQuote->setIsActive(1)
                             ->setReservedOrderId(null)
                             ->save();
