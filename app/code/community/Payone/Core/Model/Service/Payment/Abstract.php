@@ -75,6 +75,21 @@ abstract class Payone_Core_Model_Service_Payment_Abstract
     );
 
     /**
+     * Error codes that will lead to a prompt to ask if the order should be cancelled in shop
+     * even when the payment refund (capture 0) failed
+     *
+     * @var array
+     */
+    protected $aZeroCaptureCodeHandling = array(
+        1,
+        900, 901, 902, 903, 904, 905, 909,
+        917, 918, 919,
+        921, 922,
+        950,
+        990, 991
+    );
+
+    /**
      * @param Payone_Api_Request_Interface $request
      * @return mixed
      */
@@ -146,6 +161,28 @@ abstract class Payone_Core_Model_Service_Payment_Abstract
 
                 throw new Mage_Payment_Model_Info_Exception(
                     $this->helper()->__($response->getCustomermessage())
+                );
+            }
+            // Check if payment cancellation in ongoing
+            elseif ($this->helperRegistry()->isPaymentCancelRegistered($payment)) {
+                $dataHelper = $this->helper();
+                $pmiLink = $dataHelper->getPmiLink();
+
+                $note = '<br />' . $dataHelper->__('Note. The money could not be refunded.');
+                $note .= $dataHelper->__('If necessary, check the transaction again in the Payone Merchant Interface.');
+                $note = preg_replace('/Payone Merchant Interface/', $pmiLink, $note);
+
+                // Check if error code belongs to temporary errors, which require specific handling
+                if (in_array($response->getErrorcode(), $this->aZeroCaptureCodeHandling)) {
+                    $session->setData('payment_cancel_should_confirm', true);
+                    $note = "";
+                }
+
+                throw new Mage_Payment_Model_Info_Exception(
+                    '[' . $dataHelper->__($response->getErrorcode()) . '] '
+                    . $dataHelper->__($response->getCustomermessage())
+                    . ' (' . $dataHelper->__($response->getErrormessage()) . ')'
+                    . $note
                 );
             } else {
                 $session->unsetData('amazon_retry_async');
