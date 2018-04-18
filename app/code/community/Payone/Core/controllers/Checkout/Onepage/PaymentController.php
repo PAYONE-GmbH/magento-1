@@ -115,6 +115,16 @@ class Payone_Core_Checkout_Onepage_PaymentController extends Payone_Core_Control
             // Order was cancelled, reactivate quote, notify customer:
             $this->reactivateQuote($quote);
 
+            if ($checkoutSession->getData('order_got_canceled') === true) {
+                $quote->collectTotals();
+                $service = Mage::getModel('sales/service_quote', $quote);
+                $service->submitAll();
+                $checkoutSession->getQuote()->setIsActive(false)->save();
+
+                return true;
+            }
+
+
             $message = $helper->__('The order has been canceled.');
             $checkoutSession->addError($message);
             return false;
@@ -154,6 +164,7 @@ class Payone_Core_Checkout_Onepage_PaymentController extends Payone_Core_Control
             $statusMessage = $this->helper()->__('The Payone transaction has been canceled.');
             $order->addStatusHistoryComment($statusMessage, Mage_Sales_Model_Order::STATE_CANCELED);
             $order->save();
+            $this->toggleOrderCancellationFlag(true);
         }
 
         // Reactivate quote
@@ -276,5 +287,10 @@ class Payone_Core_Checkout_Onepage_PaymentController extends Payone_Core_Control
         Mage::getSingleton('customer/session')->addError($this->helper()->__("Error trying to download the pdf"));
         $this->_redirect('');
     }
-    
+
+    private function toggleOrderCancellationFlag($raiseFlag = true)
+    {
+        $checkoutSession = $this->getFactory()->getSingletonCheckoutSession();
+        $checkoutSession->setData('order_got_canceled', $raiseFlag);
+    }
 }
