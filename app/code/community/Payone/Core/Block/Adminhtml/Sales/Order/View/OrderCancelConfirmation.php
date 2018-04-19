@@ -62,4 +62,19 @@ class Payone_Core_Block_Adminhtml_Sales_Order_View_OrderCancelConfirmation
     {
         return Mage::registry('sales_order');
     }
+
+    /**
+     * @return mixed
+     */
+    public function displayPrompt()
+    {
+        $session = Mage::getModel('payone_core/session');
+        $confirmPrompt = $session->getData('payment_cancel_should_confirm', true);
+        if (!$confirmPrompt) {
+            $paymentId = $this->getOrder()->getPayment()->getId();
+            $session->unsetData('payment_processing_capture_zero_'.$paymentId);
+        }
+
+        return $confirmPrompt;
+    }
 }

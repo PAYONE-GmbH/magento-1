@@ -85,6 +85,11 @@
                 <block>payone_core_adminhtml_sales_order_view_tab_api</block>
             </action>
         </reference>
+        <reference name="before_body_end">
+            <block type="payone_core/adminhtml_sales_order_view_orderCancelConfirmation"
+                   name="payone_core_adminhtml_sales_order_view_orderCancelConfirmation">
+            </block>
+        </reference>
     </adminhtml_sales_order_view>
 
     <!--

@@ -576,15 +576,6 @@
                     </payone_service_quote_submit_failure>
                 </observers>
             </sales_model_service_quote_submit_failure>
-            <controller_action_layout_generate_blocks_after>
-                <observers>
-                    <payone_core_observer_admin>
-                        <type>singleton</type>
-                        <class>payone_core/observer_admin_admin</class>
-                        <method>addOrderCancelConfirmationBlock</method>
-                    </payone_core_observer_admin>
-                </observers>
-            </controller_action_layout_generate_blocks_after>
         </events>
     </global>
 

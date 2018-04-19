@@ -169,7 +169,7 @@ abstract class Payone_Core_Model_Service_Payment_Abstract
                 $pmiLink = $dataHelper->getPmiLink();
 
                 $note = '<br />' . $dataHelper->__('Note. The money could not be refunded.');
-                $note .= $dataHelper->__('If necessary, check the transaction again in the Payone Merchant Interface.');
+                $note .= ' ' . $dataHelper->__('If necessary, check the transaction again in the Payone Merchant Interface.');
                 $note = preg_replace('/Payone Merchant Interface/', $pmiLink, $note);
 
                 // Check if error code belongs to temporary errors, which require specific handling
