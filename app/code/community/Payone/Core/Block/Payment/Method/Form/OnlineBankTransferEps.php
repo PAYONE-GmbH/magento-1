@@ -68,6 +68,7 @@ class Payone_Core_Block_Payment_Method_Form_OnlineBankTransferEps
         if($this->getSavedCustomerData('payone_bank_group')){
             $block->setSavedCustomerBankGroup($this->getSavedCustomerData('payone_bank_group'));
         }
+
         $html = $block->toHtml();
         return $html;
     }
