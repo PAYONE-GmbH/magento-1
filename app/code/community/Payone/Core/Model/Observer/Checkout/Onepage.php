@@ -110,7 +110,7 @@ class Payone_Core_Model_Observer_Checkout_Onepage extends Payone_Core_Model_Obse
     public function removeOrderCancellationFlag(Varien_Event_Observer $observer)
     {
         $checkoutSession = $this->getFactory()->getSingletonCheckoutSession();
-        $checkoutSession->setData('order_got_canceled', false);
+        $checkoutSession->unsetData('order_got_canceled');
 
         return true;
     }

@@ -98,6 +98,42 @@ class Payone_Core_Checkout_Onepage_PaymentController extends Payone_Core_Control
             ->setDispatched(false);
     }
 
+    protected function _relabelTransaction($sOldIncrementId, $sNewIncrementId, $sNewOrderId)
+    {
+        $oResource = Mage::getSingleton('core/resource');
+        $oWrite = $oResource->getConnection('core_write');
+        $sQuery = "  UPDATE 
+                         {$oResource->getTableName('payone_core/transaction')} 
+                     SET 
+                         order_id = ".$oWrite->quote($sNewOrderId).",
+                         reference = ".$oWrite->quote($sNewIncrementId)." 
+                     WHERE reference = ".$oWrite->quote($sOldIncrementId);
+        $oWrite->query($sQuery);
+    }
+
+    protected function _relabelOrderPayment($sOldIncrementId, $sNewOrderId)
+    {
+        $oResource = Mage::getSingleton('core/resource');
+        $oRead = $oResource->getConnection('core_read');
+        $oWrite = $oResource->getConnection('core_write');
+
+        $sSelect = "SELECT 
+                        a.last_trans_id
+                    FROM
+                        {$oResource->getTableName('sales/order_payment')} AS a
+                    INNER JOIN
+                        {$oResource->getTableName('sales/order')} AS b ON a.parent_id = b.entity_id AND b.increment_id = ".$oRead->quote($sOldIncrementId);
+        $sLastTransId = $oRead->fetchOne($sSelect);
+
+        $sQuery = " UPDATE
+                        {$oResource->getTableName('sales/order_payment')}
+                    SET
+                        last_trans_id = ".$oWrite->quote($sLastTransId)."
+                    WHERE
+                        parent_id = ".$oWrite->quote($sNewOrderId);
+        $oWrite->query($sQuery);
+    }
+
     /**
      * @return bool
      */
@@ -115,11 +151,21 @@ class Payone_Core_Checkout_Onepage_PaymentController extends Payone_Core_Control
             // Order was cancelled, reactivate quote, notify customer:
             $this->reactivateQuote($quote);
 
-            if ($checkoutSession->getData('order_got_canceled') === true) {
+            if (!empty($checkoutSession->getData('order_got_canceled'))) {
                 $quote->collectTotals();
                 $service = Mage::getModel('sales/service_quote', $quote);
                 $service->submitAll();
+
+                $oNewOrder = $service->getOrder();
+                $oNewOrder->setPayoneCancelSubstituteIncrementId($checkoutSession->getData('order_got_canceled'));
+                $oNewOrder->save();
+
+                $checkoutSession->setLastOrderId($oNewOrder->getId());
+                $checkoutSession->setLastRealOrderId($oNewOrder->getIncrementId());
                 $checkoutSession->getQuote()->setIsActive(false)->save();
+
+                $this->_relabelTransaction($checkoutSession->getData('order_got_canceled'), $oNewOrder->getIncrementId(), $oNewOrder->getId());
+                $this->_relabelOrderPayment($checkoutSession->getData('order_got_canceled'), $oNewOrder->getId());
 
                 return true;
             }
@@ -164,7 +210,7 @@ class Payone_Core_Checkout_Onepage_PaymentController extends Payone_Core_Control
             $statusMessage = $this->helper()->__('The Payone transaction has been canceled.');
             $order->addStatusHistoryComment($statusMessage, Mage_Sales_Model_Order::STATE_CANCELED);
             $order->save();
-            $this->toggleOrderCancellationFlag(true);
+            $checkoutSession->setData('order_got_canceled', $order->getIncrementId());
         }
 
         // Reactivate quote
@@ -237,30 +283,30 @@ class Payone_Core_Checkout_Onepage_PaymentController extends Payone_Core_Control
         // Log exceptions, any messages relevant to customer have been set to the session by service
         Mage::logException($exception);
     }
-    
+
     protected function _getPaymentConfig()
     {
         $sPaymentConfigId = $this->getRequest()->getParam('payment_config_id');
-        
+
         $oConfig = $this->getFactory()->helperConfig()->getConfigPaymentMethodById($sPaymentConfigId);
 
         return $oConfig;
     }
-    
+
     protected function _getInstallmentDraftUrl()
     {
         $iDuration = $this->getRequest()->getParam('duration');
-        
+
         $checkoutSession = $this->getFactory()->getSingletonCheckoutSession();
         $aDraftLinks = $checkoutSession->getInstallmentDraftLinks();
-        
+
         if(isset($aDraftLinks[$iDuration])) {
             return $aDraftLinks[$iDuration];
         }
 
         return false;
     }
-    
+
     public function getInstallmentDraftAction()
     {
         $sUrl = $this->_getInstallmentDraftUrl();
@@ -286,11 +332,5 @@ class Payone_Core_Checkout_Onepage_PaymentController extends Payone_Core_Control
 
         Mage::getSingleton('customer/session')->addError($this->helper()->__("Error trying to download the pdf"));
         $this->_redirect('');
-    }
-
-    private function toggleOrderCancellationFlag($raiseFlag = true)
-    {
-        $checkoutSession = $this->getFactory()->getSingletonCheckoutSession();
-        $checkoutSession->setData('order_got_canceled', $raiseFlag);
     }
 }
