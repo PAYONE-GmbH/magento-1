@@ -111,6 +111,7 @@ class Payone_Core_Model_Observer_Checkout_Onepage extends Payone_Core_Model_Obse
     {
         $checkoutSession = $this->getFactory()->getSingletonCheckoutSession();
         $checkoutSession->unsetData('order_got_canceled');
+        $checkoutSession->unsetData('creating_substitute_order');
 
         return true;
     }

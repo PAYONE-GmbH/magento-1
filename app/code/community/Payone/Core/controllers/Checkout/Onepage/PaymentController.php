@@ -152,6 +152,8 @@ class Payone_Core_Checkout_Onepage_PaymentController extends Payone_Core_Control
             $this->reactivateQuote($quote);
 
             if (!empty($checkoutSession->getData('order_got_canceled'))) {
+                $checkoutSession->setData('creating_substitute_order', true);
+
                 $quote->collectTotals();
                 $service = Mage::getModel('sales/service_quote', $quote);
                 $service->submitAll();

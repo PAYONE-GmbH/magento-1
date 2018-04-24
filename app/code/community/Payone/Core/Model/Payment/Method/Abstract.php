@@ -237,7 +237,7 @@ abstract class Payone_Core_Model_Payment_Method_Abstract
         }
 
         $oSession = Mage::getSingleton('checkout/session');
-        if (empty($oSession->getData('order_got_canceled'))) {
+        if (empty($oSession->getData('creating_substitute_order'))) {
             // Execute Payment Initialization
             $service = $this->getFactory()->getServiceInitializePayment($configPayment);
             $service->setConfigStore($this->getConfigStore($order->getStoreId()));
