@@ -144,24 +144,6 @@ abstract class Payone_Core_Model_Service_Payment_Abstract
                     $this->_aAmazonErrors[$response->getErrorcode()],
                     $response->getErrorcode()
                 );
-            } elseif (isset($this->aRestrictableMethods[$payment->getMethod()])) {
-                if (in_array($response->getErrorcode(), $this->aRestrictableMethods[$payment->getMethod()])) {
-                    /** @var Payone_Core_Model_Domain_PaymentBan $oPaymentBan */
-                    $oPaymentBan = Mage::getModel('payone_core/domain_paymentBan');
-                    $oPaymentBan = $oPaymentBan->loadByCustomerIdPaymentMethod(
-                        $payment->getOrder()->getCustomerId(),
-                        $payment->getMethod()
-                    );
-                    $oPaymentBan->setCustomerId($payment->getOrder()->getCustomerId());
-                    $oPaymentBan->setPaymentMethod($payment->getMethod());
-                    $oPaymentBan->setFromDate((new DateTime())->format(DATE_ISO8601));
-                    $oPaymentBan->setToDate((new DateTime('+1day'))->format(DATE_ISO8601));
-                    $oPaymentBan->save();
-                }
-
-                throw new Mage_Payment_Model_Info_Exception(
-                    $this->helper()->__($response->getCustomermessage())
-                );
             }
             // Check if payment cancellation in ongoing
             elseif ($this->helperRegistry()->isPaymentCancelRegistered($payment)) {
@@ -187,7 +169,27 @@ abstract class Payone_Core_Model_Service_Payment_Abstract
                 $adminSession = Mage::getSingleton('adminhtml/session');
                 $adminSession->addError($note);
 
-            } else {
+            }
+            elseif (isset($this->aRestrictableMethods[$payment->getMethod()])) {
+                if (in_array($response->getErrorcode(), $this->aRestrictableMethods[$payment->getMethod()])) {
+                    /** @var Payone_Core_Model_Domain_PaymentBan $oPaymentBan */
+                    $oPaymentBan = Mage::getModel('payone_core/domain_paymentBan');
+                    $oPaymentBan = $oPaymentBan->loadByCustomerIdPaymentMethod(
+                        $payment->getOrder()->getCustomerId(),
+                        $payment->getMethod()
+                    );
+                    $oPaymentBan->setCustomerId($payment->getOrder()->getCustomerId());
+                    $oPaymentBan->setPaymentMethod($payment->getMethod());
+                    $oPaymentBan->setFromDate((new DateTime())->format(DATE_ISO8601));
+                    $oPaymentBan->setToDate((new DateTime('+1day'))->format(DATE_ISO8601));
+                    $oPaymentBan->save();
+                }
+
+                throw new Mage_Payment_Model_Info_Exception(
+                    $this->helper()->__($response->getCustomermessage())
+                );
+            }
+            else {
                 $session->unsetData('amazon_retry_async');
                 $this->throwMageException(
                     '[' . $response->getErrorcode() . ': ' .
