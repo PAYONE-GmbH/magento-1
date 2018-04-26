@@ -166,24 +166,27 @@ abstract class Payone_Core_Model_Service_Payment_Abstract
             // Check if payment cancellation in ongoing
             elseif ($this->helperRegistry()->isPaymentCancelRegistered($payment)) {
                 $dataHelper = $this->helper();
-                $pmiLink = $dataHelper->getPmiLink();
-
-                $note = '<br />' . $dataHelper->__('Note. The money could not be refunded.');
-                $note .= ' ' . $dataHelper->__('If necessary, check the transaction again in the Payone Merchant Interface.');
-                $note = preg_replace('/Payone Merchant Interface/', $pmiLink, $note);
 
                 // Check if error code belongs to temporary errors, which require specific handling
                 if (in_array($response->getErrorcode(), $this->aZeroCaptureCodeHandling)) {
                     $session->setData('payment_cancel_should_confirm', true);
-                    $note = "";
+
+                    throw new Mage_Payment_Model_Info_Exception(
+                        '[' . $dataHelper->__($response->getErrorcode()) . '] '
+                        . $dataHelper->__($response->getCustomermessage())
+                        . ' (' . $dataHelper->__($response->getErrormessage()) . ')'
+                    );
                 }
 
-                throw new Mage_Payment_Model_Info_Exception(
-                    '[' . $dataHelper->__($response->getErrorcode()) . '] '
-                    . $dataHelper->__($response->getCustomermessage())
-                    . ' (' . $dataHelper->__($response->getErrormessage()) . ')'
-                    . $note
-                );
+                $pmiLink = $dataHelper->getPmiLink();
+                $note = $dataHelper->__('Note. The money could not be refunded.');
+                $note .= ' ' . $dataHelper->__('If necessary, check the transaction again in the Payone Merchant Interface.');
+                $note = preg_replace('/Payone Merchant Interface/', $pmiLink, $note);
+
+                /** @var Mage_Adminhtml_Model_Session $adminSession */
+                $adminSession = Mage::getSingleton('adminhtml/session');
+                $adminSession->addError($note);
+
             } else {
                 $session->unsetData('amazon_retry_async');
                 $this->throwMageException(
