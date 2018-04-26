@@ -335,6 +335,24 @@ class Payone_Core_Helper_Data
     }
 
     /**
+     * @param string $sourceType
+     * @return array
+     */
+    public function getBankGroups($sourceType)
+    {
+        if (empty($sourceType)) {
+             return array();
+        }
+
+        $bankGroups = Mage::getModel('payone_core/system_config_onlinebanktransferGroups')->toArray();
+        if(!isset($bankGroups[$sourceType])) {
+            return array();
+        }
+
+        return $bankGroups[$sourceType];
+    }
+
+    /**
      * return string
      */
     public function getPmiLink()
