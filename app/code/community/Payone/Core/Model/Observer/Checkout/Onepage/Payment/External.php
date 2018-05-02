@@ -55,7 +55,7 @@ class Payone_Core_Model_Observer_Checkout_Onepage_Payment_External extends Payon
                 $orderId = $oSession->getLastOrderId();
                 $oOrder = $this->getFactory()->getModelSalesOrder();
                 $oOrder->load($orderId);
-                if ($oOrder) {
+                if ($oOrder && empty($oSession->getData('order_got_canceled'))) {
                     // Cancel order and add history comment:
                     if ($oOrder->canCancel()) {
                         $oOrder->cancel();
@@ -76,7 +76,7 @@ class Payone_Core_Model_Observer_Checkout_Onepage_Payment_External extends Payon
                     $quoteId = $oSession->getLastQuoteId();
                     $oQuote = $this->getFactory()->getModelSalesQuote();
                     $oQuote->load($quoteId);
-                    if ($oQuote && $oQuote->getId()) {
+                    if ($oQuote && $oQuote->getId() && empty($oSession->getData('order_got_canceled'))) {
                         $oQuote->setIsActive(1)
                             ->setReservedOrderId(null)
                             ->save();

@@ -35,6 +35,7 @@
  * @method int getOrderId()
  * @method setOrderId(int $id)
  * @method string getReference()
+ * @method setReference(string $reference)
  * @method setCreatedAt(string $dateTime)
  * @method string getCreatedAt()
  * @method setUpdatedAt(string $dateTime)

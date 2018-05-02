@@ -241,10 +241,13 @@ abstract class Payone_Core_Model_Payment_Method_Abstract
             $adminOrderCreate->unsetData('send_confirmation');
         }
 
-        // Execute Payment Initialization
-        $service = $this->getFactory()->getServiceInitializePayment($configPayment);
-        $service->setConfigStore($this->getConfigStore($order->getStoreId()));
-        $response = $service->execute($payment);
+        $oSession = Mage::getSingleton('checkout/session');
+        if (empty($oSession->getData('creating_substitute_order'))) {
+            // Execute Payment Initialization
+            $service = $this->getFactory()->getServiceInitializePayment($configPayment);
+            $service->setConfigStore($this->getConfigStore($order->getStoreId()));
+            $response = $service->execute($payment);
+        }
 
         // @comment by default state=new and status=pending
         if ($this->getRedirectUrl() != '') {
