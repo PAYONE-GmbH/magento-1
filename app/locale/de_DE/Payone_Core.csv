@@ -1225,3 +1225,8 @@
 "If necessary, check the transaction again in the Payone Merchant Interface.","Prüfen Sie die Transaktion ggf. nochmals im Payone Merchant Interface."
 "You can cancel the order in the shop, but the transaction have to be manually cancelled in the Payone Merchant Interface.","Sie können die Bestellung im Shop stornieren, die Transaktion sollte jedoch im Payone Merchant Interface manuell storniert werden."
 "Do you want to cancel the order in the shop ?","Möchten Sie die Bestellung im Shop stornieren?"
+
+"An error occured during the PayPal Express Checkout.","Während des PayPal Express Checkouts ist ein Fehler aufgetreten."
+"The PayPal Express Checkout has been canceled.","Der PayPal Express Checkout wurde abgebrochen."
+"Unable to initialize Payone Express Checkout.","Der PayPal Express Checkout konnte nicht initialisiert werden."
+"PayPal Express Checkout Token does not exist.","Das PayPal Express Checkout Token existiert nicht."
