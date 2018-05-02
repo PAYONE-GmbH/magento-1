@@ -1220,3 +1220,8 @@
 "Note:","Hinweis:"
 "After conclusion of the contract, I will be notified of the mandate reference of RatePAY. I can claim reimbursement of the amount due within eight weeks of the debit date.","Nach Zustandekommen des Vertrags wird mir die Mandatsreferenz von RatePAY mitgeteilt. Ich kann innerhalb von acht Wochen, beginnend mit dem Belastungsdatum, die Erstattung des belasteten Betrages verlangen."
 "Applicable in this regard by the contract with my bank conditions.","Es gelten dabei die mit meinem Kreditinstitut vereinbarten Bedingungen."
+
+"Note. The money could not be refunded.","Hinweis. Die Zahlungsreservierung konnte nicht aufgelöst werden."
+"If necessary, check the transaction again in the Payone Merchant Interface.","Prüfen Sie die Transaktion ggf. nochmals im Payone Merchant Interface."
+"You can cancel the order in the shop, but the transaction have to be manually cancelled in the Payone Merchant Interface.","Sie können die Bestellung im Shop stornieren, die Transaktion sollte jedoch im Payone Merchant Interface manuell storniert werden."
+"Do you want to cancel the order in the shop ?","Möchten Sie die Bestellung im Shop stornieren?"

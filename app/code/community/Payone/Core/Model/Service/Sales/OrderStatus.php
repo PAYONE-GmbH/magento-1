@@ -33,6 +33,13 @@
 class Payone_Core_Model_Service_Sales_OrderStatus extends Payone_Core_Model_Service_Abstract
 {
     /**
+     * States where order should not move further
+     *
+     * @var array
+     */
+    protected $orderFinalStates = array (Mage_Sales_Model_Order::STATE_CANCELED);
+
+    /**
      * @param Mage_Sales_Model_Order $order
      * @param Payone_Core_Model_Domain_Protocol_TransactionStatus $transactionStatus
      * @return void
@@ -47,6 +54,11 @@ class Payone_Core_Model_Service_Sales_OrderStatus extends Payone_Core_Model_Serv
         // Update dunning status
         if ($transactionStatus->getReminderlevel()) {
             $order->setPayoneDunningStatus($transactionStatus->getReminderlevel());
+        }
+
+        // If order reached final stage, it should not be updated
+        if (in_array($order->getState(), $this->orderFinalStates)) {
+            return;
         }
 
         // Status mapping of Order by Transaction Status

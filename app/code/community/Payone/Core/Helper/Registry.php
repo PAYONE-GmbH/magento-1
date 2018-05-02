@@ -34,6 +34,7 @@ class Payone_Core_Helper_Registry
     extends Payone_Core_Helper_Abstract
 {
     const KEY_PAYMENT_CANCEL = 'payone_payment_cancel_';
+    const KEY_PAYMENT_CANCEL_SHOULD_CONFIRM = 'payone_payment_cancel_should_confirm_';
 
     /**
      * Wrapper for Mage::registry()
@@ -87,6 +88,20 @@ class Payone_Core_Helper_Registry
     public function isPaymentCancelRegistered(Mage_Payment_Model_Info $payment)
     {
         $value = $this->registry(self::KEY_PAYMENT_CANCEL.$payment->getId());
+
+        if(empty($value) or !($value))
+            return false;
+        else
+            return true;
+    }
+
+    public function registerPaymentCancelShouldConfirm(Mage_Payment_Model_Info $payment) {
+        $this->register(self::KEY_PAYMENT_CANCEL_SHOULD_CONFIRM.$payment->getId(), true);
+    }
+
+    public function isPaymentCancelShouldConfirm(Mage_Payment_Model_Info $payment)
+    {
+        $value = $this->registry(self::KEY_PAYMENT_CANCEL_SHOULD_CONFIRM.$payment->getId());
 
         if(empty($value) or !($value))
             return false;

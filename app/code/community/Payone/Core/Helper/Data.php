@@ -351,4 +351,12 @@ class Payone_Core_Helper_Data
 
         return $bankGroups[$sourceType];
     }
+
+    /**
+     * return string
+     */
+    public function getPmiLink()
+    {
+        return "<a target='_blank' href='https://pmi.pay1.de/'>Payone Merchant Interface</a>";
+    }
 }

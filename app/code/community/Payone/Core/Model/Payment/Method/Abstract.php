@@ -171,6 +171,7 @@ abstract class Payone_Core_Model_Payment_Method_Abstract
     public function cancel(Varien_Object $payment)
     {
         $status = $payment->getOrder()->getPayoneTransactionStatus();
+        $session = Mage::getModel('payone_core/session');
 
         if (empty($status) or $status == 'REDIRECT') {
             return $this; // Don´t send cancel to PAYONE on orders without TxStatus
@@ -187,7 +188,11 @@ abstract class Payone_Core_Model_Payment_Method_Abstract
             // Add Ratepay support (08.01.2018)
             // Add Ratepay-Lastschrift support (MAGE-317 23.03.2018)
             $this->helperRegistry()->registerPaymentCancel($this->getInfoInstance());
-            $this->capture($payment, 0.0000);
+            if ($session->getData('payment_processing_capture_zero_'.$payment->getId()) !== true) {
+                $session->setData('payment_processing_capture_zero_'.$payment->getId(), true);
+                $this->capture($payment, 0.0000);
+            }
+            $session->unsetData('payment_processing_capture_zero_'.$payment->getId());
         }
 
         return $this;
