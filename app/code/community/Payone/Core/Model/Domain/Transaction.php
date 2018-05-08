@@ -76,6 +76,10 @@
  * @method string getCreatedAt()
  * @method setUpdatedAt(string $dateTime)
  * @method string getUpdatedAt()
+ * @method setWorkorderid(string $workorderid)
+ * @method string getWorkorderid()
+ * @method setReservationTxid(string $reservationTxid)
+ * @method string getReservationTxid()
  */
 class Payone_Core_Model_Domain_Transaction
     extends Mage_Core_Model_Abstract
