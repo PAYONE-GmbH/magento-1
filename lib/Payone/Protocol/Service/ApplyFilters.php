@@ -44,7 +44,8 @@ class Payone_Protocol_Service_ApplyFilters
             'cardpan',
             'cardcvc2',
             'cardexpiredate',
-            'key'
+            'key',
+            'ip'
         ),
         Payone_Protocol_Filter_MaskValue::FILTER_KEY => array(
             'bankaccountholder',
