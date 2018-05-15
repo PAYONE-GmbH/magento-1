@@ -89,9 +89,17 @@ if (!empty($config)) :
         }
     </script>
     <?php if ($this::$counter <= 1) : ?>
-    <!-- Load script Widgets.js from Amazon -->
-    <!-- URL changes to https://static-eu.payments-amazon.com/OffAmazonPayments/eur/lpa/js/Widgets.js when mode=live -->
-    <?php $useSandbox = $config->getMode() === \Payone_Enum_Mode::TEST ? '/sandbox' : '' ?>
-    <script async="async" src='<?php echo "https://static-eu.payments-amazon.com/OffAmazonPayments/eur{$useSandbox}/lpa/js/Widgets.js" ?>'></script>
-<?php endif; ?>
+        <!-- Load script Widgets.js from Amazon -->
+        <!-- URL changes to https://static-eu.payments-amazon.com/OffAmazonPayments/eur/lpa/js/Widgets.js when mode=live -->
+        <?php $useSandbox = $config->getMode() === \Payone_Enum_Mode::TEST ? '/sandbox' : '' ?>
+        <script>
+            document.observe("dom:loaded", function() {
+                var head = $$('head')[0];
+                if (head) {
+                    var script = new Element('script', { type: 'text/javascript', src: '<?php echo "https://static-eu.payments-amazon.com/OffAmazonPayments/eur{$useSandbox}/lpa/js/Widgets.js" ?>' });
+                    head.appendChild(script);
+                }
+            });
+        </script>
+    <?php endif; ?>
 <?php endif; ?>
