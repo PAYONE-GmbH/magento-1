@@ -77,48 +77,50 @@ abstract class Payone_Api_Response_Authorization_Abstract
      * @var string
      */
     protected $clearing_bankname = NULL;
-
     /**
      * @var string
      */
     protected $mandate_identification = NULL;
-    
     /**
      * @var string
      */
     protected $paydata_content_encoding = NULL;
-    
     /**
      * @var string
      */
     protected $paydata_instruction_notes = NULL;
-    
     /**
      * @var string
      */
     protected $paydata_content_format = NULL;
-
     /**
      * @var string
      */
     protected $clearing_instructionnote = NULL;
-    
     /**
      * @var string
      */
     protected $clearing_reference = NULL;
-    
     /**
      * @var string
      */
     protected $clearing_legalnote = NULL;
-    
     /**
      * @var string
      */
     protected $clearing_duedate = NULL;
-    
+    /**
+     * @var string
+     */
     protected $paydata_clearing_reference = NULL;
+    /**
+     * @var string
+     */
+    protected $paydata_workorderid = NULL;
+    /**
+     * @var string
+     */
+    protected $paydata_reservation_txid = NULL;
 
     /**
      * @param string $clearing_bankaccount
@@ -423,15 +425,53 @@ abstract class Payone_Api_Response_Authorization_Abstract
     {
         return $this->clearing_duedate;
     }
-    
-    public function getAddPaydataClearingReference() 
+
+    /**
+     * @return string
+     */
+    public function getAddPaydataClearingReference()
     {
         return $this->paydata_clearing_reference;
     }
 
-    public function setAddPaydataClearingReference($sClearingReference) 
+    /**
+     * @param $sClearingReference
+     */
+    public function setAddPaydataClearingReference($sClearingReference)
     {
         $this->paydata_clearing_reference = $sClearingReference;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAddPaydataWorkorderid()
+    {
+        return $this->paydata_workorderid;
+    }
+
+    /**
+     * @param string $paydata_workorderid
+     */
+    public function setAddPaydataWorkorderid($paydata_workorderid)
+    {
+        $this->paydata_workorderid = $paydata_workorderid;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAddPaydataReservationTxid()
+    {
+        return $this->paydata_reservation_txid;
+    }
+
+    /**
+     * @param string $paydata_reservation_txid
+     */
+    public function setAddPaydataReservationTxid($paydata_reservation_txid)
+    {
+        $this->paydata_reservation_txid = $paydata_reservation_txid;
     }
 
 }
