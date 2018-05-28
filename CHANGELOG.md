@@ -1,5 +1,14 @@
 # Changelog
 
+## 4.1.6
+**Features**
+
+* New database fields for RatePay orders
+* IP address in API log is now anonymized
+
+**Bugfixes**
+* Amazon Pay is not displayed in backend to avoid template error (fixes #207)
+
 ## 4.1.5
 **Features**
 
