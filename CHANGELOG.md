@@ -1,5 +1,21 @@
 # Changelog
 
+## 4.1.5
+**Features**
+
+* Added RatePay Direct Debit
+* Order reversal is now possible even if order can't be reversed at Payone API
+
+**Bugfixes**
+
+* Amazon's widgets.js is now loaded correctly
+* Store ID is now fixed from order table if not in tx-status table (thanks @alphanyx)
+* Shopgate orders are now recognized correctly (#181, thanks @sprankhub)
+* CVC code can now be hidden again
+* Updated iDeal bank groups
+* Fixed some cases of "backwards browser button" orders being handled the wrong way
+* Fixed several typos (thanks @Ersian)
+
 ## 4.1.4
 **Features**
 

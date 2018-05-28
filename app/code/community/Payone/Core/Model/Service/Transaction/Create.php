@@ -72,6 +72,12 @@ class Payone_Core_Model_Service_Transaction_Create extends Payone_Core_Model_Ser
         $transaction->setPortalid($request->getPortalid());
         $transaction->setLastSequencenumber(0);
 
+        // MAGE-359: restrict to specific response type to avoid error by Redirect response
+        if ($response instanceof Payone_Api_Response_Authorization_Abstract) {
+            $transaction->setWorkorderid($response->getAddPaydataWorkorderid());
+            $transaction->setReservationTxid($response->getAddPaydataReservationTxid());
+        }
+
         $data = $response->toArray();
 
         $transaction->addData($data);
