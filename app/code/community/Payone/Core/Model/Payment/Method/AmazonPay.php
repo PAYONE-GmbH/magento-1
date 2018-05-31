@@ -28,7 +28,8 @@ class Payone_Core_Model_Payment_Method_AmazonPay extends Payone_Core_Model_Payme
     protected $_code = Payone_Core_Model_System_Config_PaymentMethodCode::AMAZONPAY;
     protected $_formBlockType = 'payone_core/payment_method_form_amazonPay';
     protected $_infoBlockType = 'payone_core/payment_method_info_amazonPay';
-
+    protected $_canUseInternal = false;
+    
     /**
      * @param \Payone_Api_Response_Error $response
      * @return string
