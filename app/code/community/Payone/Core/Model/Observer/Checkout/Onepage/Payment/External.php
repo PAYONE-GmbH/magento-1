@@ -62,6 +62,7 @@ class Payone_Core_Model_Observer_Checkout_Onepage_Payment_External extends Payon
                         $sMessage = $this->helper()->__('The Payone transaction has been canceled.');
                         $oOrder->addStatusHistoryComment($sMessage, Mage_Sales_Model_Order::STATE_CANCELED);
                         $oOrder->save();
+                        $oSession->setData('order_got_canceled', $oOrder->getIncrementId());
                         // Add a notice to Magento checkout and
                         // prevent jumping forward in history:
                         $sNotice = $this->helper()->__('The order has been canceled.');
@@ -76,7 +77,7 @@ class Payone_Core_Model_Observer_Checkout_Onepage_Payment_External extends Payon
                     $quoteId = $oSession->getLastQuoteId();
                     $oQuote = $this->getFactory()->getModelSalesQuote();
                     $oQuote->load($quoteId);
-                    if ($oQuote && $oQuote->getId() && empty($oSession->getData('order_got_canceled'))) {
+                    if ($oQuote && $oQuote->getId()) {
                         $oQuote->setIsActive(1)
                             ->setReservedOrderId(null)
                             ->save();
