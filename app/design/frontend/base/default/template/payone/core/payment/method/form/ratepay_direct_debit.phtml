@@ -24,7 +24,7 @@
 /** @var $this Payone_Core_Block_Payment_Method_Form_RatepayDirectDebit */
 $code = $this->getMethodCode();
 $configId = $this->getPaymentConfig()->getId();
-$paymentType = Payone_Api_Enum_RatepayType::RPD;
+$paymentType = Payone_Api_Enum_RatepayDirectDebitType::RPD;
 $ratePayShopId = $this->getMatchingRatePayShopId();
 $ratePayCurrency = $this->getRatePayCurrency();
 $allowedSEPACountries = htmlspecialchars($this->getAllowedSEPACountries());

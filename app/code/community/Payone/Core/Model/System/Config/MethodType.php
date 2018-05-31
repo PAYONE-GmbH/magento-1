@@ -43,13 +43,15 @@ class Payone_Core_Model_System_Config_MethodType
         $settingsWallet = new Payone_Settings_Configuration_PaymentMethod_Wallet();
         $settingsSafeInvoice = new Payone_Settings_Configuration_PaymentMethod_Financing();
         $settingsSafeRatePay = new Payone_Settings_Configuration_PaymentMethod_RatePay();
+        $settingsRatePayDirectDebit = new Payone_Settings_Configuration_PaymentMethod_RatePayDirectDebit();
 
         $return = array_merge(
             $settingsCreditcard->getTypes(),
             $settingsOnlineBankTransfer->getTypes(),
             $settingsWallet->getTypes(),
             $settingsSafeInvoice->getTypes(),
-            $settingsSafeRatePay->getTypes()
+            $settingsSafeRatePay->getTypes(),
+            $settingsRatePayDirectDebit->getTypes()
         );
 
         return $return;
@@ -65,13 +67,15 @@ class Payone_Core_Model_System_Config_MethodType
         $settingsWallet = new Payone_Settings_Configuration_PaymentMethod_Wallet();
         $settingsSafeInvoice = new Payone_Core_Model_System_Config_SafeInvoiceType();
         $settingsSafeRatePay = new Payone_Settings_Configuration_PaymentMethod_RatePay();
+        $settingsRatePayDirectDebit = new Payone_Settings_Configuration_PaymentMethod_RatePayDirectDebit();
 
         $return = array(
             'Creditcard' => $settingsCreditcard->getTypes(),
             'Online Bank Transfer' => $settingsOnlineBankTransfer->getTypes(),
             'Wallet' => $settingsWallet->getTypes(),
             'Safe Invoice' => $settingsSafeInvoice->toArray(),
-            'Rate Pay' => $settingsSafeRatePay->getTypes()
+            'Rate Pay' => $settingsSafeRatePay->getTypes(),
+            'Rate Pay Direct Debit' => $settingsRatePayDirectDebit->getTypes()
         );
 
         return $return;
