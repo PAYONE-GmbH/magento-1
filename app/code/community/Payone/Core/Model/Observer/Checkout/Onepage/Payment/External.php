@@ -55,7 +55,7 @@ class Payone_Core_Model_Observer_Checkout_Onepage_Payment_External extends Payon
                 $orderId = $oSession->getLastOrderId();
                 $oOrder = $this->getFactory()->getModelSalesOrder();
                 $oOrder->load($orderId);
-                if ($oOrder && empty($oSession->getData('order_got_canceled'))) {
+                if ($oOrder && $oOrder->getId()) {
                     // Cancel order and add history comment:
                     if ($oOrder->canCancel()) {
                         $oOrder->cancel();
