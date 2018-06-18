@@ -1081,6 +1081,12 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
     private function mapRatePayInstallmentParameters($installmentData)
     {
         $payData = new Payone_Api_Request_Parameter_Paydata_Paydata();
+
+        // MAGE-363: Convert amounts into EUR-cents (integer)
+        $installmentAmount = (int) ($installmentData['payone_ratepay_rate'] * 100);
+        $lastInstallmentAmount = (int) ($installmentData['payone_ratepay_last-rate'] * 100);
+        $amount = (int) ($installmentData['payone_ratepay_total-amount'] * 100);
+
         $payData->addItem(
             new Payone_Api_Request_Parameter_Paydata_DataItem(
                 array('key' => 'action', 'data' => Payone_Api_Enum_GenericpaymentAction::RATEPAY_PROFILE)
@@ -1095,12 +1101,12 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
 
         $payData->addItem(
             new Payone_Api_Request_Parameter_Paydata_DataItem(
-                array('key' => 'installment_amount', 'data' => $installmentData['payone_ratepay_rate'])
+                array('key' => 'installment_amount', 'data' => $installmentAmount)
             )
         );
         $payData->addItem(
             new Payone_Api_Request_Parameter_Paydata_DataItem(
-                array('key' => 'last_installment_amount', 'data' => $installmentData['payone_ratepay_last-rate'])
+                array('key' => 'last_installment_amount', 'data' => $lastInstallmentAmount)
             )
         );
         $payData->addItem(
@@ -1110,7 +1116,7 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
         );
         $payData->addItem(
             new Payone_Api_Request_Parameter_Paydata_DataItem(
-                array('key' => 'amount', 'data' => $installmentData['payone_ratepay_total-amount'])
+                array('key' => 'amount', 'data' => $amount)
             )
         );
         $payData->addItem(
