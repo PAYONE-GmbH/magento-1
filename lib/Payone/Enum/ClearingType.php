@@ -50,4 +50,5 @@ class Payone_Enum_ClearingType
     const PAYOLUTION = 'fnc';
     const FINANCING = 'fnc';
     const PAYMENTGUARANTEEINVOICE = 'rec';
+    const MASTERPASS = 'wlt';
 }
