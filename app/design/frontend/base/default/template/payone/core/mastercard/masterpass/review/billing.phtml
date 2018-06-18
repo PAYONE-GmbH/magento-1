@@ -32,7 +32,7 @@
 
         <table>
             <tr>
-                <td class="table-label"><b>Name : </b></td>
+                <td class="table-label"><b><?php echo $this->__("Name :") ?></b></td>
                 <td class="table-value">
                     <span><?php echo $this->getFirstname(); ?></span>&nbsp;
                     <span><?php echo $this->getLastname(); ?></span>
@@ -40,16 +40,16 @@
             </tr>
             <?php if (!empty($this->getBirthday())) { ?>
                 <tr>
-                    <td class="table-label"><b>Birthdate : </b></td>
+                    <td class="table-label"><b><?php echo $this->__("Birthdate :") ?></b></td>
                     <td class="table-value"><?php echo $this->getBirthday(); ?></td>
                 </tr>
             <?php } ?>
             <tr>
-                <td class="table-label"><b>Email : </b></td>
+                <td class="table-label"><b><?php echo $this->__("Email :") ?></b></td>
                 <td class="table-value"><?php echo $this->getEmail(); ?></td>
             </tr>
             <tr>
-                <td class="table-label"><b>Address : </b></td>
+                <td class="table-label"><b><?php echo $this->__("Address :") ?></b></td>
                 <td class="table-value">
                     <p><?php echo $this->getStreet(); ?></p>
                     <p>

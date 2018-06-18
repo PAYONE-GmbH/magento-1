@@ -31,15 +31,15 @@
     <div class="box-content">
         <table>
             <tr>
-                <td class="table-label"><b>Card type : </b></td>
+                <td class="table-label"><b><?php echo $this->__("Card type :") ?></b></td>
                 <td class="table-value"><?php echo $this->getCardType(); ?></td>
             </tr>
             <tr>
-                <td class="table-label"><b>Card number : </b></td>
+                <td class="table-label"><b><?php echo $this->__("Card number :") ?></b></td>
                 <td class="table-value"><?php echo $this->getCardTruncatedPan(); ?></td>
             </tr>
             <tr>
-                <td class="table-label"><b>Card expiry : </b></td>
+                <td class="table-label"><b><?php echo $this->__("Card expiry :") ?></b></td>
                 <td class="table-value"><?php echo $this->getCardExpireDate(); ?></td>
             </tr>
         </table>

@@ -31,17 +31,17 @@
     <div class="box-content">
         <table>
             <tr>
-                <td class="table-label"><b>Name : </b></td>
+                <td class="table-label"><b><?php echo $this->__("Name :") ?></b></td>
                 <td class="table-value"><?php echo $this->getName(); ?></td>
             </tr>
             <?php if (!empty($this->getPhone())) { ?>
                 <tr>
-                    <td class="table-label"><b>Phone : </b></td>
+                    <td class="table-label"><b><?php echo $this->__("Phone :") ?></b></td>
                     <td class="table-value"><?php echo $this->getPhone(); ?></td>
                 </tr>
             <?php } ?>
             <tr>
-                <td class="table-label"><b>Address : </b></td>
+                <td class="table-label"><b><?php echo $this->__("Address :") ?></b></td>
                 <td class="table-value">
                     <p><?php echo $this->getStreet(); ?></p>
                     <p>
