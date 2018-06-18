@@ -31,7 +31,7 @@ var PayoneCheckout = {
         this.baseUrl = baseUrl;
 
         var button = jQuery('#placeOrder');
-        button.on('click', function (event) {
+        button.on('click', function () {
             window.placeOrder(PayoneCheckout.getPlaceOrderUrl());
         });
 
@@ -106,7 +106,7 @@ window.chooseMethod = function(url, methodCode) {
             },
             error: function(result) {
                 window.unlockActivity();
-                alert(response.data.message);
+                alert('An error occurred during the Masterpass Checkout.');
             },
             success: function (result) {
                 var response = JSON.parse(result);
@@ -129,7 +129,7 @@ window.placeOrder = function (url) {
             url: url,
             error: function(result) {
                 window.unlockActivity();
-                alert(response.data.message);
+                alert('An error occurred during the Masterpass Checkout.');
             },
             success: function (result) {
                 window.unlockActivity();
