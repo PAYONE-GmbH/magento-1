@@ -350,15 +350,6 @@
         </template>
 
         <events>
-            <controller_action_predispatch>
-                <observers>
-                    <payone_core_observer>
-                        <type>singleton</type>
-                        <class>payone_core/observer_checkout_onepage_payment_external</class>
-                        <method>maintainCheckoutSession</method>
-                    </payone_core_observer>
-                </observers>
-            </controller_action_predispatch>
             <sales_quote_address_validate_after>
                 <observers>
                     <payone_core_observer>

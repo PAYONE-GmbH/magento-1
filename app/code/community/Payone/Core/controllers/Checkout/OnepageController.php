@@ -345,4 +345,24 @@ class Payone_Core_Checkout_OnepageController extends Mage_Checkout_OnepageContro
         return $this->helperConfig;
     }
 
+    /**
+     * Start the cancellation handler
+     *
+     * @return void
+     */
+    public function startCancellationHandler()
+    {
+        /** @var $cancellation Payone_Core_Model_Handler_Cancellation */
+        $cancellation = Mage::getModel('payone_core/handler_cancellation');
+        $cancellation->handle($this);
+    }
+
+    /**
+     * Checkout page
+     */
+    public function indexAction()
+    {
+        $this->startCancellationHandler();
+        return parent::indexAction();
+    }
 }
