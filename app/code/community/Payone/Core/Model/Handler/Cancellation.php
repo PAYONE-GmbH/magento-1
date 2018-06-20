@@ -61,15 +61,16 @@ class Payone_Core_Model_Handler_Cancellation extends Payone_Core_Model_Handler_A
                 }
                 // Load quote
                 $quoteId = $oSession->getLastQuoteId();
-                $oQuote = $this->getFactory()->getModelSalesQuote();
-                $oQuote->load($quoteId);
-                if ($oQuote && $oQuote->getId()) {
-                    $oQuote->setIsActive(1)
-                        ->setReservedOrderId(null)
-                        ->save();
-                    /** @var Mage_Checkout_Model_Session $oSession */
-                    $oSession = Mage::getSingleton('checkout/session');
-                    $oSession->replaceQuote($oQuote)->unsetData('last_real_order_id');
+
+                $oQuote = $oSession->getQuote();
+
+                //load old quote and duplicate it - don't reuse the old one to prevent cart-manipulation
+                $oOldQuote = $this->getFactory()->getModelSalesQuote();
+                $oOldQuote->load($quoteId);
+                if ($oOldQuote && $oOldQuote->getId()) {
+                    $oQuote->merge($oOldQuote);
+                    $oQuote->collectTotals();
+                    $oQuote->save();
                 }
             }
         }
