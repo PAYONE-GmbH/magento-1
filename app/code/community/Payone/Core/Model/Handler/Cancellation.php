@@ -28,10 +28,10 @@ class Payone_Core_Model_Handler_Cancellation extends Payone_Core_Model_Handler_A
      * So if the flag is set when he is somewhere else on the shop, he escaped the payment-process in an unknown way
      * Therefore the payment is cancelled
      *
-     * @param Mage_Core_Controller_Front_Action $controller
+     * @param Mage_Core_Controller_Front_Action|null $controller
      * @return void
      */
-    public function handle(Mage_Core_Controller_Front_Action $controller)
+    public function handle(Mage_Core_Controller_Front_Action $controller = null)
     {
         /** @var Mage_Checkout_Model_Session $oSession */
         $oSession = Mage::getSingleton('checkout/session');
@@ -55,7 +55,7 @@ class Payone_Core_Model_Handler_Cancellation extends Payone_Core_Model_Handler_A
                     $oSession->setData('has_canceled_order_text', $sNotice);
                     $oSession->setData('has_canceled_order', true);
                     $oSession->addNotice($sNotice);
-                    if (!$controller instanceof Mage_Checkout_CartController) {
+                    if ($controller !== null && !$controller instanceof Mage_Checkout_CartController) {
                         $controller->setRedirectWithCookieCheck('checkout/cart/index');
                     }
                 }

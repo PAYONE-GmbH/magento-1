@@ -105,23 +105,4 @@ class Payone_Core_Checkout_CartController extends Mage_Checkout_CartController
             $oSession->replaceQuote($quote)->unsetData('last_real_order_id');
         }
     }
-
-    /**
-     * @return void
-     */
-    public function startCancellationHandler()
-    {
-        /** @var $cancellation Payone_Core_Model_Handler_Cancellation */
-        $cancellation = Mage::getModel('payone_core/handler_cancellation');
-        $cancellation->handle($this);
-    }
-
-    /**
-     * Shopping cart display action
-     */
-    public function indexAction()
-    {
-        $this->startCancellationHandler();
-        return parent::indexAction();
-    }
 }
