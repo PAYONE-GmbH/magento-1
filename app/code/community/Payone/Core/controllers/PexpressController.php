@@ -175,11 +175,18 @@ class Payone_Core_PexpressController extends Payone_Core_Controller_Abstract
                 }
             }
 
+            $session = $this->_getCheckoutSession();
+            if ($this->_getQuote()->getSubtotal() != $session->getPayoneGenericpaymentSubtotal()) {
+                // The basket was changed - abort current checkout
+                $this->_getCheckoutSession()->addError($this->__('An error occured during the PayPal Express Checkout.'));
+                $this->_redirect('checkout/cart');
+                return;
+            }
+
             $this->_initCheckout();
             $this->_checkout->place($this->_initWorkOrderId());
 
             // prepare session to success or cancellation page
-            $session = $this->_getCheckoutSession();
             $session->clearHelperData();
 
             // "last successful quote"

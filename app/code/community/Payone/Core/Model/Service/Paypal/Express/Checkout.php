@@ -94,6 +94,11 @@ class Payone_Core_Model_Service_Paypal_Express_Checkout
     protected $_customerSession;
 
     /**
+     * @var Mage_Checkout_Model_Session|null
+     */
+    protected $_checkoutSession;
+
+    /**
      * Set quote and config instances
      * @param array $params
      */
@@ -112,6 +117,7 @@ class Payone_Core_Model_Service_Paypal_Express_Checkout
         }
 
         $this->_customerSession = Mage::getSingleton('customer/session');
+        $this->_checkoutSession = Mage::getSingleton('checkout/session');
     }
 
     /**
@@ -181,6 +187,7 @@ class Payone_Core_Model_Service_Paypal_Express_Checkout
         $service = $this->getFactory()->getServicePaymentGenericpayment($this->_config);
         $mapper = $service->getMapper();
         $request = $mapper->mapExpressCheckoutParameters($this->_quote);
+        $this->_checkoutSession->setPayoneGenericpaymentSubtotal($this->_quote->getSubtotal());
         $response = $this->getFactory()->getServiceApiPaymentGenericpayment()->request($request);
 
         if($response instanceof Payone_Api_Response_Genericpayment_Redirect) {
