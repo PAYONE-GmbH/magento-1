@@ -350,15 +350,6 @@
         </template>
 
         <events>
-            <controller_action_predispatch>
-                <observers>
-                    <payone_core_observer>
-                        <type>singleton</type>
-                        <class>payone_core/observer_checkout_onepage_payment_external</class>
-                        <method>maintainCheckoutSession</method>
-                    </payone_core_observer>
-                </observers>
-            </controller_action_predispatch>
             <sales_quote_address_validate_after>
                 <observers>
                     <payone_core_observer>
@@ -585,6 +576,24 @@
                     </payone_core_observer>
                 </observers>
             </checkout_onepage_controller_success_action>
+            <checkout_cart_save_after>
+                <observers>
+                    <payone_core_observer>
+                        <type>singleton</type>
+                        <class>payone_core/observer_sales_cartUpdate</class>
+                        <method>checkExternalCheckoutActive</method>
+                    </payone_core_observer>
+                </observers>
+            </checkout_cart_save_after>
+            <controller_action_predispatch_checkout_cart_add>
+                <observers>
+                    <payone_core_observer>
+                        <type>singleton</type>
+                        <class>payone_core/observer_sales_cartUpdate</class>
+                        <method>checkExternalCheckoutActive</method>
+                    </payone_core_observer>
+                </observers>
+            </controller_action_predispatch_checkout_cart_add>
         </events>
     </global>
 

@@ -224,6 +224,7 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
             $this->quote->getQuoteCurrencyCode(),
             $this->quote->getGrandTotal()
         );
+        $this->checkoutSession->setPayoneGenericpaymentGrandTotal($this->quote->getGrandTotal());
         $response = $this->getFactory()->getServiceApiPaymentGenericpayment()->request($request);
         if ($response instanceof \Payone_Api_Response_Genericpayment_Ok !== true) {
             Mage::throwException(
@@ -241,6 +242,25 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
         return [
             'successful'      => true,
             'orderReviewHtml' => $orderReviewHtml,
+        ];
+    }
+
+    /**
+     * Unset session variable, add error-message to session and redirect back to the cart
+     *
+     * @param  \Payone_Core_Model_Session $oSession
+     * @param  string $sTest
+     * @return array
+     */
+    protected function cancelAmazonPayment($oSession, $sTest)
+    {
+        $oSession->unsetData('work_order_id');
+        $oSession->unsetData('amazon_add_paydata');
+        $this->checkoutSession->addError(Mage::helper('payone_core')->__($sTest));
+        return [
+            'successful'  => true,
+            'shouldLogout' => true,
+            'redirectUrl' => Mage::getUrl('checkout/cart/index'),
         ];
     }
 
@@ -291,6 +311,13 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
             'amazon_reference_id'  => $params['amazonOrderReferenceId'],
             'amazon_address_token' => $params['addressConsentToken'],
         ]);
+
+        if ($this->quote->getGrandTotal() != $this->checkoutSession->getPayoneGenericpaymentGrandTotal()) {
+            // The basket was changed - abort current checkout
+            $text = 'Sorry, your transaction with Amazon Pay was not successful. Please try again.';
+            return $this->cancelAmazonPayment($session, $text);
+        }
+
         try {
             /** @var \Mage_Sales_Model_Service_Quote $service */
             $service = Mage::getModel('sales/service_quote', $this->quote);
@@ -303,17 +330,8 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
             } else { // logout and send to basket
                 // Transaction cannot be completed by Amazon
                 // and the order reference object was closed
-                $session->unsetData('work_order_id');
-                $session->unsetData('amazon_add_paydata');
-                $text = 'Sorry, your transaction with Amazon Pay was not successful. ' .
-                    'Please choose another payment method.';
-                $message = Mage::helper('payone_core')->__($text);
-                $this->checkoutSession->addError($message);
-                return [
-                    'successful'  => true,
-                    'shouldLogout' => true,
-                    'redirectUrl' => Mage::getUrl('checkout/cart/index'),
-                ];
+                $text = 'Sorry, your transaction with Amazon Pay was not successful. Please choose another payment method.';
+                return $this->cancelAmazonPayment($session, $text);
             }
             throw $e;
         }
