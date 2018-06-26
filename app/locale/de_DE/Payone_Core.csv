@@ -1017,6 +1017,7 @@
 "Numeric","Numerisch"
 "Password","Passwort"
 "Text","Text"
+The <a target='_blank' href='https://www.ratepay.com/zgb-dse'>additional terms and conditions and the privacy policy</a> of RatePAY GmbH apply.,Es gelten die <a target='_blank' href='https://www.ratepay.com/zgb-dse'>zusätzlichen Allgemeinen Geschäftsbedingungen und der Datenschutzhinweis</a> der RatePAY GmbH.
 
 "Standard-style","Standardstil"
 "Input","Eingabe"
@@ -1044,7 +1045,7 @@
 
 "RPV","Rechnungskauf"
 "RPS","Ratenzahlung"
-"RPD","Lastschrift"
+"RPD","Ratepay Lastschrift"
 "RPP","Vorkasse"
 "Amount for this payment method too low","Warenkorbwert ist zu gering für diese Zahlart"
 "Rate calculator", "Ratenrechner"
