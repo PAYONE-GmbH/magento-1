@@ -115,7 +115,7 @@ window.onCheckoutProgress = function (target) {
         });
     }
     new Ajax.Request(PayoneCheckout.progressAction, {
-        method: 'get',
+        method: 'post',
         parameters: jQuery.extend({}, PayoneCheckout, Progress),
         onSuccess: function (transport) {
             if (transport.responseText) {

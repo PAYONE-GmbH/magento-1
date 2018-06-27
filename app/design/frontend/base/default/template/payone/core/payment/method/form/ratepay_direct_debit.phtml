@@ -24,7 +24,7 @@
 /** @var $this Payone_Core_Block_Payment_Method_Form_RatepayDirectDebit */
 $code = $this->getMethodCode();
 $configId = $this->getPaymentConfig()->getId();
-$paymentType = Payone_Api_Enum_RatepayType::RPD;
+$paymentType = Payone_Api_Enum_RatepayDirectDebitType::RPD;
 $ratePayShopId = $this->getMatchingRatePayShopId();
 $ratePayCurrency = $this->getRatePayCurrency();
 $allowedSEPACountries = htmlspecialchars($this->getAllowedSEPACountries());
@@ -48,6 +48,11 @@ $accountOwner = $this->getAccountOwner();
                         <a href="#" onclick="toggleRatepayDirectDebitOverlay('<?php echo $code ?>');return false;">
                             <?php echo $this->__('Read the consent to the SEPA mandate'); ?>
                         </a>
+                    </p>
+                    <p>
+                        <?php
+                        echo $this->__("The <a target='_blank' href='https://www.ratepay.com/zgb-dse'>additional terms and conditions and the privacy policy</a> of RatePAY GmbH apply.");
+                        ?>
                     </p>
                 </div>
                 <br class="ratepay-ClearFix" />
