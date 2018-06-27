@@ -154,12 +154,24 @@ function payoneSwitchPayRate(element)
             display: 'block'
             }
         );
+        $("payone_ratepay_debit_details").setStyle(
+            {
+                display: 'block'
+            }
+        );
+        checkRequirementFields(element.value, -1);
     } else {
         $("ratepay-main-cont").setStyle(
             {
             display: 'none'
             }
         );
+        $("payone_ratepay_debit_details").setStyle(
+            {
+                display: 'none'
+            }
+        );
+        checkRequirementFields(element.value, -1);
     }
 }
 
@@ -252,4 +264,72 @@ function toggleBicField(ibanEl, sCode)
     else {
         bicEl.show()
     }
+}
+
+function requireRegistrationNumber(required, fieldPrefix)
+{
+    var fieldId = fieldPrefix + "_trade_registry_number";
+    var registrationNumber = jQuery("#" + fieldId);
+    var label = jQuery('label[for=' + fieldId + ']');
+    var labelRequiredMark = label.children('span');
+
+    if (required) {
+        labelRequiredMark.show();
+        registrationNumber.addClass('required-entry')
+    }
+    else {
+        labelRequiredMark.hide();
+        registrationNumber.removeClass('required-entry')
+    }
+}
+
+function requireVat(required, fieldPrefix)
+{
+    var fieldId = fieldPrefix + "_vat_id";
+    var vat = jQuery("#" + fieldId);
+    var label = jQuery('label[for=' + fieldId + ']');
+    var labelRequiredMark = label.children('span');
+
+    if (required) {
+        labelRequiredMark.show();
+        vat.addClass('required-entry')
+    }
+    else {
+        labelRequiredMark.hide();
+        vat.removeClass('required-entry')
+    }
+}
+
+function checkRequirementFields(method, forceRequirement)
+{
+    console.log("force:", forceRequirement);
+    if (forceRequirement !== -1) {
+        var fieldPrefix = 'payone_ratepay';
+        if (method === 'RPD') {
+            fieldPrefix += '_direct_debit';
+        }
+        requireRegistrationNumber(forceRequirement, fieldPrefix);
+        requireVat(forceRequirement, fieldPrefix);
+        return;
+    }
+
+    var country = document.getElementsByName('payment[payone_country]').item(0).value;
+    var b2b = document.getElementsByName('payment[payone_isb2b]').item(0).value;
+    console.log('Method:', method);
+    console.log('Country:', country);
+    console.log('b2b:', b2b);
+
+    forceRequirement = true;
+    if (b2b === '1') {
+        // Rechnungkauf for Switzerland & Austria
+        if (method === 'RPV' && (country === 'CH' || country === 'AT')) {
+            forceRequirement = false;
+        }
+        // Ratepay Lastschrift for Austria
+        if (method === 'RPD' && country === 'AT') {
+            forceRequirement = false;
+        }
+    }
+    console.log(country + ' required:', forceRequirement);
+    checkRequirementFields(method, forceRequirement);
 }

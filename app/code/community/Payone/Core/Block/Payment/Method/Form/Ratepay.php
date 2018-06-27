@@ -32,7 +32,6 @@ class Payone_Core_Block_Payment_Method_Form_Ratepay extends Payone_Core_Block_Pa
      */
     protected $hasTypes = true;
 
-
     protected function _construct() 
     {
         parent::_construct();
@@ -183,5 +182,81 @@ class Payone_Core_Block_Payment_Method_Form_Ratepay extends Payone_Core_Block_Pa
         $sCompany = $this->getQuote()->getBillingAddress()->getCompany();
 
         return !empty($sCompany);
+    }
+
+    /**
+     * @return string
+     */
+    public function getCountry()
+    {
+        return $this->getQuote()->getBillingAddress()->getCountry();
+    }
+
+    /**
+     * @return string
+     */
+    public function getAllowedSEPACountries()
+    {
+        $sepaCountries = Mage::getModel('payone_core/system_config_sepaCountry');
+        $array = $sepaCountries->toArray();
+
+        return json_encode(array_keys($array));
+    }
+
+    /**
+     * @return string
+     */
+    public function getAccountOwner()
+    {
+        $billingContact = $this->getQuote()->getBillingAddress();
+        if($this->isB2BMode()) {
+            return $billingContact->getCompany();
+        }
+
+        return $billingContact->getFirstname() . ' ' . $billingContact->getLastname();
+    }
+
+    /**
+     * return string
+     */
+    public function getRatepayDirectDebitAcceptanceText()
+    {
+        /** @var Payone_Core_Block_Payment_Method_RatepayDirectDebitSepaAcceptance $block */
+        $block = Mage::app()->getLayout()->createBlock('payone_core/payment_method_ratepayDirectDebitSepaAcceptance');
+
+        return $block->toHtml();
+    }
+
+    /**
+     * @return bool
+     */
+    public function shouldDisplayIbanBic()
+    {
+        $display = false;
+
+        if ($this->isInstallmentDirectDebit()) {
+            $country = $this->getQuote()->getBillingAddress()->getCountry();
+            $config = $this->getPaymentConfig();
+            $allowedCountries = explode(',', $config->getRatepayDirectDebitSpecificCountry());
+            $display = in_array($country, $allowedCountries);
+        }
+
+        return $display;
+    }
+
+    /**
+     * return boolean
+     */
+    public function isInstallmentDirectDebit()
+    {
+        try {
+            /** @var Payone_Core_Model_Config_Payment_Method $config */
+            $config = $this->getPaymentConfig();
+            $debitType = $config->getRatepayDebitType();
+            return $debitType == Payone_Api_Enum_RatepayDebitType::DIRECT_DEBIT;
+        }
+        catch (\Exception $oEx) {
+            return false;
+        }
     }
 }

@@ -293,6 +293,16 @@ class Payone_Core_Model_Config_Payment_Method
     protected $wallet_paydirekt_enable_overcapture = 0;
 
     /**
+     * @var string
+     */
+    protected $ratepay_debit_type = '';
+
+    /**
+     * @var array
+     */
+    protected $ratepay_directdebit_specificcountry = array();
+
+    /**
      * Check if Method can be used in Country
      *
      * @param string $country
@@ -1383,5 +1393,37 @@ class Payone_Core_Model_Config_Payment_Method
     public function getWalletPaydirektEnableOvercapture()
     {
         return $this->wallet_paydirekt_enable_overcapture;
+    }
+
+    /**
+     * @param string $ratepay_debit_type
+     */
+    public function setRatepayDebitType($ratepay_debit_type)
+    {
+        $this->ratepay_debit_type = $ratepay_debit_type;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRatepayDebitType()
+    {
+        return $this->ratepay_debit_type;
+    }
+
+    /**
+     * @param array $ratepay_directdebit_specificcountry
+     */
+    public function setRatepayDirectdebitSpecificcountry($ratepay_directdebit_specificcountry)
+    {
+        $this->ratepay_directdebit_specificcountry = $ratepay_directdebit_specificcountry;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRatepayDirectdebitSpecificcountry()
+    {
+        return $this->ratepay_directdebit_specificcountry;
     }
 }
