@@ -167,11 +167,18 @@ class Payone_Core_MastercardMasterpassController extends Payone_Core_Controller_
             $itemsReview->setQuoteId($quoteId);
             $itemsReview->init();
 
+            /** @var Mage_Checkout_Block_Agreements $checkoutAgreements */
+            $checkoutAgreements = $reviewBlock->getLayout()
+                ->createBlock('checkout/agreements')
+                ->setBlockId('mastercard.masterpass.review.checkoutagreements')
+                ->setTemplate('checkout/onepage/agreements.phtml');
+
             $reviewBlock->setBilling($billing);
             $reviewBlock->setShipping($shipping);
             $reviewBlock->setShippingMethods($shippingMethods);
             $reviewBlock->setPaymentMethod($paymentMethod);
             $reviewBlock->setItemsReview($itemsReview);
+            $reviewBlock->setCheckoutAgreements($checkoutAgreements);
 
             $this->renderLayout();
             return;
@@ -205,12 +212,14 @@ class Payone_Core_MastercardMasterpassController extends Payone_Core_Controller_
         try {
             $request = new Payone_Core_Model_Service_Mastercard_Masterpass_Request_PlaceOrderRequest();
             $request->setQuoteId($this->getCheckoutSession()->getQuoteId());
+            foreach ($this->getRequest()->get('agreement') as $agreement) {
+                $request->addAgreement($agreement);
+            }
 
             /** @var Payone_Core_Model_Service_Mastercard_Masterpass_ResponseInterface $response */
             $response = $this->checkoutService->placeOrder($request);
 
             if ($response instanceof Payone_Core_Model_Service_Mastercard_Masterpass_Response_PlaceOrderErrorResponse) {
-                $this->getCheckoutSession()->addError($response->getData('message'));
                 Mage::log($response->getData('message'));
 
                 $redirectUrl = Mage::getUrl($this->getReviewUrl());

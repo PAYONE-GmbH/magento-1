@@ -26,6 +26,9 @@ class Payone_Core_Model_Service_Mastercard_Masterpass_Request_PlaceOrderRequest
     /** @var string */
     protected $quoteId;
 
+    /** @var array */
+    protected $agreements = array();
+
     /**
      * @return string
      */
@@ -50,5 +53,27 @@ class Payone_Core_Model_Service_Mastercard_Masterpass_Request_PlaceOrderRequest
         $this->quoteId = $quoteId;
     }
 
+    /**
+     * @return array
+     */
+    public function getAgreements()
+    {
+        return $this->agreements;
+    }
 
+    /**
+     * @param string $agreement
+     */
+    public function addAgreement($agreement)
+    {
+        array_push($this->agreements, $agreement);
+    }
+
+    /**
+     * @param array $agreements
+     */
+    public function setAgreements($agreements)
+    {
+        $this->agreements = $agreements;
+    }
 }

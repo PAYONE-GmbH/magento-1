@@ -28,7 +28,7 @@
 <button class="masterpassCheckout" onclick="initCheckout()">
     <img src="https://masterpass.com/dyn/img/btn/global/mp_chk_btn_147x034px.svg"/>
 </button>
-<script type="text/javascript" src="https://sandbox.masterpass.com/lightbox/Switch/integration/MasterPass.client.js"></script>
+<script type="text/javascript" src="<?php echo $this->getMasterpassLibraryUrl(); ?>"></script>
 <!-- Script URL changes to https://www.masterpass.com/lightbox/Switch/integration/MasterPass.client.js in live mode -->
 <script type="text/javascript" language="Javascript">
     function initCheckout() {

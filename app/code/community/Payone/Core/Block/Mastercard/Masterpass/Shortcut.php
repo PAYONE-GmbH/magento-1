@@ -25,6 +25,9 @@ class Payone_Core_Block_Mastercard_Masterpass_Shortcut extends Mage_Core_Block_T
 {
     const INIT_CHECKOUT_URL = 'payone_core/mastercardMasterpass/initCheckout';
 
+    const MASTERPASS_LIB_TEST_URL = 'https://sandbox.masterpass.com/lightbox/Switch/integration/MasterPass.client.js';
+    const MASTERPASS_LIB_LIVE_URL = 'https://www.masterpass.com/lightbox/Switch/integration/MasterPass.client.js';
+
     /**
      * Position of "OR" label against shortcut
      */
@@ -106,6 +109,20 @@ class Payone_Core_Block_Mastercard_Masterpass_Shortcut extends Mage_Core_Block_T
         $this->customerId = $customerId;
     }
 
+    /**
+     * @return string
+     */
+    public function getMasterpassLibraryUrl()
+    {
+        $config = $this->getConfiguration();
+
+        if ($config->getMode() === Payone_Enum_Mode::LIVE) {
+            return self::MASTERPASS_LIB_LIVE_URL;
+        }
+
+        return self::MASTERPASS_LIB_TEST_URL;
+    }
+
     protected function _beforeToHtml()
     {
         $result = parent::_beforeToHtml();
@@ -166,8 +183,30 @@ class Payone_Core_Block_Mastercard_Masterpass_Shortcut extends Mage_Core_Block_T
         return $this->factory;
     }
 
-    protected function getMockTestUrl()
+    /**
+     * @return \Payone_Core_Model_Config_Payment_Method
+     */
+    private function getConfiguration()
     {
-        return Mage::getBaseUrl() . 'payone_core/mastercardMasterpass/test';
+        /** @var \Mage_Checkout_Model_Session $session */
+        $session = Mage::getSingleton('checkout/session');
+
+        /** @var \Mage_Sales_Model_Quote $quote */
+        $quote = $session->getQuote();
+
+        /** @var \Mage_Payment_Helper_Data $paymentHelper */
+        $paymentHelper = Mage::helper('payment');
+
+        /** @var \Payone_Core_Model_Payment_Method_AmazonPay $paymentMethod */
+        $paymentMethod = $paymentHelper->getMethodInstance(Payone_Core_Model_System_Config_PaymentMethodCode::MASTERPASS);
+
+        try {
+            /** @var \Payone_Core_Model_Config_Payment_Method $paymentConfig */
+            $paymentConfig = $paymentMethod->getConfigForQuote($quote);
+        } catch (\Payone_Core_Exception_PaymentMethodConfigNotFound $e) {
+            return null;
+        }
+
+        return $paymentConfig;
     }
 }

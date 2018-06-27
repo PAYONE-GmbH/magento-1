@@ -23,9 +23,9 @@
 var PayoneCheckout = {
     shippingMethodCode: false,
     baseUrl: "",
-    chooseMethodUrl: "/payone_core/mastercardMasterpass/chooseShippingMethod",
-    placeOrderUrl: "/payone_core/mastercardMasterpass/placeOrder",
-    reloadReviewUrl: "/index.php/checkout/onepage/review/",
+    chooseMethodUrl: "payone_core/mastercardMasterpass/chooseShippingMethod",
+    placeOrderUrl: "payone_core/mastercardMasterpass/placeOrder",
+    reloadReviewUrl: "checkout/onepage/review/",
     init: function (baseUrl) {
 
         this.baseUrl = baseUrl;
@@ -46,6 +46,13 @@ var PayoneCheckout = {
                     );
                 }
             });
+        }
+        else {
+            var method = availableMethods.get(0).value;
+            window.chooseMethod(
+                PayoneCheckout.getChooseMethodeUrl(),
+                method
+            );
         }
 
         this.handlePlaceOrderButton();
@@ -123,10 +130,24 @@ window.chooseMethod = function(url, methodCode) {
 };
 
 window.placeOrder = function (url) {
+    var agreementCollection = jQuery("[id^=agreement-]");
+    var agreement = [];
+    agreementCollection.each(function() {
+        if (this.checked) {
+            var index = $(this).attr("name").match(/.*\[(.*)\]/);
+            if (index.length > 1) {
+                agreement.push(index[1]);
+            }
+        }
+    });
+
     window.lockActivity();
     jQuery.ajax(
         {
             url: url,
+            data: {
+                agreement: agreement
+            },
             error: function(result) {
                 window.unlockActivity();
                 alert('An error occurred during the Masterpass Checkout.');
@@ -154,11 +175,3 @@ window.unlockActivity = function() {
     var fadeOut = jQuery('.fadeOut');
     fadeOut.hide();
 };
-
-window.onDocumentReady = function () {
-    var baseUrl = window.location.protocol + '//' + window.location.host;
-    PayoneCheckout.init(baseUrl);
-    PayoneCheckout.reloadReview();
-};
-
-jQuery(document).on('ready', window.onDocumentReady);

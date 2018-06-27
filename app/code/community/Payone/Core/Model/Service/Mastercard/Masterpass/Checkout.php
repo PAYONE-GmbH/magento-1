@@ -379,6 +379,19 @@ class Payone_Core_Model_Service_Mastercard_Masterpass_Checkout
      */
     public function placeOrder($request)
     {
+        /** @var \Mage_Checkout_Helper_Data $checkoutHelper */
+        $checkoutHelper = Mage::helper('checkout');
+        $requiredAgreements = $checkoutHelper->getRequiredAgreementIds();
+        if ($requiredAgreements) {
+            $postedAgreements = $request->getAgreements();
+            $diff = array_diff($requiredAgreements, $postedAgreements);
+            if ($diff) {
+                $agreementsErrorMessage = Mage::helper('payone_core')
+                    ->__('Please agree to all the terms and conditions before placing the order.');
+                Mage::throwException($agreementsErrorMessage);
+            }
+        }
+
         try{
             /** @var Mage_Sales_Model_Quote $quote */
             $quote = Mage::getModel('sales/quote')->load($request->getQuoteId());

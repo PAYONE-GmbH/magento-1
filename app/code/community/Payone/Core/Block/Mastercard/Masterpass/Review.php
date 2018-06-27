@@ -34,6 +34,8 @@ class Payone_Core_Block_Mastercard_Masterpass_Review extends Mage_Core_Block_Tem
     protected $paymentMethod;
     /** @var Payone_Core_Block_Mastercard_Masterpass_Review_Items */
     protected $itemsReview;
+    /** @var Mage_Checkout_Block_Agreements */
+    protected $checkoutAgreements;
 
     /**
      * Retrieve payment method and assign additional template values
@@ -148,5 +150,21 @@ class Payone_Core_Block_Mastercard_Masterpass_Review extends Mage_Core_Block_Tem
     public function setItemsReview($itemsReview)
     {
         $this->itemsReview = $itemsReview;
+    }
+
+    /**
+     * @return Mage_Checkout_Block_Agreements
+     */
+    public function getCheckoutAgreements()
+    {
+        return $this->checkoutAgreements;
+    }
+
+    /**
+     * @param Mage_Checkout_Block_Agreements $checkoutAgreements
+     */
+    public function setCheckoutAgreements($checkoutAgreements)
+    {
+        $this->checkoutAgreements = $checkoutAgreements;
     }
 }

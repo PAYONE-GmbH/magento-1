@@ -71,7 +71,7 @@ $quote = $this->getQuote();
                                  title="<?php echo $this->__('Please wait...') ?>"
                                  class="v-middle"/> <?php echo $this->__('Please wait...') ?>
                         </span>
-                        </div>
+                    </div>
                 </div>
             </div>
         </form>
@@ -87,10 +87,26 @@ $quote = $this->getQuote();
         ?>
     </div>
 </div>
+<div class="info-set">
+    <div class="box-content">
+        <?php
+            echo $this->getCheckoutAgreements()->toHtml();
+        ?>
+    </div>
+</div>
 <div class="buttons-set">
     <button title="<?php echo $this->__('Place order'); ?>" type="button"
             class="button" id="placeOrder" disabled="disabled">
         <?php echo $this->__('Place order'); ?>
     </button>
 </div>
+
+<script type="text/javascript">
+    window.onDocumentReady = function () {
+        PayoneCheckout.init('<?php echo $this->getBaseUrl(); ?>');
+        PayoneCheckout.reloadReview();
+    };
+
+    jQuery(document).on('ready', window.onDocumentReady);
+</script>
 
