@@ -1,0 +1,16 @@
+<?php
+/** @var Payone_Core_Helper_Payolution $helper */
+$helper = Mage::helper('payone_core/payolution');
+?>
+
+<?php if ($helper->getAnalysisSessionId()): ?>
+    <script type="text/javascript">
+        //<![CDATA[
+        var payolutionFraudPrevention = new PayolutionFraudPrevention({
+            onlineMetrixJsUrl: '<?php echo $helper->getPayolutionJsScriptUrl(); ?>',
+            onlineMetrixIframeUrl: '<?php echo $helper->getPayolutionIframeScriptUrl(); ?>'
+        });
+        //]]>
+    </script>
+<?php endif; ?>
+

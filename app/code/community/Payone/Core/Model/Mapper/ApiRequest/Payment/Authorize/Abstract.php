@@ -837,6 +837,17 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
                 }
             }
 
+            /** @var Payone_Core_Helper_Payolution $payolutionHelper */
+            $payolutionHelper = Mage::helper('payone_core/payolution');
+            if($analysisSessionId = $payolutionHelper->getAnalysisSessionId($paymentMethod, true)){
+                $payData->addItem(
+                    new Payone_Api_Request_Parameter_Paydata_DataItem([
+                        'key'  => 'analysis_session_id',
+                        'data' => $analysisSessionId
+                    ])
+                );
+            }
+
             $payment->setPaydata($payData);
 
             if ($this->getOrder()->getBillingAddress()->getCountryId() == 'NL') {
