@@ -258,6 +258,15 @@ class Payone_Core_Model_Service_Paypal_Express_Checkout
                     $shippingAddress->setLastname($item->getData());
                     $this->_quote->setCustomerLastname($item->getData());
                 }
+
+                if($item->getKey() == 'shipping_addressaddition') {
+                    $billingStreet = $billingAddress->getStreetFull();
+                    $shippingStreet = $shippingAddress->getStreetFull();
+                    $streetAddition = $item->getData();
+
+                    $billingAddress->setStreetFull($billingStreet . PHP_EOL . $streetAddition);
+                    $shippingAddress->setStreetFull($shippingStreet . PHP_EOL . $streetAddition);
+                }
             }
 
             $this->_quote->setBillingAddress($billingAddress);
