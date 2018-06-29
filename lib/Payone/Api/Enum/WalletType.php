@@ -75,5 +75,6 @@ class Payone_Api_Enum_WalletType
     const PAYPAL_EXPRESS = 'PPE';
     const PAYDIREKT = 'PDT';
     const ALIPAY = 'ALP';
+    const MASTERPASS = 'MPA';
 
 }

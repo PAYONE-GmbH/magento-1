@@ -50,4 +50,7 @@ class Payone_Api_Enum_GenericpaymentAction
     const PAYOLUTION_PRE_CHECK = 'pre_check';
     
     const PAYOLUTION_CALCULATION = 'calculation';
+
+    const MASTERPASS_SET_CHECKOUT = 'setcheckout';
+    const MASTERPASS_GET_CHECKOUT = 'getcheckout';
 }
