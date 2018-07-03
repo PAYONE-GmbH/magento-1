@@ -257,4 +257,27 @@ class Payone_Core_Helper_Config
     {
         return Mage::getStoreConfigFlag($path, $storeId);
     }
+
+    /**
+     * @param string $storeId
+     * @param string $methodCode
+     * @return null|Payone_Core_Model_Config_Payment_Method_Interface
+     */
+    public function getConfigPaymentMethodByType($storeId, $methodCode)
+    {
+        $paymentConfigs = $this->getConfigPayment($storeId);
+
+        if (!$paymentConfigs->getMethods()) {
+            return null;
+        }
+
+        /** @var Payone_Core_Model_Config_Payment_Method_Interface $paymentConfig */
+        foreach ($paymentConfigs->getMethods() as $paymentConfig) {
+            if ($paymentConfig->getCode() === $methodCode && $paymentConfig->getEnabled() == 1) {
+                return $paymentConfig;
+            }
+        }
+
+        return null;
+    }
 }

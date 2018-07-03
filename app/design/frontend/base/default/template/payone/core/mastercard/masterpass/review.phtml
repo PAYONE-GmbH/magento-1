@@ -1,0 +1,112 @@
+<?php
+/**
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the GNU General Public License (GPL 3)
+ * that is bundled with this package in the file LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Payone_Core to newer
+ * versions in the future. If you wish to customize Payone_Core for your
+ * needs please refer to http://www.payone.de for more information.
+ *
+ * @category        Payone
+ * @package         design_frontend_base_default
+ * @subpackage      template
+ * @copyright       Copyright (c) 2018 <kontakt@fatchip.de> - www.fatchip.de
+ * @author          FATCHIP GmbH <kontakt@fatchip.de>
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.fatchip.de
+ */
+?>
+<?php
+/** @var \Payone_Core_Block_Mastercard_Masterpass_Review $this */
+
+/** @var Mage_Sales_Model_Quote $quote */
+$quote = $this->getQuote();
+?>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<div class="page-title">
+    <h1><?php echo $this->__('Checkout with Masterpass') ?></h1>
+</div>
+<?php echo $this->getMessagesBlock()->toHtml() ?>
+
+<div class="info-set col2-set">
+    <h2 class="legend"><?php echo $this->__('Billing Information') ?></h2>
+    <div class="col-1">
+        <?php
+            echo $this->getBilling()->toHtml();
+        ?>
+    </div>
+    <div class="col-2">
+        <?php
+            echo $this->getPaymentMethod()->toHtml();
+        ?>
+    </div>
+</div>
+<div class="info-set col2-set">
+    <h2 class="legend"><?php echo $this->__('Shipping Information') ?></h2>
+    <div class="col-1">
+        <?php
+            echo $this->getShipping()->toHtml();
+        ?>
+    </div>
+    <div class="col-2">
+        <form id="chooseMethod">
+            <div class="box-title">
+                <h3><?php echo $this->__('Shipping method') ?></h3>
+            </div>
+            <div id='shippingMethodsDiv' class="box-content">
+                <?php
+                    echo $this->getShippingMethods()->toHtml();
+                ?>
+
+                <div class="fadeOut" style="display: none">
+                    <div class="fadeOutContent">
+                        <span class="please-wait">
+                            <img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>"
+                                 alt="<?php echo $this->__('Please wait...') ?>"
+                                 title="<?php echo $this->__('Please wait...') ?>"
+                                 class="v-middle"/> <?php echo $this->__('Please wait...') ?>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="info-set">
+    <h2 class="legend"><?php echo $this->__('Review items and totals') ?></h2>
+    <div class="box-title">
+    </div>
+    <div class="box-content">
+        <?php
+            echo $this->getItemsReview()->toHtml();
+        ?>
+    </div>
+</div>
+<div class="info-set">
+    <div class="box-content">
+        <?php
+            echo $this->getCheckoutAgreements()->toHtml();
+        ?>
+    </div>
+</div>
+<div class="buttons-set">
+    <button title="<?php echo $this->__('Place order'); ?>" type="button"
+            class="button" id="placeOrder" disabled="disabled">
+        <?php echo $this->__('Place order'); ?>
+    </button>
+</div>
+
+<script type="text/javascript">
+    window.onDocumentReady = function () {
+        PayoneCheckout.init('<?php echo $this->getBaseUrl(); ?>');
+        PayoneCheckout.reloadReview();
+    };
+
+    jQuery(document).on('ready', window.onDocumentReady);
+</script>
+

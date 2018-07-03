@@ -77,6 +77,10 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
         if($workOrderId = $payment->getAdditionalInformation(Payone_Core_Model_Service_Paypal_Express_Checkout::PAYONE_EXPRESS_CHECKOUT_WORKORDERID)) {
             $request->setWorkorderId($workOrderId);
         }
+        //Add workorderid when masterpass is used
+        if($workOrderId = $payment->getAdditionalInformation(Payone_Core_Model_Service_Mastercard_Masterpass_Checkout::PAYONE_MASTERPASS_CHECKOUT_WORKORDERID)) {
+            $request->setWorkorderId($workOrderId);
+        }
 
         $payment = $this->mapPaymentParameters();
 
@@ -922,6 +926,11 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
             $payment->setPaydata($payData);
             $payment->setClearingsubtype();
         }
+        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Masterpass) {
+            $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_Masterpass();
+            $payment->setWallettype(Payone_Api_Enum_WalletType::MASTERPASS);
+            $payment->setClearingType($this->mapClearingType($paymentMethod));
+        }
 
         if ($isRedirect === true) {
             $encodedOrderId = base64_encode($this->getOrder()->getEntityId());
@@ -1040,6 +1049,8 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
             $clearingType = Payone_Enum_ClearingType::AMAZONPAY;
         } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_PaymentGuaranteeInvoice) {
             $clearingType = Payone_Enum_ClearingType::PAYMENTGUARANTEEINVOICE;
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Masterpass) {
+            $clearingType = Payone_Enum_ClearingType::MASTERPASS;
         }
 
         return $clearingType;

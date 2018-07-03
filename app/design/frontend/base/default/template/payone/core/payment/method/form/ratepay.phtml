@@ -32,6 +32,12 @@ $types = $this->getTypes();
 ?>
 <fieldset class="form-list">
     <ul id="payment_form_<?php echo $code ?>" style="display:none">
+        <p>
+            <?php
+                echo $this->__("The <a target='_blank' href='https://www.ratepay.com/zgb-dse'>additional terms and conditions and the privacy policy</a> of RatePAY GmbH apply.");
+            ?>
+        </p>
+
         <?php
         if (count($types) > 1) : ?>
             <select id="<?php echo $code ?>_payrate_type_select" name="payment[payone_ratepay_type]"
