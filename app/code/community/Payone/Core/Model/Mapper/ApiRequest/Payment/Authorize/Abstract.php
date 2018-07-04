@@ -1094,15 +1094,9 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
         $payData = new Payone_Api_Request_Parameter_Paydata_Paydata();
 
         // MAGE-363: Convert amounts into EUR-cents (integer)
-        $installmentAmount = (int) ($installmentData['payone_ratepay_rate'] * 100);
-        $lastInstallmentAmount = (int) ($installmentData['payone_ratepay_last-rate'] * 100);
-        $amount = (int) ($installmentData['payone_ratepay_total-amount'] * 100);
-
-        $payData->addItem(
-            new Payone_Api_Request_Parameter_Paydata_DataItem(
-                array('key' => 'action', 'data' => Payone_Api_Enum_GenericpaymentAction::RATEPAY_PROFILE)
-            )
-        );
+        $installmentAmount = $installmentData['payone_ratepay_rate'] * 100;
+        $lastInstallmentAmount = $installmentData['payone_ratepay_last-rate'] * 100;
+        $amount = $installmentData['payone_ratepay_total-amount'] * 100;
 
         $payData->addItem(
             new Payone_Api_Request_Parameter_Paydata_DataItem(
