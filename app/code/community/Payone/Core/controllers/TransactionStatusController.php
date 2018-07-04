@@ -64,15 +64,7 @@ class Payone_Core_TransactionStatusController extends Payone_Core_Controller_Abs
                 if ($this->getFactory()->helperCompatibility()->isExternalOrderReference($reference)) {
                     return;
                 }
-                
-                //write missing order references to a separate log-file
-                Mage::log(
-                    'Could not find an order for reference "' . $reference . '".', 
-                    Zend_Log::WARN, 
-                    'payone_missing_order_reference.log'
-                );
-                
-                return;
+                throw new Payone_Core_Exception_OrderNotFound('Could not find an order for reference "' . $reference . '".');
             }
 
             // Get used config for this order
@@ -100,6 +92,20 @@ class Payone_Core_TransactionStatusController extends Payone_Core_Controller_Abs
             $message = 'ERROR='.$type;
 
             $this->getResponse()->setBody($message);
+        }
+        catch (Payone_Core_Exception_OrderNotFound $e) {
+            $type = get_class($e);
+
+            $message = 'ERROR='.$type.'|MESSAGE='.$e->getMessage();
+
+            // Send Confirmation Message
+            $this->getResponse()->setBody($message);            
+            
+            Mage::log(
+                'Could not find an order for reference "' . $reference . '".',
+                Zend_Log::WARN,
+                'payone_missing_order_reference.log'
+            );
         }
         catch (Exception $e)
         {
