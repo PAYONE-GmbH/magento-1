@@ -60,7 +60,11 @@ class Payone_Core_TransactionStatusController extends Payone_Core_Controller_Abs
             $order->loadByIncrementId($reference);
 
             if (!$order->hasData()) {
-                throw new Payone_Core_Exception_OrderNotFound();
+                // do nothing if this is an external (e.g. Shopgate) order
+                if ($this->getFactory()->helperCompatibility()->isExternalOrderReference($reference)) {
+                    return;
+                }
+                throw new Payone_Core_Exception_OrderNotFound('Could not find an order for reference "' . $reference . '".');
             }
 
             // Get used config for this order
@@ -117,8 +121,8 @@ class Payone_Core_TransactionStatusController extends Payone_Core_Controller_Abs
     {
         return $this->helperConfig()->getConfigMisc($storeId)->getTransactionstatusProcessing();
     }
-    
-    protected function _forwardStatus($oOrder) 
+
+    protected function _forwardStatus($oOrder)
     {
         $sAction = $this->getRequest()->getParam('txaction');
 
@@ -134,8 +138,8 @@ class Payone_Core_TransactionStatusController extends Payone_Core_Controller_Abs
             $this->_forwardRequest($aHost);
         }
     }
-    
-    protected function _addParam($sKey, $mValue) 
+
+    protected function _addParam($sKey, $mValue)
     {
         $sParams = '';
         if(is_array($mValue)) {
@@ -148,20 +152,20 @@ class Payone_Core_TransactionStatusController extends Payone_Core_Controller_Abs
 
         return $sParams;
     }
-    
-    protected function _forwardRequest($aHost) 
+
+    protected function _forwardRequest($aHost)
     {
         if(array_key_exists('url', $aHost) === false) {
             return;
         }
 
         $sUrl = $aHost['url'];
-        
+
         $iTimeout = 15;
         if(array_key_exists('timeout', $aHost) !== false) {
             $iTimeout = $aHost['timeout'];
         }
-        
+
         $sParams = '';
         $aRequest = Mage::app()->getRequest()->getParams();
         foreach($aRequest as $sKey => $mValue) {
@@ -190,7 +194,7 @@ class Payone_Core_TransactionStatusController extends Payone_Core_Controller_Abs
             fwrite($oLog, date('[Y-m-d H:i:s]').' - Curl-Error-Nr: '.$sCurlErrorNr.' - Message: '.$sCurlError."\n");
             fclose($oLog);
         }
-        
+
         curl_close($oCurl);
     }
 

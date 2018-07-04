@@ -118,6 +118,14 @@ class Payone_Core_Model_Factory
     }
 
     /**
+     * @return Payone_Core_Helper_Compatibility
+     */
+    public function helperCompatibility()
+    {
+        return Mage::helper('payone_core/compatibility');
+    }
+
+    /**
      *
      * @param Payone_Core_Helper_Data $helper
      */
@@ -1737,5 +1745,25 @@ class Payone_Core_Model_Factory
         /** @var $configData Mage_Core_Model_Config_Data */
         $configData = Mage::getModel('core/config_data');
         return $configData;
+    }
+
+    /**
+     * @param array $data
+     * @return Payone_Api_Request_MasterpassSetCheckout
+     */
+    public function getRequestMasterpassSetCheckout(array $data = array())
+    {
+        $request = new Payone_Api_Request_MasterpassSetCheckout($data);
+        return $request;
+    }
+
+    /**
+     * @param array $data
+     * @return Payone_Api_Request_MasterpassGetCheckout
+     */
+    public function getRequestMasterpassGetCheckout(array $data = array())
+    {
+        $request = new Payone_Api_Request_MasterpassGetCheckout($data);
+        return $request;
     }
 }

@@ -71,12 +71,47 @@ class Payone_Core_Model_Service_TransactionStatus_Execute extends Payone_Core_Mo
         return $countExecuted;
     }
 
+    protected function _getIncrementId($sReference)
+    {
+        $oResource = Mage::getSingleton('core/resource');
+        $oRead = $oResource->getConnection('core_read');
+
+        $select = $oRead->select()
+            ->from(array('tbl' => $oResource->getTableName('sales/order')), array('increment_id'))
+            ->where('payone_cancel_substitute_increment_id = ?', $sReference)
+            ->order('entity_id desc')
+            ->limit(1);
+        $sSubstitudeIncrementId = $oRead->fetchOne($select);
+        if (!empty($sSubstitudeIncrementId)) {
+            return $sSubstitudeIncrementId;
+        }
+        return $sReference;
+    }
+
     /**
      * @param Payone_Core_Model_Domain_Protocol_TransactionStatus $transactionStatus
      */
     public function execute(Payone_Core_Model_Domain_Protocol_TransactionStatus $transactionStatus)
     {
         $storeId = $transactionStatus->getStoreId();
+
+        /**
+         * Check if the Store ID exists, if not fetch the order from the reference
+         */
+        if (is_null($storeId)) {
+            $sIncrementId = $this->_getIncrementId($transactionStatus->getReference());
+
+            $order = $this->getFactory()->getModelSalesOrder();
+            $order->loadByIncrementId($sIncrementId);
+
+            if ($sIncrementId != $transactionStatus->getReference()) {
+                $transactionStatus->setReference($sIncrementId);
+            }
+
+            if ($order && $order->getId()) {
+                $storeId = $order->getStoreId();
+            }
+        }
 
         $this->helper()->logCronjobMessage("ID: {$transactionStatus->getId()} - Execute - Execute TransactionStatus action: {$transactionStatus->getTxaction()} - store-id: {$storeId}", $storeId);
 

@@ -16,7 +16,7 @@
  * @package         Payone_Api
  * @subpackage      Enum
  * @copyright       Copyright (c) 2016 <kontakt@fatchip.de> - www.fatchip.com
- * @author          Robert Müller <robert.mueller@fatchip.de>
+ * @author          Robert MÃ¼ller <robert.mueller@fatchip.de>
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
  * @link            http://www.fatchip.com
  */
@@ -25,6 +25,6 @@ class Payone_Api_Enum_RatepayType
 {
     const RPV = 'RPV'; // Ratepay-Invoicing
     const RPS = 'RPS'; // Ratepay-Installment
-    #const RPD = 'RPD'; // Ratepay-Debit not implemented yet
+    #const RPD = 'RPD'; // Ratepay-Debit
     #const RPP = 'RPP'; // Ratepay-Prepayment not implemented yet
 }

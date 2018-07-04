@@ -68,7 +68,7 @@ class Payone_Migrator_Adminhtml_Payonemigrator_MigrationController
         $result['success'] = $status ? true : false;
         $result['error'] = !$status ? true : false;
 
-        $this->getResponse()->setHeader('Content-Type', 'application/json');
+        $this->getResponse()->setHeader('Content-Type', 'application/json', true);
         $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($result));
     }
 

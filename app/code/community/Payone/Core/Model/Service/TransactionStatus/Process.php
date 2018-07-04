@@ -89,6 +89,10 @@ class Payone_Core_Model_Service_TransactionStatus_Process extends Payone_Core_Mo
         $transactionStatus->setStoreId($order->getStoreId());
         $transactionStatus->setOrderId($order->getId());
 
+        if ($transactionStatus->isAppointed() && $transactionStatus->getTransactionStatus() === 'pending') {
+            $transactionStatus->setTxaction(Payone_TransactionStatus_Enum_Txaction::PENDING);
+        }
+
         // Update Transaction
         $transaction = $this->getServiceTransaction()->updateByTransactionStatus($transactionStatus);
 
@@ -107,10 +111,10 @@ class Payone_Core_Model_Service_TransactionStatus_Process extends Payone_Core_Mo
 
         // Save before Event is triggerd
         $this->helper()->logCronjobMessage("ID: {$transactionStatus->getId()} - Process - Save before events", $order->getStoreId());
-        $resouce = $this->getFactory()->getModelResourceTransaction();
-        $resouce->addObject($order);
-        $resouce->addObject($transactionStatus);
-        $resouce->save();
+        $resource = $this->getFactory()->getModelResourceTransaction();
+        $resource->addObject($order);
+        $resource->addObject($transactionStatus);
+        $resource->save();
 
         // Trigger Event
         $params = array(

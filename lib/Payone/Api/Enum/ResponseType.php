@@ -33,6 +33,7 @@
 class Payone_Api_Enum_ResponseType
 {
     const APPROVED = 'APPROVED';
+    const PENDING = 'PENDING';
     const REDIRECT = 'REDIRECT';
     const VALID = 'VALID';
     const INVALID = 'INVALID';

@@ -69,7 +69,7 @@ class Payone_Core_Block_Adminhtml_Sales_Order_View_Tab_Transaction
      */
     public function getTabLabel()
     {
-        return '<span class="payone-tab">' . Mage::helper('payone_core')->__('Transaction') . '</span>';
+        return "[BS Payone] " . Mage::helper('payone_core')->__('Transaction');
     }
 
     /**

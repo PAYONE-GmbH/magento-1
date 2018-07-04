@@ -57,4 +57,14 @@ class Payone_Core_Helper_Compatibility
         return $isActive;
     }
 
+    public function isExternalOrderReference($reference)
+    {
+        if ($this->isModuleEnabled('Shopgate_Framework') && strpos($reference, 'SG') === 0
+            && strlen($reference) === 12) {
+            return true;
+        }
+
+        return false;
+    }
+
 }

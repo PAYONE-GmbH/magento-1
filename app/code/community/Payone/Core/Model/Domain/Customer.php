@@ -90,12 +90,13 @@ class Payone_Core_Model_Domain_Customer
 
     /**
      * @param string $key
-     * @return array
+     * @return array|null
      */
     public function getCustomerData($key = null)
     {
         $plain_customer_data = Mage::helper('core')->decrypt($this->customer_data);
 //        $plain_customer_data = $this->customer_data;
+        $result = null;
         if (!empty($plain_customer_data)) {
             $result = Mage::helper('core')->jsonDecode($plain_customer_data);
         }

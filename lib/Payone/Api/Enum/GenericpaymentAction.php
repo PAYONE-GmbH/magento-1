@@ -21,6 +21,18 @@
 class Payone_Api_Enum_GenericpaymentAction
 {
     /**
+     * initialize configuration parameters for Amazon Pay
+     */
+    const AMAZONPAY_GETCONFIGURATION = 'getconfiguration';
+    /**
+     * set the work order's Amazon Pay order reference details
+     */
+    const AMAZONPAY_SETORDERREFERENCEDETAILS = 'setorderreferencedetails';
+    /**
+     * get the work order's Amazon Pay order reference details
+     */
+    const AMAZONPAY_GETORDERREFERENCEDETAILS = 'getorderreferencedetails';
+    /**
      * initalize paypal express checkout process
      */
     const PAYPAL_ECS_SET_EXPRESSCHECKOUT='setexpresscheckout';
@@ -38,4 +50,7 @@ class Payone_Api_Enum_GenericpaymentAction
     const PAYOLUTION_PRE_CHECK = 'pre_check';
     
     const PAYOLUTION_CALCULATION = 'calculation';
+
+    const MASTERPASS_SET_CHECKOUT = 'setcheckout';
+    const MASTERPASS_GET_CHECKOUT = 'getcheckout';
 }

@@ -48,6 +48,14 @@ class Payone_Core_Controller_Abstract
     }
 
     /**
+     * @return Payone_Core_Helper_Compatibility
+     */
+    protected function compatibilityConfig()
+    {
+        return $this->getFactory()->helperCompatibility();
+    }
+
+    /**
      * @param Payone_Core_Model_Factory $factory
      */
     public function setFactory(Payone_Core_Model_Factory $factory)

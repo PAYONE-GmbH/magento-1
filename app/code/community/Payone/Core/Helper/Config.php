@@ -154,7 +154,7 @@ class Payone_Core_Helper_Config
     {
         $configId = $order->getPayment()->getData('payone_config_payment_method_id');
         if (!$configId) {
-            $message = 'Payment method configuration with id "' . $configId . '" not found.';
+            $message = 'Payment method configuration for method "'. $order->getPayment()->getMethod() .'" not found.';
             throw new Payone_Core_Exception_PaymentMethodConfigNotFound($message);
         }
 
@@ -173,7 +173,7 @@ class Payone_Core_Helper_Config
     {
         $configId = $quote->getPayment()->getData('payone_config_payment_method_id');
         if (!$configId) {
-            $message = 'Payment method configuration with id "' . $configId . '" not found.';
+            $message = 'Payment method configuration for method "'. $quote->getPayment()->getMethod() .'" not found.';
             throw new Payone_Core_Exception_PaymentMethodConfigNotFound($message);
         }
 
@@ -261,12 +261,6 @@ class Payone_Core_Helper_Config
     }
 
     /**
-     *
-     * @param string $path
-     * @param int $storeId
-     * @return mixed
-     */
-    /**
      * @param string $path
      * @param int|null $storeId
      * @return bool
@@ -276,7 +270,7 @@ class Payone_Core_Helper_Config
         return Mage::getStoreConfigFlag($path, $storeId);
     }
 	
-	/**
+	 /**
      * @param null $storeCode
      * @return bool
      */
@@ -301,5 +295,28 @@ class Payone_Core_Helper_Config
     public function getProxyPort($storeCode = null)
     {
         return Mage::getStoreConfig(self::XML_PATH_PROXY_PORT, $storeCode);
+    }
+
+    /**
+     * @param string $storeId
+     * @param string $methodCode
+     * @return null|Payone_Core_Model_Config_Payment_Method_Interface
+     */
+    public function getConfigPaymentMethodByType($storeId, $methodCode)
+    {
+        $paymentConfigs = $this->getConfigPayment($storeId);
+
+        if (!$paymentConfigs->getMethods()) {
+            return null;
+        }
+
+        /** @var Payone_Core_Model_Config_Payment_Method_Interface $paymentConfig */
+        foreach ($paymentConfigs->getMethods() as $paymentConfig) {
+            if ($paymentConfig->getCode() === $methodCode && $paymentConfig->getEnabled() == 1) {
+                return $paymentConfig;
+            }
+        }
+
+        return null;
     }
 }

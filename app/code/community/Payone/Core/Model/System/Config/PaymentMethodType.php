@@ -33,6 +33,7 @@
 class Payone_Core_Model_System_Config_PaymentMethodType extends Payone_Core_Model_System_Config_Abstract
 {
     const ADVANCEPAYMENT = 'advance_payment';
+    const AMAZONPAY = 'amazon_pay';
     const CASHONDELIVERY = 'cash_on_delivery';
     const CREDITCARD = 'creditcard';
     const CREDITCARD_IFRAME = 'creditcard_iframe';
@@ -51,6 +52,7 @@ class Payone_Core_Model_System_Config_PaymentMethodType extends Payone_Core_Mode
     const WALLET = 'wallet';
     const BARZAHLEN = 'barzahlen';
     const RATEPAY = 'ratepay';
+    const RATEPAYDIRECTDEBIT = 'ratepay_direct_debit';
     const PAYOLUTION = 'payolution';
     const PAYOLUTIONINVOICING = 'payolution_invoicing';
     const PAYOLUTIONDEBIT = 'payolution_debit';
@@ -59,6 +61,7 @@ class Payone_Core_Model_System_Config_PaymentMethodType extends Payone_Core_Mode
     const WALLETPAYDIREKT = 'wallet_paydirekt';
     const WALLETPAYPALEXPRESS = 'wallet_paypal_express';
     const WALLETALIPAY = 'wallet_alipay';
+    const MASTERPASS =  'masterpass';
 
 
     /**
@@ -68,6 +71,7 @@ class Payone_Core_Model_System_Config_PaymentMethodType extends Payone_Core_Mode
     {
         return array(
             self::ADVANCEPAYMENT => 'Advance Payment',
+            self::AMAZONPAY => 'Amazon Pay',
             self::CASHONDELIVERY => 'Cash on Delivery',
             self::CREDITCARD => 'Creditcard',
             self::CREDITCARD_IFRAME => 'Creditcard Channel Frontend',
@@ -78,6 +82,7 @@ class Payone_Core_Model_System_Config_PaymentMethodType extends Payone_Core_Mode
             //self::WALLET => 'Wallet',
             self::BARZAHLEN => 'Barzahlen',
             self::RATEPAY => 'RatePay',
+            self::RATEPAYDIRECTDEBIT => 'Ratepay Direct Debit',
             // self::PAYOLUTION => 'Payolution',
             self::PAYOLUTIONINVOICING => 'Payolution Invoicing',
             self::PAYOLUTIONDEBIT => 'Payolution Debit',
@@ -94,6 +99,7 @@ class Payone_Core_Model_System_Config_PaymentMethodType extends Payone_Core_Mode
             self::ONLINEBANKTRANSFERPFC => 'PostFinance Card',
             self::ONLINEBANKTRANSFERP24 => 'Przelewy24',
             self::ONLINEBANKTRANSFERBCT => 'Bancontact',
+            self::MASTERPASS => 'Masterpass'
         );
     }
 }

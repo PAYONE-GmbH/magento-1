@@ -15,16 +15,21 @@
  * @category        Payone
  * @package         Payone_Core
  * @subpackage      etc
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ *
  * @copyright       Copyright (c) 2012 <info@votum.de> - www.votum.de
  * @author          Edward Mateja <edward.mateja@votum.de>
- * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
  * @link            http://www.votum.de
+ *
+ * @copyright       Copyright (c) 2017 <service@e3n.de> - e3n.de
+ * @author          Tobias Niebergall <service@e3n.de>
+ * @link            https://e3n.de
  */
 -->
 <config>
     <modules>
         <Payone_Core>
-            <version>3.7.8</version>
+            <version>4.1.7</version>
         </Payone_Core>
     </modules>
 
@@ -73,6 +78,12 @@
                     <ratepay_config>
                         <table>payone_ratepay_config</table>
                     </ratepay_config>
+                    <ratepay_direct_debit>
+                        <table>payone_ratepay_config</table>
+                    </ratepay_direct_debit>
+                    <paymentBan>
+                        <table>payone_payment_ban</table>
+                    </paymentBan>
                 </entities>
             </payone_core_resource>
 
@@ -267,6 +278,10 @@
                     <!-- Trade registry number -->
                     <to_order_payment>*</to_order_payment>
                 </payone_trade_registry_number>
+                <payone_vat_id>
+                    <!-- VAT Id number -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_vat_id>
                 <payone_cardexpiredate>
                     <!-- Creditcard cardexpiredate -->
                     <to_order_payment>*</to_order_payment>
@@ -321,19 +336,20 @@
                     <file>payone/core/avs_template.phtml</file>
                     <type>html</type>
                 </payone_misc_email_avs_template>
+                <payone_amazon_soft_decline translate="label" module="payone_core">
+                    <label>Please update your payment information</label>
+                    <file>payone/core/amazon_soft_decline.phtml</file>
+                    <type>html</type>
+                </payone_amazon_soft_decline>
+                <payone_amazon_hard_decline translate="label" module="payone_core">
+                    <label>Please contact us about your order</label>
+                    <file>payone/core/amazon_hard_decline.phtml</file>
+                    <type>html</type>
+                </payone_amazon_hard_decline>
             </email>
         </template>
 
         <events>
-            <controller_action_predispatch>
-                <observers>
-                    <payone_core_observer>
-                        <type>singleton</type>
-                        <class>payone_core/observer_checkout_onepage_payment_external</class>
-                        <method>maintainCheckoutSession</method>
-                    </payone_core_observer>
-                </observers>
-            </controller_action_predispatch>
             <sales_quote_address_validate_after>
                 <observers>
                     <payone_core_observer>
@@ -462,6 +478,24 @@
                     </payone_core_observer_invoiceCreate>
                 </observers>
             </payone_core_transactionstatus_paid>
+            <payone_core_transactionstatus_pending>
+                <observers>
+                    <payone_core_observer_pending>
+                        <type>singleton</type>
+                        <class>payone_core/observer_transactionStatus_pending</class>
+                        <method>onPending</method>
+                    </payone_core_observer_pending>
+                </observers>
+            </payone_core_transactionstatus_pending>
+            <payone_core_transactionstatus_failed>
+                <observers>
+                    <payone_core_observer_failed>
+                        <type>singleton</type>
+                        <class>payone_core/observer_transactionStatus_failed</class>
+                        <method>onFailed</method>
+                    </payone_core_observer_failed>
+                </observers>
+            </payone_core_transactionstatus_failed>
             <payone_core_transactionstatus_reminder>
                 <observers>
                     <payone_core_observer_reminder>
@@ -533,6 +567,33 @@
                     </payone_service_quote_submit_failure>
                 </observers>
             </sales_model_service_quote_submit_failure>
+            <checkout_onepage_controller_success_action>
+                <observers>
+                    <payone_core_observer>
+                        <type>singleton</type>
+                        <class>payone_core/observer_checkout_onepage</class>
+                        <method>removeOrderCancellationFlag</method>
+                    </payone_core_observer>
+                </observers>
+            </checkout_onepage_controller_success_action>
+            <checkout_cart_save_after>
+                <observers>
+                    <payone_core_observer>
+                        <type>singleton</type>
+                        <class>payone_core/observer_sales_cartUpdate</class>
+                        <method>checkExternalCheckoutActive</method>
+                    </payone_core_observer>
+                </observers>
+            </checkout_cart_save_after>
+            <controller_action_predispatch_checkout_cart_add>
+                <observers>
+                    <payone_core_observer>
+                        <type>singleton</type>
+                        <class>payone_core/observer_sales_cartUpdate</class>
+                        <method>checkExternalCheckoutActive</method>
+                    </payone_core_observer>
+                </observers>
+            </controller_action_predispatch_checkout_cart_add>
         </events>
     </global>
 
@@ -572,7 +633,7 @@
                 </Payone_Core>
             </modules>
         </translate>
-        
+
     </adminhtml>
 
     <frontend>
@@ -614,6 +675,11 @@
 
     <default>
         <payment>
+            <payone_amazon_pay translate="title" module="payone_core">
+                <title>PAYONE - Amazon Pay</title>
+                <model>payone_core/payment_method_amazonPay</model>
+                <group>payone</group>
+            </payone_amazon_pay>
             <payone_creditcard translate="title" module="payone_core">
                 <title>PAYONE - CreditCard</title>
                 <model>payone_core/payment_method_creditcard</model>
@@ -634,6 +700,11 @@
                 <model>payone_core/payment_method_ratepay</model>
                 <group>payone</group>
             </payone_ratepay>
+            <payone_ratepay_direct_debit translate="title" module="payone_core">
+                <title>PAYONE - Ratepay Direct Debit</title>
+                <model>payone_core/payment_method_ratepayDirectDebit</model>
+                <group>payone</group>
+            </payone_ratepay_direct_debit>
             <payone_payolution translate="title" module="payone_core">
                 <title>PAYONE - Payolution</title>
                 <model>payone_core/payment_method_payolution</model>
@@ -685,7 +756,7 @@
                 <group>payone</group>
             </payone_online_bank_transfer_sofortueberweisung>
             <payone_online_bank_transfer_giropay translate="title" module="payone_core">
-                <title>PAYONE - Sofortüberweisung</title>
+                <title>PAYONE - Giropay</title>
                 <model>payone_core/payment_method_onlineBankTransferGiropay</model>
                 <group>payone</group>
             </payone_online_bank_transfer_giropay>
@@ -695,7 +766,7 @@
                 <group>payone</group>
             </payone_online_bank_transfer_eps>
             <payone_online_bank_transfer_idl translate="title" module="payone_core">
-                <title>PAYONE - eps Online-Überweisung</title>
+                <title>PAYONE - iDEAL</title>
                 <model>payone_core/payment_method_onlineBankTransferIdl</model>
                 <group>payone</group>
             </payone_online_bank_transfer_idl>
@@ -749,8 +820,16 @@
                 <model>payone_core/payment_method_walletAliPay</model>
                 <group>payone</group>
             </payone_wallet_alipay>
+            <payone_masterpass translate="title" module="payone_core">
+                <title>PAYONE - Masterpass</title>
+                <model>payone_core/payment_method_masterpass</model>
+                <group>payone</group>
+            </payone_masterpass>
         </payment>
         <payone_payment>
+            <template_amazon_pay>
+                <use_global>1</use_global>
+            </template_amazon_pay>
             <template_creditcard>
                 <use_global>1</use_global>
             </template_creditcard>
@@ -825,6 +904,9 @@
             <template_ratepay>
                 <use_global>1</use_global>
             </template_ratepay>
+            <template_ratepay_direct_debit>
+                <use_global>1</use_global>
+            </template_ratepay_direct_debit>
             <template_payolution>
                 <use_global>1</use_global>
             </template_payolution>
@@ -837,6 +919,9 @@
             <template_payolution_installment>
                 <use_global>1</use_global>
             </template_payolution_installment>
+            <template_masterpass>
+                <use_global>1</use_global>
+            </template_masterpass>
         </payone_payment>
         <payone_general>
             <global>
@@ -851,24 +936,36 @@
                 <max_execution_time>35</max_execution_time>
             </transactionstatus_execute>
             <status_mapping>
-                <creditcard>a:1:{s:18:"_1343137391927_927";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</creditcard>
-                <invoice>a:1:{s:18:"_1338893611948_948";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</invoice>
-                <debit_payment>a:1:{s:18:"_1338893616379_379";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</debit_payment>
-                <safe_invoice>a:1:{s:23:"_payone_status_mapping3";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</safe_invoice>
-                <advance_payment>a:2:{s:18:"_1338893618715_715";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:11:"new|pending";}}s:18:"_1355483828815_815";a:2:{s:8:"txaction";a:1:{i:0;s:4:"paid";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</advance_payment>
-                <online_bank_transfer>a:1:{s:18:"_1343118466182_182";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</online_bank_transfer>
-                <cash_on_delivery>a:1:{s:18:"_1338893625332_332";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</cash_on_delivery>
-                <wallet>a:1:{s:18:"_1343137411652_652";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</wallet>
-                <wallet_paydirekt>a:1:{s:18:"_1343137411652_652";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</wallet_paydirekt>
-                <wallet_paypal_express>a:1:{s:18:"_1343137411652_652";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</wallet_paypal_express>
-                <wallet_alipay>a:1:{s:18:"_1343137411652_652";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</wallet_alipay>
-                <barzahlen>a:1:{s:23:"_payone_status_mapping4";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</barzahlen>
-                <ratepay>a:1:{s:17:"_1468417699073_73";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</ratepay>
-                <payolution>a:1:{s:18:"_1468430772551_551";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</payolution>
-                <payolution_debit>a:1:{s:15:"_1486042141_511";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</payolution_debit>
-                <payolution_invoicing>a:1:{s:15:"_1486042141_541";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</payolution_invoicing>
-                <payolution_installment>a:1:{s:15:"_1486042141_591";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</payolution_installment>
-                <financing>a:1:{s:18:"_1468430123551_512";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</financing>
+                <!-- Sortorder adapted from Payone_Core_Model_System_Config_PaymentMethodType -->
+                <advance_payment>a:2:{s:18:"_1921358557198_198";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:11:"new|pending";}}s:18:"_1868985231457_457";a:2:{s:8:"txaction";a:1:{i:0;s:4:"paid";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</advance_payment>
+                <cash_on_delivery>a:1:{s:18:"_2485569619500_500";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</cash_on_delivery>
+                <creditcard>a:1:{s:18:"_2052623048375_375";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</creditcard>
+                <debit_payment>a:1:{s:18:"_2414317062380_380";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</debit_payment>
+                <safe_invoice>a:1:{s:18:"_2071978984646_646";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</safe_invoice>
+                <invoice>a:1:{s:18:"_1549922391440_440";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</invoice>
+                <online_bank_transfer_pfc>a:1:{s:18:"_2209953294829_829";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</online_bank_transfer_pfc>
+                <online_bank_transfer_giropay>a:1:{s:18:"_2241682866530_530";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</online_bank_transfer_giropay>
+                <online_bank_transfer_pff>a:1:{s:18:"_2426825061614_614";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</online_bank_transfer_pff>
+                <online_bank_transfer_eps>a:1:{s:18:"_2213747401996_996";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</online_bank_transfer_eps>
+                <online_bank_transfer_p24>a:1:{s:18:"_2021024523260_260";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</online_bank_transfer_p24>
+                <online_bank_transfer_idl>a:1:{s:18:"_2274385381969_969";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</online_bank_transfer_idl>
+                <online_bank_transfer_sofortueberweisung>a:1:{s:18:"_1645710631915_915";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</online_bank_transfer_sofortueberweisung>
+                <online_bank_transfer>a:1:{s:18:"_1852108815672_672";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</online_bank_transfer>
+                <wallet>a:1:{s:18:"_1788129889796_796";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</wallet>
+                <barzahlen>a:1:{s:18:"_1879871286403_403";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</barzahlen>
+                <ratepay>a:1:{s:18:"_2214159068875_875";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</ratepay>
+                <ratepay_direct_debit>a:1:{s:18:"_2214159998975_975";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</ratepay_direct_debit>
+                <payolution>a:1:{s:18:"_2172060663488_488";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</payolution>
+                <payolution_invoicing>a:1:{s:18:"_2408863709483_483";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</payolution_invoicing>
+                <payolution_debit>a:1:{s:18:"_2496553448474_474";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</payolution_debit>
+                <payolution_installment>a:1:{s:18:"_1910987005853_853";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</payolution_installment>
+                <wallet_paydirekt>a:1:{s:18:"_1514988840741_741";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</wallet_paydirekt>
+                <wallet_paypal_express>a:1:{s:18:"_2177301865940_940";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</wallet_paypal_express>
+                <wallet_alipay>a:1:{s:18:"_2339656494812_812";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</wallet_alipay>
+                <financing>a:1:{s:18:"_1926207461842_842";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</financing>
+                <amazon_pay>a:1:{s:18:"_1917707466274_274";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</amazon_pay>
+                <payment_guarantee_invoice>a:1:{s:18:"_2468232683254_254";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</payment_guarantee_invoice>
+                <masterpass>a:1:{s:18:"_2177301865173_173";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</masterpass>
             </status_mapping>
         </payone_general>
         <payone_protect>

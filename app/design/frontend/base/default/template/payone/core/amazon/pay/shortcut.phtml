@@ -1,0 +1,99 @@
+<?php
+/**
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the GNU General Public License (GPL 3)
+ * that is bundled with this package in the file LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Payone_Core to newer
+ * versions in the future. If you wish to customize Payone_Core for your
+ * needs please refer to http://www.payone.de for more information.
+ *
+ * @category        Payone
+ * @package         design_frontend_base_default
+ * @subpackage      template
+ * @copyright       Copyright (c) 2017 <kontakt@fatchip.de> - www.fatchip.de
+ * @author          FATCHIP GmbH <kontakt@fatchip.de>
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.fatchip.de
+ */
+
+/** @var Payone_Core_Block_Amazon_Pay_Shortcut $this */
+$config = $this->getConfiguration();
+if (!empty($config)) :
+    /** @var Payone_Core_Helper_Url $helper */
+    $helper = Mage::helper('payone_core/url');
+    /** @var string $returnUrl */
+    $returnUrl = Mage::getUrl('payone_core/amazonpay/checkout', ['_nosid' => true, '_forced_secure' => true]);
+    /** @var string $buttonType */
+    $buttonType = Payone_Core_Model_System_Config_AmazonButtonType::getParameter($config->getAmzButtonType());
+    /** @var string $buttonColor */
+    $buttonColor = Payone_Core_Model_System_Config_AmazonButtonColor::getParameter($config->getAmzButtonColor());
+    /** @var string $buttonLanguage */
+    $buttonLanguage = Payone_Core_Model_System_Config_AmazonButtonLang::getParameter($config->getAmzButtonLang());
+    /** @var string $buttonDelimiter */
+    $buttonDelimiter = "<span class=\"amazon-or\">{$this->__('-OR-')}</span>";
+    /** @var int $buttonIdentifier */
+    $buttonIdentifier = "LoginWithAmazon" . (++$this::$counter);
+?>
+<div class="amazon-checkout-button">
+    <?php if ($this->getData('show_or_position') === 'before') : ?>
+        <?php echo $buttonDelimiter; ?>
+    <?php endif; ?>
+    <div id="<?php echo $buttonIdentifier; ?>"></div>
+    <?php if ($this->getData('show_or_position') === 'after') : ?>
+        <?php echo $buttonDelimiter; ?>
+    <?php endif; ?>
+</div>
+<script>
+    if (typeof window.onAmazonLoginReady !== 'function') {
+        window.onAmazonLoginReady = function () {
+            amazon.Login.setClientId('<?php echo $config->getAmzClientId(); ?>');
+        };
+    }
+    if (typeof window.onAmazonPaymentsReadyArray === 'undefined') {
+        window.onAmazonPaymentsReadyArray = [];
+    }
+    if (typeof window.onAmazonPaymentsReady !== 'function') {
+        window.onAmazonPaymentsReady = function () {
+            window.onAmazonPaymentsReadyArray.each(function (callback) {
+                callback();
+            });
+        };
+    }
+    window.onAmazonPaymentsReadyArray.push(function () {
+        // render the button here
+        var authRequest, loginOptions;
+        OffAmazonPayments.Button('<?php echo $buttonIdentifier; ?>', '<?php echo $config->getAmzSellerId(); ?>', {
+            type: '<?php echo $buttonType; ?>',
+            color: '<?php echo $buttonColor; ?>',
+            language: '<?php echo $buttonLanguage; ?>',
+            size: 'medium',
+            authorization: function () {
+                loginOptions = {
+                    scope: 'payments:billing_address payments:shipping_address payments:widget profile',
+                    popup: <?php echo $this->usePopupMode() ? 'true' : 'false' ?>
+                };
+                authRequest = amazon.Login.authorize(loginOptions, '<?php echo $returnUrl; ?>');
+            }
+        });
+    });
+</script>
+<?php if ($this::$counter <= 1) : ?>
+    <!-- Load script Widgets.js from Amazon -->
+    <!-- URL changes to https://static-eu.payments-amazon.com/OffAmazonPayments/eur/lpa/js/Widgets.js when mode=live -->
+    <?php $useSandbox = $config->getMode() === \Payone_Enum_Mode::TEST ? '/sandbox' : '' ?>
+    <script>
+        document.observe("dom:loaded", function() {
+            var head = $$('head')[0];
+            if (head) {
+                var script = new Element('script', { type: 'text/javascript', src: '<?php echo "https://static-eu.payments-amazon.com/OffAmazonPayments/eur{$useSandbox}/lpa/js/Widgets.js" ?>' });
+                head.appendChild(script);
+            }
+        });
+    </script>
+<?php endif; ?>
+<?php endif; ?>

@@ -90,10 +90,8 @@ class Payone_Core_Model_Sales_Quote_Address_Total_Fee
         $paymentFee = $feeConfig['fee_config'];
         if (isset($feeConfig['fee_type'][0]) && $feeConfig['fee_type'][0] == 'percent') {
             $paymentFee = $dSubTotal * $paymentFee / 100; // subtotal is excl tax, so fee is too
-            error_log('Netto: '.$paymentFee);
             if (Mage::helper('tax')->shippingPriceIncludesTax(Mage::app()->getStore())) {
                 $paymentFee = $this->_getPaymentFeeInclTax($quote, $paymentFee);
-                error_log('Brutto: '.$paymentFee);
             }
         }
 

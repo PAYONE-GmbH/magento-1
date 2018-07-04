@@ -33,12 +33,9 @@
  */
 class Payone_Api_Enum_WalletType
 {
-
-    const PAYPAL_EXPRESS = 'PPE';
-
     /* Example
-     * 
-     * 
+     *
+     *
      *       $builder = new Payone_Builder();
      *       $service = $builder->buildServicePaymentAuthorize();
      *
@@ -55,13 +52,13 @@ class Payone_Api_Enum_WalletType
      *               'backurl' => 'http://your-shop.com/back.php'
      *                   ))
      *       );
-     *       
+     *
      *       $authorization = new Payone_Api_Request_Authorization(array_merge($this->getAccountData(), $requestData));
      *
      *       $response = $service->authorize($authorization);
-     * 		
+     *
      *       Response:
-     * 	
+     *
      *       Payone_Api_Response_Authorization_Redirect Object
      *       (
      * 		[txid:protected] => 155901830
@@ -70,10 +67,14 @@ class Payone_Api_Enum_WalletType
      * 		[status:protected] => REDIRECT
      * 		...
      *       )
-     *      
+     *
      *       If response status is REDIRECT, send customer to the redirecturl (Yapital).
      */
+
+    const AMAZONPAY = 'AMZ';
+    const PAYPAL_EXPRESS = 'PPE';
     const PAYDIREKT = 'PDT';
     const ALIPAY = 'ALP';
+    const MASTERPASS = 'MPA';
 
 }

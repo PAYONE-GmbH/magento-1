@@ -30,6 +30,10 @@
 $code = $this->getMethodCode();
 $iCheckValidation = (int)$this->showCvcInput();
 ?>
+<script type="text/javascript">
+    payone.ccTypeAutoRecognition = '<?php echo $this->getCreditCardRecognitionConfig() ?>';
+    payone.configActivatedCcTypes = '<?php echo implode(',', $this->getRawCcType()) ?>';
+</script>
 <fieldset class="form-list">
     <?php if($this->getCCRequestType() == 'AJAX') { ?>
         <ul id="payment_form_<?php echo $code ?>" style="display:none">
@@ -130,7 +134,13 @@ $iCheckValidation = (int)$this->showCvcInput();
                            onchange="inputToNumbers(this)"
                            oninput="inputToNumbers(this)"/>
                     &nbsp;
-                    <a href="#" class="cvv-what-is-this"><?php echo $this->__('What is this?') ?></a>
+                    <a href="#" class="cvv-payone-what-is-this"><?php echo $this->__('What is this?') ?></a>
+
+                    <div class="tool-tip" id="payment-tool-tip-payone" style="display:none;">
+                        <div class="tool-tip-payone-content">
+                            <img src="<?php echo $this->getSkinUrl('images/payone/cvv.gif') ?>" alt="<?php echo Mage::helper('core')->quoteEscape($this->__('Card Verification Number Visual Reference')) ?>" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Card Verification Number Visual Reference')) ?>" />
+                        </div>
+                    </div>
                 </div>
             </li>
             <li>
@@ -167,6 +177,7 @@ $iCheckValidation = (int)$this->showCvcInput();
                             </option>
                         <?php endforeach; ?>
                     </select>
+                    <span id="<?php echo $code ?>_cc_type_logo"><img style="display: inline; vertical-align: bottom" src="" /></span>
                     <input type="hidden" id="<?php echo $code ?>_cc_type" name="payment[cc_type]" value="<?php echo $this->getCreditCardType();?>" class=""/>
                 </div>
             </li>
@@ -177,13 +188,20 @@ $iCheckValidation = (int)$this->showCvcInput();
                     <span class="inputIframe" id="cardpan"></span>
                 </div>
             </li>
-                <li>
-                    <div class="input-box" id="<?php echo $code ?>_cc_cid_div"
-                        <label for="cvcInput"><?php echo $this->__('Card Verification Number') ?>&nbsp;<span class="required">*</span></label><br class="clear"/>
-                        <span id="cardcvc2" class="inputIframe"></span>
-                        <a href="#" class="cvv-what-is-this"><?php echo $this->__('What is this?') ?></a>
+            <li>
+                <div class="input-box" id="<?php echo $code ?>_cc_cid_div">
+                    <label for="cvcInput"><?php echo $this->__('Card Verification Number') ?>&nbsp;<span class="required">*</span></label><br class="clear"/>
+                    <span id="cardcvc2" class="inputIframe"></span>
+
+                    <a href="#" class="cvv-payone-what-is-this"><?php echo $this->__('What is this?') ?></a>
+
+                    <div class="tool-tip" id="payment-tool-tip-payone" style="display:none;">
+                        <div class="tool-tip-payone-content">
+                            <img src="<?php echo $this->getSkinUrl('images/payone/cvv.gif') ?>" alt="<?php echo Mage::helper('core')->quoteEscape($this->__('Card Verification Number Visual Reference')) ?>" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Card Verification Number Visual Reference')) ?>" />
+                        </div>
                     </div>
-                </li>
+                </div>
+            </li>
             <li>
                 <div class="input-box">
                     <label for="expireInput"><?php echo $this->__('Expiration Date') ?>&nbsp;<span class="required">*</span></label>
@@ -222,11 +240,15 @@ $iCheckValidation = (int)$this->showCvcInput();
                 <input type="hidden" id="<?php echo $code ?>_config_cvc" name="payment[payone_config_cvc]"
                        value="<?php echo $this->escapeHtml($this->getCvcJson()); ?>" class=""/>
                 <input type="hidden" id="payone_cc_check_validation" value="1"/>
+                <input type="hidden" id="payone_cc_use_cvc" value="<?php echo $iCheckValidation; ?>"/>
                 <input type="hidden" id="payone_cc_check_validation_types" value="<?php echo $this->escapeHtml(($hideCvcTypes)); ?>"/>
             </li>
         </ul>
         <script>
-            var request, fieldconfig;
+            var request, fieldconfig, ccTypeAutoRecognition;
+            ccTypeAutoRecognition = payone.ccTypeAutoRecognition ;
+            supportedCardtypes = payone.getSupportedCardTypes();
+
             fieldconfig = {
                 fields: {
                     cardpan: {
@@ -244,23 +266,21 @@ $iCheckValidation = (int)$this->showCvcInput();
                             }
                         <?php } ?>
                     },
-                    <?php if($iCheckValidation == '1') { ?>
-                        cardcvc2: {
-                            selector: "cardcvc2", // put name of your div-container here
-                            type: "<?php echo $this->getHostedParam('CVC_type'); ?>", // text (default), password, tel
-                            size: "<?php echo $this->getHostedParam('CVC_count'); ?>",
-                            maxlength: "<?php echo $this->getHostedParam('CVC_max'); ?>",
-                            <?php if($this->getHostedParam('CVC_style') == "custom") { ?>
-                                style: "<?php echo $this->getHostedParam('CVC_css'); ?>",
-                            <?php } ?>
-                            <?php if($this->getHostedParam('CVC_iframe') == "custom") { ?>
-                                iframe: {
-                                    width: "<?php echo $this->getHostedParam('CVC_width'); ?>",
-                                    height: "<?php echo $this->getHostedParam('CVC_height'); ?>"
-                                }
-                            <?php } ?>
-                        },
-                    <?php } ?>
+                    cardcvc2: {
+                        selector: "cardcvc2", // put name of your div-container here
+                        type: "<?php echo $this->getHostedParam('CVC_type'); ?>", // text (default), password, tel
+                        size: "<?php echo $this->getHostedParam('CVC_count'); ?>",
+                        maxlength: "<?php echo $this->getHostedParam('CVC_max'); ?>",
+                        <?php if($this->getHostedParam('CVC_style') == "custom") { ?>
+                            style: "<?php echo $this->getHostedParam('CVC_css'); ?>",
+                        <?php } ?>
+                        <?php if($this->getHostedParam('CVC_iframe') == "custom") { ?>
+                            iframe: {
+                                width: "<?php echo $this->getHostedParam('CVC_width'); ?>",
+                                height: "<?php echo $this->getHostedParam('CVC_height'); ?>"
+                            }
+                        <?php } ?>
+                    },
                     cardexpiremonth: {
                         selector: "cardexpiremonth", // put name of your div-container here
                         type: "<?php echo $this->getHostedParam('Month_type'); ?>",
@@ -300,6 +320,27 @@ $iCheckValidation = (int)$this->showCvcInput();
                         height: "<?php echo $this->getHostedParam('Iframe_height'); ?>"
                     }
                 },
+                autoCardtypeDetection: {
+                    supportedCardtypes: supportedCardtypes,
+                    callback: function(detectedCardtype) {
+                        detectedCardtype = detectedCardtype.toString();
+                        var elementCcType = $('payone_creditcard_cc_type_select');
+                        var pattern = '.*_' + detectedCardtype;
+
+                        if (supportedCardtypes.include(detectedCardtype)) {
+                            for(i = 0; i < elementCcType.options.length; i++){
+                                var value = elementCcType.options[i].value;
+                                if (value.match(pattern)) {
+                                    elementCcType.value = value;
+                                    elementCcType.onchange();
+
+                                    break;
+                                }
+                            }
+                        }
+                    },
+                    deactivate: (ccTypeAutoRecognition != 1)
+                },
 
                 <?php if($this->getHostedParam('Errors_active') == "true") { ?>
                     error: "errorOutput", // area to display error-messages (optional)
@@ -325,4 +366,21 @@ $iCheckValidation = (int)$this->showCvcInput();
             var iframes = payone.initHosted(fieldconfig, '<?php echo $code ?>_cc_type_select');
         </script>
     <?php } ?>
+    <script>
+        function toggleToolTipPayone(event)
+        {
+            var tooltip = $('payment-tool-tip-payone');
+            if(tooltip){
+                tooltip.toggle();
+            }
+            Event.stop(event);
+        }
+
+        $$('.cvv-payone-what-is-this').each(function(element){
+            Event.observe(element, 'click', toggleToolTipPayone);
+        });
+        $$('#payment-tool-tip-payone').each(function(element){
+            Event.observe(element, 'click', toggleToolTipPayone);
+        });
+    </script>
 </fieldset>

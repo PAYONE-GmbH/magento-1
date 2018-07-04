@@ -171,20 +171,32 @@ abstract class Payone_Core_Model_Payment_Method_Abstract
     public function cancel(Varien_Object $payment)
     {
         $status = $payment->getOrder()->getPayoneTransactionStatus();
+        $session = Mage::getModel('payone_core/session');
 
         if (empty($status) or $status == 'REDIRECT') {
             return $this; // Don´t send cancel to PAYONE on orders without TxStatus
         }
 
         if ($this->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::CREDITCARD
-                or $this->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::SAFEINVOICE
+            || $this->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::SAFEINVOICE
+            || $this->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::AMAZONPAY
+            || $this->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAY
+            || $this->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAYDIRECTDEBIT
+            || $this->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::WALLETPAYPALEXPRESS
+            || $this->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::MASTERPASS
         ) {
             // Capture with amount=0, to notify PAYONE that the order is complete (invoiced/cancelled all items)
             // Only works with Creditcard at the moment (15.10.2013)
+            // Add Ratepay support (08.01.2018)
+            // Add Ratepay-Lastschrift support (MAGE-317 23.03.2018)
+            // Add Paypal and Masterpass support (MAGE-356 15.06.2018)
             $this->helperRegistry()->registerPaymentCancel($this->getInfoInstance());
-            $this->capture($payment, 0.0000);
+            if ($session->getData('payment_processing_capture_zero_'.$payment->getId()) !== true) {
+                $session->setData('payment_processing_capture_zero_'.$payment->getId(), true);
+                $this->capture($payment, 0.0000);
+            }
+            $session->unsetData('payment_processing_capture_zero_'.$payment->getId());
         }
-
 
         return $this;
     }
@@ -220,11 +232,25 @@ abstract class Payone_Core_Model_Payment_Method_Abstract
 
         // Never send confirmation email, we do it during Tx-Status processing
         $order->setCanSendNewEmailFlag(false);
+        $mailAddress = $order->getData('customer_email');
+        /** @var Mage_Adminhtml_Model_Sales_Order_Create $adminOrderCreate */
+        $adminOrderCreate = Mage::getSingleton('adminhtml/sales_order_create');
+        // Check wether this order was created by an admin in the backend
+        if (!empty($adminOrderCreate) && $mailAddress === $adminOrderCreate->getData('account')['email']) {
+            $preventConfirmation = (false === (bool) $adminOrderCreate->getData('send_confirmation'));
+            // Store a flag to prevent mail delivery if the admin unchecked the corresponding option
+            $order->setData('payone_prevent_confirmation', $preventConfirmation);
+            // Unset the original flag as we send the mail during Tx-Status processing (see above)
+            $adminOrderCreate->unsetData('send_confirmation');
+        }
 
-        // Execute Payment Initialization
-        $service = $this->getFactory()->getServiceInitializePayment($configPayment);
-        $service->setConfigStore($this->getConfigStore($order->getStoreId()));
-        $response = $service->execute($payment);
+        $oSession = Mage::getSingleton('checkout/session');
+        if (empty($oSession->getData('creating_substitute_order'))) {
+            // Execute Payment Initialization
+            $service = $this->getFactory()->getServiceInitializePayment($configPayment);
+            $service->setConfigStore($this->getConfigStore($order->getStoreId()));
+            $response = $service->execute($payment);
+        }
 
         // @comment by default state=new and status=pending
         if ($this->getRedirectUrl() != '') {

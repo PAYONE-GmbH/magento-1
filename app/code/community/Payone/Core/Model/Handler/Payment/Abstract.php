@@ -115,9 +115,12 @@ abstract class Payone_Core_Model_Handler_Payment_Abstract
 
         if ($response->isError()) {
             return $this;
+        } elseif ($response->isPending()) {
+            $order->setState(Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW);
+            $order->setStatus(Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW);
         }
 
-        if ($response->isApproved()) {
+        if ($response->isApproved() || $response->isPending()) {
             $this->sendAvsMail($response);
         } elseif ($response->isRedirect()) {
             $sRedirectUrl = $response->getRedirecturl();
@@ -126,12 +129,6 @@ abstract class Payone_Core_Model_Handler_Payment_Abstract
                 $oSession->setPayoneIframeUrl($sRedirectUrl);
                 $oSession->setPayonePaymentType($this->_getPaymentMethod());
                 $sRedirectUrl = Mage::helper('payone_core/url')->getMagentoUrl('payone_core/iframe/show');
-            }
-
-            // Magento is url-encoding the redirect url in the javascript since 1.9.3.0.......
-            // decoding the already url encoded url to make it work again
-            if (version_compare(Mage::getVersion(), '1.9.3', '>=')) {
-                $sRedirectUrl = urldecode($sRedirectUrl);
             }
 
             $paymentMethod->setRedirectUrl($sRedirectUrl);
@@ -181,9 +178,16 @@ abstract class Payone_Core_Model_Handler_Payment_Abstract
      */
     protected function updatePaymentByOrder(Mage_Sales_Model_Order $order)
     {
+        $payment = $this->getPayment();
         // Set Amount Authorized
-        $this->getPayment()->setAmountAuthorized($order->getTotalDue());
-        $this->getPayment()->setBaseAmountAuthorized($order->getBaseTotalDue());
+        $payment->setAmountAuthorized($order->getTotalDue());
+        $payment->setBaseAmountAuthorized($order->getBaseTotalDue());
+        /** @var \Payone_Core_Model_Session $session */
+        $session = Mage::getSingleton('payone_core/session');
+        $amazonData = $session->getData('amazon_add_paydata');
+        if (is_array($amazonData) && !empty($amazonData['amazon_reference_id'])) {
+            $payment->setData('payone_amz_order_reference', $amazonData['amazon_reference_id']);
+        }
     }
 
     /**
@@ -218,7 +222,10 @@ abstract class Payone_Core_Model_Handler_Payment_Abstract
             $this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_WalletAliPay
         ) {
             $order->setData('payone_payment_method_type', $this->getPayment()->getData('payone_wallet_type'));
-        } elseif ($this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_Ratepay) {
+        } elseif (
+            $this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_Ratepay ||
+            $this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_RatepayDirectDebit
+        ) {
             $order->setData('payone_payment_method_type', $this->getPayment()->getData('payone_ratepay_type'));
         }
 
@@ -258,7 +265,10 @@ abstract class Payone_Core_Model_Handler_Payment_Abstract
                 $payment->setPayoneClearingLegalnote($response->getClearingLegalnote());
                 $payment->setPayoneClearingDuedate($response->getClearingDuedate());
             }
-        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Ratepay) {
+        } elseif (
+            $paymentMethod instanceof Payone_Core_Model_Payment_Method_Ratepay ||
+            $paymentMethod instanceof Payone_Core_Model_Payment_Method_RatepayDirectDebit
+        ) {
             $oSession = Mage::getSingleton('checkout/session');
             $oSession->unsRatePayFingerprint();
         }
@@ -319,7 +329,7 @@ abstract class Payone_Core_Model_Handler_Payment_Abstract
 
                 $helperEmail = $this->helperEmail();
                 $helperEmail->setStoreId($storeId);
-                $result = $helperEmail->send($configEmailAvs, array('response' => $responseMailObject));
+                $result = $helperEmail->sendByConfig($configEmailAvs, array('response' => $responseMailObject));
             }
         }
     }

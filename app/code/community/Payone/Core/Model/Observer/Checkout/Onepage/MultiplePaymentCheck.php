@@ -59,6 +59,11 @@ class Payone_Core_Model_Observer_Checkout_Onepage_MultiplePaymentCheck extends P
         /** @var Mage_Checkout_OnepageController|Payone_Core_Checkout_OnepageController $controllerAction */
         $controllerAction = $observer->getEvent()->getControllerAction();
         $paymentData = $controllerAction->getRequest()->getPost('payment', []);
+
+        if (!array_key_exists('method', $paymentData)) {
+            return;
+        }
+
         $selectedPaymentMethod = $paymentData['method'];
 
         if (!array_key_exists($selectedPaymentMethod, $this->paymentMethodChecks) ||

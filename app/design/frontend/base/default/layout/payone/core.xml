@@ -22,6 +22,23 @@
  */
 -->
 <layout>
+    <payone_core_amazonpay_checkout>
+        <remove name="left"/>
+        <remove name="right"/>
+        <remove name="payone.amazon.partner.top_cart.shortcut"/>
+        <remove name="payone.amazon.partner.cart_sidebar.shortcut"/>
+        <reference name="root">
+            <action method="setTemplate"><template>page/1column.phtml</template></action>
+        </reference>
+        <reference name="head">
+            <action method="addJs"><script>payone/core/amazonpay.js</script></action>
+            <action method="addCss"><name>payone/core/amazonpay.css</name></action>
+        </reference>
+        <reference name="content">
+            <block type="payone_core/amazon_pay_checkout" name="amazon.pay.checkout" template="payone/core/amazon/pay/checkout.phtml"/>
+        </reference>
+    </payone_core_amazonpay_checkout>
+
     <payone_core_pexpress_review translate="label">
         <label>Payone PayPal Express Order Review Form</label>
         <remove name="right"/>
@@ -50,12 +67,89 @@
         <block type="core/text_list" name="additional.product.info" />
     </payone_core_pexpress_review>
 
+    <payone_core_mastercardmasterpass_review>
+        <label>Payone Mastercard Masterpass Order Review Form</label>
+        <remove name="right"/>
+        <remove name="left"/>
+
+        <reference name="root">
+            <action method="setTemplate"><template>page/1column.phtml</template></action>
+        </reference>
+        <reference name="head">
+            <action method="addJs"><script>payone/core/masterpass.js</script></action>
+            <action method="addCss"><name>payone/core/masterpass.css</name></action>
+        </reference>
+        <reference name="content">
+            <block type="payone_core/mastercard_masterpass_review" name="mastercard.masterpass.review" template="payone/core/mastercard/masterpass/review.phtml"/>
+        </reference>
+    </payone_core_mastercardmasterpass_review>
+
+    <payone_core_mastercardmasterpass_ordersuccess>
+        <label>Payone Mastercard Masterpass Order Success</label>
+        <remove name="right"/>
+        <remove name="left"/>
+
+        <reference name="root">
+            <action method="setTemplate"><template>page/3columns.phtml</template></action>
+        </reference>
+
+        <reference name="content">
+            <block type="checkout/onepage_success" name="mastercard.masterpass.success" template="checkout/success.phtml"/>
+        </reference>
+    </payone_core_mastercardmasterpass_ordersuccess>
+
+    <payone_core_mastercardmasterpass_cancel>
+        <label>Payone Mastercard Masterpass Payment Cancel</label>
+        <remove name="right"/>
+        <remove name="left"/>
+
+        <reference name="root">
+            <action method="setTemplate"><template>page/3columns.phtml</template></action>
+        </reference>
+
+        <reference name="content">
+            <block type="payone_core/mastercard_masterpass_cancel" name="mastercard.masterpass.cancel" template="payone/core/mastercard/masterpass/cancel.phtml"/>
+        </reference>
+    </payone_core_mastercardmasterpass_cancel>
+
+    <payone_core_mastercardmasterpass_error>
+        <label>Payone Mastercard Masterpass Payment Error</label>
+        <remove name="right"/>
+        <remove name="left"/>
+
+        <reference name="root">
+            <action method="setTemplate"><template>page/3columns.phtml</template></action>
+        </reference>
+
+        <reference name="content">
+            <block type="payone_core/mastercard_masterpass_cancel" name="mastercard.masterpass.cancel" template="payone/core/mastercard/masterpass/cancel.phtml"/>
+        </reference>
+    </payone_core_mastercardmasterpass_error>
+
     <checkout_cart_index>
         <reference name="head">
             <block type="core/template" name="payone_core_checkout_cart_helper" template="payone/core/checkout/cart/helper.phtml" />
         </reference>
         <reference name="checkout.cart.top_methods">
+            <block type="payone_core/amazon_pay_shortcut" name="payone.checkout.cart.methods.amazon_pay.top" before="-" template="payone/core/amazon/pay/shortcut.phtml">
+                <action method="setIsQuoteAllowed"><value>1</value></action>
+                <action method="setShowOrPosition"><value>after</value></action>
+            </block>
+        </reference>
+        <reference name="checkout.cart.top_methods">
             <block type="payone_core/paypal_express_shortcut" name="payone.checkout.cart.methods.paypal_express.top" before="-" template="payone/core/paypal/express/shortcut.phtml">
+                <action method="setIsQuoteAllowed"><value>1</value></action>
+                <action method="setShowOrPosition"><value>after</value></action>
+            </block>
+        </reference>
+        <reference name="checkout.cart.top_methods">
+            <block type="payone_core/mastercard_masterpass_shortcut" name="payone.checkout.cart.methods.mastercard_masterpass.top" before="-" template="payone/core/mastercard/masterpass/shortcut.phtml">
+                <action method="setIsQuoteAllowed"><value>1</value></action>
+                <action method="setShowOrPosition"><value>after</value></action>
+            </block>
+        </reference>
+        <reference name="checkout.cart.methods">
+            <block type="payone_core/amazon_pay_shortcut" name="payone.checkout.cart.methods.amazon_pay.bottom" before="-" template="payone/core/amazon/pay/shortcut.phtml">
                 <action method="setIsQuoteAllowed"><value>1</value></action>
                 <action method="setShowOrPosition"><value>after</value></action>
             </block>
@@ -66,13 +160,31 @@
                 <action method="setShowOrPosition"><value>after</value></action>
             </block>
         </reference>
+        <reference name="checkout.cart.methods">
+            <block type="payone_core/mastercard_masterpass_shortcut" name="payone.checkout.cart.methods.mastercard_masterpass.bottom" before="-" template="payone/core/mastercard/masterpass/shortcut.phtml">
+                <action method="setIsQuoteAllowed"><value>1</value></action>
+                <action method="setShowOrPosition"><value>after</value></action>
+            </block>
+        </reference>
         <!--<update handle="SHORTCUT_popup" />-->
     </checkout_cart_index>
 
     <default>
+        <reference name="head">
+            <action method="addCss"><name>payone/core/amazonpay_button.css</name></action>
+            <action method="addCss"><name>payone/core/masterpass.css</name></action>
+        </reference>
+        <reference name="topCart.extra_actions">
+            <block type="payone_core/amazon_pay_shortcut" name="payone.amazon.partner.top_cart.shortcut"
+                   template="payone/core/amazon/pay/shortcut.phtml"/>
+        </reference>
         <reference name="topCart.extra_actions">
             <block type="payone_core/paypal_express_shortcut" name="payone.paypal.partner.top_cart.shortcut"
                    template="payone/core/paypal/express/shortcut.phtml"/>
+        </reference>
+        <reference name="cart_sidebar.extra_actions">
+            <block type="payone_core/amazon_pay_shortcut" name="payone.amazon.partner.cart_sidebar.shortcut"
+                   template="payone/core/amazon/pay/shortcut.phtml"/>
         </reference>
         <reference name="cart_sidebar.extra_actions">
             <block type="payone_core/paypal_express_shortcut" name="payone.paypal.partner.cart_sidebar.shortcut"
@@ -80,6 +192,9 @@
         </reference>
         <block type="payone_core/checkout_ratePayInstallmentplan" name="payone_ratepay.checkout.installmentplan"
                as="payone_installmentplan" />
+        <reference name="cart_sidebar.extra_actions">
+            <block type="payone_core/mastercard_masterpass_shortcut" name="masterpass.partner.cart_sidebar.shortcut" template="payone/core/mastercard/masterpass/shortcut.phtml"/>
+        </reference>
     </default>
 
     <checkout_onepage_index>
@@ -115,6 +230,11 @@
             <block type="payone_core/checkout_onepage_payment_additional"
                    name="payone_core_payment_additional"
                    template="payone/core/checkout/onepage/payment/additional.phtml" />
+        </reference>
+
+        <reference name="content">
+            <block type="core/template" name="payone_core_opcheckoutmod" template="payone/core/opcheckoutmod.phtml" />
+            <block type="payone_core/amazon_pay_shortcut" name="payone_core_amazonpay_login" template="payone/core/amazonpay_login.phtml" />
         </reference>
     </checkout_onepage_index>
 

@@ -39,7 +39,8 @@ class Payone_Core_Model_Config_General_PaymentCreditcard extends Payone_Core_Mod
 
     protected $sCCTemplate = '';
     protected $sCCRequestType = 'AJAX';
-    
+    protected $iCCTypeAutoRecognition = 0;
+
     /**
      * @param int $min_validity_period
      */
@@ -74,6 +75,16 @@ class Payone_Core_Model_Config_General_PaymentCreditcard extends Payone_Core_Mod
     public function getCcRequestType() 
     {
         return $this->sCCRequestType;
+    }
+
+    public function setCcTypeAutoRecognition($iCCTypeAutoRecognition)
+    {
+        $this->iCCTypeAutoRecognition = $iCCTypeAutoRecognition;
+    }
+
+    public function getCcTypeAutoRecognition()
+    {
+        return $this->iCCTypeAutoRecognition;
     }
     
 }

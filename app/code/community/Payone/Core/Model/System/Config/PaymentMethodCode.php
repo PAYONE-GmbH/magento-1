@@ -35,6 +35,7 @@ class Payone_Core_Model_System_Config_PaymentMethodCode extends Payone_Core_Mode
     const PREFIX = 'payone_';
 
     const ADVANCEPAYMENT = 'payone_advance_payment';
+    const AMAZONPAY = 'payone_amazon_pay';
     const CASHONDELIVERY = 'payone_cash_on_delivery';
     const CREDITCARD = 'payone_creditcard';
     const CREDITCARD_IFRAME = 'payone_creditcard_iframe';
@@ -53,6 +54,7 @@ class Payone_Core_Model_System_Config_PaymentMethodCode extends Payone_Core_Mode
     const WALLET = 'payone_wallet';
     const BARZAHLEN = 'payone_barzahlen';
     const RATEPAY = 'payone_ratepay';
+    const RATEPAYDIRECTDEBIT = 'payone_ratepay_direct_debit';
     const PAYOLUTION = 'payone_payolution';
     const PAYOLUTIONINVOICING = 'payone_payolution_invoicing';
     const PAYOLUTIONDEBIT = 'payone_payolution_debit';
@@ -61,6 +63,7 @@ class Payone_Core_Model_System_Config_PaymentMethodCode extends Payone_Core_Mode
     const WALLETPAYDIREKT = 'payone_wallet_paydirekt';
     const WALLETPAYPALEXPRESS = 'payone_wallet_paypal_express';
     const WALLETALIPAY = 'payone_wallet_alipay';
+    const MASTERPASS =  'payone_masterpass';
 
     /**
      * @return array
@@ -69,6 +72,7 @@ class Payone_Core_Model_System_Config_PaymentMethodCode extends Payone_Core_Mode
     {
         return array(
             self::ADVANCEPAYMENT => 'Advance Payment',
+            self::AMAZONPAY => 'Amazon Pay',
             self::CASHONDELIVERY => 'Cash on Delivery',
             self::CREDITCARD => 'Creditcard',
             self::CREDITCARD_IFRAME => 'Creditcard Channel Frontend',
@@ -79,6 +83,7 @@ class Payone_Core_Model_System_Config_PaymentMethodCode extends Payone_Core_Mode
             self::WALLET => 'Wallet',
             self::BARZAHLEN => 'Barzahlen',
             self::RATEPAY => 'RatePay',
+            self::RATEPAYDIRECTDEBIT => 'Ratepay Direct Debit',
             //self::PAYOLUTION => 'Payolution',
             self::PAYOLUTIONINVOICING => 'Payolution Invoicing',
             self::PAYOLUTIONDEBIT => 'Payolution Debit',
@@ -95,6 +100,7 @@ class Payone_Core_Model_System_Config_PaymentMethodCode extends Payone_Core_Mode
             self::ONLINEBANKTRANSFERPFC => 'PostFinance Card',
             self::ONLINEBANKTRANSFERP24 => 'Przelewy24',
             self::ONLINEBANKTRANSFERBCT => 'Bancontact',
+            self::MASTERPASS => 'Masterpass'
         );
     }
 }

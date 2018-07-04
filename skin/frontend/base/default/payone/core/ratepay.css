@@ -488,3 +488,17 @@ table#ratepay-InstallmentTerms {
 .ratepay-InfoDiv:hover #ratepayMouseoverInfoDurationTime { display: block; }
 .ratepay-InfoDiv:hover #ratepayMouseoverInfoDurationMonth { display: block; }
 .ratepay-InfoDiv:hover #ratepayMouseoverInfoLastRate { display: block; }
+
+.ratepay-overlay {
+    position:absolute;
+    width:50%;
+    border:2px solid black;
+    padding: 10px;
+    padding-top: 5px;
+    z-index: 5000;
+    background-color: #FFFFFF;
+}
+
+.ratepay-overlay .right {
+    float:right;
+}
