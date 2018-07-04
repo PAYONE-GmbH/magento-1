@@ -61,6 +61,7 @@ class Payone_Core_Model_System_Config_PaymentMethodType extends Payone_Core_Mode
     const WALLETPAYDIREKT = 'wallet_paydirekt';
     const WALLETPAYPALEXPRESS = 'wallet_paypal_express';
     const WALLETALIPAY = 'wallet_alipay';
+    const MASTERPASS =  'masterpass';
 
 
     /**
@@ -98,6 +99,7 @@ class Payone_Core_Model_System_Config_PaymentMethodType extends Payone_Core_Mode
             self::ONLINEBANKTRANSFERPFC => 'PostFinance Card',
             self::ONLINEBANKTRANSFERP24 => 'Przelewy24',
             self::ONLINEBANKTRANSFERBCT => 'Bancontact',
+            self::MASTERPASS => 'Masterpass'
         );
     }
 }
