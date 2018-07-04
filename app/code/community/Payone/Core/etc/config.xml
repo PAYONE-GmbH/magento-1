@@ -820,6 +820,11 @@
                 <model>payone_core/payment_method_walletAliPay</model>
                 <group>payone</group>
             </payone_wallet_alipay>
+            <payone_masterpass translate="title" module="payone_core">
+                <title>PAYONE - Masterpass</title>
+                <model>payone_core/payment_method_masterpass</model>
+                <group>payone</group>
+            </payone_masterpass>
         </payment>
         <payone_payment>
             <template_amazon_pay>
@@ -914,6 +919,9 @@
             <template_payolution_installment>
                 <use_global>1</use_global>
             </template_payolution_installment>
+            <template_masterpass>
+                <use_global>1</use_global>
+            </template_masterpass>
         </payone_payment>
         <payone_general>
             <global>
@@ -956,6 +964,7 @@
                 <financing>a:1:{s:18:"_1926207461842_842";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</financing>
                 <amazon_pay>a:1:{s:18:"_1917707466274_274";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</amazon_pay>
                 <payment_guarantee_invoice>a:1:{s:18:"_2468232683254_254";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</payment_guarantee_invoice>
+                <masterpass>a:1:{s:18:"_2177301865173_173";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</masterpass>
             </status_mapping>
         </payone_general>
         <payone_protect>
