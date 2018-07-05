@@ -360,7 +360,14 @@ class Payone_Core_Model_Service_Paypal_Express_Checkout
 
         $this->_order = $order;
 
-
+        Mage::dispatchEvent(
+            'checkout_submit_all_after',
+            [
+                'order' => $this->_order,
+                'quote' => $this->_quote,
+                'recurring_profiles' => $this->_recurringPaymentProfiles
+            ]
+        );
     }
 
     /**
