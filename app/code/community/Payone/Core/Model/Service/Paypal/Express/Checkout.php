@@ -260,12 +260,10 @@ class Payone_Core_Model_Service_Paypal_Express_Checkout
                 }
 
                 if($item->getKey() == 'shipping_addressaddition') {
-                    $billingStreet = $billingAddress->getStreetFull();
-                    $shippingStreet = $shippingAddress->getStreetFull();
+                    $info = $this->_quote->getPayment()->getMethodInstance()->getInfoInstance();
                     $streetAddition = $item->getData();
-
-                    $billingAddress->setStreetFull($billingStreet . PHP_EOL . $streetAddition);
-                    $shippingAddress->setStreetFull($shippingStreet . PHP_EOL . $streetAddition);
+                    $info->setPayoneBillingAddressaddition($streetAddition);
+                    $info->setPayoneShippingAddressaddition($streetAddition);
                 }
             }
 
