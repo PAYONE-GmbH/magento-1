@@ -673,6 +673,17 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
 
                 /*@var $payData Payone_Api_Request_Parameter_Paydata_Paydata*/
                 $payData = $this->mapRatePayInstallmentParameters($ratePayInstallmentData);
+
+                $payment->setBankcountry($info->getPayoneBankCountry());
+                $iban = $info->getPayoneSepaIban();
+                $bic = $info->getPayoneSepaBic();
+                if (!empty($iban)) {
+                    $payment->setIban(strtoupper($iban));
+                    if(!empty($bic) && strtoupper(substr($iban,0,2)) !== 'DE') {
+                        $payment->setBic(strtoupper($bic)); // ensure bic and iban are sent uppercase
+                    }
+                }
+                $payment->setBankaccountholder($info->getPayoneAccountOwner());
             }
 
             $payData->addItem(
