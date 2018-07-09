@@ -35,6 +35,7 @@ PAYONE.Service.CreditCardCheck = function (handler, form, config) {
     this.ccTypeAutoRecognition = 0;
     this.configActivatedCcTypes = '';
     this.supportedCardTypes = null;
+    this.configCvcLength = null;
 
     /**
      * Enhances payment.save and runs Validate and CreditCardCheck for CreditCards

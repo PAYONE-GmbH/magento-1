@@ -45,4 +45,16 @@ class Payone_Settings_Configuration_PaymentMethod_CreditCard
         return $constants;
     }
 
+    /**
+     * @return array
+     */
+    public function getCvcLength()
+    {
+        return array(
+            Payone_Api_Enum_CreditcardType::VISA => 3,
+            Payone_Api_Enum_CreditcardType::AMEX => 4,
+            Payone_Api_Enum_CreditcardType::MASTERCARD => 3
+        );
+    }
+
 }

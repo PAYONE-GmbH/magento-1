@@ -497,4 +497,26 @@ class Payone_Core_Block_Payment_Method_Form_Creditcard
 
         return $ccTypes;
     }
+
+    /**
+     * return array
+     */
+    public function getCvcLength()
+    {
+        $config = new Payone_Settings_Configuration_PaymentMethod_CreditCard();
+        $cvcLength = $config->getCvcLength();
+
+        // filter with hidden card types
+        $hidden = json_decode($this->getHideCvcTypes(), true);
+
+        $cvcLength = array_filter(
+            $cvcLength,
+            function ($item) use ($hidden) {
+                return !in_array($item, $hidden);
+            },
+            ARRAY_FILTER_USE_KEY
+        );
+
+        return $cvcLength;
+    }
 }
