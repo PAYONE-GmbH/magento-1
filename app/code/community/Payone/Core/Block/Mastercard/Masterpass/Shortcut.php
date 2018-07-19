@@ -209,4 +209,12 @@ class Payone_Core_Block_Mastercard_Masterpass_Shortcut extends Mage_Core_Block_T
 
         return $paymentConfig;
     }
+
+    /**
+     * @return string
+     */
+    public function getInfoLink()
+    {
+        return '<a target="blank" href="' . $this->__('https://www.mastercard.com/mc_us/wallet/learnmore/en/US/') . '">' . $this->__('Learn more') . '</a>';
+    }
 }

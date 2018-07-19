@@ -67,3 +67,15 @@
 .masterpassCheckout {
     border: 0;
 }
+
+.masterpassLearnMoreLink {
+    margin: 0;
+    padding: 0;
+
+    text-align: center;
+
+    font-size:smaller;
+    font-weight: bold;
+    text-decoration: underline;
+    color:grey;
+}
