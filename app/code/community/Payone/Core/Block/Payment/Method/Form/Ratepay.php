@@ -232,21 +232,27 @@ class Payone_Core_Block_Payment_Method_Form_Ratepay extends Payone_Core_Block_Pa
      */
     public function shouldDisplayIbanBic()
     {
-        $display = false;
-
-        if ($this->isInstallmentDirectDebit()) {
-            $config = $this->getPaymentConfig();
-
-            if ($config->getRatepayDirectdebitAllowspecific() == '0') {
-                $display = true;
-            } else {
-                $country = $this->getQuote()->getBillingAddress()->getCountry();
-                $allowedCountries = explode(',', $config->getRatepayDirectDebitSpecificCountry());
-                $display = in_array($country, $allowedCountries);
-            }
+        if (!$this->isInstallmentDirectDebit()) {
+            return false;
         }
 
-        return $display;
+        $country = $this->getQuote()->getBillingAddress()->getCountry();
+        // Switzerland does not allow RPS Lastschrift, no need for fields
+        if ($country == 'CH') {
+            return false;
+        }
+
+        $config = $this->getPaymentConfig();
+        if ($config->getRatepayDirectdebitAllowspecific() == '0') {
+            return true;
+        }
+
+        $allowedCountries = explode(',', $config->getRatepayDirectDebitSpecificCountry());
+        if (in_array($country, $allowedCountries)) {
+            return true;
+        };
+
+        return false;
     }
 
     /**
