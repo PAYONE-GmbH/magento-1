@@ -303,6 +303,11 @@ class Payone_Core_Model_Config_Payment_Method
     protected $ratepay_directdebit_specificcountry = array();
 
     /**
+     * @var int
+     */
+    protected $ratepay_directdebit_allowspecific = 0;
+
+    /**
      * Check if Method can be used in Country
      *
      * @param string $country
@@ -1425,5 +1430,21 @@ class Payone_Core_Model_Config_Payment_Method
     public function getRatepayDirectdebitSpecificcountry()
     {
         return $this->ratepay_directdebit_specificcountry;
+    }
+
+    /**
+     * @param int $ratepay_directdebit_allowspecific
+     */
+    public function setRatepayDirectdebitAllowspecific($ratepay_directdebit_allowspecific)
+    {
+        $this->ratepay_directdebit_allowspecific = $ratepay_directdebit_allowspecific;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRatepayDirectdebitAllowspecific()
+    {
+        return $this->ratepay_directdebit_allowspecific;
     }
 }

@@ -302,7 +302,6 @@ function requireVat(required, fieldPrefix)
 
 function checkRequirementFields(method, forceRequirement)
 {
-    console.log("force:", forceRequirement);
     if (forceRequirement !== -1) {
         var fieldPrefix = 'payone_ratepay';
         if (method === 'RPD') {
@@ -313,23 +312,8 @@ function checkRequirementFields(method, forceRequirement)
         return;
     }
 
-    var country = document.getElementsByName('payment[payone_country]').item(0).value;
     var b2b = document.getElementsByName('payment[payone_isb2b]').item(0).value;
-    console.log('Method:', method);
-    console.log('Country:', country);
-    console.log('b2b:', b2b);
 
-    forceRequirement = true;
-    if (b2b === '1') {
-        // Rechnungkauf for Switzerland & Austria
-        if (method === 'RPV' && (country === 'CH' || country === 'AT')) {
-            forceRequirement = false;
-        }
-        // Ratepay Lastschrift for Austria
-        if (method === 'RPD' && country === 'AT') {
-            forceRequirement = false;
-        }
-    }
-    console.log(country + ' required:', forceRequirement);
+    forceRequirement = (b2b !== '1');
     checkRequirementFields(method, forceRequirement);
 }

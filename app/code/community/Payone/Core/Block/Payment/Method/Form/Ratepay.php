@@ -16,7 +16,7 @@
  * @package         Payone_Core_Block
  * @subpackage      Payment
  * @copyright       Copyright (c) 2015 <kontakt@fatchip.de> - www.fatchip.com
- * @author          Robert Müller <robert.mueller@fatchip.de>
+ * @author          Robert MÃ¼ller <robert.mueller@fatchip.de>
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
  * @link            http://www.fatchip.com
  */
@@ -235,10 +235,15 @@ class Payone_Core_Block_Payment_Method_Form_Ratepay extends Payone_Core_Block_Pa
         $display = false;
 
         if ($this->isInstallmentDirectDebit()) {
-            $country = $this->getQuote()->getBillingAddress()->getCountry();
             $config = $this->getPaymentConfig();
-            $allowedCountries = explode(',', $config->getRatepayDirectDebitSpecificCountry());
-            $display = in_array($country, $allowedCountries);
+
+            if ($config->getRatepayDirectdebitAllowspecific() == '0') {
+                $display = true;
+            } else {
+                $country = $this->getQuote()->getBillingAddress()->getCountry();
+                $allowedCountries = explode(',', $config->getRatepayDirectDebitSpecificCountry());
+                $display = in_array($country, $allowedCountries);
+            }
         }
 
         return $display;
