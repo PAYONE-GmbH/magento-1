@@ -25,6 +25,8 @@
 <?php
 /** @var Payone_Core_Block_Mastercard_Masterpass_Shortcut $this  */
 ?>
+<?php if ($this->isMasterpassActive()) : ?>
+
     <?php if ($this->isOrPositionBefore()): ?>
         <span class="paypal-or"><?php echo $this->__('-OR-');?></span>
     <?php endif; ?>
@@ -38,7 +40,6 @@
         <span class="paypal-or"><?php echo $this->__('-OR-');?></span>
     <?php endif; ?>
 <script type="text/javascript" src="<?php echo $this->getMasterpassLibraryUrl(); ?>"></script>
-<!-- Script URL changes to https://www.masterpass.com/lightbox/Switch/integration/MasterPass.client.js in live mode -->
 <script type="text/javascript" language="Javascript">
     function initCheckout() {
         jQuery.ajax(
@@ -68,3 +69,4 @@
         );
     }
 </script>
+<?php endif; ?>
