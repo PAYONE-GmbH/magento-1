@@ -1097,6 +1097,7 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
         $installmentAmount = $installmentData['payone_ratepay_rate'] * 100;
         $lastInstallmentAmount = $installmentData['payone_ratepay_last-rate'] * 100;
         $amount = $installmentData['payone_ratepay_total-amount'] * 100;
+        $interestRate = $installmentData['payone_ratepay_interest-rate'] * 100;
 
         $payData->addItem(
             new Payone_Api_Request_Parameter_Paydata_DataItem(
@@ -1126,7 +1127,7 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
         );
         $payData->addItem(
             new Payone_Api_Request_Parameter_Paydata_DataItem(
-                array('key' => 'interest_rate', 'data' => $installmentData['payone_ratepay_interest-rate']*100)
+                array('key' => 'interest_rate', 'data' => $interestRate)
             )
         );
         $payData->addItem(
