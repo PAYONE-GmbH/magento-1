@@ -16,7 +16,7 @@
  * @package         Payone_Core_Block
  * @subpackage      Payment
  * @copyright       Copyright (c) 2015 <kontakt@fatchip.de> - www.fatchip.com
- * @author          Robert Müller <robert.mueller@fatchip.de>
+ * @author          Robert MÃ¼ller <robert.mueller@fatchip.de>
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
  * @link            http://www.fatchip.com
  */
@@ -31,7 +31,6 @@ class Payone_Core_Block_Payment_Method_Form_Ratepay extends Payone_Core_Block_Pa
      * @var bool
      */
     protected $hasTypes = true;
-
 
     protected function _construct() 
     {
@@ -183,5 +182,92 @@ class Payone_Core_Block_Payment_Method_Form_Ratepay extends Payone_Core_Block_Pa
         $sCompany = $this->getQuote()->getBillingAddress()->getCompany();
 
         return !empty($sCompany);
+    }
+
+    /**
+     * @return string
+     */
+    public function getCountry()
+    {
+        return $this->getQuote()->getBillingAddress()->getCountry();
+    }
+
+    /**
+     * @return string
+     */
+    public function getAllowedSEPACountries()
+    {
+        $sepaCountries = Mage::getModel('payone_core/system_config_sepaCountry');
+        $array = $sepaCountries->toArray();
+
+        return json_encode(array_keys($array));
+    }
+
+    /**
+     * @return string
+     */
+    public function getAccountOwner()
+    {
+        $billingContact = $this->getQuote()->getBillingAddress();
+        if($this->isB2BMode()) {
+            return $billingContact->getCompany();
+        }
+
+        return $billingContact->getFirstname() . ' ' . $billingContact->getLastname();
+    }
+
+    /**
+     * return string
+     */
+    public function getRatepayDirectDebitAcceptanceText()
+    {
+        /** @var Payone_Core_Block_Payment_Method_RatepayDirectDebitSepaAcceptance $block */
+        $block = Mage::app()->getLayout()->createBlock('payone_core/payment_method_ratepayDirectDebitSepaAcceptance');
+
+        return $block->toHtml();
+    }
+
+    /**
+     * @return bool
+     */
+    public function shouldDisplayIbanBic()
+    {
+        if (!$this->isInstallmentDirectDebit()) {
+            return false;
+        }
+
+        $country = $this->getQuote()->getBillingAddress()->getCountry();
+        // Switzerland does not allow RPS Lastschrift, no need for fields
+        if ($country == 'CH') {
+            return false;
+        }
+
+        $config = $this->getPaymentConfig();
+        if ($config->getRatepayDirectdebitAllowspecific() == '0') {
+            return true;
+        }
+
+        $allowedCountries = explode(',', $config->getRatepayDirectDebitSpecificCountry());
+        if (in_array($country, $allowedCountries)) {
+            return true;
+        };
+
+        return false;
+    }
+
+    /**
+     * return boolean
+     */
+    public function isInstallmentDirectDebit()
+    {
+        try {
+            /** @var Payone_Core_Model_Config_Payment_Method $config */
+            $config = $this->getPaymentConfig();
+            $debitType = $config->getRatepayDebitType();
+            return $debitType == Payone_Api_Enum_RatepayDebitType::DIRECT_DEBIT;
+        }
+        catch (\Exception $oEx) {
+            return false;
+        }
     }
 }

@@ -223,3 +223,8 @@ $accountOwner = $this->getAccountOwner();
     Translator.add('You have to be at least 18 years old to use this payment type!', '<?php echo $this->__('You have to be at least 18 years old to use this payment type!'); ?>');
     Translator.add('Entered IBAN is not from an authorised SEPA country.', '<?php echo $this->__('Entered IBAN is not from an authorised SEPA country.'); ?>');
 </script>
+
+<script type="text/javascript">
+    checkRequirementFields('<?php echo $paymentType; ?>', -1);
+</script>
+

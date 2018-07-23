@@ -39,6 +39,7 @@ class Payone_Core_RatepayController extends Mage_Core_Controller_Front_Action
             if (preg_match('/^[0-9]+(\.[0-9][0-9][0-9])?(,[0-9]{1,2})?$/', $calcValue)) {
                 $calcValue = str_replace(".", "", $calcValue);
                 $calcValue = str_replace(",", ".", $calcValue);
+                $calcValue = floor($calcValue * 100);  //MAGE-363: Use cent instead of floating currency
 
                 $client = Mage::getSingleton('payone_core/mapper_apiRequest_payment_genericpayment');
                 $ratePayConfigModel = Mage::getSingleton('payone_core/payment_method_ratepay');
