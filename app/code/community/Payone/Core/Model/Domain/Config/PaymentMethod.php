@@ -639,6 +639,9 @@ class Payone_Core_Model_Domain_Config_PaymentMethod
         
         // prepare ratepay_config
         $this->serializeData('ratepay_config');
+
+        // prepare ratepay_directdebit_specificcountry
+        $this->implodeData('ratepay_directdebit_specificcountry');
     }
 
     /**

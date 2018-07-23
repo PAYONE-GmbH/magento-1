@@ -53,6 +53,26 @@ class Payone_Api_Request_Parameter_Authorization_PaymentMethod_RatePay
      */
     protected $ratePayType = NULL;
 
+    /**
+     * @var string
+     */
+    protected $iban = NULL;
+
+    /**
+     * @var string
+     */
+    protected $bic = NULL;
+
+    /**
+     * @var string
+     */
+    protected $bankaccountholder = NULL;
+
+    /**
+     * @var string
+     */
+    protected $bankcountry = NULL;
+
 
     public function setApiVersion()
     {
@@ -149,5 +169,68 @@ class Payone_Api_Request_Parameter_Authorization_PaymentMethod_RatePay
     {
         return $this->telephonenumber;
     }
-    
+
+    /**
+     * @param string $iban
+     */
+    public function setIban($iban)
+    {
+        $this->iban = $iban;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIban()
+    {
+        return $this->iban;
+    }
+
+    /**
+     * @param string $bic
+     */
+    public function setBic($bic)
+    {
+        $this->bic = $bic;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBic()
+    {
+        return $this->bic;
+    }
+
+    /**
+     * @param string $bankaccountholder
+     */
+    public function setBankaccountholder($bankaccountholder)
+    {
+        $this->bankaccountholder = $bankaccountholder;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBankaccountholder()
+    {
+        return $this->bankaccountholder;
+    }
+
+    /**
+     * @param string $bankcountry
+     */
+    public function setBankcountry($bankcountry)
+    {
+        $this->bankcountry = $bankcountry;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBankcountry()
+    {
+        return $this->bankcountry;
+    }
 }

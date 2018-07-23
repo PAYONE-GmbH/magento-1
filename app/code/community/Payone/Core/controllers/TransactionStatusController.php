@@ -93,6 +93,20 @@ class Payone_Core_TransactionStatusController extends Payone_Core_Controller_Abs
 
             $this->getResponse()->setBody($message);
         }
+        catch (Payone_Core_Exception_OrderNotFound $e) {
+            $type = get_class($e);
+
+            $message = 'ERROR='.$type.'|MESSAGE='.$e->getMessage();
+
+            // Send Confirmation Message
+            $this->getResponse()->setBody($message);            
+            
+            Mage::log(
+                'Could not find an order for reference "' . $reference . '".',
+                Zend_Log::WARN,
+                'payone_missing_order_reference.log'
+            );
+        }
         catch (Exception $e)
         {
             $type = get_class($e);
