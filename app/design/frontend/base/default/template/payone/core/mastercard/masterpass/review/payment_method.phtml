@@ -31,6 +31,10 @@
     <div class="box-content">
         <table>
             <tr>
+                <td class="table-label"><b><?php echo $this->__("Payment Method") ?> :</b></td>
+                <td class="table-value"><?php echo $this->getPaymentMethod(); ?></td>
+            </tr>
+            <tr>
                 <td class="table-label"><b><?php echo $this->__("Card type :") ?></b></td>
                 <td class="table-value"><?php echo $this->getCardType(); ?></td>
             </tr>

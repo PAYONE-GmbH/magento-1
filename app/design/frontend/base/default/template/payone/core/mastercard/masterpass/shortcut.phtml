@@ -29,6 +29,20 @@
 <button class="masterpassCheckout" onclick="initCheckout()">
     <img src="https://masterpass.com/dyn/img/btn/global/mp_chk_btn_147x034px.svg"/>
 </button>
+<?php if ($this->isMasterpassActive()) : ?>
+
+    <?php if ($this->isOrPositionBefore()): ?>
+        <span class="paypal-or"><?php echo $this->__('-OR-');?></span>
+    <?php endif; ?>
+    <li style="vertical-align: top">
+        <button class="masterpassCheckout" onclick="initCheckout()">
+            <img src="https://masterpass.com/dyn/img/btn/global/mp_chk_btn_147x034px.svg"/>
+        </button>
+        <p class="masterpassLearnMoreLink"><?php echo $this->getInfoLink(); ?></p>
+    </li>
+    <?php if ($this->isOrPositionAfter()): ?>
+        <span class="paypal-or"><?php echo $this->__('-OR-');?></span>
+    <?php endif; ?>
 <script type="text/javascript" src="<?php echo $this->getMasterpassLibraryUrl(); ?>"></script>
 <script type="text/javascript" language="Javascript">
     function initCheckout() {

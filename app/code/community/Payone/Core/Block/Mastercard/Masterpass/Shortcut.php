@@ -27,6 +27,7 @@ class Payone_Core_Block_Mastercard_Masterpass_Shortcut extends Mage_Core_Block_T
 
     const MASTERPASS_LIB_TEST_URL = 'https://sandbox.masterpass.com/lightbox/Switch/integration/MasterPass.client.js';
     const MASTERPASS_LIB_LIVE_URL = 'https://www.masterpass.com/lightbox/Switch/integration/MasterPass.client.js';
+    const MASTERPASS_LEARN_MORE_BASEURL = 'https://www.mastercard.com/mc_us/wallet/learnmore/';
 
     /**
      * Position of "OR" label against shortcut
@@ -218,5 +219,24 @@ class Payone_Core_Block_Mastercard_Masterpass_Shortcut extends Mage_Core_Block_T
         }
 
         return $paymentConfig;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInfoLink()
+    {
+        /** @var \Mage_Checkout_Model_Session $session */
+        $session = Mage::getSingleton('checkout/session');
+
+        $storeLocale = Mage::getStoreConfig(
+            Mage_Core_Model_Locale::XML_PATH_DEFAULT_LOCALE,
+            $session->getQuote()->getStoreId()
+        );
+        $storeLocale = str_replace('_', '/', $storeLocale);
+
+        $linkUrl = self::MASTERPASS_LEARN_MORE_BASEURL . $storeLocale . '/';
+
+        return '<a target="blank" href="'. $linkUrl . '">' . $this->__('Learn more') . '</a>';
     }
 }

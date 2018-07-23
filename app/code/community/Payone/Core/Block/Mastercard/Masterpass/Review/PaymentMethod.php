@@ -137,4 +137,12 @@ class Payone_Core_Block_Mastercard_Masterpass_Review_PaymentMethod extends Mage_
 
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function getPaymentMethod()
+    {
+        return ucfirst(Payone_Core_Model_System_Config_PaymentMethodType::MASTERPASS);
+    }
 }
