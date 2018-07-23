@@ -658,8 +658,32 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
                 $payData = new Payone_Api_Request_Parameter_Paydata_Paydata();
             } else {
                 $ratePayInstallmentData = $this->_getResult($paymentMethod->getCode());
+                $config = $paymentMethod->getConfig();
+
+                // If RPS Lastschrift is not allowed for the country,
+                // debit-type is forced to Bank-Transfer
+                $country = $this->getOrder()->getBillingAddress()->getCountry();
+                $allowedCountries = explode(',', $config->getRatepayDirectDebitSpecificCountry());
+                if (!in_array($country, $allowedCountries)) {
+                    $ratePayInstallmentData['payone_ratepay_debit-paytype'] = Payone_Api_Enum_RatepayDebitType::BANK_TRANSFER;
+                }
+                else {
+                    $ratePayInstallmentData['payone_ratepay_debit-paytype'] = $config->getRatepayDebitType();
+                }
+
                 /*@var $payData Payone_Api_Request_Parameter_Paydata_Paydata*/
                 $payData = $this->mapRatePayInstallmentParameters($ratePayInstallmentData);
+
+                $payment->setBankcountry($info->getPayoneBankCountry());
+                $iban = $info->getPayoneSepaIban();
+                $bic = $info->getPayoneSepaBic();
+                if (!empty($iban)) {
+                    $payment->setIban(strtoupper($iban));
+                    if(!empty($bic) && strtoupper(substr($iban,0,2)) !== 'DE') {
+                        $payment->setBic(strtoupper($bic)); // ensure bic and iban are sent uppercase
+                    }
+                }
+                $payment->setBankaccountholder($info->getPayoneAccountOwner());
             }
 
             $payData->addItem(
@@ -762,16 +786,19 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
                         array('key' => 'b2b', 'data' => 'yes')
                     )
                 );
-                $payData->addItem(
-                    new Payone_Api_Request_Parameter_Paydata_DataItem(
-                        array('key' => 'company_id', 'data' => $info->getPayoneTradeRegistryNumber())
-                    )
-                );
-                $payData->addItem(
-                    new Payone_Api_Request_Parameter_Paydata_DataItem(
-                        array('key' => 'vat_id', 'data' => $info->getPayoneVatId())
-                    )
-                );
+
+                if ($this->getOrder()->getBillingAddress()->getCountryId() !== 'AT') {
+                    $payData->addItem(
+                        new Payone_Api_Request_Parameter_Paydata_DataItem(
+                            array('key' => 'company_id', 'data' => $info->getPayoneTradeRegistryNumber())
+                        )
+                    );
+                    $payData->addItem(
+                        new Payone_Api_Request_Parameter_Paydata_DataItem(
+                            array('key' => 'vat_id', 'data' => $info->getPayoneVatId())
+                        )
+                    );
+                }
             } else {
                 $birthdayDate = $info->getPayoneCustomerDob();
                 if (empty($birthdayDate)) {
@@ -1100,7 +1127,7 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
 
         $payData->addItem(
             new Payone_Api_Request_Parameter_Paydata_DataItem(
-                array('key' => 'debit_paytype', 'data' => Payone_Api_Enum_GenericpaymentAction::RATEPAY_DEBIT_TYPE_BANK_TRANSER)
+                array('key' => 'debit_paytype', 'data' => $installmentData['payone_ratepay_debit-paytype'])
             )
         );
 

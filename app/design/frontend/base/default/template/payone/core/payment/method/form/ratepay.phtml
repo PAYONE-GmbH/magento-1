@@ -28,6 +28,8 @@ $paymentType = '';
 $ratePayShopId = $this->getMatchingRatePayShopId();
 $ratePayCurrency = $this->getRatePayCurrency();
 $types = $this->getTypes();
+$allowedSEPACountries = htmlspecialchars($this->getAllowedSEPACountries());
+$accountOwner = $this->getAccountOwner();
 
 ?>
 <fieldset class="form-list">
@@ -56,6 +58,9 @@ $types = $this->getTypes();
             ?>
             <?php echo $type['name']; ?>&nbsp;<span><?php echo $type['fee']; ?></span>
             <input type="hidden" id="<?php echo $code ?>_type" name="payment[payone_ratepay_type]" value="<?php echo $paymentType;?>"/>
+            <script type="text/javascript">
+                checkRequirementFields('<?php echo $paymentType;?>', -1);
+            </script>
             <?php
         endif;?>
 
@@ -137,12 +142,97 @@ $types = $this->getTypes();
             </li>
         <?php endif;?>
 
+        <div id="<?php echo $code ?>_debit_details" style="display:none;" >
+            <?php if ($this->shouldDisplayIbanBic()) :?>
+                <li>
+                    <div id="ratepay-Header">
+                        <div>
+                            <p>
+                                <a href="#" onclick="toggleRatepayDirectDebitOverlay('<?php echo $code ?>');return false;">
+                                    <?php echo $this->__('Read the consent to the SEPA mandate'); ?>
+                                </a>
+                            </p>
+                        </div>
+                        <br class="ratepay-ClearFix" />
+                        <div id="<?php echo $code ?>_overlay" style="display:none;" class="ratepay-overlay">
+                            <a href="#" onclick="toggleRatepayDirectDebitOverlay('<?php echo $code ?>');return false;"
+                               style="float:right;font-weight:bold;"><?php echo $this->__('X'); ?></a>
+                            <div class="ratepay-FullWidth">
+                                <img class="ratepay-LogoImg" src="<?php echo $this->getSkinUrl('images/payone/ratepay_rate.png'); ?>" width="150" alt="RatePAY"><br>
+                                <h2 class="ratepay-H2"><?php echo $this->__('Direct Debit'); ?></h2>
+                            </div>
+                            <br class="ratepay-ClearFix" />
+                            <p><?php echo $this->__('RatePAY GmbH, Franklinstraße 28-29, 10587 Berlin'); ?></p>
+                            <p><?php echo $this->__('Creditors ID: ') . 'DE39RPY00000568463'; ?></p>
+                            <p><?php echo $this->__('Mandate reference: (will be sent after the purchase)'); ?></p><br><br>
+                            <?php echo $this->getRatepayDirectDebitAcceptanceText(); ?>
+                        </div>
+                    </div>
+                </li>
+
+                <p>
+                    <?php echo $this->__('Please enter your bank details:'); ?>
+                </p>
+
+                <li class="fields">
+                    <div class="field">
+                        <label for="<?php echo $code ?>_account_owner">
+                            <?php echo $this->__('Account holder');?>
+                        </label>
+                        <br class="clear"/>
+                        <p><?php echo $accountOwner; ?></p>
+                        <input type="hidden" name="payment[payone_account_owner]"
+                               id="<?php echo $code ?>_account_owner"
+                               value="<?php echo $accountOwner; ?>"/>
+                    </div>
+                </li>
+
+                <li class="fields">
+                    <div class="field">
+                        <label for="<?php echo $code ?>_sepa_iban_xxx">
+                            <?php echo $this->__('IBAN') ?>
+                            <span class="required">*</span>
+                        </label>
+                        <br class="clear"/>
+                        <input type="text" id="<?php echo $code ?>_sepa_iban_xxx"
+                               title="<?php echo $this->__('IBAN') ?>"
+                               class="validate-sepa-iban required-entry input-text"
+                               value="<?php echo $this->strToXXX($this->getSavedCustomerData('payone_sepa_iban'));?>"
+                               autocomplete="off" maxlength="34"
+                               onchange="inputToUppaerCaseAndNumbers(this); copyDebitPaymentSepaIban('<?php echo $code ?>'); checkIbanSEPACode('<?php echo $code ?>','<?php echo $allowedSEPACountries; ?>');"
+                               oninput="inputToUppaerCaseAndNumbers(this); copyDebitPaymentSepaIban('<?php echo $code ?>'); checkIbanSEPACode('<?php echo $code ?>', '<?php echo $allowedSEPACountries; ?>');toggleBicField(this, '<?php echo $code ?>')"/>
+                        <input type="hidden" id="<?php echo $code ?>_sepa_iban" name="payment[payone_sepa_iban]"
+                               value="<?php echo $this->getSavedCustomerData('payone_sepa_iban');?>">
+                    </div>
+                </li>
+
+                <li class="fields" id="<?php echo $code ?>_section_sepa_bic">
+                    <div class="field">
+                        <label for="<?php echo $code ?>_sepa_bic">
+                            <?php echo $this->__('BIC') ?>
+                        </label>
+                        <br class="clear"/>
+                        <input type="text" id="<?php echo $code ?>_sepa_bic" name="payment[payone_sepa_bic]"
+                               title="<?php echo $this->__('BIC') ?>"
+                               class="validate-sepa-bic input-text"
+                               value="<?php echo $this->getSavedCustomerData('payone_sepa_bic');?>"
+                               autocomplete="off" maxlength="11"
+                               onchange="inputToUppaerCaseAndNumbers(this); blockPaymentMethodInputs('<?php echo $code ?>', <?php echo $configShowBankData; ?>);"
+                               oninput="inputToUppaerCaseAndNumbers(this); blockPaymentMethodInputs('<?php echo $code ?>', <?php echo $configShowBankData; ?>);"/>
+                    </div>
+                </li>
+            <?php endif; ?>
+        </div>
+
+
+
         <li style="display:none;">
             <input type="hidden" name="payment[payone_config_payment_method_id]"  id="<?php echo $code ?>_config_id" value="<?php echo $configId; ?>"/>
             <input type="hidden" id="ratePayShopId" name="payment[payone_ratepay_shop_id]" value="<?php echo $ratePayShopId; ?>"/>
             <input type="hidden" id="ratePayCurrency" name="payment[payone_ratepay_currency]" value="<?php echo $ratePayCurrency; ?>"/>
             <input type="hidden" name="payment[payone_isb2b]" value="<?php echo (int)$this->isB2BMode(); ?>"/>
-            <?php 
+            <input type="hidden" name="payment[payone_country]" value="<?php echo $this->getCountry(); ?>"/>
+            <?php
                 $sDeviceIdentToken = $this->getRatePayDeviceFingerprint();
                 $sDeviceIdentId = $this->getRatePayDeviceFingerprintSnippetId();
             ?>
