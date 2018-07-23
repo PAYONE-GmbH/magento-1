@@ -62,6 +62,16 @@ class Payone_Core_Block_Mastercard_Masterpass_Shortcut extends Mage_Core_Block_T
     protected $customerId;
 
     /**
+     * @return bool
+     */
+    public function isMasterpassActive()
+    {
+        $config = $this->getConfiguration();
+
+        return !empty($config);
+    }
+
+    /**
      * @return string
      */
     public function getInitUrl()
@@ -116,7 +126,7 @@ class Payone_Core_Block_Mastercard_Masterpass_Shortcut extends Mage_Core_Block_T
     {
         $config = $this->getConfiguration();
 
-        if ($config->getMode() === Payone_Enum_Mode::LIVE) {
+        if ($config && $config->getMode() === Payone_Enum_Mode::LIVE) {
             return self::MASTERPASS_LIB_LIVE_URL;
         }
 

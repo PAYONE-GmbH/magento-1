@@ -1119,11 +1119,12 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
     private function mapRatePayInstallmentParameters($installmentData)
     {
         $payData = new Payone_Api_Request_Parameter_Paydata_Paydata();
-        $payData->addItem(
-            new Payone_Api_Request_Parameter_Paydata_DataItem(
-                array('key' => 'action', 'data' => Payone_Api_Enum_GenericpaymentAction::RATEPAY_PROFILE)
-            )
-        );
+
+        // MAGE-363: Convert amounts into EUR-cents (integer)
+        $installmentAmount = $installmentData['payone_ratepay_rate'] * 100;
+        $lastInstallmentAmount = $installmentData['payone_ratepay_last-rate'] * 100;
+        $amount = $installmentData['payone_ratepay_total-amount'] * 100;
+        $interestRate = $installmentData['payone_ratepay_interest-rate'] * 100;
 
         $payData->addItem(
             new Payone_Api_Request_Parameter_Paydata_DataItem(
@@ -1133,12 +1134,12 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
 
         $payData->addItem(
             new Payone_Api_Request_Parameter_Paydata_DataItem(
-                array('key' => 'installment_amount', 'data' => $installmentData['payone_ratepay_rate'])
+                array('key' => 'installment_amount', 'data' => $installmentAmount)
             )
         );
         $payData->addItem(
             new Payone_Api_Request_Parameter_Paydata_DataItem(
-                array('key' => 'last_installment_amount', 'data' => $installmentData['payone_ratepay_last-rate'])
+                array('key' => 'last_installment_amount', 'data' => $lastInstallmentAmount)
             )
         );
         $payData->addItem(
@@ -1148,12 +1149,12 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
         );
         $payData->addItem(
             new Payone_Api_Request_Parameter_Paydata_DataItem(
-                array('key' => 'amount', 'data' => $installmentData['payone_ratepay_total-amount'])
+                array('key' => 'amount', 'data' => $amount)
             )
         );
         $payData->addItem(
             new Payone_Api_Request_Parameter_Paydata_DataItem(
-                array('key' => 'interest_rate', 'data' => $installmentData['payone_ratepay_interest-rate']*100)
+                array('key' => 'interest_rate', 'data' => $interestRate)
             )
         );
         $payData->addItem(
