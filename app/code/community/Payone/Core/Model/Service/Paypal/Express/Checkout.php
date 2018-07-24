@@ -277,6 +277,29 @@ class Payone_Core_Model_Service_Paypal_Express_Checkout
             $this->_quote->getPayment()->setAdditionalInformation(self::PAYONE_EXPRESS_CHECKOUT_WORKORDERID, $workOrderId)
                 ->setAdditionalInformation(self::PAYMENT_INFO_TRANSPORT_PAYER_ID, $workOrderId);
 
+            $info = $this->_quote->getPayment()->getMethodInstance()->getInfoInstance();
+            if (!empty($info->getPayoneBillingAddressaddition())) {
+                $billingStreet = $this->_quote->getBillingAddress()->getStreet();
+                if (is_array($billingStreet)) {
+                    $billingStreet[] = $info->getPayoneBillingAddressaddition();
+                }
+                else {
+                    $billingStreet .= PHP_EOL . $info->getPayoneBillingAddressaddition();
+                }
+                $this->_quote->getBillingAddress()->setStreet($billingStreet);
+            }
+
+            if (!empty($info->getPayoneShippingAddressaddition())) {
+                $shippingStreet = $this->_quote->getShippingAddress()->getStreet();
+                if (is_array($shippingStreet)) {
+                    $shippingStreet[] = $info->getPayoneShippingAddressaddition();
+                }
+                else {
+                    $shippingStreet .= PHP_EOL . $info->getPayoneShippingAddressaddition();
+                }
+                $this->_quote->getShippingAddress()->setStreet($shippingStreet);
+            }
+
             $this->_quote->collectTotals()->save();
         }
 

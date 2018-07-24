@@ -33,8 +33,6 @@
 
 class Payone_Core_Block_Paypal_Express_Review extends Mage_Paypal_Block_Express_Review
 {
-    protected $shippingAddress = null;
-
     /**
      * Retrieve payment method and assign additional template values
      *
@@ -77,26 +75,5 @@ class Payone_Core_Block_Paypal_Express_Review extends Mage_Paypal_Block_Express_
 
         $this->setEditUrl(null) //$this->getUrl("{$this->_paypalActionPrefix}/express/edit")
             ->setPlaceOrderUrl($this->getUrl("payone_core/pexpress/placeOrder", array('_secure' => $isSecure)));
-    }
-
-    /**
-     * Return quote shipping address
-     *
-     * @return Mage_Sales_Model_Quote_Address
-     */
-    public function getShippingAddress()
-    {
-        if (!$this->shippingAddress) {
-            $address = parent::getShippingAddress();
-            $info = $this->_quote->getPayment()->getMethodInstance()->getInfoInstance();
-            $addressAddition = $info->getPayoneShippingAddressaddition();
-            $street = $address->getStreet();
-            array_push($street, $addressAddition);
-            $address->setStreet($street);
-
-            $this->shippingAddress = $address;
-        }
-
-        return $this->shippingAddress;
     }
 }
