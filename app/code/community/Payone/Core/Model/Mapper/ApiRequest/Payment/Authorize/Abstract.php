@@ -207,7 +207,7 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
 
         $street = $helper->normalizeStreet($billingAddress->getStreet());
         $personalData->setStreet($street);
-        $personalData->setAddressaddition('');
+        $personalData->setAddressaddition($paymentMethod->getInfoInstance()->getPayoneBillingAddressaddition());
         $personalData->setZip($billingAddress->getPostcode());
         $personalData->setCity($billingAddress->getCity());
         $personalData->setCountry($billingCountry);
@@ -378,6 +378,7 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
         $deliveryData->setShippingZip($address->getPostcode());
         $deliveryData->setShippingCity($address->getCity());
         $deliveryData->setShippingCountry($shippingCountry);
+        $deliveryData->setShippingAddressaddition($info->getPayoneShippingAddressaddition());
 
         // US, CA, CN, JP, MX, BR, AR, ID, TH, IN always need shipping_state paramters
         if ($shippingCountry == 'US' or $shippingCountry == 'CA' or $shippingCountry == 'CN' or $shippingCountry == 'JP' or $shippingCountry == 'MX' or
