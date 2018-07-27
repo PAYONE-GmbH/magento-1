@@ -29,7 +29,6 @@
 <button class="masterpassCheckout" onclick="initCheckout()">
     <img src="https://masterpass.com/dyn/img/btn/global/mp_chk_btn_147x034px.svg"/>
 </button>
-<?php if ($this->isMasterpassActive()) : ?>
 
     <?php if ($this->isOrPositionBefore()): ?>
         <span class="paypal-or"><?php echo $this->__('-OR-');?></span>
