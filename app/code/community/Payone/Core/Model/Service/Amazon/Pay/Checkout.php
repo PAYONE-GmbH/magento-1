@@ -128,11 +128,7 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
             );
         }
         $paymentMethodCode = \Payone_Core_Model_System_Config_PaymentMethodCode::AMAZONPAY;
-        $this->quote->getPayment()->importData([
-            'method'                          => $paymentMethodCode,
-            'payone_config_payment_method_id' => $this->config->getId(),
-            'checks'                          => [],
-        ]);
+
         $this->fillAddressFields('shipping', $this->quote->getShippingAddress(), $data)
             ->setSameAsBilling(false)
             ->setCollectShippingRates(true)
@@ -142,6 +138,13 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
             ->setSameAsBilling(false)
             ->setData('should_ignore_validation', true)
             ->setData('payment_method', $paymentMethodCode);
+
+        $this->quote->getPayment()->importData([
+            'method'                          => $paymentMethodCode,
+            'payone_config_payment_method_id' => $this->config->getId(),
+            'checks'                          => [],
+        ]);
+
         $this->quote->setTotalsCollectedFlag(false);
         $coupon = $this->checkoutSession->getData('cart_coupon_code');
         if (!empty($coupon)) {
