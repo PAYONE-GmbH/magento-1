@@ -207,7 +207,7 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
 
         $street = $helper->normalizeStreet($billingAddress->getStreet());
         $personalData->setStreet($street);
-        $personalData->setAddressaddition('');
+        $personalData->setAddressaddition($paymentMethod->getInfoInstance()->getPayoneBillingAddressaddition());
         $personalData->setZip($billingAddress->getPostcode());
         $personalData->setCity($billingAddress->getCity());
         $personalData->setCountry($billingCountry);
@@ -378,6 +378,7 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
         $deliveryData->setShippingZip($address->getPostcode());
         $deliveryData->setShippingCity($address->getCity());
         $deliveryData->setShippingCountry($shippingCountry);
+        $deliveryData->setShippingAddressaddition($info->getPayoneShippingAddressaddition());
 
         // US, CA, CN, JP, MX, BR, AR, ID, TH, IN always need shipping_state paramters
         if ($shippingCountry == 'US' or $shippingCountry == 'CA' or $shippingCountry == 'CN' or $shippingCountry == 'JP' or $shippingCountry == 'MX' or
@@ -658,8 +659,32 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
                 $payData = new Payone_Api_Request_Parameter_Paydata_Paydata();
             } else {
                 $ratePayInstallmentData = $this->_getResult($paymentMethod->getCode());
+                $config = $paymentMethod->getConfig();
+
+                // If RPS Lastschrift is not allowed for the country,
+                // debit-type is forced to Bank-Transfer
+                $country = $this->getOrder()->getBillingAddress()->getCountry();
+                $allowedCountries = explode(',', $config->getRatepayDirectDebitSpecificCountry());
+                if (!in_array($country, $allowedCountries)) {
+                    $ratePayInstallmentData['payone_ratepay_debit-paytype'] = Payone_Api_Enum_RatepayDebitType::BANK_TRANSFER;
+                }
+                else {
+                    $ratePayInstallmentData['payone_ratepay_debit-paytype'] = $config->getRatepayDebitType();
+                }
+
                 /*@var $payData Payone_Api_Request_Parameter_Paydata_Paydata*/
                 $payData = $this->mapRatePayInstallmentParameters($ratePayInstallmentData);
+
+                $payment->setBankcountry($info->getPayoneBankCountry());
+                $iban = $info->getPayoneSepaIban();
+                $bic = $info->getPayoneSepaBic();
+                if (!empty($iban)) {
+                    $payment->setIban(strtoupper($iban));
+                    if(!empty($bic) && strtoupper(substr($iban,0,2)) !== 'DE') {
+                        $payment->setBic(strtoupper($bic)); // ensure bic and iban are sent uppercase
+                    }
+                }
+                $payment->setBankaccountholder($info->getPayoneAccountOwner());
             }
 
             $payData->addItem(
@@ -762,16 +787,19 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
                         array('key' => 'b2b', 'data' => 'yes')
                     )
                 );
-                $payData->addItem(
-                    new Payone_Api_Request_Parameter_Paydata_DataItem(
-                        array('key' => 'company_id', 'data' => $info->getPayoneTradeRegistryNumber())
-                    )
-                );
-                $payData->addItem(
-                    new Payone_Api_Request_Parameter_Paydata_DataItem(
-                        array('key' => 'vat_id', 'data' => $info->getPayoneVatId())
-                    )
-                );
+
+                if ($this->getOrder()->getBillingAddress()->getCountryId() !== 'AT') {
+                    $payData->addItem(
+                        new Payone_Api_Request_Parameter_Paydata_DataItem(
+                            array('key' => 'company_id', 'data' => $info->getPayoneTradeRegistryNumber())
+                        )
+                    );
+                    $payData->addItem(
+                        new Payone_Api_Request_Parameter_Paydata_DataItem(
+                            array('key' => 'vat_id', 'data' => $info->getPayoneVatId())
+                        )
+                    );
+                }
             } else {
                 $birthdayDate = $info->getPayoneCustomerDob();
                 if (empty($birthdayDate)) {
@@ -1092,26 +1120,27 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
     private function mapRatePayInstallmentParameters($installmentData)
     {
         $payData = new Payone_Api_Request_Parameter_Paydata_Paydata();
+
+        // MAGE-363: Convert amounts into EUR-cents (integer)
+        $installmentAmount = $installmentData['payone_ratepay_rate'] * 100;
+        $lastInstallmentAmount = $installmentData['payone_ratepay_last-rate'] * 100;
+        $amount = $installmentData['payone_ratepay_total-amount'] * 100;
+        $interestRate = $installmentData['payone_ratepay_interest-rate'] * 100;
+
         $payData->addItem(
             new Payone_Api_Request_Parameter_Paydata_DataItem(
-                array('key' => 'action', 'data' => Payone_Api_Enum_GenericpaymentAction::RATEPAY_PROFILE)
+                array('key' => 'debit_paytype', 'data' => $installmentData['payone_ratepay_debit-paytype'])
             )
         );
 
         $payData->addItem(
             new Payone_Api_Request_Parameter_Paydata_DataItem(
-                array('key' => 'debit_paytype', 'data' => Payone_Api_Enum_GenericpaymentAction::RATEPAY_DEBIT_TYPE_BANK_TRANSER)
-            )
-        );
-
-        $payData->addItem(
-            new Payone_Api_Request_Parameter_Paydata_DataItem(
-                array('key' => 'installment_amount', 'data' => $installmentData['payone_ratepay_rate'])
+                array('key' => 'installment_amount', 'data' => $installmentAmount)
             )
         );
         $payData->addItem(
             new Payone_Api_Request_Parameter_Paydata_DataItem(
-                array('key' => 'last_installment_amount', 'data' => $installmentData['payone_ratepay_last-rate'])
+                array('key' => 'last_installment_amount', 'data' => $lastInstallmentAmount)
             )
         );
         $payData->addItem(
@@ -1121,12 +1150,12 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
         );
         $payData->addItem(
             new Payone_Api_Request_Parameter_Paydata_DataItem(
-                array('key' => 'amount', 'data' => $installmentData['payone_ratepay_total-amount'])
+                array('key' => 'amount', 'data' => $amount)
             )
         );
         $payData->addItem(
             new Payone_Api_Request_Parameter_Paydata_DataItem(
-                array('key' => 'interest_rate', 'data' => $installmentData['payone_ratepay_interest-rate']*100)
+                array('key' => 'interest_rate', 'data' => $interestRate)
             )
         );
         $payData->addItem(

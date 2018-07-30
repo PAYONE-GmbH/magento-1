@@ -51,4 +51,16 @@ class Payone_Settings_Configuration_PaymentMethod_RatePay
         return $constants;
     }
 
+    /**
+     * @return array
+     */
+    public function getDebitTypes()
+    {
+        $constants = $this->getClassConstants('Payone_Api_Enum_RatepayDebitType');
+
+        $constants = array_flip($constants);
+
+        return $constants;
+    }
+
 }

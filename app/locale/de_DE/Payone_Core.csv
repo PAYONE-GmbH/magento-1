@@ -167,6 +167,7 @@
 "Safe Invoice","Sicherer Rechnungskauf"
 "Invoice with Payment Guarantee","Gesicherte Rechnung"
 "Debit Payment","Lastschrift"
+Debit type used for payment by installments,"Debittyp, der für die Ratenzahlung verwendet wird"
 "Advance Payment","Vorkasse"
 "Online Bank Transfer","Onlineüberweisung"
 "Cash on Delivery","Nachnahme"
@@ -447,6 +448,7 @@
 "ADDRESSCHECK","Adressprüfung (addresscheck)"
 "CONSUMERSCORE","Kundenprüfung (consumerscore)"
 "BANKACCOUNTCHECK","Bankdatenprüfung (bankaccountcheck)"
+BANK_TRANSFER,Überweisung
 "CREDITCARDCHECK","Kreditkartenprüfung (creditcardcheck)"
 "GETINVOICE","Rechnungsdownload (getinvoice)"
 "MANAGEMANDATE","Mandatserteilung (managemandate)"
@@ -480,6 +482,7 @@
 "MASTERCARD","MasterCard"
 "AMEX","American Express"
 "DINERS","Diners-Club"
+DIRECT_DEBIT,Lastschrift
 "JCB","JCB"
 "MAESTRO_INTERNATIONAL","Maestro International"
 "MAESTRO_UK","Maestro UK"
@@ -1045,7 +1048,7 @@ The <a target='_blank' href='https://www.ratepay.com/zgb-dse'>additional terms a
 
 "RPV","Rechnungskauf"
 "RPS","Ratenzahlung"
-"RPD","Ratepay Lastschrift"
+"RPD",Lastschrift
 "RPP","Vorkasse"
 "Amount for this payment method too low","Warenkorbwert ist zu gering für diese Zahlart"
 "Rate calculator", "Ratenrechner"
@@ -1219,6 +1222,7 @@ The <a target='_blank' href='https://www.ratepay.com/zgb-dse'>additional terms a
 "Read the consent to the SEPA mandate","Einwilligungserklärung zum SEPA-Mandat lesen"
 "I hereby consent to the forwarding of my data to %s according to %s and authorize them to collect payments related to this purchase contract from my account mentioned above by direct debit.","Ich willige hiermit in die Weiterleitung meiner Daten an %s gemäß %s ein und ermächtige diese, mit diesem Kaufvertrag in Zusammenhang stehende Zahlungen von meinem o.a. Konto mittels Lastschrift einzuziehen."
 "RatePAY Privacy Policy","RatePAY-Datenschutzerklärung"
+RatePay Debit Type,RatePay Ratenkauf Typ
 "Note:","Hinweis:"
 "After conclusion of the contract, I will be notified of the mandate reference of RatePAY. I can claim reimbursement of the amount due within eight weeks of the debit date.","Nach Zustandekommen des Vertrags wird mir die Mandatsreferenz von RatePAY mitgeteilt. Ich kann innerhalb von acht Wochen, beginnend mit dem Belastungsdatum, die Erstattung des belasteten Betrages verlangen."
 "Applicable in this regard by the contract with my bank conditions.","Es gelten dabei die mit meinem Kreditinstitut vereinbarten Bedingungen."
@@ -1227,6 +1231,7 @@ The <a target='_blank' href='https://www.ratepay.com/zgb-dse'>additional terms a
 "If necessary, check the transaction again in the Payone Merchant Interface.","Prüfen Sie die Transaktion ggf. nochmals im Payone Merchant Interface."
 "You can cancel the order in the shop, but the transaction have to be manually cancelled in the Payone Merchant Interface.","Sie können die Bestellung im Shop stornieren, die Transaktion sollte jedoch im Payone Merchant Interface manuell storniert werden."
 "Do you want to cancel the order in the shop ?","Möchten Sie die Bestellung im Shop stornieren?"
+
 
 "An error occured during the PayPal Express Checkout.","Während des PayPal Express Checkouts ist ein Fehler aufgetreten."
 "The PayPal Express Checkout has been canceled.","Der PayPal Express Checkout wurde abgebrochen."
@@ -1254,5 +1259,6 @@ The <a target='_blank' href='https://www.ratepay.com/zgb-dse'>additional terms a
 "Phone :","Telefon :"
 "Birthdate :","Geburtsdatum :"
 "Please agree to all the terms and conditions before placing the order.","Bitte stimmen Sie allen Bedingungen zu, bevor Sie die Bestellung aufgeben."
-
+"Learn more","Mehr erfahren"
+"-OR-","-ODER-"
 "Please check also CVC length","Bitte pr&uuml;fen Sie auch die CVC-L&auml;nge"

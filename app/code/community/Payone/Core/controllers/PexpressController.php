@@ -203,6 +203,31 @@ class Payone_Core_PexpressController extends Payone_Core_Controller_Abstract
                 if ($agreement) {
                     $session->setLastBillingAgreementId($agreement->getId());
                 }
+
+                $info = $this->_getQuote()->getPayment()->getMethodInstance()->getInfoInstance();
+                if (!empty($info->getPayoneBillingAddressaddition())) {
+                    $billingStreet = $order->getBillingAddress()->getStreet();
+                    if (is_array($billingStreet)) {
+                        $billingStreet[] = $info->getPayoneBillingAddressaddition();
+                    }
+                    else {
+                        $billingStreet .= PHP_EOL . $info->getPayoneBillingAddressaddition();
+                    }
+                    $order->getBillingAddress()->setStreet($billingStreet);
+                    $order->getBillingAddress()->save();
+                }
+
+                if (!empty($info->getPayoneShippingAddressaddition())) {
+                    $shippingStreet = $order->getShippingAddress()->getStreet();
+                    if (is_array($shippingStreet)) {
+                        $shippingStreet[] = $info->getPayoneShippingAddressaddition();
+                    }
+                    else {
+                        $shippingStreet .= PHP_EOL . $info->getPayoneShippingAddressaddition();
+                    }
+                    $order->getShippingAddress()->setStreet($shippingStreet);
+                    $order->getShippingAddress()->save();
+                }
             }
 
             // recurring profiles may be created along with the order or without it
@@ -301,7 +326,7 @@ class Payone_Core_PexpressController extends Payone_Core_Controller_Abstract
     /**
      * Return checkout quote object
      *
-     * @return Mage_Sale_Model_Quote
+     * @return Mage_Sales_Model_Quote
      */
     private function _getQuote()
     {

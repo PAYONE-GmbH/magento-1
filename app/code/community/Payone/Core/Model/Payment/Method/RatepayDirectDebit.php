@@ -258,8 +258,7 @@ class Payone_Core_Model_Payment_Method_RatepayDirectDebit extends Payone_Core_Mo
                                 {$sTable}
                             WHERE 
                                 shop_id IN ('".implode("','", $aRatepayShopIds)."') AND
-                                {$oQuote->getGrandTotal()} BETWEEN tx_limit_invoice_min AND tx_limit_invoice_max AND
-                                currency = {$oRead->quote($oQuote->getQuoteCurrencyCode())} AND
+                                {$oQuote->getGrandTotal()} BETWEEN tx_limit_invoice_min AND tx_limit_invoice_max AND                                
                                 country_code_billing = {$oRead->quote($oQuote->getBillingAddress()->getCountryId())}";
                 if($blAddressesAreEqual === false) {
                     $sQuery .= " AND delivery_address_invoice = 1 ";
