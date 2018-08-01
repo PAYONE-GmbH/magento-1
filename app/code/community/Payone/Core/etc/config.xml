@@ -706,22 +706,22 @@
                 <group>payone</group>
             </payone_ratepay_direct_debit>
             <payone_payolution translate="title" module="payone_core">
-                <title>PAYONE - Payolution</title>
+                <title>PAYONE - Paysafe Pay Later™</title>
                 <model>payone_core/payment_method_payolution</model>
                 <group>payone</group>
             </payone_payolution>
             <payone_payolution_invoicing translate="title" module="payone_core">
-                <title>PAYONE - Payolution Invoicing</title>
+                <title>PAYONE - Paysafe Pay Later™ Invoicing</title>
                 <model>payone_core/payment_method_payolutionInvoicing</model>
                 <group>payone</group>
             </payone_payolution_invoicing>
             <payone_payolution_debit translate="title" module="payone_core">
-                <title>PAYONE - Payolution Debit</title>
+                <title>PAYONE - Paysafe Pay Later™ Debit</title>
                 <model>payone_core/payment_method_payolutionDebit</model>
                 <group>payone</group>
             </payone_payolution_debit>
             <payone_payolution_installment translate="title" module="payone_core">
-                <title>PAYONE - Payolution Installment</title>
+                <title>PAYONE - Paysafe Pay Later™ Installment</title>
                 <model>payone_core/payment_method_payolutionInstallment</model>
                 <group>payone</group>
             </payone_payolution_installment>
