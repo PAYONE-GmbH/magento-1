@@ -46,7 +46,7 @@
 
 "PAYONE_AMAZON_SYNC_MODE","– Asynchronous On Failure (recommended, default): If a synchronous transaction fails, the transaction will be retried with an asynchronous request.<br>– Always Synchronous: Always try synchronous transactions. These might have lower acceptance rates with Amazon. However, you will receive an instant confirmation of the transaction and you will be able to continue right away."
 
-"PAYOLUTION_ACCEPTANCE_1","I agree with the transmission of the necessary data to payolution which is needed for processing the purchase, the identity-check and the credit rating."
+"PAYOLUTION_ACCEPTANCE_1","I agree with the transmission of the necessary data to Paysafe Pay Later™ which is needed for processing the purchase, the identity-check and the credit rating."
 "PAYOLUTION_ACCEPTANCE_2","My"
 "PAYOLUTION_ACCEPTANCE_3"," can be revoked for the future any time."
 
