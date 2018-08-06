@@ -89,11 +89,6 @@
                     <sort_order>50</sort_order>
                     <action>adminhtml/payonecore_configuration_wizard</action>
                 </configuration_wizard>
-                <information module="payone_core">
-                    <title>Information</title>
-                    <sort_order>60</sort_order>
-                    <action>adminhtml/payonecore_information/</action>
-                </information>
             </children>
         </payone>
     </menu>
@@ -207,10 +202,6 @@
                                 <title>Configuration-Wizard</title>
                                 <sort_order>50</sort_order>
                             </configuration_wizard>
-                            <information>
-                                <title>Information</title>
-                                <sort_order>60</sort_order>
-                            </information>
                         </children>
                     </payone>
                     <sales>
