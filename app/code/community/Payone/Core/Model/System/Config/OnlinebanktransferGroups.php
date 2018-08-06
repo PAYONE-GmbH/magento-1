@@ -68,10 +68,11 @@ class Payone_Core_Model_System_Config_OnlinebanktransferGroups extends Payone_Co
                 'ASN_BANK' => 'ASN Bank',
                 'SNS_BANK' => 'SNS Bank',
                 'TRIODOS_BANK' => 'Triodos Bank',
-                'SNS_REGIO_BANK' => 'Regio Bank',
+                'SNS_REGIO_BANK' => 'SNS Regio Bank',
                 'ING_BANK' => 'ING Bank',
-                'KNAB_BANK' => 'Knab',
-                'VAN_LANSCHOT_BANKIERS' => 'van Lanschot',
+                'KNAB_BANK' => 'Knab Bank',
+                'VAN_LANSCHOT_BANKIERS' => 'van Lanschot Bank',
+                'MONEYOU' => 'Moneyou',
             ),
         );
     }
