@@ -180,6 +180,7 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
         $layout->removeOutputBlock('checkout_review_submit');
         $layout->generateXml()->generateBlocks();
         $orderReviewHtml = $layout->getOutput();
+        $this->checkoutSession->setPayoneGenericpaymentGrandTotal($this->quote->getGrandTotal()); // MAGE-374: Force the total to be stored in session for further check
         if ($shippingRatesCount === 1) {
             $params['shippingMethodCode'] = array_values($shippingRates)[0][0]['code'];
             if ($this->quote->getShippingAddress()->getShippingMethod() !== $params['shippingMethodCode']) {
