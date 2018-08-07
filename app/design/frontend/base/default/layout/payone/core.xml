@@ -212,6 +212,7 @@
             <action method="addJs" ifconfig="payone_protect/general/enabled">
                 <script>payone/core/addresscheck.js</script>
             </action>
+            <action method="addJs"><script helper="payone_core/payolution/getPayolutionFraudPreventionJs"/></action>
             <action method="addCss"><name>payone/core/mandate.css</name></action>
             <action method="addCss"><name>payone/core/payolution.css</name></action>
             <action method="addCss"><name>payone/core/ratepay.css</name></action>
@@ -243,6 +244,10 @@
             <block type="payone_core/checkout_onepage_review_sepaMandate"
                    template="payone/core/checkout/onepage/review/sepamandate.phtml"
                    name="payone_core_checkout_onepage_review_sepamandate" />
+            <block type="core/template"
+                   name="checkout.onepage.review.payolution.iframe"
+                   as="payolution_iframe"
+                   template="payone/core/checkout/onepage/review/payolution.phtml"/>
         </reference>
     </checkout_onepage_review>
 
