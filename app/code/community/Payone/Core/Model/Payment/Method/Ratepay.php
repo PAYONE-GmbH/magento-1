@@ -16,7 +16,7 @@
  * @package         Payone_Core_Model
  * @subpackage      Payment
  * @copyright       Copyright (c) 2016 <kontakt@fatchip.de> - www.fatchip.com
- * @author          Robert Müller <robert.mueller@fatchip.de>
+ * @author          Robert Mï¿½ller <robert.mueller@fatchip.de>
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
  * @link            http://www.fatchip.com
  */
@@ -259,10 +259,10 @@ class Payone_Core_Model_Payment_Method_Ratepay extends Payone_Core_Model_Payment
                             WHERE 
                                 shop_id IN ('".implode("','", $aRatepayShopIds)."') AND
                                 {$oQuote->getGrandTotal()} BETWEEN tx_limit_invoice_min AND tx_limit_invoice_max AND
-                                country_code_billing = {$oRead->quote($oQuote->getBillingAddress()->getCountryId())}";
+                                country_code_billing LIKE {$oRead->quote('%'.$oQuote->getBillingAddress()->getCountryId().'%')}";
                 if($blAddressesAreEqual === false) {
                     $sQuery .= " AND delivery_address_invoice = 1 ";
-                    $sQuery .= " AND country_code_delivery = {$oRead->quote($oQuote->getShippingAddress()->getCountryId())} ";
+                    $sQuery .= " AND country_code_delivery LIKE {$oRead->quote('%'.$oQuote->getShippingAddress()->getCountryId().'%')} ";
                 }
 
                 $sQuery .= " LIMIT 1";
