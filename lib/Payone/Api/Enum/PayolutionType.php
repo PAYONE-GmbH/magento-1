@@ -28,7 +28,7 @@ class Payone_Api_Enum_PayolutionType
     const PYS = 'PYS'; // Payolution-Installment -> Paysafe Pay Later™ Ratenkauf (MAGE-366)
     const PYD = 'PYD'; // Payolution-Debit -> Paysafe Pay Later™ Lastschrift (MAGE-366)
     
-    const PYV_FULL = 'Payolution_invoicing';
+    const PYV_FULL = 'Payolution-Invoicing';
     const PYM_FULL = 'Payolution-Monthly';
     const PYS_FULL = 'Payolution-Installment';
     const PYD_FULL = 'Payolution-Debit';
