@@ -21,6 +21,12 @@
  */
 class Payone_Enum_ClearingType
 {
+    /**
+     * NOTE ABOUT ORDER OF THE CONSTANTS (MAGE-380)
+     * Some parts of the code use this list of constants in a reverse array, values become keys.
+     * In that case, keys must be unique and only the last instance of each key can be considered.
+     */
+
     const AMAZONPAY = 'wlt';
     const DEBITPAYMENT = 'elv';
     const CREDITCARD_IFRAME = 'cc';
@@ -37,6 +43,7 @@ class Payone_Enum_ClearingType
     const ONLINEBANKTRANSFERSOFORT = 'sb';
     const ONLINEBANKTRANSFER = 'sb';
     const CASHONDELIVERY = 'cod';
+    const MASTERPASS = 'wlt';
     const WALLETPAYDIREKT = 'wlt';
     const WALLETPAYPALEXPRESS = 'wlt';
     const WALLETALIPAY = 'wlt';
@@ -50,5 +57,4 @@ class Payone_Enum_ClearingType
     const PAYOLUTION = 'fnc';
     const FINANCING = 'fnc';
     const PAYMENTGUARANTEEINVOICE = 'rec';
-    const MASTERPASS = 'wlt';
 }
