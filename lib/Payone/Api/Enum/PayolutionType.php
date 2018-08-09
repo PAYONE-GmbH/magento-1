@@ -28,10 +28,10 @@ class Payone_Api_Enum_PayolutionType
     const PYS = 'PYS'; // Payolution-Installment -> Paysafe Pay Later™ Ratenkauf (MAGE-366)
     const PYD = 'PYD'; // Payolution-Debit -> Paysafe Pay Later™ Lastschrift (MAGE-366)
     
-    const PYV_FULL = 'Paysafe Pay Later™ Rechnungskauf';
-    const PYM_FULL = 'Paysafe Pay Later™ monatliche Rechnung';
-    const PYS_FULL = 'Paysafe Pay Later™ Ratenkauf';
-    const PYD_FULL = 'Paysafe Pay Later™ Lastschrift';
+    const PYV_FULL = 'Payolution_invoicing';
+    const PYM_FULL = 'Payolution-Monthly';
+    const PYS_FULL = 'Payolution-Installment';
+    const PYD_FULL = 'Payolution-Debit';
     
     public static function getLongType($sType) 
     {
