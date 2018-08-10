@@ -25,14 +25,36 @@ class Payone_Enum_ClearingType
      * NOTE ABOUT ORDER OF THE CONSTANTS (MAGE-380)
      * Some parts of the code use this list of constants in a reverse array, values become keys.
      * In that case, keys must be unique and only the last instance of each key can be considered.
+     * See comments below
      */
 
-    const AMAZONPAY = 'wlt';
-    const DEBITPAYMENT = 'elv';
+    /** Cash */
+    const BARZAHLEN = 'csh';                // Default csh mapping
+
+    /** Cash on delivery */
+    const CASHONDELIVERY = 'cod';           // Default cod mapping
+
+    /** Creditcards */
     const CREDITCARD_IFRAME = 'cc';
-    const CREDITCARD = 'cc';
-    const ADVANCEPAYMENT = 'vor';
-    const INVOICE = 'rec';
+    const CREDITCARD = 'cc';                // Default cc mapping
+
+    /** Debit payments */
+    const DEBITPAYMENT = 'elv';             // Default elv mapping
+
+    /** Financing */
+    const PAYOLUTION = 'fnc';
+    const PAYOLUTIONDEBIT = 'fnc';
+    const PAYOLUTIONINSTALLMENT = 'fnc';
+    const PAYOLUTIONINVOICING = 'fnc';
+    const RATEPAY = 'fnc';
+    const RATEPAYDIRECTDEBIT = 'fnc';
+    const FINANCING = 'fnc';                // Default fnc mapping
+
+    /** Invoices */
+    const PAYMENTGUARANTEEINVOICE = 'rec';
+    const INVOICE = 'rec';                  // Default rec mapping
+
+    /** Online Banktransfer */
     const ONLINEBANKTRANSFERBCT = 'sb';
     const ONLINEBANKTRANSFERPFF = 'sb';
     const ONLINEBANKTRANSFERP24 = 'sb';
@@ -41,20 +63,16 @@ class Payone_Enum_ClearingType
     const ONLINEBANKTRANSFERIDL = 'sb';
     const ONLINEBANKTRANSFERGIROPAY = 'sb';
     const ONLINEBANKTRANSFERSOFORT = 'sb';
-    const ONLINEBANKTRANSFER = 'sb';
-    const CASHONDELIVERY = 'cod';
+    const ONLINEBANKTRANSFER = 'sb';        // Default sb mapping
+
+    /** Pre-payments */
+    const ADVANCEPAYMENT = 'vor';           // Default vor mapping
+
+    /** Wallets */
+    const AMAZONPAY = 'wlt';
     const MASTERPASS = 'wlt';
+    const WALLETALIPAY = 'wlt';
     const WALLETPAYDIREKT = 'wlt';
     const WALLETPAYPALEXPRESS = 'wlt';
-    const WALLETALIPAY = 'wlt';
-    const WALLET = 'wlt';
-    const BARZAHLEN = 'csh';
-    const RATEPAY = 'fnc';
-    const RATEPAYDIRECTDEBIT = 'fnc';
-    const PAYOLUTIONINVOICING = 'fnc';
-    const PAYOLUTIONDEBIT = 'fnc';
-    const PAYOLUTIONINSTALLMENT = 'fnc';
-    const PAYOLUTION = 'fnc';
-    const FINANCING = 'fnc';
-    const PAYMENTGUARANTEEINVOICE = 'rec';
+    const WALLET = 'wlt';                   // Default wlt mapping
 }
