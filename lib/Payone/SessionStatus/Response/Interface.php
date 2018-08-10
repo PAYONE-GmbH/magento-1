@@ -33,4 +33,9 @@
 interface Payone_SessionStatus_Response_Interface
 {
     public function __toString();
+
+    /**
+     * @return array
+     */
+    public function toArray();
 }
