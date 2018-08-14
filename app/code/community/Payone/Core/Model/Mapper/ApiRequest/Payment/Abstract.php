@@ -112,7 +112,7 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Abstract
         $params['id'] = $sku;
         $params['de'] = $order->getShippingDescription();
         $params['no'] = 1;
-        $params['pr'] = $order->getShippingInclTax();
+        $params['pr'] = $this->getShippingPrice($order);
         $params['va'] = round($this->getShippingTaxRate() * 100);   // transfer vat in basis point format [#MAGE-186]
 
         $item = new Payone_Api_Request_Parameter_Invoicing_Item();
@@ -541,5 +541,18 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Abstract
     protected function dispatchEvent($name, array $data = array())
     {
         return Mage::dispatchEvent($name, $data);
+    }
+
+    /**
+     * @param Mage_Sales_Model_Order $order
+     * @return float
+     */
+    private function getShippingPrice(Mage_Sales_Model_Order $order)
+    {
+        if($this->configPayment->getCurrencyConvert()) {
+            return $order->getBaseShippingInclTax();
+        }
+
+        return $order->getShippingInclTax();
     }
 }
