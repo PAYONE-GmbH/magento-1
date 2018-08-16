@@ -84,6 +84,7 @@ PAYONE.Service.CreditCardCheck = function (handler, form, config) {
                 }
             }
             updateCcLogo(ccType);
+            updateCvcRequirement(ccType, this.configCvcLength, iFrameCvc);
         }
 
         aConfig = this.getConfig();
@@ -92,6 +93,7 @@ PAYONE.Service.CreditCardCheck = function (handler, form, config) {
         var iframes = new Payone.ClientApi.HostedIFrames(fieldconfig, request);
         iframes.setCardType(ccType);
 
+        var that = this;
         document.getElementById(type_id).onchange = function () {
             var elementCcType = $('payone_creditcard_cc_type_select');
 
@@ -105,6 +107,7 @@ PAYONE.Service.CreditCardCheck = function (handler, form, config) {
                     iFrameCvc.hide();
                 } else {
                     iFrameCvc.show();
+                    updateCvcRequirement(ccType, that.configCvcLength, iFrameCvc);
                 }
                 iframes.setCardType(ccType); // on change: set new type of credit card to process
                 updateCcLogo(ccType);
@@ -510,4 +513,20 @@ function updateCcLogo(detectedCardtype)
     image.style.display = 'none';
     image.src = url;
     image.style.display = 'inline';
-};
+}
+
+function updateCvcRequirement(cardType, cvcLength, iFrameCvc)
+{
+    if (!cvcLength.hasOwnProperty(cardType)) {
+        iFrameCvc.classList.remove('required-entry');
+    }
+    else{
+        var expectedLength = cvcLength[cardType];
+        if (expectedLength === false || typeof expectedLength === 'undefined') {
+            iFrameCvc.classList.remove('required-entry');
+        }
+        else {
+            iFrameCvc.classList.add('required-entry');
+        }
+    }
+}
