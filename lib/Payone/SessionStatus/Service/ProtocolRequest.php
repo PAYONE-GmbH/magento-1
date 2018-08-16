@@ -49,7 +49,7 @@ class Payone_SessionStatus_Service_ProtocolRequest
     )
     {
         $this->getServiceApplyFilters()->apply($request->toArray());
-        $this->getServiceApplyFilters()->apply($response);
+        $this->getServiceApplyFilters()->apply($response->toArray());
 
 
         foreach ($this->loggers as $key => $logger)

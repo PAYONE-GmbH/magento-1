@@ -99,6 +99,10 @@ abstract class Payone_Api_Response_Abstract implements Payone_Api_Response_Inter
 
     protected function _toString($aValue)
     {
+        if (is_string($aValue)) {
+            return $aValue;
+        }
+
         if($this->applyFilters) {
             $result = $this->applyFilters->apply($aValue);
         } else {

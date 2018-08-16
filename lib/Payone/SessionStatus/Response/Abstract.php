@@ -64,6 +64,24 @@ abstract class Payone_SessionStatus_Response_Abstract
         return null;
     }
 
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
+        $result = array();
+        foreach ($this as $key => $data)
+        {
+            if ($data === null) {
+                continue;
+            }
+            elseif ($data instanceof Payone_Protocol_Service_ApplyFilters == false) {
+                $result[$key] = $data;
+            }
+        }
 
+        ksort($result);
 
+        return $result;
+    }
 }
