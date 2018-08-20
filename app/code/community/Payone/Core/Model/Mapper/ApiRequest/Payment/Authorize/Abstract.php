@@ -452,7 +452,7 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
         }
 
         // Discounts:
-        $discountAmount = $order->getDiscountAmount(); // Discount Amount is negative on order.
+        $discountAmount = $this->getOrderDiscountAmount($order); // Discount Amount is negative on order.
         if ($discountAmount > 0 || $discountAmount < 0) {
             $invoicing->addItem($this->mapDiscountAsItem($discountAmount));
         }
@@ -1209,5 +1209,18 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
         }
 
         return $itemData->getPriceInclTax();
+    }
+
+    /**
+     * @param Mage_Sales_Model_Order $order
+     * @return float
+     */
+    private function getOrderDiscountAmount(Mage_Sales_Model_Order $order)
+    {
+        if($this->configPayment->getCurrencyConvert()) {
+            return $order->getBaseDiscountAmount();
+        }
+
+        return $order->getDiscountAmount();
     }
 }
