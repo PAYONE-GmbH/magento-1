@@ -1213,6 +1213,8 @@ The <a target='_blank' href='https://www.ratepay.com/zgb-dse'>additional terms a
 "Your session has expired. Please sign in again by clicking on the Amazon Pay Button.","Ihre Sitzung ist abgelaufen. Bitte loggen Sie sich erneut ein, indem Sie auf den Amazon Pay Button klicken."
 "Enable Credit Card type auto recognition","Kreditkartennummer automatische Erkennung aktivieren"
 "When Enabled, the credit card type is recognized through card number. If Disabled, the type selector is always displayed.","<Übersetzen>"
+"Hide the credit card type selector","Kreditkarten-Typ-Selektor ausblenden"
+"When Enabled, the credit card type selector is hidden. If Disabled, the type selector is displayed.","Wenn diese Option aktiviert ist, ist die Kreditkartenauswahl ausgeblendet. Wenn deaktiviert, wird die Typenauswahl angezeigt."
 
 "Ratepay Direct Debit","Ratepay Lastschrift"
 "Creditors ID: ","Gläubiger-ID: "

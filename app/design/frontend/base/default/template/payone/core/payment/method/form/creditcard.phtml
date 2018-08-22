@@ -24,7 +24,7 @@
 /** @var $this Payone_Core_Block_Payment_Method_Form_Creditcard */
 
 $hideCvcTypes = $this->getHideCvcTypes();
-
+$hideCcTypeSelector = $this->getHideCreditCardSelectorConfig();
 $cvcLength = $this->getCvcLength();
 
 $code = $this->getMethodCode();
@@ -160,15 +160,24 @@ $iCheckValidation = (int)$this->showCvcInput();
     <?php } else { ?>
         <ul id="payment_form_<?php echo $code ?>" style="display:none">
             <li>
+                <div style="display:none" id="payone_creditcard_hosted_error" class="validation-advice">
+                    <?php echo $this->__('Please fill in all required fields'); ?>.
+                    <?php if ($iCheckValidation == 1) {?>
+                        <br />
+                        <?php echo $this->__('Please check also CVC length'); ?>.
+                    <?php } ?>
+                </div>
+            </li>
+            <li>
                 <div class="input-box">
-                    <div style="display:none" id="payone_creditcard_hosted_error" class="validation-advice">
-                        <?php echo $this->__('Please fill in all required fields'); ?>.
-                        <?php if ($iCheckValidation == 1) {?>
-                            <br />
-                            <?php echo $this->__('Please check also CVC length'); ?>.
-                        <?php } ?>
-
-                    </div>
+                    <label for="cardpanInput"><?php echo $this->__('Credit Card Number'); ?>&nbsp;<span class="required">*</span></label>
+                    <br class="clear"/>
+                    <span class="inputIframe" id="cardpan"></span>
+                    <span id="<?php echo $code ?>_cc_type_logo"><img style="display: inline; padding-bottom: 4px" src="" /></span>
+                </div>
+            </li>
+            <li <?php if($hideCcTypeSelector): ?>style="display: none" <?php endif; ?>
+                <div class="input-box">
                     <label for="<?php echo $code; ?>_cc_type"><?php echo $this->__('Credit Card Type'); ?>
                         <span class="required">*</span>
                     </label><br class="clear"/>
@@ -183,15 +192,7 @@ $iCheckValidation = (int)$this->showCvcInput();
                             </option>
                         <?php endforeach; ?>
                     </select>
-                    <span id="<?php echo $code ?>_cc_type_logo"><img style="display: inline; vertical-align: bottom" src="" /></span>
                     <input type="hidden" id="<?php echo $code ?>_cc_type" name="payment[cc_type]" value="<?php echo $this->getCreditCardType();?>" class=""/>
-                </div>
-            </li>
-            <li>
-                <div class="input-box">
-                    <label for="cardpanInput"><?php echo $this->__('Credit Card Number'); ?>&nbsp;<span class="required">*</span></label>
-                    <br class="clear"/>
-                    <span class="inputIframe" id="cardpan"></span>
                 </div>
             </li>
             <li>

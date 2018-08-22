@@ -499,6 +499,19 @@ class Payone_Core_Block_Payment_Method_Form_Creditcard
     }
 
     /**
+     * @return bool
+     */
+    public function getHideCreditCardSelectorConfig()
+    {
+        $hideCcTypeSelector =  $this->getConfigGeneral()->getPaymentCreditcard()->getCcTypeHideSelector();
+        if(!empty($hideCcTypeSelector)){
+            return (bool) $hideCcTypeSelector;
+        }
+
+        return false;
+    }
+
+    /**
      * return array
      */
     public function getCvcLength()
