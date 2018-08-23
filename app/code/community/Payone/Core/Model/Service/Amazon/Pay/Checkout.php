@@ -349,6 +349,10 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
                 'checkout_type_onepage_save_order_after',
                 ['order' => $order, 'quote' => $this->quote]
             );
+            Mage::dispatchEvent(
+                'sales_quote_payment_amazon_pay_place_order_after',
+                ['quote' => $this->quote]
+            );
             if ($order->getCanSendNewEmailFlag()) {
                 try {
                     $order->queueNewOrderEmail();
