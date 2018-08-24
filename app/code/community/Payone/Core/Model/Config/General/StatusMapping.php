@@ -109,6 +109,12 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
      */
     protected $onlineBankTransferIdl = null;
     /**
+     * Payment method online_bank_transfer_bct
+     *
+     * @var null
+     */
+    protected $onlineBankTransferBct = null;
+    /**
      * Payment method online_bank_transfer_sofortueberweisung
      *
      * @var null
@@ -522,6 +528,26 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
     public function getOnlineBankTransferIdl()
     {
         return $this->onlineBankTransferIdl;
+    }
+    
+    /**
+     * @param $onlineBankTransferBct
+     */
+    public function setOnlineBankTransferBct($onlineBankTransferBct)
+    {
+        if (is_string($onlineBankTransferBct)) {
+            $onlineBankTransferBct = $this->initValue($onlineBankTransferBct);
+        }
+
+        $this->onlineBankTransferBct = $onlineBankTransferBct;
+    }
+
+    /**
+     * @return $onlineBankTransferBct|null
+     */
+    public function getOnlineBankTransferBct()
+    {
+        return $this->onlineBankTransferBct;
     }
 
     /**
