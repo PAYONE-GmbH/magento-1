@@ -40,6 +40,7 @@ class Payone_Core_Model_Config_General_PaymentCreditcard extends Payone_Core_Mod
     protected $sCCTemplate = '';
     protected $sCCRequestType = 'AJAX';
     protected $iCCTypeAutoRecognition = 0;
+    protected $ccTypeHideSelector = 0;
 
     /**
      * @param int $min_validity_period
@@ -86,5 +87,14 @@ class Payone_Core_Model_Config_General_PaymentCreditcard extends Payone_Core_Mod
     {
         return $this->iCCTypeAutoRecognition;
     }
-    
+
+    public function setCcTypeHideSelector($iCcTypeHideSelector)
+    {
+        $this->ccTypeHideSelector = $iCcTypeHideSelector;
+    }
+
+    public function getCcTypeHideSelector()
+    {
+        return $this->ccTypeHideSelector;
+    }
 }
