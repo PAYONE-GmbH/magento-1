@@ -176,13 +176,14 @@ $iCheckValidation = (int)$this->showCvcInput();
                     <span id="<?php echo $code ?>_cc_type_logo"><img style="display: inline; padding-bottom: 4px" src="" /></span>
                 </div>
             </li>
-            <li <?php if($hideCcTypeSelector): ?>style="display: none" <?php endif; ?>
+            <li <?php if($hideCcTypeSelector): ?>style="display: none" <?php endif; ?>>
                 <div class="input-box">
                     <label for="<?php echo $code; ?>_cc_type"><?php echo $this->__('Credit Card Type'); ?>
                         <span class="required">*</span>
                     </label><br class="clear"/>
                     <select id="<?php echo $code ?>_cc_type_select" name="<?php echo $code ?>_cc_type_select"
                             class="no-submit required-entry">
+                        <option value=""><?php echo $this->__('--Please Select--') ?></option>
                         <?php
                         foreach ($this->getTypes() as $key => $type) :
                             $selected = $this->getCreditCardType() == $type['code'] ? 'selected="selected"' : '';
