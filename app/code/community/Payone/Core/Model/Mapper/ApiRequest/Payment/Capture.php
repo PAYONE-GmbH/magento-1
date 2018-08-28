@@ -226,7 +226,7 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Capture
                 $params['id'] = $itemData->getSku();
                 $params['de'] = $itemData->getName();
                 $params['no'] = $number;
-                $params['pr'] = $itemData->getPriceInclTax();
+                $params['pr'] = $this->getItemPrice($itemData);
 
                 // We have to load the tax percentage from the order item
 //                $params['va'] = number_format($orderItem->getTaxPercent(), 0, '.', '');
@@ -243,7 +243,7 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Capture
             }
 
             // Discounts:
-            $discountAmount = abs($invoice->getDiscountAmount()); // Discount Amount is positive on invoice.
+            $discountAmount = abs($this->getInvoiceDiscountAmount($invoice)); // Discount Amount is positive on invoice.
             if ($discountAmount > 0) {
                 $invoicing->addItem($this->mapDiscountAsItem(-1 * $discountAmount));
             }
@@ -326,5 +326,31 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Capture
     public function getEventType()
     {
         return self::EVENT_TYPE;
+    }
+
+    /**
+     * @param Mage_Sales_Model_Order_Invoice_Item $itemData
+     * @return float
+     */
+    private function getItemPrice(Mage_Sales_Model_Order_Invoice_Item $itemData)
+    {
+        if($this->configPayment->getCurrencyConvert()) {
+            return $itemData->getBasePriceInclTax();
+        }
+
+        return $itemData->getPriceInclTax();
+    }
+
+    /**
+     * @param Mage_Sales_Model_Order_Invoice $invoice
+     * @return float
+     */
+    private function getInvoiceDiscountAmount(Mage_Sales_Model_Order_Invoice $invoice)
+    {
+        if($this->configPayment->getCurrencyConvert()) {
+            return $invoice->getBaseDiscountAmount();
+        }
+
+        return $invoice->getDiscountAmount();
     }
 }

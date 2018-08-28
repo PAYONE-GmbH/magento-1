@@ -120,6 +120,11 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Debit
         $request->setAmount($this->getAmount() * -1);
         $request->setRequest(Payone_Api_Enum_RequestType::DEBIT);
         $request->setUseCustomerdata('yes');
+
+        if($this->configPayment->getCurrencyConvert()) {
+            $request->setCurrency($order->getBaseCurrencyCode());
+            $request->setAmount($order->getBaseGrandTotal() * -1);
+        }
     }
 
     /**
@@ -186,7 +191,7 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Debit
                 $params['id'] = $itemData->getSku();
                 $params['de'] = $itemData->getName();
                 $params['no'] = $number;
-                $params['pr'] = $itemData->getPriceInclTax();
+                $params['pr'] = $this->getItemPrice($itemData);
                 $params['it'] = Payone_Api_Enum_InvoicingItemType::GOODS;
 
 
@@ -215,7 +220,7 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Debit
             }
 
             // Add Discount as a position
-            $discountAmount = $creditmemo->getDiscountAmount();
+            $discountAmount = $this->getCreditmemoDiscountAmount($creditmemo);
             if ($discountAmount) {
                 $invoicing->addItem($this->mapDiscountAsItem($discountAmount));
             }
@@ -254,5 +259,31 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Debit
     public function getEventType()
     {
         return self::EVENT_TYPE;
+    }
+
+    /**
+     * @param Mage_Sales_Model_Order_Creditmemo_Item $itemData
+     * @return float
+     */
+    private function getItemPrice(Mage_Sales_Model_Order_Creditmemo_Item $itemData)
+    {
+        if($this->configPayment->getCurrencyConvert()) {
+            return $itemData->getBasePriceInclTax();
+        }
+
+        return $itemData->getPriceInclTax();
+    }
+
+    /**
+     * @param Mage_Sales_Model_Order_Creditmemo $creditmemo
+     * @return float
+     */
+    private function getCreditmemoDiscountAmount(Mage_Sales_Model_Order_Creditmemo $creditmemo)
+    {
+        if($this->configPayment->getCurrencyConvert()) {
+            return $creditmemo->getBaseDiscountAmount();
+        }
+
+        return $creditmemo->getDiscountAmount();
     }
 }

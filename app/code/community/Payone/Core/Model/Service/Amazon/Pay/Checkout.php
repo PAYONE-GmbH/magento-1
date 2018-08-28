@@ -88,6 +88,8 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
         /** @var \Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment $mapper */
         $mapper = $service->getMapper();
         $request = $mapper->requestAmazonPayGetConfiguration($this->quote->getQuoteCurrencyCode());
+        $this->checkCurrencyConversion($request);
+
         $response = $this->getFactory()->getServiceApiPaymentGenericpayment()->request($request);
 
         if ($response instanceof \Payone_Api_Response_Genericpayment_Ok) {
@@ -119,6 +121,8 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
             ],
             $this->quote->getQuoteCurrencyCode()
         );
+        $this->checkCurrencyConversion($request);
+
         $response = $this->getFactory()->getServiceApiPaymentGenericpayment()->request($request);
         if ($response instanceof \Payone_Api_Response_Genericpayment_Ok) {
             $data = $response->getPayDataArray();
@@ -228,6 +232,8 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
             $this->quote->getQuoteCurrencyCode(),
             $this->quote->getGrandTotal()
         );
+        $this->checkCurrencyConversion($request);
+
         $this->checkoutSession->setPayoneGenericpaymentGrandTotal($this->quote->getGrandTotal());
         $response = $this->getFactory()->getServiceApiPaymentGenericpayment()->request($request);
         if ($response instanceof \Payone_Api_Response_Genericpayment_Ok !== true) {
@@ -427,5 +433,16 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
     private function isCountryAllowed($country)
     {
         return in_array(strtoupper($country), explode(',', Mage::getStoreConfig('general/country/allow')));
+    }
+
+    /**
+     * @param Payone_Api_Request_Genericpayment $request
+     */
+    private function checkCurrencyConversion(Payone_Api_Request_Genericpayment $request)
+    {
+        if($this->config->getCurrencyConvert()) {
+            $request->setCurrency($this->quote->getBaseCurrencyCode());
+            $request->setAmount($this->quote->getBaseGrandTotal());
+        }
     }
 }

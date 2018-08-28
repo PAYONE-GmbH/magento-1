@@ -100,6 +100,9 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment
         $request->setClearingtype(Payone_Enum_ClearingType::WALLET);
         $request->setAmount($quote->getGrandTotal());
         $request->setCurrency($quote->getQuoteCurrencyCode());
+
+        $this->checkCurrencyConversion($request, $quote);
+
         $request->setWallet(
             new Payone_Api_Request_Parameter_Authorization_PaymentMethod_Wallet(
                 array(
@@ -422,5 +425,18 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment
     public function getEventType()
     {
         return self::EVENT_TYPE;
+    }
+
+    /**
+     * @param Payone_Api_Request_Genericpayment $request
+     * @param Mage_Sales_Model_Quote $quote
+     */
+    private function checkCurrencyConversion(Payone_Api_Request_Genericpayment $request, Mage_Sales_Model_Quote $quote)
+    {
+        $config = $this->getConfigPayment();
+        if($config->getCurrencyConvert()) {
+            $request->setCurrency($quote->getBaseCurrencyCode());
+            $request->setAmount($quote->getBaseGrandTotal());
+        }
     }
 }

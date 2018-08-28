@@ -112,7 +112,7 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Abstract
         $params['id'] = $sku;
         $params['de'] = $order->getShippingDescription();
         $params['no'] = 1;
-        $params['pr'] = $order->getShippingInclTax();
+        $params['pr'] = $this->getOrderShippingPrice($order);
         $params['va'] = round($this->getShippingTaxRate() * 100);   // transfer vat in basis point format [#MAGE-186]
 
         $item = new Payone_Api_Request_Parameter_Invoicing_Item();
@@ -171,7 +171,7 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Abstract
         $params['id'] = $sku;
         $params['de'] = $order->getShippingDescription();
         $params['no'] = 1;
-        $params['pr'] = $creditmemo->getShippingInclTax();
+        $params['pr'] = $this->getCreditMemoShippingPrice($creditmemo);
         $params['va'] = round($this->getShippingTaxRate() * 100);
         
         $item = new Payone_Api_Request_Parameter_Invoicing_Item();
@@ -203,7 +203,7 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Abstract
         $params['id'] = $sku;
         $params['de'] = $name;
         $params['no'] = 1;
-        $params['pr'] = $creditmemo->getAdjustmentPositive();
+        $params['pr'] = $this->getCreditMemoAdjustmentPositive($creditmemo);
         $params['va'] = round($this->getShippingTaxRate() * 100); // assuming that it has the same tax-rate as shipping - dont know from where to get the tax
         
         $item = new Payone_Api_Request_Parameter_Invoicing_Item();
@@ -236,7 +236,7 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Abstract
         $params['id'] = $sku;
         $params['de'] = $name;
         $params['no'] = 1;
-        $params['pr'] = $creditmemo->getAdjustmentNegative() * (-1);
+        $params['pr'] = $this->getCreditMemoAdjustmentNegative($creditmemo) * (-1);
         $params['va'] = round($this->getShippingTaxRate() * 100); // assuming that it has the same tax-rate as shipping - dont know from where to get the tax
 
 
@@ -541,5 +541,57 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Abstract
     protected function dispatchEvent($name, array $data = array())
     {
         return Mage::dispatchEvent($name, $data);
+    }
+
+    /**
+     * @param Mage_Sales_Model_Order $order
+     * @return float
+     */
+    private function getOrderShippingPrice(Mage_Sales_Model_Order $order)
+    {
+        if($this->configPayment->getCurrencyConvert()) {
+            return $order->getBaseShippingInclTax();
+        }
+
+        return $order->getShippingInclTax();
+    }
+
+    /**
+     * @param Mage_Sales_Model_Order_Creditmemo $creditmemo
+     * @return float
+     */
+    private function getCreditMemoShippingPrice(Mage_Sales_Model_Order_Creditmemo $creditmemo)
+    {
+        if($this->configPayment->getCurrencyConvert()) {
+            return $creditmemo->getBaseShippingInclTax();
+        }
+
+        return $creditmemo->getShippingInclTax();
+    }
+
+    /**
+     * @param Mage_Sales_Model_Order_Creditmemo $creditmemo
+     * @return float
+     */
+    private function getCreditMemoAdjustmentPositive(Mage_Sales_Model_Order_Creditmemo $creditmemo)
+    {
+        if($this->configPayment->getCurrencyConvert()) {
+            return $creditmemo->getBaseAdjustmentPositive();
+        }
+
+        return $creditmemo->getAdjustmentPositive();
+    }
+
+    /**
+     * @param Mage_Sales_Model_Order_Creditmemo $creditmemo
+     * @return float
+     */
+    private function getCreditMemoAdjustmentNegative(Mage_Sales_Model_Order_Creditmemo $creditmemo)
+    {
+        if($this->configPayment->getCurrencyConvert()) {
+            return $creditmemo->getAdjustmentNegative();
+        }
+
+        return $creditmemo->getAdjustmentNegative();
     }
 }
