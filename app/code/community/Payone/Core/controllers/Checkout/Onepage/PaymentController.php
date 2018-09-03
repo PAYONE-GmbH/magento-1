@@ -208,6 +208,17 @@ class Payone_Core_Checkout_Onepage_PaymentController extends Payone_Core_Control
 
         // Cancel order and add history comment:
         if ($order->canCancel()) {
+            $txStatus = $this->getFactory()->getModelTransactionStatus();
+            $txStatus->load($order->getIncrementId(), 'reference');
+
+            if ($txStatus->getId() && $txStatus->isAppointed()) {
+                // Returning here since we cannot cancel an order that has been appointed,
+                // but maybe the TxStatus has not been processed yet.
+                // So this is a double check to prevent failures later in the process during invoice generation.
+                // Cancelled orders cannot be invoiced by default
+                return;
+            }
+
             $order->cancel();
             $statusMessage = $this->helper()->__('The Payone transaction has been canceled.');
             $order->addStatusHistoryComment($statusMessage, Mage_Sales_Model_Order::STATE_CANCELED);
