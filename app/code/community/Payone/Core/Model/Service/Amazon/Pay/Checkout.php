@@ -329,6 +329,10 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
         }
 
         try {
+            if (!empty($session->getData('amazon_shop_order_reference'))) {
+                $this->quote->setReservedOrderId($session->getData('amazon_shop_order_reference'));
+            }
+
             /** @var \Mage_Sales_Model_Service_Quote $service */
             $service = Mage::getModel('sales/service_quote', $this->quote);
             $service->submitAll();
@@ -336,16 +340,19 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
             if (in_array($e->getCode(), [981, 985, 986])) { // send to widgets
                 $session->setData('amazon_lock_order', true);
                 $session->setData('amazon_reference_id', $params['amazonOrderReferenceId']);
+                $session->setData('amazon_shop_order_reference', $this->quote->getReservedOrderId());
                 $session->unsetData('amazon_add_paydata');
             } else { // logout and send to basket
                 // Transaction cannot be completed by Amazon
                 // and the order reference object was closed
                 $text = 'Sorry, your transaction with Amazon Pay was not successful. Please choose another payment method.';
+                $session->unsetData('amazon_shop_order_reference');
                 return $this->cancelAmazonPayment($session, $text);
             }
             throw $e;
         }
         $session->unsetData('amazon_add_paydata');
+        $session->unsetData('amazon_shop_order_reference');
         $this->checkoutSession->setData('last_quote_id', $this->quote->getId());
         $this->checkoutSession->setData('last_success_quote_id', $this->quote->getId());
         $this->checkoutSession->clearHelperData();
