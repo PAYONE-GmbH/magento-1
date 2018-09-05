@@ -23,9 +23,9 @@
 
 /** @var $this Payone_Core_Block_Payment_Method_Form_Creditcard */
 
- $hideCvcTypes = $this->getHideCvcTypes();
+$hideCvcTypes = $this->getHideCvcTypes();
 $hideCcTypeSelector = $this->getHideCreditCardSelectorConfig();
-
+$cvcLength = $this->getCvcLength();
 
 $code = $this->getMethodCode();
 $iCheckValidation = (int)$this->showCvcInput();
@@ -33,6 +33,7 @@ $iCheckValidation = (int)$this->showCvcInput();
 <script type="text/javascript">
     payone.ccTypeAutoRecognition = '<?php echo $this->getCreditCardRecognitionConfig() ?>';
     payone.configActivatedCcTypes = '<?php echo implode(',', $this->getRawCcType()) ?>';
+    payone.configCvcLength = JSON.parse('<?php echo json_encode($cvcLength) ?>');
 </script>
 <fieldset class="form-list">
     <?php if($this->getCCRequestType() == 'AJAX') { ?>
@@ -161,6 +162,10 @@ $iCheckValidation = (int)$this->showCvcInput();
             <li>
                 <div style="display:none" id="payone_creditcard_hosted_error" class="validation-advice">
                     <?php echo $this->__('Please fill in all required fields'); ?>.
+                    <?php if ($iCheckValidation == 1) {?>
+                        <br />
+                        <?php echo $this->__('Please check also CVC length'); ?>.
+                    <?php } ?>
                 </div>
             </li>
             <li>
@@ -171,13 +176,14 @@ $iCheckValidation = (int)$this->showCvcInput();
                     <span id="<?php echo $code ?>_cc_type_logo"><img style="display: inline; padding-bottom: 4px" src="" /></span>
                 </div>
             </li>
-            <li <?php if($hideCcTypeSelector): ?>style="display: none" <?php endif; ?>
+            <li <?php if($hideCcTypeSelector): ?>style="display: none" <?php endif; ?>>
                 <div class="input-box">
                     <label for="<?php echo $code; ?>_cc_type"><?php echo $this->__('Credit Card Type'); ?>
                         <span class="required">*</span>
                     </label><br class="clear"/>
                     <select id="<?php echo $code ?>_cc_type_select" name="<?php echo $code ?>_cc_type_select"
                             class="no-submit required-entry">
+                        <option value=""><?php echo $this->__('--Please Select--') ?></option>
                         <?php
                         foreach ($this->getTypes() as $key => $type) :
                             $selected = $this->getCreditCardType() == $type['code'] ? 'selected="selected"' : '';
@@ -281,6 +287,9 @@ $iCheckValidation = (int)$this->showCvcInput();
                                 width: "<?php echo $this->getHostedParam('CVC_width'); ?>",
                                 height: "<?php echo $this->getHostedParam('CVC_height'); ?>"
                             }
+                        <?php } ?>
+                        <?php if ($iCheckValidation == 1) {?>
+                            length: <?php echo json_encode($cvcLength); ?>
                         <?php } ?>
                     },
                     cardexpiremonth: {

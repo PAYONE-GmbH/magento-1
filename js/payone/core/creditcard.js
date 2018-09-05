@@ -35,6 +35,7 @@ PAYONE.Service.CreditCardCheck = function (handler, form, config) {
     this.ccTypeAutoRecognition = 0;
     this.configActivatedCcTypes = '';
     this.supportedCardTypes = null;
+    this.configCvcLength = null;
 
     /**
      * Enhances payment.save and runs Validate and CreditCardCheck for CreditCards
@@ -67,6 +68,10 @@ PAYONE.Service.CreditCardCheck = function (handler, form, config) {
         var configUseCvc = $("payone_cc_use_cvc");
 
         if (elementCcType != undefined) {
+            // MAGE-365: Set the card type to first available to set up correct configuration
+            if (elementCcType.value === '') {
+                elementCcType.value = elementCcType.options[1].value;
+            }
 
             var ccTypeConfigKey = elementCcType.value;
             var ccTypeSplit = ccTypeConfigKey.split('_');
@@ -83,6 +88,7 @@ PAYONE.Service.CreditCardCheck = function (handler, form, config) {
                 }
             }
             updateCcLogo(ccType);
+            updateCvcRequirement(ccType, this.configCvcLength, iFrameCvc);
         }
 
         aConfig = this.getConfig();
@@ -91,6 +97,7 @@ PAYONE.Service.CreditCardCheck = function (handler, form, config) {
         var iframes = new Payone.ClientApi.HostedIFrames(fieldconfig, request);
         iframes.setCardType(ccType);
 
+        var that = this;
         document.getElementById(type_id).onchange = function () {
             var elementCcType = $('payone_creditcard_cc_type_select');
 
@@ -104,12 +111,20 @@ PAYONE.Service.CreditCardCheck = function (handler, form, config) {
                     iFrameCvc.hide();
                 } else {
                     iFrameCvc.show();
+                    updateCvcRequirement(ccType, that.configCvcLength, iFrameCvc);
                 }
                 iframes.setCardType(ccType); // on change: set new type of credit card to process
                 updateCcLogo(ccType);
             }
         };
         this.iframes = iframes;
+
+        // MAGE-365: Set the card type empty ("Please select") to force selection and trigger CVC check
+        if (elementCcType != undefined) {
+            elementCcType.value = '';
+            updateCcLogo('');
+        }
+
         return iframes;
     };
 
@@ -504,9 +519,26 @@ function processPayoneResponseCCHosted(response)
 
 function updateCcLogo(detectedCardtype)
 {
-    var url = 'https://cdn.pay1.de/cc/' + detectedCardtype.toLowerCase() + '/s/default.png';
     var image = $('payone_creditcard_cc_type_logo').children[0];
     image.style.display = 'none';
-    image.src = url;
-    image.style.display = 'inline';
-};
+    if (typeof detectedCardtype !== 'undefined' && detectedCardtype !== '') {
+        image.src = 'https://cdn.pay1.de/cc/' + detectedCardtype.toLowerCase() + '/s/default.png';
+        image.style.display = 'inline';
+    }
+}
+
+function updateCvcRequirement(cardType, cvcLength, iFrameCvc)
+{
+    if (!cvcLength.hasOwnProperty(cardType)) {
+        iFrameCvc.classList.remove('required-entry');
+    }
+    else{
+        var expectedLength = cvcLength[cardType];
+        if (expectedLength === false || typeof expectedLength === 'undefined') {
+            iFrameCvc.classList.remove('required-entry');
+        }
+        else {
+            iFrameCvc.classList.add('required-entry');
+        }
+    }
+}
