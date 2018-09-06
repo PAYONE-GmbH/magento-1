@@ -12,6 +12,9 @@ The PAYONE payment extension for MAGENTO is with 50,000 downloads already a succ
 * Payment methods can be automatically hidden depending on the amount of the order and the credit rating of the customer
 * Find all currently supported payment methods on www.payone.com/magento
 
+## Installation
+It is highly recommended to install the latest release from Github (either using modman or manual installation). The Magento Marketplace is updated infrequently.
+
 ## More information
 Documentation for Magento: http://www.payone.com/uploads/media/PAYONE_Documentation_Magento-Payment-Extension.pdf<br>
 Videoguide: Installation and configuration: https://www.youtube.com/playlist?list=PLlzKa20PSzukaPBvUhxxpo3oqNs0mUkpa<br>
