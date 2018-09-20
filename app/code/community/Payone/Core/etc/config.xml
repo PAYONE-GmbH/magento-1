@@ -594,6 +594,16 @@
                     </payone_core_observer>
                 </observers>
             </controller_action_predispatch_checkout_cart_add>
+
+            <sales_quote_payment_amazon_pay_place_order_after>
+                <observers>
+                    <payone_core_observer>
+                        <type>singleton</type>
+                        <class>payone_core/observer_sales_quote_payment</class>
+                        <method>amazonPayPlaceOrderAfter</method>
+                    </payone_core_observer>
+                </observers>
+            </sales_quote_payment_amazon_pay_place_order_after>
         </events>
     </global>
 
