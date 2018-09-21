@@ -58,4 +58,14 @@ class Payone_Core_Model_Observer_Sales_Quote_Payment
         }
 
     }
+
+    /**
+     * @param Varien_Event_Observer $observer
+     */
+    public function amazonPayPlaceOrderAfter(Varien_Event_Observer$observer)
+    {
+        /** @var Mage_Sales_Model_Quote $quote */
+        $quote = $observer->getQuote();
+        $quote->save();
+    }
 }
