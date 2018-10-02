@@ -40,13 +40,12 @@ $getPayolutionTyp = $this->payolutionTypeMapping();
                     <div id="<?php echo $code; ?>_b2b_wrap" class="field">
                         <div class="input-box">
                             <label
-                                for="<?php echo $code ?>_trade_registry_number"><?php echo $this->__('Company trade registry number') ?>
-                                <span class="required">*</span>
+                                for="<?php echo $code ?>_vat_id"><?php echo $this->__('VAT ID number') ?>
                             </label>
                             <br class="clear"/>
-                            <input type="text" id="<?php echo $code ?>_trade_registry_number"
-                                   name="payment[payone_trade_registry_number]"
-                                   value="" title="" class="required-entry input-text no-submit"/>
+                            <input type="text" id="<?php echo $code ?>_vat_id"
+                                   name="payment[payone_vat_id]"
+                                   value="" title="" class="input-text no-submit"/>
                         </div>
                     </div>
                 <?php } ?>
