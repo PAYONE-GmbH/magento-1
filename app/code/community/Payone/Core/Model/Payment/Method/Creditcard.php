@@ -62,4 +62,17 @@ class Payone_Core_Model_Payment_Method_Creditcard extends Payone_Core_Model_Paym
         return $this->matchingConfigs;
     }
 
+    public function assignData($data)
+    {
+        if (empty($data->getData('cc_exp_month')) || empty($data->getData('cc_exp_year'))) {
+            $expDate = $data->getData('payone_cardexpiredate');
+            if (!empty($expDate)) {
+                $data->setData('cc_exp_year', substr($expDate, 0, 2));
+                $data->setData('cc_exp_month', substr($expDate, 2, 2));
+            }
+        }
+
+        return parent::assignData($data);
+    }
+
 }
