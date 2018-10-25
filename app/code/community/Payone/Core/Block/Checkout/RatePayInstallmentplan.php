@@ -166,4 +166,22 @@ class Payone_Core_Block_Checkout_RatePayInstallmentplan extends Mage_Core_Block_
 
         return $html;
     }
+
+    /**
+     * @param array $result
+     * @return string
+     */
+    public function addDataFields($result)
+    {
+        $html = '<div style="display: none">' . PHP_EOL;
+        $html .= '<input name="payone_ratepay_installment[payone_ratepay_rate]" type="hidden" value="' . $result['rate'] . '" />' . PHP_EOL;
+        $html .= '<input name="payone_ratepay_installment[payone_ratepay_last-rate]" type="hidden" value="' . $result['last-rate'] . '" />' . PHP_EOL;
+        $html .= '<input name="payone_ratepay_installment[payone_ratepay_total-amount]" type="hidden" value="' . $result['total-amount'] . '" />' . PHP_EOL;
+        $html .= '<input name="payone_ratepay_installment[payone_ratepay_interest-rate]" type="hidden" value="' . $result['interest-rate'] . '" />' . PHP_EOL;
+        $html .= '<input name="payone_ratepay_installment[payone_ratepay_number-of-rates]" type="hidden" value="' . $result['number-of-rates'] . '" />' . PHP_EOL;
+        $html .= '<input name="payone_ratepay_installment[payone_ratepay_payment-firstday]" type="hidden" value="' . $result['payment-firstday'] . '" />' . PHP_EOL;
+        $html .= '</div>';
+
+        return $html;
+    }
 }

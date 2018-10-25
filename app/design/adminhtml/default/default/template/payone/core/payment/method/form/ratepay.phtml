@@ -30,6 +30,8 @@ $ratePayCurrency = $this->getRatePayCurrency();
 $types = $this->getTypes();
 $allowedSEPACountries = htmlspecialchars($this->getAllowedSEPACountries());
 $accountOwner = $this->getAccountOwner();
+$isAdminOrder = $this->getQuote()->getIsSuperMode();
+$quoteId = $this->getQuote()->getId();
 
 ?>
 <ul id="payment_form_<?php echo $code ?>" style="display:none">
@@ -227,6 +229,9 @@ $accountOwner = $this->getAccountOwner();
             $sDeviceIdentToken = $this->getRatePayDeviceFingerprint();
             $sDeviceIdentId = $this->getRatePayDeviceFingerprintSnippetId();
         ?>
+        <input type="hidden" id="isAdminOrder" value="<?php echo $isAdminOrder; ?>" />
+        <input type="hidden" id="quoteId" value="<?php echo $quoteId; ?>" />
+
         <script language="JavaScript">
             var di = {t:'<?php echo $sDeviceIdentToken; ?>',v:'<?php echo $sDeviceIdentId; ?>',l:'Checkout'};
         </script>

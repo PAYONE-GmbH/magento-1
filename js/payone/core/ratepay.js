@@ -117,11 +117,17 @@ function payoneRatepayRateCalculatorAction(mode, paymentMethod, url)
         "application/x-www-form-urlencoded"
     );
 
-    xmlhttp.send(
-        "paymentMethod=" + paymentMethod + "&calcValue=" + calcValue + "&calcMethod=" + calcMethod + "&dueDate=" + dueDate
-                 + "&notification=" + notification
-                 + "&ratePayshopId=" + ratePayshopId + "&ratePayCurrency=" + ratePayCurrency + "&amount=" + amount
-    );
+    var parameters = "paymentMethod=" + paymentMethod + "&calcValue=" + calcValue + "&calcMethod=" + calcMethod + "&dueDate=" + dueDate
+        + "&notification=" + notification
+        + "&ratePayshopId=" + ratePayshopId + "&ratePayCurrency=" + ratePayCurrency + "&amount=" + amount
+
+    if (document.getElementById('isAdminOrder') && document.getElementById('quoteId')) {
+        var isAdmin = document.getElementById('isAdminOrder').value;
+        var quoteId = document.getElementById('quoteId').value;
+        parameters += "&isAdmin=" + isAdmin + "&quoteId=" + quoteId
+    }
+
+    xmlhttp.send(parameters);
 
     if (xmlhttp.responseText != null) {
         html = xmlhttp.responseText;
