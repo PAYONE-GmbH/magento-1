@@ -323,6 +323,18 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment
                 )
             );
         }
+        if(isset($aRequestParams['payone_vat_id'])) {
+            $paydata->addItem(
+                new Payone_Api_Request_Parameter_Paydata_DataItem(
+                    array('key' => 'b2b', 'data' => 'yes')
+                )
+            );
+            $paydata->addItem(
+                new Payone_Api_Request_Parameter_Paydata_DataItem(
+                    array('key' => 'company_uid', 'data' => $aRequestParams['payone_vat_id'])
+                )
+            );
+        }
 
         if ($oAddress->getCountry() == 'NL') {
             $sTelephone = $oAddress->getTelephone();

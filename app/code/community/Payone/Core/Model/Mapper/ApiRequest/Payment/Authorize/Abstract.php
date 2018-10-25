@@ -855,7 +855,7 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
                 );
                 $payData->addItem(
                     new Payone_Api_Request_Parameter_Paydata_DataItem(
-                        array('key' => 'company_trade_registry_number', 'data' => $info->getPayoneTradeRegistryNumber()) 
+                        array('key' => 'company_uid', 'data' => $info->getPayoneVatId())
                     )
                 );
             } else {
