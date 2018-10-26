@@ -1,0 +1,10 @@
+<?php
+/**
+ * @var Payone_Core_Block_PaymentAdditionalStyle $this
+ */
+?>
+<?php
+    foreach ($this->getActiveShortcuts() as $url) {
+        echo '<link rel="stylesheet" href="' . $url  . '" />' . PHP_EOL;
+    }
+?>

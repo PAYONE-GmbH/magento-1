@@ -1,0 +1,81 @@
+
+.table-label {
+    vertical-align: text-top;
+}
+.table-value {
+    padding-left: 10px;
+}
+
+#shippingMethodsDiv .sp-methods dd input.radio {
+    float: left;
+    margin-right: -40px;
+    margin-top: 10px;
+    margin-left: 15px;
+}
+
+#shippingMethodsDiv .sp-methods dd label {
+    font-size: 14px !important;
+    font-weight: normal !important;
+    color: #636363;
+    background-color: #f4f4f4;
+    padding: 6px 10px 6px 40px;
+    display: inline-block;
+    width: auto;
+    max-width: none;
+    min-width: 250px;
+    float: none;
+}
+
+#shippingMethodsDiv .sp-methods dd span ~ label {
+    padding-left: 15px !important;
+}
+
+#shippingMethodsDiv .sp-methods dd input ~ label:hover,
+#shippingMethodsDiv .sp-methods dd input:hover ~ label {
+    background-color: #ececec;
+}
+
+.fadeOut {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    font-size: 30px;
+    background: rgba(255, 255, 255, 0.75);
+}
+
+.fadeOut div {
+    position: fixed;
+    top: 50vh;
+    left: 50vw;
+    width: 300px;
+    text-align: center;
+}
+
+.fadeOut div span {
+    position: relative;
+    left: -150px;
+}
+
+.fadeOut div span img {
+    margin-right: 16px;
+}
+
+.masterpassCheckout {
+    border: 0;
+}
+
+.masterpassLearnMoreLink {
+    margin: 0;
+    padding: 0;
+
+    text-align: center;
+
+    font-size:smaller;
+    font-weight: bold;
+    text-decoration: underline;
+    color:grey;
+}
