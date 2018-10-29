@@ -23,7 +23,7 @@
 
 class Payone_Core_Block_PaymentAdditionalStyle extends Mage_Core_Block_Template
 {
-    private $methodCodes = array(
+    private $stylesheetUrls = array(
         Payone_Core_Model_System_Config_PaymentMethodCode::MASTERPASS => 'payone/core/masterpass.css',
         Payone_Core_Model_System_Config_PaymentMethodCode::AMAZONPAY => 'payone/core/amazonpay_button.css',
     );
@@ -33,27 +33,22 @@ class Payone_Core_Block_PaymentAdditionalStyle extends Mage_Core_Block_Template
      */
     public function getActiveShortcuts()
     {
-        $skinUrl = $this->getSkinUrl();
-
         /** @var \Mage_Checkout_Model_Session $session */
         $session = Mage::getSingleton('checkout/session');
-
-        /** @var \Mage_Sales_Model_Quote $quote */
-        $quote = $session->getQuote();
 
         /** @var \Mage_Payment_Helper_Data $paymentHelper */
         $paymentHelper = Mage::helper('payment');
 
         $activeMethods = array();
-        foreach ($this->methodCodes as $methodCode => $filepath) {
+        foreach ($this->stylesheetUrls as $methodCode => $filename) {
             /** @var \Payone_Core_Model_Payment_Method_AmazonPay $paymentMethod */
             $paymentMethod = $paymentHelper->getMethodInstance($methodCode);
 
             try {
                 /** @var \Payone_Core_Model_Config_Payment_Method $paymentConfig */
-                $paymentConfig = $paymentMethod->getConfigForQuote($quote);
+                $paymentConfig = $paymentMethod->getConfigForQuote($session->getQuote());
                 if (!empty($paymentConfig)) {
-                    $activeMethods[] = $skinUrl . $filepath;
+                    $activeMethods[] = $this->getSkinUrl($filename);
                 }
             } catch (\Payone_Core_Exception_PaymentMethodConfigNotFound $e) {
                 continue;
