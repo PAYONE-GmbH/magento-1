@@ -68,7 +68,7 @@ abstract class Payone_Core_Model_Handler_Payment_Abstract
 
     protected function _isIframePaymentOrder($oRequest)
     {
-        if ($this->_isYapitalOrder($oRequest) || $this->_isCreditcardIframe($oRequest)) {
+        if ($this->_isYapitalOrder($oRequest)) {
             return true;
         }
 
@@ -80,15 +80,6 @@ abstract class Payone_Core_Model_Handler_Payment_Abstract
         $oOrder = Mage::getSingleton('checkout/session')->getQuote();
         $oPayment = $oOrder->getPayment();
         return $oPayment->getMethod();
-    }
-
-    protected function _isCreditcardIframe($oRequest)
-    {
-        if ($this->_getPaymentMethod() == 'payone_creditcard_iframe') {
-            return true;
-        }
-
-        return false;
     }
 
     protected function _isYapitalOrder($oRequest)

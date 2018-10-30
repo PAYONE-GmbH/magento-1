@@ -60,6 +60,13 @@ class Payone_Core_Model_Observer_Checkout_Onepage_Payment_Methods
                 }
             } catch (Exception $e) {
                 //do nothing - getPayoneLastPaymentMethod method was just not accessible - no big deal
+
+                // MAGE-392: Removing creditcard iframe method
+                // if the method was last used, it will provoke troubles at checkout first time
+                // workaround to unregister the last used payment method
+                $oCustomer->setPayoneLastPaymentMethod('');
+                $quote->getPayment()->setMethod('');
+                $quote->getPayment()->save();
             }
         }
 
