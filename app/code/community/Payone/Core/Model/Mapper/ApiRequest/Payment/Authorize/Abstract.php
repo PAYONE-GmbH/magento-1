@@ -847,7 +847,8 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
                 );
             }
 
-            if((bool)$info->getPayoneIsb2b() === true) {
+            $payonePayolutionType = $paymentMethod->getInfoInstance()->getPayonePayolutionType();
+            if((bool)$info->getPayoneIsb2b() === true && $payonePayolutionType == Payone_Api_Enum_PayolutionType::PYV) {
                 $payData->addItem(
                     new Payone_Api_Request_Parameter_Paydata_DataItem(
                         array('key' => 'b2b', 'data' => 'yes')

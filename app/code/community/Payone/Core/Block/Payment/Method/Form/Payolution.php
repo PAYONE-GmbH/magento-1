@@ -207,10 +207,23 @@ class Payone_Core_Block_Payment_Method_Form_Payolution extends Payone_Core_Block
     }
 
     /**
+     * @param string $payolutionTypCode
      * @return bool
      */
-    public function showBirthdayFields()
+    public function showBirthdayFields($payolutionTypCode = '')
     {
+        if (
+            in_array(
+                $payolutionTypCode,
+                array(
+                    Payone_Api_Enum_PayolutionType::PYD,
+                    Payone_Api_Enum_PayolutionType::PYS
+                )
+            )
+        ) {
+            return true;
+        }
+
         if ($this->isB2BMode() === false) {
             return true;
         }
