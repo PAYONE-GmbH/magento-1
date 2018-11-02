@@ -171,8 +171,7 @@
 
     <default>
         <reference name="head">
-            <action method="addCss"><name>payone/core/amazonpay_button.css</name></action>
-            <action method="addCss"><name>payone/core/masterpass.css</name></action>
+            <block type="payone_core/paymentAdditionalStyle" name="payone_core_paymentadditionalstyle" template="payone/core/payment_additional_style.phtml" />
         </reference>
         <reference name="topCart.extra_actions">
             <block type="payone_core/amazon_pay_shortcut" name="payone.amazon.partner.top_cart.shortcut"
