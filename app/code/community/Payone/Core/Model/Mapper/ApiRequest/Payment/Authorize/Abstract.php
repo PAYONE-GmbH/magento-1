@@ -1186,6 +1186,17 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
     private function _getResult($paymentMethod) 
     {
         $data = array();
+
+        // In case of Admin order
+        if (!empty($_POST['payone_ratepay_installment'])) {
+            foreach ($_POST['payone_ratepay_installment'] as $key => $value) {
+                $data[$key] = $value;
+            }
+
+            return $data;
+        }
+
+        // Normal frontend order
         foreach (Mage::getSingleton('payone_core/session')->getData() as $key => $value) {
             if (!is_array($value)) {
                 $sessionNameBeginning = substr($key, 0, strlen($paymentMethod)); // session variable name prefix = payment method

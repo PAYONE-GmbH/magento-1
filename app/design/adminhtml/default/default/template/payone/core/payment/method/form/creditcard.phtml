@@ -22,19 +22,26 @@
  */
 
 /** @var $this Payone_Core_Block_Payment_Method_Form_Creditcard */
+$hideCvcTypes = $this->getHideCvcTypes();
+$hideCcTypeSelector = $this->getHideCreditCardSelectorConfig();
+$cvcLength = $this->getCvcLength();
 $code = $this->getMethodCode();
+$iCheckValidation = (int)$this->showCvcInput();
 ?>
-<script>
-    var sCCRequestType = '<?php echo $this->getCCRequestType(); ?>'
+<script type="text/javascript">
+    var sCCRequestType = '<?php echo $this->getCCRequestType(); ?>';
+    payone.ccTypeAutoRecognition = '<?php echo $this->getCreditCardRecognitionConfig() ?>';
+    payone.configActivatedCcTypes = '<?php echo implode(',', $this->getRawCcType()) ?>';
+    payone.configCvcLength = JSON.parse('<?php echo json_encode($cvcLength) ?>');
 </script>
 <?php if($this->getCCRequestType() == 'AJAX') { ?>
     <ul id="payment_form_<?php echo $code ?>" style="display:none">
         <li>
             <div class="input-box">
-                <label for="<?php echo $code ?>_cc_owner">
-                    <?php echo $this->__('Name on Card') ?>&nbsp;<span class="required">*</span>
+                <label for="<?php echo $code ?>_cc_owner"><?php echo $this->__('Name on Card') ?>
+                    <span class="required">*</span>
                 </label>
-                <br/>
+                <br class="clear"/>
                 <input type="text" id="<?php echo $code ?>_cc_owner" name="payment[cc_owner]"
                        value="<?php echo $this->getBillingName(); ?>"
                        title="<?php echo $this->__('Name on Card') ?>"
@@ -46,13 +53,16 @@ $code = $this->getMethodCode();
             <div class="input-box">
                 <label for="<?php echo $code; ?>_cc_type">
                     <?php echo $this->__('Credit Card Type'); ?>&nbsp;<span class="required">*</span>
-                </label><br/>
+                </label><br class="clear"/>
                 <select id="<?php echo $code ?>_cc_type_select" name="<?php echo $code ?>_cc_type_select"
-                        class="no-submit required-entry">
+                        onchange=" payone.displayCheckCvc(this);payoneChangedCreditCardInfo();" class="no-submit required-entry">
                     <option value=""><?php echo $this->__('--Please Select--') ?></option>
                     <?php
                     foreach ($this->getTypes() as $key => $type):
                         $selected = $this->getCreditCardType() == $type['code'] ? 'selected="selected"' : '';
+                        if($this->getPayoneCreditCardCheckValidation() == '0' && $this->getCreditCardType() == $type['code']) {
+                            $selected =  'selected="selected"';
+                        }
                         ?>
                         <option value="<?php echo $key ?>"<?php echo $selected; ?>>
                             <?php echo $type['name'] ?><span><?php echo $type['fee']; ?></span>
@@ -67,10 +77,12 @@ $code = $this->getMethodCode();
             <div class="input-box">
                 <label for="<?php echo $code; ?>_cc_number">
                     <?php echo $this->__('Credit Card Number'); ?>&nbsp;<span class="required">*</span>
-                </label><br/>
+                </label><br class="clear"/>
                 <input type="text" id="<?php echo $code; ?>_cc_number" name="payment[cc_number]" value=""
                        title="<?php echo $this->__('Credit Card Number'); ?>"
                        class="input-text validate-cc-number validate-payone-cc-type no-submit"/>
+                       onchange="inputToNumbers(this); payoneChangedCreditCardInfo();"
+                       oninput="inputToNumbers(this); payoneChangedCreditCardInfo();"/>
             </div>
         </li>
         <!-- Credit card expiration date : -->
@@ -78,7 +90,7 @@ $code = $this->getMethodCode();
             <div class="input-box">
                 <label for="<?php echo $code ?>_expiration">
                     <?php echo $this->__('Expiration Date') ?>&nbsp;<span class="required">*</span>
-                </label><br/>
+                </label><br class="clear"/>
                 <div class="v-fix">
                     <select id="<?php echo $code ?>_cc_expiration_month" name="payment[cc_exp_month]" style="width:140px;"
                             class="required-entry no-submit month validate-payone-cc-validity-period">
@@ -89,13 +101,35 @@ $code = $this->getMethodCode();
                     </select>
                 </div>
                 <div class="v-fix" style="padding-left:5px;">
-                    <select id="<?php echo $code ?>_cc_expiration_year" name="payment[cc_exp_year]"style="width:103px;"
+                    <select id="<?php echo $code ?>_cc_expiration_year" name="payment[cc_exp_year]" style="width:103px;"
                             class="year required-entry no-submit">
                         <?php foreach ($this->getCcYears() as $key => $year): ?>
                         <option value="<?php echo $key ? $key : '' ?>"<?php if ($key == $this->getCreditCardExpireYear()): ?>
                                 selected="selected"<?php endif ?>><?php echo $year ?></option>
                         <?php endforeach ?>
                     </select>
+                </div>
+            </div>
+        </li>
+        <li style="clear:both;">
+            <div class="input-box" id="<?php echo $code ?>_cc_cid_div"
+                 style="display: none">
+                <label for="<?php echo $code ?>_cc_cid">
+                    <?php echo $this->__('Card Verification Number') ?>&nbsp;<span class="required">*</span>
+                </label><br class="clear"/>
+                <input type="text" title="<?php echo $this->__('Card Verification Number') ?>"
+                       class="required-entry input-text no-submit" id="<?php echo $code ?>_cc_cid"
+                       name="payment[cc_cid]" style="width:3em;"
+                       value="<?php echo $this->getCreditCardCid();?>" autocomplete="off" maxlength="4"
+                       onchange="inputToNumbers(this)"
+                       oninput="inputToNumbers(this)"/>
+                &nbsp;
+                <a href="#" class="cvv-payone-what-is-this"><?php echo $this->__('What is this?') ?></a>
+
+                <div class="tool-tip" id="payment-tool-tip-payone" style="display:none;">
+                    <div class="tool-tip-payone-content">
+                        <img src="<?php echo $this->getSkinUrl('images/payone/cvv.gif') ?>" alt="<?php echo Mage::helper('core')->quoteEscape($this->__('Card Verification Number Visual Reference')) ?>" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Card Verification Number Visual Reference')) ?>" />
+                    </div>
                 </div>
             </div>
         </li>
@@ -117,15 +151,30 @@ $code = $this->getMethodCode();
 <?php } else { ?>
     <ul id="payment_form_<?php echo $code ?>" style="display:none">
         <li>
+            <div style="display:none" id="payone_creditcard_hosted_error" class="validation-advice">
+                <?php echo $this->__('Please fill in all required fields'); ?>.
+                <?php if ($iCheckValidation == 1) {?>
+                    <br />
+                    <?php echo $this->__('Please check also CVC length'); ?>.
+                <?php } ?>
+            </div>
+        </li>
+        <li>
             <div class="input-box">
-                <div style="display:none" id="payone_creditcard_hosted_error" class="validation-advice">
-                    <?php echo $this->__('Please fill in all required fields'); ?>.
-                </div>
+                <label for="cardpanInput"><?php echo $this->__('Credit Card Number'); ?>&nbsp;<span class="required">*</span></label>
+                <br class="clear"/>
+                <span class="inputIframe" id="cardpan"></span>
+                <span id="<?php echo $code ?>_cc_type_logo"><img style="display: inline; padding-bottom: 4px" src="" /></span>
+            </div>
+        </li>
+        <li <?php if($hideCcTypeSelector): ?>style="display: none" <?php endif; ?>>
+            <div class="input-box">
                 <label for="<?php echo $code; ?>_cc_type"><?php echo $this->__('Credit Card Type'); ?>
                     <span class="required">*</span>
                 </label><br class="clear"/>
                 <select id="<?php echo $code ?>_cc_type_select" name="<?php echo $code ?>_cc_type_select"
                         class="no-submit required-entry">
+                    <option value=""><?php echo $this->__('--Please Select--') ?></option>
                     <?php
                     foreach ($this->getTypes() as $key => $type) :
                         $selected = $this->getCreditCardType() == $type['code'] ? 'selected="selected"' : '';
@@ -139,10 +188,18 @@ $code = $this->getMethodCode();
             </div>
         </li>
         <li>
-            <div class="input-box">
-                <label for="cardpanInput"><?php echo $this->__('Credit Card Number'); ?>&nbsp;<span class="required">*</span></label>
+            <div class="input-box" id="<?php echo $code ?>_cc_cid_div">
+                <label for="cvcInput"><?php echo $this->__('Card Verification Number') ?>&nbsp;<span class="required">*</span></label>
                 <br class="clear"/>
-                <span class="inputIframe" id="cardpan"></span>
+                <span id="cardcvc2" class="inputIframe"></span>
+
+                <a href="#" class="cvv-payone-what-is-this"><?php echo $this->__('What is this?') ?></a>
+
+                <div class="tool-tip" id="payment-tool-tip-payone" style="display:none;">
+                    <div class="tool-tip-payone-content">
+                        <img style="max-width: 400px;" src="<?php echo $this->getSkinUrl('images/payone/cvv.gif') ?>" alt="<?php echo Mage::helper('core')->quoteEscape($this->__('Card Verification Number Visual Reference')) ?>" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Card Verification Number Visual Reference')) ?>" />
+                    </div>
+                </div>
             </div>
         </li>
         <li>
@@ -159,14 +216,14 @@ $code = $this->getMethodCode();
             <div class="input-box">
                 <label for="firstname"><?php echo $this->__('Firstname') ?><span class="required">*</span></label>
                 <br class="clear"/>
-                <input id="firstname" type="text" name="firstname" value="">
+                <input id="firstname" type="text" class="input-text required-entry" name="firstname" value="">
             </div>
         </li>
         <li>
             <div class="input-box">
                 <label for="lastname"><?php echo $this->__('Lastname') ?><span class="required">*</span></label>
                 <br class="clear"/>
-                <input id="lastname" type="text" name="lastname" value="">
+                <input id="lastname" type="text" class="input-text required-entry" name="lastname" value="">
             </div>
         </li>
         <li>
@@ -188,10 +245,13 @@ $code = $this->getMethodCode();
                    value="<?php echo $this->getPayoneCreditCardCheckValidation();?>"/>
             <input type="hidden" id="payone_cc_check_validation_types"
                    value="<?php echo $this->escapeHtml(($hideCvcTypes)); ?>"/>
+            <input type="hidden" id="payone_cc_use_cvc" value="<?php echo $this->escapeHtml(($iCheckValidation)); ?>"/>
         </li>
     </ul>
     <script>
-        var request, fieldconfig;
+        var request, fieldconfig, ccTypeAutoRecognition;
+        ccTypeAutoRecognition = payone.ccTypeAutoRecognition ;
+        supportedCardtypes = payone.getSupportedCardTypes();
         fieldconfig = {
             fields: {
                 cardpan: {
@@ -199,6 +259,15 @@ $code = $this->getMethodCode();
                     type: "text", // text (default), password, tel
                     size: "30",
                     maxlength: "16",
+                },
+                cardcvc2: {
+                    selector: "cardcvc2", // put name of your div-container here
+                    type: "text", // text (default), password, tel
+                    size: "10",
+                    maxlength: "5",
+                    <?php if ($iCheckValidation == 1) {?>
+                        length: <?php echo json_encode($cvcLength); ?>
+                    <?php } ?>
                 },
                 cardexpiremonth: {
                     selector: "cardexpiremonth", // put name of your div-container here
@@ -227,6 +296,27 @@ $code = $this->getMethodCode();
                     height: "20px"
                 }
             },
+            autoCardtypeDetection: {
+                supportedCardtypes: supportedCardtypes,
+                callback: function(detectedCardtype) {
+                    detectedCardtype = detectedCardtype.toString();
+                    var elementCcType = $('payone_creditcard_cc_type_select');
+                    var pattern = '.*_' + detectedCardtype;
+
+                    if (supportedCardtypes.include(detectedCardtype)) {
+                        for(i = 0; i < elementCcType.options.length; i++){
+                            var value = elementCcType.options[i].value;
+                            if (value.match(pattern)) {
+                                elementCcType.value = value;
+                                elementCcType.onchange();
+
+                                break;
+                            }
+                        }
+                    }
+                },
+                deactivate: (ccTypeAutoRecognition != 1)
+            },
 
             <?php if($this->getHostedParam('Errors_active') == "true") { ?>
                 error: "errorOutput", // area to display error-messages (optional)
@@ -254,3 +344,20 @@ $code = $this->getMethodCode();
         
     </script>
 <?php } ?>
+<script>
+    function toggleToolTipPayone(event)
+    {
+        var tooltip = $('payment-tool-tip-payone');
+        if(tooltip){
+            tooltip.toggle();
+        }
+        Event.stop(event);
+    }
+
+    $$('.cvv-payone-what-is-this').each(function(element){
+        Event.observe(element, 'click', toggleToolTipPayone);
+    });
+    $$('#payment-tool-tip-payone').each(function(element){
+        Event.observe(element, 'click', toggleToolTipPayone);
+    });
+</script>
