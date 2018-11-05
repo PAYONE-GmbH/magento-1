@@ -695,6 +695,12 @@
                 <model>payone_core/payment_method_creditcard</model>
                 <group>payone</group>
             </payone_creditcard>
+            <!-- MAGE-392 : Deprecated, method was removed, kept for old orders consistency -->
+            <payone_creditcard_iframe translate="title" module="payone_core">
+                <title>PAYONE - CreditCard Channel Frontend</title>
+                <model>payone_core/payment_method_creditcardIframe</model>
+                <group>payone</group>
+            </payone_creditcard_iframe>
             <payone_barzahlen translate="title" module="payone_core">
                 <title>PAYONE - Barzahlen</title>
                 <model>payone_core/payment_method_barzahlen</model>
