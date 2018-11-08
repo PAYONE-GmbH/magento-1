@@ -695,6 +695,7 @@
                 <model>payone_core/payment_method_creditcard</model>
                 <group>payone</group>
             </payone_creditcard>
+            <!-- MAGE-392 : Deprecated, method was removed, kept for old orders consistency -->
             <payone_creditcard_iframe translate="title" module="payone_core">
                 <title>PAYONE - CreditCard Channel Frontend</title>
                 <model>payone_core/payment_method_creditcardIframe</model>
@@ -905,9 +906,6 @@
             <template_cash_on_delivery>
                 <use_global>1</use_global>
             </template_cash_on_delivery>
-            <template_creditcard_iframe>
-                <use_global>1</use_global>
-            </template_creditcard_iframe>
             <template_barzahlen>
                 <use_global>1</use_global>
             </template_barzahlen>

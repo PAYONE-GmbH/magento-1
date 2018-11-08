@@ -35,7 +35,6 @@ class Payone_Enum_ClearingType
     const CASHONDELIVERY = 'cod';           // Default cod mapping
 
     /** Creditcards */
-    const CREDITCARD_IFRAME = 'cc';
     const CREDITCARD = 'cc';                // Default cc mapping
 
     /** Debit payments */

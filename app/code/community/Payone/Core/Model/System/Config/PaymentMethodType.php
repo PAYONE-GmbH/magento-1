@@ -36,7 +36,7 @@ class Payone_Core_Model_System_Config_PaymentMethodType extends Payone_Core_Mode
     const AMAZONPAY = 'amazon_pay';
     const CASHONDELIVERY = 'cash_on_delivery';
     const CREDITCARD = 'creditcard';
-    const CREDITCARD_IFRAME = 'creditcard_iframe';
+    //const CREDITCARD_IFRAME = 'creditcard_iframe';  // MAGE-392: Deprecated, method is removed
     const DEBITPAYMENT = 'debit_payment';
     const SAFEINVOICE = 'safe_invoice';
     const INVOICE = 'invoice';
@@ -74,7 +74,7 @@ class Payone_Core_Model_System_Config_PaymentMethodType extends Payone_Core_Mode
             self::AMAZONPAY => 'Amazon Pay',
             self::CASHONDELIVERY => 'Cash on Delivery',
             self::CREDITCARD => 'Creditcard',
-            self::CREDITCARD_IFRAME => 'Creditcard Channel Frontend',
+            //self::CREDITCARD_IFRAME => 'Creditcard Channel Frontend', // MAGE-392: Deprecated, method is removed
             self::DEBITPAYMENT => 'Debit Payment',
             self::SAFEINVOICE => 'Safe Invoice',
             self::INVOICE => 'Invoice',
