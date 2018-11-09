@@ -49,9 +49,6 @@ $getOnlineBankTransferType = $this->onlineBankTransferTypeMapping();
                 </label><br class="clear"/>
                 <input type="hidden" id="<?php echo $code ?>_type_select" name="<?php echo $code ?>_obt_type_select"
                        value="<?php echo $getOnlineBankTransferType[$code] ?>">
-
-                <input type="hidden" name="payment[payone_config_payment_method_id]"
-                       id="<?php echo $code ?>_config_id" value="<?php echo $paymentConfigId; ?>"/>
             </div>
 
             <input type="hidden" id="<?php echo $code ?>_obt_type" name="payment[payone_onlinebanktransfer_type]"
