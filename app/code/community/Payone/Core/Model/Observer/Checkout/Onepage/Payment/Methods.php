@@ -55,7 +55,17 @@ class Payone_Core_Model_Observer_Checkout_Onepage_Payment_Methods
                 if($oCustomer) {
                     $oMethod = $oCustomer->getPayoneLastPaymentMethod();
                     if($oMethod) {
-                        $quote->getPayment()->setMethod($oMethod)->getMethodInstance();
+                        // MAGE-395: Add Payment method id to the quote
+                        try{
+                            $paymentMethodConfigId = Mage::helper('payone_core/config')->getConfigPaymentMethodForQuote(str_replace('payone_', '', $oMethod), $quote)->getId();
+                        } catch (\Exception $ex) {
+                            $paymentMethodConfigId = 0;
+                        }
+
+                        $quote->getPayment()
+                            ->setMethod($oMethod)
+                            ->setPayoneConfigPaymentMethodId($paymentMethodConfigId)
+                            ->getMethodInstance();
                     }
                 }
             } catch (Exception $e) {
