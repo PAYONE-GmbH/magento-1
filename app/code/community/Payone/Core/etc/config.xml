@@ -604,6 +604,16 @@
                     </payone_core_observer>
                 </observers>
             </sales_quote_payment_amazon_pay_place_order_after>
+
+            <adminhtml_sales_order_creditmemo_register_before>
+                <observers>
+                    <payone_core_observer>
+                        <type>singleton</type>
+                        <class>payone_core/observer_sales_order_creditmemo</class>
+                        <method>baseCurrencyTaxRecalculation</method>
+                    </payone_core_observer>
+                </observers>
+            </adminhtml_sales_order_creditmemo_register_before>
         </events>
     </global>
 
