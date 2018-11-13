@@ -55,11 +55,28 @@ class Payone_Core_Model_Observer_Checkout_Onepage_Payment_Methods
                 if($oCustomer) {
                     $oMethod = $oCustomer->getPayoneLastPaymentMethod();
                     if($oMethod) {
-                        $quote->getPayment()->setMethod($oMethod)->getMethodInstance();
+                        // MAGE-395: Add Payment method id to the quote
+                        try{
+                            $paymentMethodConfigId = Mage::helper('payone_core/config')->getConfigPaymentMethodForQuote(str_replace('payone_', '', $oMethod), $quote)->getId();
+                        } catch (\Exception $ex) {
+                            $paymentMethodConfigId = 0;
+                        }
+
+                        $quote->getPayment()
+                            ->setMethod($oMethod)
+                            ->setPayoneConfigPaymentMethodId($paymentMethodConfigId)
+                            ->getMethodInstance();
                     }
                 }
             } catch (Exception $e) {
                 //do nothing - getPayoneLastPaymentMethod method was just not accessible - no big deal
+
+                // MAGE-392: Removing creditcard iframe method
+                // if the method was last used, it will provoke troubles at checkout first time
+                // workaround to unregister the last used payment method
+                $oCustomer->setPayoneLastPaymentMethod('');
+                $quote->getPayment()->setMethod('');
+                $quote->getPayment()->save();
             }
         }
 

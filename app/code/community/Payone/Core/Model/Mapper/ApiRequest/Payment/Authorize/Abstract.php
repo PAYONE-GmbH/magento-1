@@ -634,10 +634,6 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
                 }
             }
         }
-        elseif($paymentMethod instanceof Payone_Core_Model_Payment_Method_CreditcardIframe) {
-            $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_CreditCardIframe();
-            $isRedirect = true;
-        }
         elseif($paymentMethod instanceof Payone_Core_Model_Payment_Method_Barzahlen) {
             $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_Barzahlen();
             $payment->setApiVersion();
@@ -1035,8 +1031,6 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
             $clearingType = Payone_Enum_ClearingType::CASHONDELIVERY;
         } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Creditcard) {
             $clearingType = Payone_Enum_ClearingType::CREDITCARD;
-        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_CreditcardIframe) {
-            $clearingType = Payone_Enum_ClearingType::CREDITCARD_IFRAME;
         } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransfer) {
             $clearingType = Payone_Enum_ClearingType::ONLINEBANKTRANSFER;
         } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferSofortueberweisung) {

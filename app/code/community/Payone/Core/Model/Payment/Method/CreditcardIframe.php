@@ -21,16 +21,20 @@
  * @link            http://www.fatchip.com
  */
 
+/* MAGE-392: CreditCard Iframe method removed
+ * class adapted to decouple from the configuration,
+ * content kept for consistency with existing orders
+ */
 class Payone_Core_Model_Payment_Method_CreditcardIframe extends Payone_Core_Model_Payment_Method_Abstract
 {
     protected $_canUseForMultishipping = true;
     protected $_mustTransimitInvoicingData = true;
 
-    protected $methodType = Payone_Core_Model_System_Config_PaymentMethodType::CREDITCARD_IFRAME;
+    protected $methodType = 'creditcard_iframe';
 
-    protected $_code = Payone_Core_Model_System_Config_PaymentMethodCode::CREDITCARD_IFRAME;
+    protected $_code = 'payone_creditcard_iframe';
 
-    protected $_formBlockType = 'payone_core/payment_method_form_creditcardIframe';
-    protected $_infoBlockType = 'payone_core/payment_method_info_creditcardIframe';
+    protected $_formBlockType = 'payone_core/payment_method_form_creditcard';
+
 
 }
