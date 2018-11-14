@@ -97,14 +97,14 @@ class Payone_Core_Block_Payment_Method_Form_Creditcard
     /**
      * @return null|string
      */
-    public function getHideCvcTypes(){
-
+    public function getHideCvcTypes()
+    {
         $hideTypes = $this->getPaymentConfig()->getHideCvc();
         if(!empty($hideTypes)){
             return Mage::helper('core')->jsonEncode(($hideTypes));
         }
 
-        return null;
+        return '[]';
     }
 
     /**
@@ -519,8 +519,16 @@ class Payone_Core_Block_Payment_Method_Form_Creditcard
         $config = new Payone_Settings_Configuration_PaymentMethod_CreditCard();
         $cvcLength = $config->getCvcLength();
 
+        if ($cvcLength == null) {
+            return array();
+        }
+
         // filter with hidden card types
         $hidden = json_decode($this->getHideCvcTypes(), true);
+
+        if (!is_array($hidden)) {
+            return $cvcLength;
+        }
 
         $cvcLength = array_filter(
             $cvcLength,
