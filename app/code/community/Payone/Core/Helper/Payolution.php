@@ -127,7 +127,7 @@ class Payone_Core_Helper_Payolution extends Payone_Core_Helper_Abstract
 
     public function getPayolutionFraudPreventionJs()
     {
-        return $this->isPayolutionMethodAvailable() ? self::PAYOLUTION_FRAUD_PREVENTION_JS_FILE_PATH : '';
+        return $this->isPayolutionMethodAvailable() ? self::PAYOLUTION_FRAUD_PREVENTION_JS_FILE_PATH : null;
     }
 
     private function isPayolutionMethodAvailable()
