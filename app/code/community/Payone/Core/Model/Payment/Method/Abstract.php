@@ -315,7 +315,10 @@ abstract class Payone_Core_Model_Payment_Method_Abstract
             $service->setConfigStore($this->getConfigStore($order->getStoreId()));
 
             if($order->getBaseCurrencyCode() != $order->getOrderCurrencyCode()) {
-                $amount = Mage::app()->getStore()->roundPrice($order->getGrandTotal()); // MAGE-306
+                // MAGE-391 fix nach MAGE-306
+                $amount = $order->getStore()->roundPrice(
+                    $order->getBaseCurrency()->convert($amount, $order->getOrderCurrency())
+                );
             }
             $service->execute($payment, $amount);
         }
