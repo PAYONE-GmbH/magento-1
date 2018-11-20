@@ -29,7 +29,9 @@ class Payone_Core_Model_Handler_Cancellation extends Payone_Core_Model_Handler_A
      * Therefore the payment is cancelled
      *
      * @param Mage_Core_Controller_Front_Action|null $controller
+     *
      * @return void
+     * @throws Exception
      */
     public function handle(Mage_Core_Controller_Front_Action $controller = null)
     {
@@ -39,11 +41,24 @@ class Payone_Core_Model_Handler_Cancellation extends Payone_Core_Model_Handler_A
             $oSession->unsPayoneExternalCheckoutActive();
             // Load last order by ID
             $orderId = $oSession->getLastOrderId();
-            $oOrder = $this->getFactory()->getModelSalesOrder();
+            $oOrder  = $this->getFactory()->getModelSalesOrder();
             $oOrder->load($orderId);
             if ($oOrder && $oOrder->getId()) {
                 // Cancel order and add history comment:
                 if ($oOrder->canCancel()) {
+                    $txStatus = $this->getFactory()->getModelTransactionStatus();
+                    $txStatus->load($oOrder->getIncrementId(), 'reference');
+
+                    if ($txStatus->getId() && $txStatus->isAppointed()) {
+                        // Returning here since we cannot cancel an order that has been appointed,
+                        // but maybe the TxStatus has not been processed yet.
+                        // So this is a double check to prevent failures later in the process during invoice generation.
+                        // Cancelled orders cannot be invoiced by default
+                        // The re-activation of the quote is also skipped, since the order most likely has finished
+                        // and the customer might just be hitting the Browser back button
+                        return;
+                    }
+
                     $oOrder->cancel();
                     $sMessage = $this->helper()->__('The Payone transaction has been canceled.');
                     $oOrder->addStatusHistoryComment($sMessage, Mage_Sales_Model_Order::STATE_CANCELED);
