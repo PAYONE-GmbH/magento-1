@@ -52,29 +52,17 @@ class Payone_Core_Model_Observer_Checkout_Onepage_Payment_Methods
         if(!$quote->getCustomerIsGuest()) {
             try {
                 $oCustomer = $quote->getCustomer();
-                if($oCustomer) {
-                    $oMethod = $oCustomer->getPayoneLastPaymentMethod();
-                    if($oMethod) {
-                        // MAGE-395: Add Payment method id to the quote
-                        try{
-                            $paymentMethodConfigId = Mage::helper('payone_core/config')->getConfigPaymentMethodForQuote(str_replace('payone_', '', $oMethod), $quote)->getId();
-                        } catch (\Exception $ex) {
-                            $paymentMethodConfigId = 0;
-                        }
-
-                        $quote->getPayment()
-                            ->setMethod($oMethod)
-                            ->setPayoneConfigPaymentMethodId($paymentMethodConfigId)
-                            ->getMethodInstance();
-                    }
+                if($oCustomer && $oCustomer->getPayoneLastPaymentMethod()) {
+                    $this->restoreLastPaymentMethod($oCustomer, $quote);
                 }
             } catch (Exception $e) {
                 //do nothing - getPayoneLastPaymentMethod method was just not accessible - no big deal
 
+                // MAGE-400: Should deprecates MAGE-392 patch below
                 // MAGE-392: Removing creditcard iframe method
                 // if the method was last used, it will provoke troubles at checkout first time
                 // workaround to unregister the last used payment method
-                $oCustomer->setPayoneLastPaymentMethod('');
+                $oCustomer->setPayoneLastPaymentMethod('')->save();
                 $quote->getPayment()->setMethod('');
                 $quote->getPayment()->save();
             }
@@ -176,6 +164,41 @@ class Payone_Core_Model_Observer_Checkout_Onepage_Payment_Methods
     public function getSettings()
     {
         return $this->settings;
+    }
+
+    /**
+     * @param Mage_Customer_Model_Customer $customer
+     * @param Mage_Sales_Model_Quote$quote
+     */
+    private function restoreLastPaymentMethod(Mage_Customer_Model_Customer $customer, Mage_Sales_Model_Quote $quote)
+    {
+        $method = $customer->getPayoneLastPaymentMethod();
+        $paymentMethodConfigId = $this->getPaymentMethodConfig($method, $quote);
+        if ($method && $paymentMethodConfigId === 0) {
+            $customer->setPayoneLastPaymentMethod('')->save();
+            $method = null;
+        }
+
+        if ($method) {
+            $quote->getPayment()
+                ->setMethod($method)
+                ->setPayoneConfigPaymentMethodId($paymentMethodConfigId) // MAGE-395: Add Payment method id to the quote
+                ->getMethodInstance();
+        }
+    }
+
+    /**
+     * @param string $method
+     * @param Mage_Sales_Model_Quote $quote
+     * @return int
+     */
+    private function getPaymentMethodConfig($method, $quote)
+    {
+        try{
+            return Mage::helper('payone_core/config')->getConfigPaymentMethodForQuote(str_replace('payone_', '', $method), $quote)->getId();
+        } catch (\Exception $ex) {
+            return 0;
+        }
     }
 
 }
