@@ -377,6 +377,7 @@ Debit type used for payment by installments,"Debittyp, der für die Ratenzahlung
 "Failed to get the Payone Invoice.","Die PAYONE-Rechnung konnte nicht heruntergeladen werden."
 
 "Payment has not been processed yet.","Die Zahlung wurde noch nicht durchgeführt."
+"Payment has been processed.","Zahlung wurde durchgeführt."
 "Please transfer the order amount to this bank account:","Bitte überweisen Sie den Gesamtbetrag an diese Bankverbindung:"
 "Accountholder: %s","Kontoinhaber: %s"
 "Accountnumber: %s","Kontonummer: %s"
