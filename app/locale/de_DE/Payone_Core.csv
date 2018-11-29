@@ -377,6 +377,7 @@ Debit type used for payment by installments,"Debittyp, der für die Ratenzahlung
 "Failed to get the Payone Invoice.","Die PAYONE-Rechnung konnte nicht heruntergeladen werden."
 
 "Payment has not been processed yet.","Die Zahlung wurde noch nicht durchgeführt."
+"Payment has been processed.","Zahlung wurde durchgeführt."
 "Please transfer the order amount to this bank account:","Bitte überweisen Sie den Gesamtbetrag an diese Bankverbindung:"
 "Accountholder: %s","Kontoinhaber: %s"
 "Accountnumber: %s","Kontonummer: %s"
@@ -1206,7 +1207,7 @@ The <a target='_blank' href='https://www.ratepay.com/zgb-dse'>additional terms a
 "Continue","Fortsetzen"
 "Loading next step...","Nächsten Schritt laden..."
 "Please wait...","Bitte warten..."
-"Place order","Bestellung aufgeben"
+"Place Order","Jetzt kaufen"
 "Submitting order information...","Bestellung wird übermittelt..."
 "Notice: Please verify your payment information or choose another method.","Hinweis: Bitte überprüfen Sie Ihre Daten oder wählen Sie eine andere Zahlart."
 "Notice: The shipping method cannot be changed at this time.","Hinweis: Die Versandart kann zu diesem Zeitpunkt nicht geändert werden."
