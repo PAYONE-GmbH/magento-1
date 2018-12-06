@@ -1240,6 +1240,7 @@ RatePay Debit Type,RatePay Ratenkauf Typ
 "The PayPal Express Checkout has been canceled.","Der PayPal Express Checkout wurde abgebrochen."
 "Unable to initialize Payone Express Checkout.","Der PayPal Express Checkout konnte nicht initialisiert werden."
 "PayPal Express Checkout Token does not exist.","Das PayPal Express Checkout Token existiert nicht."
+"An error occured during the PayPal Express Checkout : missing information.","Während des PayPal Express Checkouts ist ein Fehler aufgetreten : fehlende Information."
 
 "An error occurred during the Masterpass Checkout.","Während des Masterpass Checkout ist ein Fehler aufgetreten."
 "The Masterpass Checkout has been canceled.","Der Masterpass Checkout wurde abgebrochen."
