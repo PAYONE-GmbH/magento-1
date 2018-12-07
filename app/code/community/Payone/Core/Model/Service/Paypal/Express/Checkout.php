@@ -212,6 +212,11 @@ class Payone_Core_Model_Service_Paypal_Express_Checkout
         $this->_ignoreAddressValidation();
 
         if($response instanceof Payone_Api_Response_Genericpayment_Ok) {
+
+            if (is_null($response->getPayData())) {
+                Mage::throwException(Mage::helper('paypal')->__('An error occured during the PayPal Express Checkout : missing information.'));
+            }
+
             // @var Mage_Sales_Model_Quote_Address
             $billingAddress = $this->_quote->getBillingAddress();
             // @var Mage_Sales_Model_Quote_Address
