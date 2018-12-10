@@ -182,8 +182,18 @@ class Payone_Core_Model_Observer_Checkout_Onepage_Payment_Methods
         if ($method) {
             $quote->getPayment()
                 ->setMethod($method)
-                ->setPayoneConfigPaymentMethodId($paymentMethodConfigId) // MAGE-395: Add Payment method id to the quote
-                ->getMethodInstance();
+                ->setPayoneConfigPaymentMethodId($paymentMethodConfigId); // MAGE-395: Add Payment method id to the quote
+
+            // MAGE-395: Get and copy stored fields for that Customer with this Method
+            /** @var Payone_Core_Model_Domain_Customer $payoneCustomer */
+            $payoneCustomer = Mage::getModel('payone_core/domain_customer');
+            $payoneCustomer = $payoneCustomer->loadByCustomerIdPaymentCode($customer->getId()+1, $method);
+            $data = $payoneCustomer->getCustomerData();
+            foreach ($data as $key => $value) {
+                $quote->getPayment()->setData($key, $value);
+            }
+
+            $quote->getPayment()->getMethodInstance();
         }
     }
 
