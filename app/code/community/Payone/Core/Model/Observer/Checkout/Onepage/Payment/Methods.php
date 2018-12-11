@@ -187,7 +187,7 @@ class Payone_Core_Model_Observer_Checkout_Onepage_Payment_Methods
             // MAGE-395: Get and copy stored fields for that Customer with this Method
             /** @var Payone_Core_Model_Domain_Customer $payoneCustomer */
             $payoneCustomer = Mage::getModel('payone_core/domain_customer');
-            $payoneCustomer = $payoneCustomer->loadByCustomerIdPaymentCode($customer->getId()+1, $method);
+            $payoneCustomer = $payoneCustomer->loadByCustomerIdPaymentCode($customer->getId(), $method);
             $data = $payoneCustomer->getCustomerData();
             foreach ($data as $key => $value) {
                 $quote->getPayment()->setData($key, $value);
