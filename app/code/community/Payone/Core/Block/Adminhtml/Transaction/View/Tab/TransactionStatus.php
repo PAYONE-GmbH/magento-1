@@ -109,7 +109,7 @@ class Payone_Core_Block_Adminhtml_Transaction_View_Tab_TransactionStatus extends
      */
     public function getRowUrl($row)
     {
-        return $this->getUrl('*/adminhtml_protocol_transactionStatus/view', array('id' => $row->getId()));
+        return $this->getUrl('*/payonecore_protocol_transactionStatus/view', array('id' => $row->getId()));
     }
 
 
