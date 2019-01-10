@@ -29,55 +29,88 @@ var PayoneCheckout = {
     addressConsentToken: null,
     shippingMethodCode: null,
     displayOrderReview: function (result) {
-        var review = jQuery(result['orderReviewHtml']).filter('#checkout-review-table-wrapper');
-        var agreements = jQuery(result['orderReviewHtml']).filter('#checkout-agreements');
-        if (agreements.length === 0) {
-            agreements = jQuery(result['orderReviewHtml']).find('#checkout-agreements');
-        }
-        var orderReview = jQuery('#orderReviewDiv');
+        var parsedResult = new Element('div').update(result['orderReviewHtml']).descendants();
+
+        var review = parsedResult.filter(function(element) {
+            return element.getAttribute('id') === 'checkout-review-table-wrapper';
+        });
+
+        var agreements = parsedResult.filter(function(element) {
+            return element.getAttribute('id') === 'checkout-agreements';
+        });
+
+        var orderReview = $('orderReviewDiv');
+        review = review.map(function(element){
+            return element.outerHTML;
+        });
         if (agreements.length === 1) {
-            orderReview.html(jQuery.merge(agreements, review));
+            agreements = agreements.map(function(element){
+                return element.outerHTML;
+            });
+            orderReview.update(agreements.concat(review).join(''));
         } else {
-            orderReview.html(review);
+            orderReview.update(review.join(''));
         }
-        var shortDescriptions = orderReview.find('.item-options dd.truncated');
-        shortDescriptions.hover(function (event) {
-            jQuery(event.currentTarget).find('.truncated_full_value').addClass('show');
-        }, function (event) {
-            jQuery(event.currentTarget).find('.truncated_full_value').removeClass('show');
+
+        var shortDescriptions = orderReview.select('.item-options dd.truncated');
+        shortDescriptions.forEach(function(element){
+            Event.observe(element, 'mouseover', function(){
+                if (element.down('div.truncated_full_value')) {
+                    element.down('div.truncated_full_value').addClassName('show');
+                }
+            });
+            Event.observe(element, 'mouseout', function(){
+                if (element.down('div.truncated_full_value')) {
+                    element.down('div.truncated_full_value').removeClassName('show');
+                }
+            });
         });
     },
     afterConfirmSelection: function (result) {
         quoteBaseGrandTotal = result['quoteBaseGrandTotal'];
         checkQuoteBaseGrandTotal = quoteBaseGrandTotal;
-        jQuery('#shippingMethodsDiv').html(result['shippingRatesHtml']);
-        var availableMethods = jQuery('input[type="radio"][name="shipping_method"]');
+        $('shippingMethodsDiv').update(result['shippingRatesHtml']);
+        var availableMethods = $$('input[type="radio"][name="shipping_method"]');
         if (availableMethods.length > 1) {
-            availableMethods.on('click', function (event) {
-                if (event.currentTarget.checked === true) {
-                    PayoneCheckout.shippingMethodCode = event.currentTarget.getValue();
-                    window.onCheckoutProgress(jQuery(event.currentTarget).parents('form[id]')[0]);
-                }
+            availableMethods.forEach(function(method){
+                method.onclick = function (event) {
+                    if (event.currentTarget.checked === true) {
+                        PayoneCheckout.shippingMethodCode = event.currentTarget.getValue();
+                        window.onCheckoutProgress(
+                            $(event.currentTarget).ancestors().filter(
+                                function(element){
+                                    return element.match('form[id]');
+                                }
+                            ).first()
+                        );
+                    }
+                };
             });
         }
-        var checkedMethod = availableMethods.filter(':checked');
+        var checkedMethod = availableMethods.filter(function(element){return element.checked;});
         if (checkedMethod.length === 1) {
-            PayoneCheckout.shippingMethodCode = checkedMethod[0].getValue();
-            jQuery('#placeOrder').attr('disabled', false);
+            PayoneCheckout.shippingMethodCode = checkedMethod[0].value;
+            $('placeOrder').writeAttribute('disabled', false);
         } else if (availableMethods.length === 1) {
             // In case there's only one method that's not already checked
-            var singleMethod = availableMethods.filter(':first');
-            singleMethod.attr('checked', true);
-            PayoneCheckout.shippingMethodCode = singleMethod[0].getValue();
-            window.onCheckoutProgress(singleMethod.parents('form[id]')[0]);
+            var singleMethod = availableMethods.first();
+            singleMethod.writeAttribute('checked', true);
+            PayoneCheckout.shippingMethodCode = singleMethod.value;
+            window.onCheckoutProgress(
+                singleMethod.ancestors().filter(
+                    function(element){
+                        return element.match('form[id]');
+                    }
+                ).first()
+            );
         }
         this.displayOrderReview(result);
-        jQuery('#checkoutStepInit').removeClass('active');
-        jQuery('#checkoutStepFinish').addClass('allow active');
+        $('checkoutStepInit').removeClassName('active');
+        $('checkoutStepFinish').classList.add('allow', 'active');
     },
     afterChooseMethod: function (result) {
         this.displayOrderReview(result);
-        jQuery('#placeOrder').attr('disabled', false);
+        $('placeOrder').writeAttribute('disabled', false);
     },
     afterPlaceOrder: function (result) {
         amazon.Login.logout();
@@ -106,17 +139,17 @@ while (match = search.exec(query)) {
 window.onCheckoutProgress = function (target) {
     target.disabled = true;
     target.parentElement.addClassName('disabled');
-    jQuery('#addressBookWidgetCover, #walletWidgetCover').addClass('show');
+    $('addressBookWidgetCover', 'walletWidgetCover').invoke('addClassName','show');
     var Progress = {currentStep: target.getAttribute('id')};
-    var Agreements = jQuery('#checkout-agreements');
-    if (Agreements) {
-        Agreements.serializeArray().each(function(Agreement) {
-            Progress[Agreement['name']] = Agreement['value'];
-        });
+    var agreements = $('checkout-agreements');
+    if (agreements) {
+        Progress = $H(Progress).merge(agreements.serialize(true)).toObject();
     }
+
+    var parameters = $H(PayoneCheckout).merge(Progress).toObject();
     new Ajax.Request(PayoneCheckout.progressAction, {
         method: 'post',
-        parameters: jQuery.extend({}, PayoneCheckout, Progress),
+        parameters: parameters,
         onSuccess: function (transport) {
             if (transport.responseText) {
                 var Result = JSON.parse(transport.responseText);
@@ -132,11 +165,15 @@ window.onCheckoutProgress = function (target) {
                     window.onAmazonPaymentsInvalidPayment();
                 } else {
                     alert(Result['errorMessage']);
-                    jQuery('#placeOrder').attr('disabled', true);
-                    jQuery('#checkoutStepInit').addClass('allow active').nextAll().removeClass('allow active');
+                    $('placeOrder').writeAttribute('disabled', true);
+                    $('checkoutStepInit').nextSiblings()
+                        .forEach(function(element) {
+                            element.classList.remove('allow', 'active');
+                        });
+                    $('checkoutStepInit').classList.add('allow', 'active');
                 }
             }
-            jQuery('#addressBookWidgetCover, #walletWidgetCover').removeClass('show');
+            $('addressBookWidgetCover', 'walletWidgetCover').invoke('removeClassName', 'show');
             target.parentElement.removeClassName('disabled');
             target.disabled = false;
         }
@@ -144,21 +181,29 @@ window.onCheckoutProgress = function (target) {
 };
 
 window.onDocumentReady = function () {
-    jQuery.extend(PayoneCheckout, PayoneCheckoutParams);
-    jQuery('button.amz').on('click', function (event) {
-        event.preventDefault();
-        window.onCheckoutProgress(event.currentTarget);
-    });
-    jQuery('li.section').on('click', function (event) {
-        if (event.currentTarget.hasClassName('allow') &&
-            !event.currentTarget.hasClassName('active') &&
-            event.currentTarget.getAttribute('id') !== null
-        ) {
+    for(var key in PayoneCheckoutParams)
+        if(PayoneCheckoutParams.hasOwnProperty(key))
+            PayoneCheckout[key] = PayoneCheckoutParams[key];
+    $$('button.amz').forEach(function(element) {
+        element.onclick = function (event) {
             event.preventDefault();
-            jQuery('#placeOrder').attr('disabled', true);
-            jQuery(event.currentTarget).nextAll().removeClass('allow active');
-            jQuery(event.currentTarget).addClass('allow active');
-        }
+            window.onCheckoutProgress(event.currentTarget);
+        };
+    });
+    $$('li.section').forEach(function(element) {
+        element.onclick = function (event) {
+            if (event.currentTarget.hasClassName('allow') &&
+                !event.currentTarget.hasClassName('active') &&
+                event.currentTarget.getAttribute('id') !== null
+            ) {
+                event.preventDefault();
+                $('placeOrder').writeAttribute('disabled', true);
+                $(event.currentTarget).nextSiblings().forEach(function(element) {
+                    element.classList.remove('allow', 'active');
+                });
+                $(event.currentTarget).classList.add('allow', 'active');
+            }
+        };
     });
 };
 
@@ -192,7 +237,7 @@ window.onAmazonPaymentsReady = function () {
         sellerId: PayoneCheckout.amazonSellerId,
         scope: 'payments:billing_address payments:shipping_address payments:widget profile',
         onAddressSelect: function () {
-            jQuery('#confirmSelection').attr('disabled', true);
+            $('confirmSelection').writeAttribute('disabled', true);
         },
         design: {
             designMode: 'responsive'
@@ -210,7 +255,7 @@ window.onAmazonPaymentsReady = function () {
         sellerId: PayoneCheckout.amazonSellerId,
         scope: 'payments:billing_address payments:shipping_address payments:widget profile',
         onPaymentSelect: function () {
-            jQuery('#confirmSelection').attr('disabled', false);
+            $('confirmSelection').writeAttribute('disabled', false);
         },
         design: {
             designMode: 'responsive'
@@ -228,16 +273,16 @@ window.onAmazonPaymentsReady = function () {
 };
 
 window.onAmazonPaymentsInvalidPayment = function () {
-    jQuery('#placeOrder').attr('disabled', true);
-    jQuery('#checkoutStepInitContent, #chooseMethod').addClass('locked');
-    jQuery('#addressBookWidgetDiv, #walletWidgetDiv').empty();
+    $('placeOrder').writeAttribute('disabled', true);
+    $('checkoutStepInitContent', 'chooseMethod').invoke('addClassName', 'locked');
+    $('addressBookWidgetDiv', 'walletWidgetDiv').invoke('empty');
     new OffAmazonPayments.Widgets.AddressBook({
         displayMode: 'Read',
         sellerId: PayoneCheckout.amazonSellerId,
         amazonOrderReferenceId: PayoneCheckout.amazonOrderReferenceId,
         scope: 'payments:billing_address payments:shipping_address payments:widget profile',
         onAddressSelect: function () {
-            jQuery('#confirmSelection').attr('disabled', true);
+            $('confirmSelection').writeAttribute('disabled', true);
         },
         design: {
             designMode: 'responsive'
@@ -256,8 +301,8 @@ window.onAmazonPaymentsInvalidPayment = function () {
         amazonOrderReferenceId: PayoneCheckout.amazonOrderReferenceId,
         scope: 'payments:billing_address payments:shipping_address payments:widget profile',
         onPaymentSelect: function () {
-            jQuery('#confirmSelection').attr('disabled', false);
-            jQuery('#checkoutStepInitContent').addClass('solved');
+            $('confirmSelection').writeAttribute('disabled', false);
+            $('checkoutStepInitContent').addClassName('solved');
         },
         design: {
             designMode: 'responsive'
@@ -272,7 +317,12 @@ window.onAmazonPaymentsInvalidPayment = function () {
         // avoid redrawing, which might
         // happen under circumstances.
         .renderRequested = initiatedByPopup;
-    jQuery('#checkoutStepInit').addClass('allow active').nextAll().removeClass('allow active');
+    $('checkoutStepInit').nextSiblings()
+        .forEach(function(element) {
+            element.classList.remove('allow', 'active');
+        });
+    $('checkoutStepInit').classList.add('allow', 'active');
+
 };
 
-jQuery(document).on('ready', window.onDocumentReady);
+$(document).onready = window.onDocumentReady;

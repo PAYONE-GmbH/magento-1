@@ -275,34 +275,34 @@ function toggleBicField(ibanEl, sCode)
 function requireRegistrationNumber(required, fieldPrefix)
 {
     var fieldId = fieldPrefix + "_trade_registry_number";
-    var registrationNumber = jQuery("#" + fieldId);
-    var label = jQuery('label[for=' + fieldId + ']');
-    var labelRequiredMark = label.children('span');
+    var registrationNumber = $(fieldId);
+    var label = $$('label[for=' + fieldId + ']')[0];
+    var labelRequiredMark = label.getElementsBySelector('span')[0];
 
     if (required) {
         labelRequiredMark.show();
-        registrationNumber.addClass('required-entry')
+        registrationNumber.addClassName('required-entry')
     }
     else {
         labelRequiredMark.hide();
-        registrationNumber.removeClass('required-entry')
+        registrationNumber.removeClassName('required-entry')
     }
 }
 
 function requireVat(required, fieldPrefix)
 {
     var fieldId = fieldPrefix + "_vat_id";
-    var vat = jQuery("#" + fieldId);
-    var label = jQuery('label[for=' + fieldId + ']');
-    var labelRequiredMark = label.children('span');
+    var vat = $(fieldId);
+    var label = $$('label[for=' + fieldId + ']')[0];
+    var labelRequiredMark = label.getElementsBySelector('span')[0];
 
     if (required) {
         labelRequiredMark.show();
-        vat.addClass('required-entry')
+        vat.addClassName('required-entry')
     }
     else {
         labelRequiredMark.hide();
-        vat.removeClass('required-entry')
+        vat.removeClassName('required-entry')
     }
 }
 
