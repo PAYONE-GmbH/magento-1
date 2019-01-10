@@ -43,7 +43,7 @@ $data = $this->getTransactionStatus();
                                 <label><?php echo $key ?></label>
                             </td>
                             <td class="label">
-                                <strong><?php echo $value ?></strong>
+                                <strong><?php echo is_array($value) ? Mage::helper('core')->jsonEncode($value) : $value ?></strong>
                             </td>
                         </tr>
                         <?php } ?>
