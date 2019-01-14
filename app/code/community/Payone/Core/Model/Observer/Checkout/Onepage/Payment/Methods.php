@@ -189,8 +189,10 @@ class Payone_Core_Model_Observer_Checkout_Onepage_Payment_Methods
             $payoneCustomer = Mage::getModel('payone_core/domain_customer');
             $payoneCustomer = $payoneCustomer->loadByCustomerIdPaymentCode($customer->getId(), $method);
             $data = $payoneCustomer->getCustomerData();
-            foreach ($data as $key => $value) {
-                $quote->getPayment()->setData($key, $value);
+            if (null !== $data) {
+                foreach ($data as $key => $value) {
+                    $quote->getPayment()->setData($key, $value);
+                }
             }
 
             $quote->getPayment()->getMethodInstance();
