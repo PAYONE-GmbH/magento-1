@@ -53,7 +53,7 @@ Validation.add(
 );
 
 Validation.add(
-    'validate-sepa-bic', Translator.translate('BIC can contain only 8-11 characters: digits and letters'), function (value) {
+    'validate-sepa-bic', Translator.translate('BIC can contain only 8-11 characters (letters and digits)'), function (value) {
     value = value.replace(/\s/g, '');
     if (value == '') {
         return true;
