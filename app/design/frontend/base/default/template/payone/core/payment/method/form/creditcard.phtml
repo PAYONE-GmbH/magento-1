@@ -194,9 +194,10 @@
             </li>
             <li <?php if($hideCcTypeSelector) { echo 'style="display:none;"'; } ?>>
                 <?php
+                    $savedCreditCardType = $this->getCreditCardType();
                     $selectedCreditCartType = [];
                     foreach ($this->getTypes() as $key => $type) {
-                        if ($this->getCreditCardType() == $type['code']) {
+                        if ($savedCreditCardType == $type['code']) {
                             $selectedCreditCartType = [
                                 'type' => $type['code'],
                                 'name' => $type['name']
@@ -215,14 +216,15 @@
                             class="no-submit required-entry" <?php if ($useCustomerSaveData) { echo 'style="display:none;"'; } ?>>
                         <option value=""><?php echo $this->__('--Please Select--') ?></option>
                         <?php foreach ($this->getTypes() as $key => $type) { ?>
-                            <option value="<?php echo $key ?>" <?php if ($selectedCreditCartType['type'] == $type['code']) echo 'selected="selected"'; ?>>
+                            <?php $selectedCard = isset($selectedCreditCartType['type']) && $selectedCreditCartType['type'] == $type['code']; ?>
+                            <option value="<?php echo $key ?>" <?php if ($selectedCard) echo 'selected="selected"'; ?>>
                                 <?php echo $type['name'] ?><span><?php echo $type['fee']; ?></span>
                             </option>
                         <?php } ?>
                     </select>
 
                     <?php if ($useCustomerSaveData) { ?>
-                        <span class="savedCustomerDataField"><?php if($payoneCreditCardCheckValidation == '0') echo $selectedCreditCartType['name']; ?></span>
+                        <span class="savedCustomerDataField"><?php if($payoneCreditCardCheckValidation == '0') echo isset($selectedCreditCartType['name']) ? $selectedCreditCartType['name'] : ''; ?></span>
                     <?php } ?>
 
                     <input type="hidden" id="<?php echo $code ?>_cc_type" name="payment[cc_type]" value="<?php echo $this->getCreditCardType();?>" class=""/>
