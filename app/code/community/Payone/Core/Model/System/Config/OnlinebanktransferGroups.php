@@ -73,6 +73,7 @@ class Payone_Core_Model_System_Config_OnlinebanktransferGroups extends Payone_Co
                 'KNAB_BANK' => 'Knab Bank',
                 'VAN_LANSCHOT_BANKIERS' => 'van Lanschot Bank',
                 'MONEYOU' => 'Moneyou',
+                'HANDELSBANKEN' => 'Handelsbanken',
             ),
         );
     }
