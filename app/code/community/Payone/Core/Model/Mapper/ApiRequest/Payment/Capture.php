@@ -91,12 +91,10 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Capture
             $paymentMethod instanceof Payone_Core_Model_Payment_Method_Ratepay ||
             $paymentMethod instanceof Payone_Core_Model_Payment_Method_RatepayDirectDebit
         ) {
-            $info = $paymentMethod->getInfoInstance();
-
             $payData = new Payone_Api_Request_Parameter_Paydata_Paydata();
             $payData->addItem(
                 new Payone_Api_Request_Parameter_Paydata_DataItem(
-                    array('key' => 'shop_id', 'data' => $info->getPayoneRatepayShopId())
+                    array('key' => 'shop_id', 'data' => $paymentMethod->getInfoInstance()->getPayoneRatepayShopId())
                 )
             );
             $request->setPaydata($payData);
@@ -104,7 +102,7 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Capture
         } elseif($paymentMethod instanceof Payone_Core_Model_Payment_Method_PayolutionDebit ||
                  $paymentMethod instanceof Payone_Core_Model_Payment_Method_PayolutionInvoicing ||
                  $paymentMethod instanceof Payone_Core_Model_Payment_Method_PayolutionInstallment ||
-                $paymentMethod instanceof Payone_Core_Model_Payment_Method_Payolution)
+                 $paymentMethod instanceof Payone_Core_Model_Payment_Method_Payolution)
         {
             $info = $paymentMethod->getInfoInstance();
             if($info->getPayoneIsb2b() == '1') {
