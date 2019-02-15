@@ -38,6 +38,9 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Debit
     /** @var Mage_Sales_Model_Order_Creditmemo */
     protected $creditmemo = null;
 
+    /** @var Payone_Api_Request_Parameter_Invoicing_Transaction */
+    protected $invoicing;
+
     /**
      * @return Payone_Api_Request_Debit
      */
@@ -63,10 +66,23 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Debit
         $business = $this->mapBusinessParameters();
         $request->setBusiness($business);
 
-        /** Set Invoiceing-Parameter only if enabled in Config */
+        /** MAGE-410 add invoiceId if available, no matter which configuration state is set */
+        $creditmemo = $this->getCreditmemo();
+        if (!empty($creditmemo) && $creditmemo->hasData()) {
+            $creditmemoIncrementId = $creditmemo->getIncrementId();
+            if ($creditmemoIncrementId === null) {
+                $creditmemoIncrementId = $this->fetchNewIncrementId($creditmemo);
+            }
+            $this->getInvoicing()->setInvoiceid($creditmemoIncrementId);
+        }
+
+        /** Set Invoicing-Parameter only if enabled in Config */
         if ($this->mustTransmitInvoiceData()) {
-            $invoicing = $this->mapInvoicingParameters();
-            $request->setInvoicing($invoicing);
+            $this->mapInvoicingParameters();
+        }
+
+        if (!empty($this->invoicing)) {
+            $request->setInvoicing($this->invoicing);
         }
 
         $paymentMethod = $this->getPaymentMethod();
@@ -101,6 +117,7 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Debit
         
         $this->dispatchEvent($this->getEventName(), array('request' => $request, 'creditmemo' => $this->getCreditmemo()));
         $this->dispatchEvent($this->getEventPrefix() . '_all', array('request' => $request));
+
         return $request;
     }
 
@@ -163,25 +180,14 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Debit
         return $business;
     }
 
-    /**
-     * @return Payone_Api_Request_Parameter_Invoicing_Transaction
-     */
     protected function mapInvoicingParameters()
     {
         $order = $this->getOrder();
         $creditmemo = $this->getCreditmemo();
 
-        $invoicing = new Payone_Api_Request_Parameter_Invoicing_Transaction();
         if (!empty($creditmemo) && $creditmemo->hasData()) {
-            $creditmemoIncrementId = $creditmemo->getIncrementId();
-            if ($creditmemoIncrementId === null) {
-                $creditmemoIncrementId = $this->fetchNewIncrementId($creditmemo);
-            }
-
             $appendix = $this->getInvoiceAppendixRefund($creditmemo);
-
-            $invoicing->setInvoiceid($creditmemoIncrementId);
-            $invoicing->setInvoiceappendix($appendix);
+            $this->getInvoicing()->setInvoiceappendix($appendix);
 
             // Regular order items:
             foreach ($creditmemo->getItemsCollection() as $itemData) {
@@ -193,17 +199,17 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Debit
                     continue; // Do not map dummy items.
                 }
 
+
                 $number = number_format($itemData->getQty(), 0, '.', '');
                 if ($number <= 0) {
                     continue; // Do not map items with zero quantity
                 }
 
+                $params['it'] = Payone_Api_Enum_InvoicingItemType::GOODS;
                 $params['id'] = $itemData->getSku();
                 $params['de'] = $itemData->getName();
                 $params['no'] = $number;
                 $params['pr'] = $this->getItemPrice($itemData);
-                $params['it'] = Payone_Api_Enum_InvoicingItemType::GOODS;
-
 
                 // We have to load the tax percentage from the order item
 //                $params['va'] = number_format($orderItem->getTaxPercent(), 0, '.', '');
@@ -211,32 +217,30 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Debit
 
                 $item = new Payone_Api_Request_Parameter_Invoicing_Item();
                 $item->init($params);
-                $invoicing->addItem($item);
+                $this->getInvoicing()->addItem($item);
             }
 
             // Refund shipping
             if ($creditmemo->getShippingInclTax() > 0) {
-                $invoicing->addItem($this->mapRefundShippingAsItemByCreditmemo($creditmemo));
+                $this->getInvoicing()->addItem($this->mapRefundShippingAsItemByCreditmemo($creditmemo));
             }
 
             // Adjustment Refund (positive adjustment)
             if ($creditmemo->getAdjustmentPositive() > 0) {
-                $invoicing->addItem($this->mapAdjustmentPositiveAsItemByCreditmemo($creditmemo));
+                $this->getInvoicing()->addItem($this->mapAdjustmentPositiveAsItemByCreditmemo($creditmemo));
             }
 
             // Adjustment Fee (negative adjustment)
             if ($creditmemo->getAdjustmentNegative() > 0) {
-                $invoicing->addItem($this->mapAdjustmentNegativeAsItemByCreditmemo($creditmemo));
+                $this->getInvoicing()->addItem($this->mapAdjustmentNegativeAsItemByCreditmemo($creditmemo));
             }
 
             // Add Discount as a position
             $discountAmount = $this->getCreditmemoDiscountAmount($creditmemo);
             if ($discountAmount) {
-                $invoicing->addItem($this->mapDiscountAsItem($discountAmount));
+                $this->getInvoicing()->addItem($this->mapDiscountAsItem($discountAmount));
             }
         }
-
-        return $invoicing;
     }
 
     /**
@@ -295,5 +299,17 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Debit
         }
 
         return $creditmemo->getDiscountAmount();
+    }
+
+    /**
+     * @return Payone_Api_Request_Parameter_Invoicing_Transaction
+     */
+    private function getInvoicing()
+    {
+        if (empty($this->invoicing)) {
+            $this->invoicing = new Payone_Api_Request_Parameter_Invoicing_Transaction();
+        }
+
+        return $this->invoicing;
     }
 }
