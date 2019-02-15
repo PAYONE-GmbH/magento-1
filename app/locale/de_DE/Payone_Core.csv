@@ -27,6 +27,8 @@
 "Send Invoicing Information","Rechnungsinformationen versenden"
 "Enable PDF Download","PDF Download aktivieren"
 "Transmit Invoice Information","Rechnungsinformationen übertragen"
+"Alternative price calculation","Alternative Preisberechnung"
+"Precalculates article quantity to avoid rounding differences.","Berechnet die Artikelmenge vor, um Rundungsdifferenzen zu vermeiden."
 "Dynamic Invoice Message","Dynamischer Text auf der Rechnung"
 "Dynamic Refund Message","Dynamischer Text auf der Gutschrift"
 "Maximum 255 digits. Placeholders: {{order_increment_id}}, {{order_id}}, {{customer_increment_id}}, {{customer_id}}, {{invoice_increment_id}}","Maximal 255 Zeichen. Platzhalter: {{order_increment_id}}, {{order_id}}, {{customer_increment_id}}, {{customer_id}}, {{invoice_increment_id}}"
@@ -641,6 +643,7 @@ DIRECT_DEBIT,Lastschrift
 "No","Nein"
 "Submit invoice information","Rechnungsinformationen übertragen"
 "You can activate or deactivate the submission of invoice information","Hier können Sie die Übertragung der Rechnungsinformationen aktivieren / deaktivieren."
+"You can activate or deactivate the alternative price calculation","Hier können Sie die Alternative Preisberechnung aktivieren oder deaktivieren."
 "Dynamic text on invoice","Dynamischer Text auf der Rechnung"
 "This text can be transmitted additionally to PAYONE and will appear on the invoice document according to your specification. This text has a maximal length of 255 characters. Any characters exceeding this limit will be cropped. To integrate information from Magento, the following variables are available","Dieser Text kann zusätzlich an PAYONE übergeben werden und erscheint im Anschluss gem. Ihrer Spezifikationen auf dem Rechnungsdokument. Der Text hat eine Maximale Länge von 255 Zeichen. Alle Zeichen über diese Länge hinaus werden abgeschnitten. Um Informationen aus Magento zu übergeben stehen einige Variablen zur Verfügung die Sie in den Text einfließen lassen können.",
 "Please use variables in the following way:","Die Namen der Variablen müssen wie folgt notiert werden."

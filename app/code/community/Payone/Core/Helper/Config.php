@@ -91,9 +91,13 @@ class Payone_Core_Helper_Config
         $general = $this->getConfigGeneral($storeId);
         $defaultConfig = $general->getGlobal()->toArray();
         $invoiceTransmit = $general->getParameterInvoice()->getTransmitEnabled();
+        $alternativePriceCalculation = $general->getParameterInvoice()->getAlternativePriceCalculation();
 
         // Add invoice_transmit to defaultConfig
         $defaultConfig['invoice_transmit'] = $invoiceTransmit;
+
+        // Add alternative price calculation
+        $defaultConfig['alternative_price_calculation'] = $alternativePriceCalculation;
 
         $config = $this->getFactory()->getModelDomainConfigPaymentMethod();
         $config->load($id);

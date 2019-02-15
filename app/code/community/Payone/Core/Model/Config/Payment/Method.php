@@ -118,6 +118,11 @@ class Payone_Core_Model_Config_Payment_Method
     protected $invoice_transmit = 0;
 
     /**
+     * @var int
+     */
+    protected $alternative_price_calculation = 0;
+
+    /**
      * @var array
      */
     protected $types = array();
@@ -402,6 +407,18 @@ class Payone_Core_Model_Config_Payment_Method
     /**
      * @return bool
      */
+    public function isAlternativePriceCalculationEnabled()
+    {
+        if ($this->getAlternativePriceCalculation()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
     public function isAllowspecific()
     {
         if ($this->getAllowspecific()) {
@@ -560,6 +577,22 @@ class Payone_Core_Model_Config_Payment_Method
     public function getInvoiceTransmit()
     {
         return $this->invoice_transmit;
+    }
+
+    /**
+     * @param int $alternative_price_calculation
+     */
+    public function setAlternativePriceCalculation($alternative_price_calculation)
+    {
+        $this->alternative_price_calculation = $alternative_price_calculation;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAlternativePriceCalculation()
+    {
+        return $this->alternative_price_calculation;
     }
 
     /**

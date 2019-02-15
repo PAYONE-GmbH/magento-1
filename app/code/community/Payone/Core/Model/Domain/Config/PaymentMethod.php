@@ -476,6 +476,7 @@ class Payone_Core_Model_Domain_Config_PaymentMethod
                             $mappedData['key'] = null;
                             $mappedData['request_type'] = null;
                             $mappedData['invoice_transmit'] = null;
+                            $mappedData['alternative_price_calculation'] = null;
                         }
                         break;
                     default:

@@ -594,4 +594,16 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Abstract
 
         return $creditmemo->getAdjustmentNegative();
     }
+
+    /**
+     * @return bool
+     */
+    protected function mustAdaptCalculation()
+    {
+        if ($this->getConfigPayment()->isAlternativePriceCalculationEnabled()) {
+            return true;
+        }
+
+        return false;
+    }
 }
