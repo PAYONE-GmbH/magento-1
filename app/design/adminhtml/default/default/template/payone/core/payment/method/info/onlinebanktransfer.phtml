@@ -29,7 +29,7 @@
     <?php echo $this->__('Transfer Type: %s', $this->escapeHtml($this->getOnlinebanktransferType())) ?><br/>
 <?php endif; ?>
 <?php if ($this->getPayoneSepaIban()): ?>
-    <?php $iban = $this->getPayoneSepaIban();
+    <?php $iban = $this->strToXXX($this->getPayoneSepaIban());
     echo $this->__('IBAN: %s', $this->escapeHtml(substr($iban, 0, 2) . " " . chunk_split(substr($iban, 2), 4, ' '))) ?><br/>
 <?php endif; ?>
 <?php if ($this->getPayoneSepaBic()): ?>
