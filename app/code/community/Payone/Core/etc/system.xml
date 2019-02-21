@@ -207,6 +207,19 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </transmit_enabled>
+                        <alternative_price_calculation translate="label">
+                            <label>Alternative price calculation</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>15</sort_order>
+                            <tooltip>Precalculates article quantity to avoid rounding differences.</tooltip>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends>
+                                <transmit_enabled>1</transmit_enabled>
+                            </depends>
+                        </alternative_price_calculation>
                         <invoice_appendix translate="label,comment">
                             <label>Dynamic Invoice Message</label>
                             <frontend_type>textarea</frontend_type>

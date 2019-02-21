@@ -80,6 +80,15 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Capture
         /** Set Invoicing-Parameter only if enabled in Config */
         if ($this->mustTransmitInvoiceData()) {
             $this->mapInvoicingParameters();
+
+            if ($this->mustAdaptCalculation()) {
+                /** @var Payone_Api_Request_Parameter_Invoicing_Item $item */
+                foreach ($this->getInvoicing()->getItems() as $item) {
+                    $item->setPr($item->getNo() * $item->getPr());
+                    $item->setDe('Menge: ' . $item->getNo() . ' ' . $item->getDe());
+                    $item->setNo(1);
+                }
+            }
         }
 
         if (!empty($this->invoicing)) {
@@ -144,7 +153,7 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Capture
         if(!empty($invoice) && $invoice->hasData()) {
             $request->setAmount($invoice->getGrandTotal());
             if($blCurrencyConvert) {
-                $request->setAmount($order->getBaseGrandTotal());
+                $request->setAmount($invoice->getBaseGrandTotal());
             }
         } else {
             $request->setAmount($this->getAmount());
