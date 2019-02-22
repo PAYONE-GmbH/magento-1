@@ -948,6 +948,7 @@
             </global>
             <parameter_invoice>
                 <pdf_download_enabled>0</pdf_download_enabled>
+                <alternative_price_calculation>0</alternative_price_calculation>
             </parameter_invoice>
             <transactionstatus_execute>
                 <max_execution_time>35</max_execution_time>

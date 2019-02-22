@@ -167,9 +167,13 @@ class Payone_Core_Model_Service_InitializeConfig
         $global = $general->getGlobal();
         $defaultConfig = $global->toArray();
         $invoiceTransmit = $general->getParameterInvoice()->getTransmitEnabled();
+        $alternativePriceCalculation = $general->getParameterInvoice()->getAlternativePriceCalculation();
 
         // Add invoice_transmit to defaultConfig
         $defaultConfig['invoice_transmit'] = $invoiceTransmit;
+
+        // Add alternative price calculation
+        $defaultConfig['alternative_price_calculation'] = $alternativePriceCalculation;
 
         /** @var $payment Payone_Core_Model_Config_Payment */
         $payment = $this->getConfigModel(self::CONFIG_SECTION_PAYMENT);

@@ -70,6 +70,16 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
         // Only add Invoiceing Parameters if enabled / required by payment method
         if ($this->mustTransmitInvoiceData()) {
             $invoicing = $this->mapInvoicingParameters();
+
+            if ($this->mustAdaptCalculation()) {
+                /** @var Payone_Api_Request_Parameter_Invoicing_Item $item */
+                foreach ($invoicing->getItems() as $item) {
+                    $item->setPr($item->getNo() * $item->getPr());
+                    $item->setDe('Menge: ' . $item->getNo() . ' ' . $item->getDe());
+                    $item->setNo(1);
+                }
+            }
+
             $request->setInvoicing($invoicing);
         }
 

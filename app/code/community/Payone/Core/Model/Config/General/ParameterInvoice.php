@@ -48,6 +48,9 @@ class Payone_Core_Model_Config_General_ParameterInvoice extends Payone_Core_Mode
     /** @var string */
     protected $invoice_appendix_refund = '';
 
+    /** @var int */
+    protected $alternative_price_calculation = 0;
+
     /**
      * @param int $pdf_download_enabled
      */
@@ -110,5 +113,21 @@ class Payone_Core_Model_Config_General_ParameterInvoice extends Payone_Core_Mode
     public function getInvoiceAppendixRefund()
     {
         return $this->invoice_appendix_refund;
+    }
+
+    /**
+     * @param int $alternative_price_calculation
+     */
+    public function setAlternativePriceCalculation($alternative_price_calculation)
+    {
+        $this->alternative_price_calculation = $alternative_price_calculation;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAlternativePriceCalculation()
+    {
+        return $this->alternative_price_calculation;
     }
 }

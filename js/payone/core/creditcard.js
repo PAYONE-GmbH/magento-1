@@ -205,8 +205,9 @@ PAYONE.Service.CreditCardCheck = function (handler, form, config) {
             this.iframes.creditCardCheck('processPayoneResponseCCHosted');
         } else {
             $('payone_creditcard_hosted_error').show();
+            $('payone_creditcard_hosted_error').scrollTo();
         }
-    }
+    };
 
     /**
      * Collect PAYONE CreditCardCheck Request Parameters
