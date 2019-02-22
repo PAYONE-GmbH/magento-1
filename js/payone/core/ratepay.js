@@ -276,16 +276,19 @@ function requireRegistrationNumber(required, fieldPrefix)
 {
     var fieldId = fieldPrefix + "_trade_registry_number";
     var registrationNumber = $(fieldId);
-    var label = $$('label[for=' + fieldId + ']')[0];
-    var labelRequiredMark = label.getElementsBySelector('span')[0];
 
-    if (required) {
-        labelRequiredMark.show();
-        registrationNumber.addClassName('required-entry')
-    }
-    else {
-        labelRequiredMark.hide();
-        registrationNumber.removeClassName('required-entry')
+    if (null !== registrationNumber && 'undefined' !== registrationNumber) {
+        var label = $$('label[for=' + fieldId + ']')[0];
+        var labelRequiredMark = label.getElementsBySelector('span')[0];
+
+        if (required) {
+            labelRequiredMark.show();
+            registrationNumber.addClassName('required-entry')
+        }
+        else {
+            labelRequiredMark.hide();
+            registrationNumber.removeClassName('required-entry')
+        }
     }
 }
 
@@ -293,16 +296,19 @@ function requireVat(required, fieldPrefix)
 {
     var fieldId = fieldPrefix + "_vat_id";
     var vat = $(fieldId);
-    var label = $$('label[for=' + fieldId + ']')[0];
-    var labelRequiredMark = label.getElementsBySelector('span')[0];
 
-    if (required) {
-        labelRequiredMark.show();
-        vat.addClassName('required-entry')
-    }
-    else {
-        labelRequiredMark.hide();
-        vat.removeClassName('required-entry')
+    if (null !== vat && 'undefined' !== vat) {
+        var label = $$('label[for=' + fieldId + ']')[0];
+        var labelRequiredMark = label.getElementsBySelector('span')[0];
+
+        if (required) {
+            labelRequiredMark.show();
+            vat.addClassName('required-entry')
+        }
+        else {
+            labelRequiredMark.hide();
+            vat.removeClassName('required-entry')
+        }
     }
 }
 
