@@ -16,9 +16,8 @@ The PAYONE payment extension for MAGENTO is with 50,000 downloads already a succ
 It is highly recommended to install the latest release from Github (either using modman or manual installation). The Magento Marketplace is updated infrequently.
 
 ## More information
-Documentation for Magento: http://www.payone.com/uploads/media/PAYONE_Documentation_Magento-Payment-Extension.pdf<br>
+Documentation for Magento: see https://github.com/PAYONE-GmbH/docs<br>
 Videoguide: Installation and configuration: https://www.youtube.com/playlist?list=PLlzKa20PSzukaPBvUhxxpo3oqNs0mUkpa<br>
-More information about Magento on https://www.payone.com/magento
 
 ## Related projects
 Related projects can provide additional features and perks that can't be included in the main package for various reasons. These projects are not officially supported by BS PAYONE and can cause unexpected changes in module behavior. Support, if any, is given in the respective projects alone:
