@@ -447,11 +447,11 @@
         function switchIframes(event)
         {
             // Update hidden values
-            jQuery('#<?php echo $code ?>_cc_owner').val('');
-            jQuery('#payone_pseudocardpan').val('');
-            jQuery('#payone_cardexpiredate').val('');
-            jQuery('#payone_truncatedcardpan').val('');
-            jQuery('#payone_cc_check_validation').val('1');
+            $('<?php echo $code ?>_cc_owner').value = '';
+            $('payone_pseudocardpan').value = '';
+            $('payone_cardexpiredate').value = '';
+            $('payone_truncatedcardpan').value = '';
+            $('payone_cc_check_validation').value = '1';
 
             var elementCcType = $('<?php echo $code ?>_cc_type_select');
             if (elementCcType != undefined) {
@@ -460,10 +460,14 @@
             }
 
             // Toggle fields visibility
-            jQuery('.savedCustomerDataField').hide();
-            jQuery('.inputIframe').show();
-            jQuery('#firstnameFieldContainer').show();
-            jQuery('#lastnameFieldContainer').show();
+            $$('.savedCustomerDataField').forEach(function(element) {
+                element.hide()
+            });
+            $$('.inputIframe').forEach(function(element) {
+                element.show()
+            });
+            $('firstnameFieldContainer').show();
+            $('lastnameFieldContainer').show();
             elementCcType.show();
 
             Event.stop(event);
