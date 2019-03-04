@@ -230,9 +230,10 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment
     /**
      * @param $sRatePayShopId
      * @param $sCurrency
+     * @param string $sRatePayType
      * @return Payone_Api_Request_Genericpayment
      */
-    public function addRatePayParameters($sRatePayShopId, $sCurrency) 
+    public function addRatePayParameters($sRatePayShopId, $sCurrency, $sRatePayType = Payone_Api_Enum_RatepayType::RPV)
     {
         $request = $this->getRequest();
         $this->mapDefaultParameters($request);
@@ -253,7 +254,7 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment
         $request->setAid($this->getConfigPayment()->getAid());
         $request->setClearingtype(Payone_Enum_ClearingType::FINANCING);
         $request->setCurrency($sCurrency);
-        $request->setFinancingType(Payone_Api_Enum_RatepayType::RPV);
+        $request->setFinancingType($sRatePayType);
 
         return $request;
     }

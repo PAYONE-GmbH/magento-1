@@ -75,7 +75,7 @@ class Payone_Core_Block_Adminhtml_System_Config_Form_Field_RatePayDirectDebitSto
         $oConfig = $oConfigHelper->getConfigPaymentMethodById($sMethodId);
         $oService = $this->getFactory()->getServicePaymentGenericpayment($oConfig);
         $oMapper = $oService->getMapper();
-        $oRequest = $oMapper->addRatePayParameters($sRatePayShopId, $sCurrency);
+        $oRequest = $oMapper->addRatePayParameters($sRatePayShopId, $sCurrency, Payone_Api_Enum_RatepayDirectDebitType::RPD);
 
         $oResponse = $this->getFactory()->getServiceApiPaymentGenericpayment()->request($oRequest);
 

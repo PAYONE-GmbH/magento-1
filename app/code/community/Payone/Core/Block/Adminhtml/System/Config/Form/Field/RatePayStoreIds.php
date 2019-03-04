@@ -75,17 +75,20 @@ class Payone_Core_Block_Adminhtml_System_Config_Form_Field_RatePayStoreIds
         $oConfig = $oConfigHelper->getConfigPaymentMethodById($sMethodId);
         $oService = $this->getFactory()->getServicePaymentGenericpayment($oConfig);
         $oMapper = $oService->getMapper();
-        $oRequest = $oMapper->addRatePayParameters($sRatePayShopId, $sCurrency);
 
-        $oResponse = $this->getFactory()->getServiceApiPaymentGenericpayment()->request($oRequest);
+        foreach ($oConfig->getTypes() as $sType) {
+            $oRequest = $oMapper->addRatePayParameters($sRatePayShopId, $sCurrency, $sType);
 
-        if($oResponse instanceof Payone_Api_Response_Genericpayment_Ok) {
-            $aPayData = $oResponse->getPaydataArray();
-            $aPayData['shop_id'] = $sRatePayShopId;
-            
-            $oRatePay = $this->_getRatePayObject();
-            $oRatePay->addRatePayConfig($aPayData);
-            return $aPayData;
+            $oResponse = $this->getFactory()->getServiceApiPaymentGenericpayment()->request($oRequest);
+
+            if($oResponse instanceof Payone_Api_Response_Genericpayment_Ok) {
+                $aPayData = $oResponse->getPaydataArray();
+                $aPayData['shop_id'] = $sRatePayShopId;
+
+                $oRatePay = $this->_getRatePayObject();
+                $oRatePay->addRatePayConfig($aPayData);
+                return $aPayData;
+            }
         }
 
         return false;
