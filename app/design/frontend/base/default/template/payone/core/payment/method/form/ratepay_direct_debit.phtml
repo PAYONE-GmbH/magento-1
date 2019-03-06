@@ -36,11 +36,6 @@ $configShowBankData = $this->getPaymentConfig()->getSepaDeShowBankData();
         <input type="hidden" id="<?php echo $code ?>_type" name="payment[payone_ratepay_type]" value="<?php echo $paymentType;?>"/>
         <li>
             <div id="ratepay-Header">
-                <div class="ratepay-FullWidth">
-                    <img class="ratepay-LogoImg" src="<?php echo $this->getSkinUrl('images/payone/ratepay_rate.png'); ?>" width="150" alt="RatePAY"><br>
-                    <h2 class="ratepay-H2"><?php echo $this->__('Direct Debit'); ?></h2>
-                </div>
-                <br class="ratepay-ClearFix" />
                 <div>
                     <p><?php echo $this->__('RatePAY GmbH, Franklinstraße 28-29, 10587 Berlin'); ?></p>
                     <p><?php echo $this->__('Creditors ID: ') . 'DE39RPY00000568463'; ?></p>
