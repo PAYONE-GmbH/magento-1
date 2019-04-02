@@ -62,10 +62,14 @@ class Payone_Core_Block_PaymentAdditionalScript extends Mage_Core_Block_Template
 
         /** @var Mage_Payment_Model_Method_Abstract $method */
         foreach ($paymentConfig->getAllMethods() as $method) {
-            if ($method->isAvailable($session->getQuote())) {
-                if (isset($this->scriptsUrls[$method->getCode()])) {
-                    $loadedScripts[] = $this->getJsUrl($this->scriptsUrls[$method->getCode()]);
-                }
+            $addScript = (
+                $method->isAvailable($session->getQuote()) &&
+                isset($this->scriptsUrls[$method->getCode()])
+            );
+
+            if ($addScript) {
+                $scriptUrl = $this->scriptsUrls[$method->getCode()];
+                $loadedScripts[] = $this->getJsUrl($scriptUrl);
             }
         }
 
