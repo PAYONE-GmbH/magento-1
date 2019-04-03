@@ -510,7 +510,7 @@ class Payone_Core_Block_Payment_Method_Form_Creditcard
 
         return false;
     }
-
+    
     /**
      * return array
      */
@@ -524,20 +524,18 @@ class Payone_Core_Block_Payment_Method_Form_Creditcard
         }
 
         // filter with hidden card types
-        $hidden = json_decode($this->getHideCvcTypes(), true);
+        $hiddenCvcTypes = json_decode($this->getHideCvcTypes(), true);
 
-        if (!is_array($hidden)) {
+        if (!is_array($hiddenCvcTypes)) {
             return $cvcLength;
         }
 
-        $cvcLength = array_filter(
-            $cvcLength,
-            function ($item) use ($hidden) {
-                return !in_array($item, $hidden);
-            },
-            ARRAY_FILTER_USE_KEY
-        );
-
-        return $cvcLength;
+        $cvcReturn = array();
+        foreach ($cvcLength as $cardType => $length) {
+            if (!in_array($cardType, $hiddenCvcTypes)) {
+                $cvcReturn[$cardType] = $length;
+            }
+        }
+        return $cvcReturn;
     }
 }
