@@ -15,6 +15,8 @@ The PAYONE payment extension for MAGENTO is with 50,000 downloads already a succ
 ## Installation
 It is highly recommended to install the latest release from Github (either using modman or manual installation). The Magento Marketplace is updated infrequently.
 
+This module requires at least PHP 5.6. Please, please use a more recent PHP version.
+
 ## More information
 Documentation for Magento: see https://github.com/PAYONE-GmbH/docs<br>
 Videoguide: Installation and configuration: https://www.youtube.com/playlist?list=PLlzKa20PSzukaPBvUhxxpo3oqNs0mUkpa<br>
