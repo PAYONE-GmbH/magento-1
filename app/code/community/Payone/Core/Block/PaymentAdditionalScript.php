@@ -41,7 +41,10 @@ class Payone_Core_Block_PaymentAdditionalScript extends Mage_Core_Block_Template
         Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTIONINVOICING => 'payone/core/payolution.js',
         Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAY => 'payone/core/ratepay.js',
         Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAYDIRECTDEBIT => 'payone/core/ratepay.js',
-        Payone_Core_Model_System_Config_PaymentMethodCode::SAFEINVOICE => 'payone/core/safe_invoice.js',
+        Payone_Core_Model_System_Config_PaymentMethodCode::SAFEINVOICE => [
+            'payone/core/safe_invoice.js',
+            'payone/core/klarna.js',
+        ],
     );
 
     /**
@@ -69,7 +72,13 @@ class Payone_Core_Block_PaymentAdditionalScript extends Mage_Core_Block_Template
 
             if ($addScript) {
                 $scriptUrl = $this->scriptsUrls[$method->getCode()];
-                $loadedScripts[] = $this->getJsUrl($scriptUrl);
+                if (!is_array($scriptUrl)) {
+                    $scriptUrl = array($scriptUrl);
+                }
+
+                foreach ($scriptUrl as $url) {
+                    $loadedScripts[] = $this->getJsUrl($url);
+                }
             }
         }
 
