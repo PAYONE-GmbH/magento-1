@@ -20,6 +20,10 @@
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
  * @link            http://www.noovias.com
  */
-?>
-<script type="text/javascript" src="https://cdn.klarna.com/public/kitt/core/v1.0/js/klarna.min.js"></script>
-<script type="text/javascript" src="https://cdn.klarna.com/public/kitt/toc/v1.1/js/klarna.terms.min.js"></script>
+
+/** @var Payone_Core_Helper_SafeInvoice $safeInvoiceHelper */
+$safeInvoiceHelper = Mage::helper('payone_core/safeInvoice');
+if ($safeInvoiceHelper->isSafeInvoiceMethodAvailable()) {
+    echo $safeInvoiceHelper->getKlarnaScriptLink() . PHP_EOL;
+    echo $safeInvoiceHelper->getKlarnaTermsScriptLink() . PHP_EOL;
+}
