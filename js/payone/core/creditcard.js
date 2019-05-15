@@ -201,7 +201,6 @@ PAYONE.Service.CreditCardCheck = function (handler, form, config) {
     this.creditcardcheckHosted = function () {
         if (this.iframes.isComplete()) {
             $('payone_creditcard_hosted_error').hide();
-            $('payone_creditcard_cc_owner').value = $('firstname').value + ' ' + $('lastname').value;            
             this.iframes.creditCardCheck('processPayoneResponseCCHosted');
         } else {
             $('payone_creditcard_hosted_error').show();
@@ -221,7 +220,6 @@ PAYONE.Service.CreditCardCheck = function (handler, form, config) {
             'cardtype':$('payone_creditcard_cc_type').value
         };
         if($('payone_pseudocardpan').value == '') {
-            data.cardholder = $('payone_creditcard_cc_owner').value;
             data.cardpan = $('payone_creditcard_cc_number').value;
         } else {
             data.pseudocardpan = $('payone_pseudocardpan').value;

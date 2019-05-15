@@ -45,22 +45,6 @@ class Payone_Core_Block_Payment_Method_Form_Creditcard
     }
 
     /**
-     * Name from billing address in the format "Firstname Lastname".
-     * @return string
-     */
-    public function getBillingName()
-    {
-        $billingName = $this->getSavedCustomerData('cc_owner');
-        if(empty($billingName)) {
-            $quote = $this->getQuote();
-            $address = $quote->getBillingAddress();
-            $billingName = $address->getFirstname() . ' ' . $address->getLastname();
-        }
-
-        return $billingName;
-    }
-
-    /**
      * @return Mage_Payment_Model_Config
      */
     protected function getMagentoPaymentConfig()
