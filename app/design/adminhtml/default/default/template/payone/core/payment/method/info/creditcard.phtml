@@ -27,9 +27,7 @@
 <br/>
 <?php
     if($this->getInfo()):
-      echo $this->__('Name on Card: %s', $this->escapeHtml($this->getCcOwner())) ?>
-<br/>
-<?php echo $this->__('Credit Card Type: %s', $this->escapeHtml($this->getCcType())) ?>
+      echo $this->__('Credit Card Type: %s', $this->escapeHtml($this->getCcType())) ?>
 <br/>
 <?php echo $this->__('Credit Card Number: %s', $this->escapeHtml($this->getCcNumberEnc())) ?>
 <br/>
