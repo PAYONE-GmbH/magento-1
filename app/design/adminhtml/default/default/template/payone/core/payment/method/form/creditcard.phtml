@@ -36,18 +36,6 @@ $iCheckValidation = (int)$this->showCvcInput();
 </script>
 <?php if($this->getCCRequestType() == 'AJAX') { ?>
     <ul id="payment_form_<?php echo $code ?>" style="display:none">
-        <li>
-            <div class="input-box">
-                <label for="<?php echo $code ?>_cc_owner"><?php echo $this->__('Name on Card') ?>
-                    <span class="required">*</span>
-                </label>
-                <br class="clear"/>
-                <input type="text" id="<?php echo $code ?>_cc_owner" name="payment[cc_owner]"
-                       value="<?php echo $this->getBillingName(); ?>"
-                       title="<?php echo $this->__('Name on Card') ?>"
-                       class="required-entry input-text no-submit" />
-            </div>
-        </li>
         <!-- Credit card type : -->
         <li>
             <div class="input-box">
@@ -213,23 +201,8 @@ $iCheckValidation = (int)$this->showCvcInput();
             </div>
         </li>
         <li>
-            <div class="input-box">
-                <label for="firstname"><?php echo $this->__('Firstname') ?><span class="required">*</span></label>
-                <br class="clear"/>
-                <input id="firstname" type="text" class="input-text required-entry" name="firstname" value="">
-            </div>
-        </li>
-        <li>
-            <div class="input-box">
-                <label for="lastname"><?php echo $this->__('Lastname') ?><span class="required">*</span></label>
-                <br class="clear"/>
-                <input id="lastname" type="text" class="input-text required-entry" name="lastname" value="">
-            </div>
-        </li>
-        <li>
             <div id="errorOutput"></div>
             <input type="hidden" id="<?php echo $code; ?>_cc_number" value=""/>
-            <input type="hidden" id="<?php echo $code ?>_cc_owner" name="payment[cc_owner]" value="" />
             <input type="hidden" id="payone_pseudocardpan" name="payment[payone_pseudocardpan]"
                    value="<?php echo $this->getPayonePseudocardpan();?>"/>
             <input type="hidden" id="payone_cardexpiredate" name="payment[payone_cardexpiredate]" value=""/>

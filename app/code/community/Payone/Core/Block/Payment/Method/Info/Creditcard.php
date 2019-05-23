@@ -43,14 +43,6 @@ class Payone_Core_Block_Payment_Method_Info_Creditcard
     /**
      * @return string
      */
-    public function getCcOwner()
-    {
-        return $this->getInfo()->getCcOwner();
-    }
-
-    /**
-     * @return string
-     */
     public function getCcNumberEnc()
     {
         return $this->getInfo()->getCcNumberEnc();

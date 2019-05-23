@@ -40,20 +40,6 @@
 <fieldset class="form-list">
     <?php if($this->getCCRequestType() == 'AJAX') { ?>
         <ul id="payment_form_<?php echo $code ?>" style="display:none">
-            <!-- Creditcard owner : -->
-            <li>
-                <div class="input-box">
-                    <label for="<?php echo $code ?>_cc_owner"><?php echo $this->__('Name on Card') ?>
-                        <span class="required">*</span>
-                    </label>
-                    <br class="clear"/>
-                    <input type="text" id="<?php echo $code ?>_cc_owner" name="payment[cc_owner]"
-                           value="<?php echo $this->getBillingName(); ?>"
-                           title="<?php echo $this->__('Name on Card') ?>"
-                           onchange="payoneChangedCreditCardInfo();"
-                           class="required-entry input-text no-submit"/>
-                </div>
-            </li>
             <!-- Credit card type : -->
             <li>
                 <div class="input-box">
@@ -265,31 +251,9 @@
                     <?php } ?>
                 </div>
             </li>
-            <li id="firstnameFieldContainer" <?php if ($useCustomerSaveData) { echo 'style="display:none;"'; } ?>>
-                <div class="input-box">
-                    <label for="firstname"><?php echo $this->__('Firstname') ?><span class="required">*</span></label>
-                    <br class="clear"/>
-                    <input id="firstname" type="text" class="input-text required-entry" name="firstname" value="<?php echo $this->getQuote()->getBillingAddress()->getFirstname(); ?>">
-                </div>
-            </li>
-            <li id="lastnameFieldContainer" <?php if ($useCustomerSaveData) { echo 'style="display:none;"'; } ?>>
-                <div class="input-box">
-                    <label for="lastname"><?php echo $this->__('Lastname') ?><span class="required">*</span></label>
-                    <br class="clear"/>
-                    <input id="lastname" type="text" class="input-text required-entry" name="lastname" value="<?php echo $this->getQuote()->getBillingAddress()->getLastname(); ?>">
-                </div>
-            </li>
-            <li class="savedCustomerDataField" <?php if (!$useCustomerSaveData) { echo 'style="display:none;"'; }?>>
-                <div class="input-box">
-                    <label><?php echo $this->__('Name') ?><span class="required">*</span></label>
-                    <br class="clear"/>
-                    <span><?php if($payoneCreditCardCheckValidation == '0') echo $this->getBillingName();?></span>
-                </div>
-            </li>
             <li>
                 <div id="errorOutput"></div>
                 <input type="hidden" id="<?php echo $code; ?>_cc_number" value=""/>
-                <input type="hidden" id="<?php echo $code ?>_cc_owner" name="payment[cc_owner]" value="<?php if ($useCustomerSaveData) { echo $this->getBillingName(); } ?>" />
                 <input type="hidden" id="payone_pseudocardpan" name="payment[payone_pseudocardpan]" value="<?php if ($useCustomerSaveData) { echo $this->getPayonePseudocardpan(); } ?>"/>
                 <input type="hidden" id="payone_cardexpiredate" name="payment[payone_cardexpiredate]" value="<?php if ($useCustomerSaveData) { echo $this->getCreditCardExpireYear().$this->getCreditCardExpireMonth(); } ?>"/>
                 <input type="hidden" id="payone_truncatedcardpan" name="payment[cc_number_enc]" value="<?php if ($useCustomerSaveData) { echo $this->getCreditCardNumberEnc(); } ?>"/>
@@ -447,7 +411,6 @@
         function switchIframes(event)
         {
             // Update hidden values
-            $('<?php echo $code ?>_cc_owner').value = '';
             $('payone_pseudocardpan').value = '';
             $('payone_cardexpiredate').value = '';
             $('payone_truncatedcardpan').value = '';
@@ -466,8 +429,6 @@
             $$('.inputIframe').forEach(function(element) {
                 element.show()
             });
-            $('firstnameFieldContainer').show();
-            $('lastnameFieldContainer').show();
             elementCcType.show();
 
             Event.stop(event);

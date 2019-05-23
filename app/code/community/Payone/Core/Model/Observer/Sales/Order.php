@@ -133,7 +133,6 @@ class Payone_Core_Model_Observer_Sales_Order
 
             if($payment->getMethodInstance()->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::CREDITCARD) {
                 $paymentMethodCode = $payment->getMethodInstance()->getCode();
-                $customerSavedData['cc_owner'] = $payment->getCcOwner();
                 $customerSavedData['cc_type'] = $payment->getCcType();
                 $customerSavedData['cc_exp_year'] = $payment->getCcExpYear();
                 $customerSavedData['cc_exp_month'] = $payment->getCcExpMonth();
