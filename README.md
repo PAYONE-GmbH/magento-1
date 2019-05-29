@@ -18,7 +18,7 @@ It is highly recommended to install the latest release from Github (either using
 This module requires at least PHP 5.6. Please, please use a more recent PHP version.
 
 ## More information
-Documentation for Magento: see https://github.com/PAYONE-GmbH/docs<br>
+Documentation for Magento: see https://docs.payone.com/display/public/INT/Magento+1+Extension<br>
 Videoguide: Installation and configuration: https://www.youtube.com/playlist?list=PLlzKa20PSzukaPBvUhxxpo3oqNs0mUkpa<br>
 
 ## Related projects
