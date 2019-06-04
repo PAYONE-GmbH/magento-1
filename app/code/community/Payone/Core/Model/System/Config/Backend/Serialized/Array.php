@@ -36,11 +36,20 @@ class Payone_Core_Model_System_Config_Backend_Serialized_Array extends Mage_Admi
             $serializedValue = $this->getValue();
             $unserializedValue = false;
             if (!empty($serializedValue)) {
-                try {
-                    $unserializedValue = Mage::helper('core/unserializeArray')
-                        ->unserialize((string)$serializedValue);
-                } catch (Exception $e) {
-                    Mage::logException($e);
+                // MAGE-425 : Initial check as this class was introduced from version M1.9.2.2
+                if (!class_exists('Mage_Core_Helper_UnserializeArray')) {
+                    try {
+                        $unserializedValue = unserialize((string)$serializedValue);
+                    } catch (Exception $e) {
+                        Mage::logException($e);
+                    }
+                } else {
+                    try {
+                        $unserializedValue = Mage::helper('core/unserializeArray')
+                            ->unserialize((string)$serializedValue);
+                    } catch (Exception $e) {
+                        Mage::logException($e);
+                    }
                 }
             }
             $this->setValue($unserializedValue);
