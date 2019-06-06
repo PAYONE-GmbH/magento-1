@@ -350,9 +350,10 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
             $remoteIp = $order->getRemoteIp();
         }
 
-        // Multiple Ips could be included, we only send the last one.
+	// RFC 7239 suggests, we should take the first IP as the client's real IP
+	// see: https://tools.ietf.org/html/rfc7239#section-7.5
         $remoteIps = explode(',', $remoteIp);
-        $ip = array_pop($remoteIps);
+	$ip = array_shift($remoteIps);
         // remove leading Whitespace for Muliple IPs e.g. "0.0.0.0, 1.1.1.1"
         $ip = trim($ip);
         return $ip;
