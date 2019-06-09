@@ -114,12 +114,17 @@ class Payone_Core_Model_Sales_Quote_Address_Total_Fee
         $dNewShippingAmount = $dOldShippingAmount + $dPaymentFee;
 
         $oAddress->setData('payone_payment_fee', $oQuote->getStore()->roundPrice($dPaymentFee));
-        
+        /** @var $oAddress Mage_Sales_Model_Quote_Address */
         $oAddress->setBaseShippingAmount($dNewShippingAmount);
+        $oAddress->setBaseShippingInclTax($dNewShippingAmount);
         $oAddress->setShippingAmount(
             $oQuote->getStore()->convertPrice($dNewShippingAmount, false)
         );
+        $oAddress->setShippingInclTax(
+            $oQuote->getStore()->convertPrice($dNewShippingAmount, false)
+        );
     }
+
 
     /**
      *
