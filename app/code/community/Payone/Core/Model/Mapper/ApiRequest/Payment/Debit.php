@@ -147,6 +147,9 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Debit
         $request->setRequest(Payone_Api_Enum_RequestType::DEBIT);
         $request->setUseCustomerdata('yes');
 
+        $narrativeText = $this->getNarrativeText();
+        $request->setNarrativeText($narrativeText);
+
         // MAGE-391 Fix MAGE-383
         if ($this->configPayment->getCurrencyConvert() && $order->getOrderCurrencyCode() != $order->getBaseCurrencyCode()) {
             $orderCurrency = $order->getOrderCurrency();

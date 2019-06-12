@@ -1115,22 +1115,6 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
     }
 
     /**
-     * Returns the narrative text and substitutes the placeholder if neccessary
-     * @return string
-     */
-    protected function getNarrativeText()
-    {
-        $narrativeText = $this->configPayment->getNarrativeText();
-
-        $substitutionArray = array(
-            '{{order_increment_id}}' => $this->getOrder()->getIncrementId()
-        );
-
-        $narrativeText = str_replace(array_keys($substitutionArray), array_values($substitutionArray), $narrativeText);
-        return $narrativeText;
-    }
-
-    /**
      * @param $installmentData
      * @return Payone_Api_Request_Parameter_Paydata_Paydata
      */
