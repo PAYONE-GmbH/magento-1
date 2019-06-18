@@ -24,28 +24,31 @@
 class Payone_Core_Block_PaymentAdditionalScript extends Mage_Core_Block_Template
 {
     private $scriptsUrls = array(
-        Payone_Core_Model_System_Config_PaymentMethodCode::CREDITCARD => 'payone/core/creditcard.js',
-        Payone_Core_Model_System_Config_PaymentMethodCode::DEBITPAYMENT => 'payone/core/debitpayment.js',
-        Payone_Core_Model_System_Config_PaymentMethodCode::ONLINEBANKTRANSFER => 'payone/core/onlinebanktransfer.js',
-        Payone_Core_Model_System_Config_PaymentMethodCode::ONLINEBANKTRANSFEREPS => 'payone/core/onlinebanktransfer.js',
-        Payone_Core_Model_System_Config_PaymentMethodCode::ONLINEBANKTRANSFERIDL => 'payone/core/onlinebanktransfer.js',
-        Payone_Core_Model_System_Config_PaymentMethodCode::ONLINEBANKTRANSFERBCT => 'payone/core/onlinebanktransfer.js',
-        Payone_Core_Model_System_Config_PaymentMethodCode::ONLINEBANKTRANSFERGIROPAY => 'payone/core/onlinebanktransfer.js',
-        Payone_Core_Model_System_Config_PaymentMethodCode::ONLINEBANKTRANSFERP24 => 'payone/core/onlinebanktransfer.js',
-        Payone_Core_Model_System_Config_PaymentMethodCode::ONLINEBANKTRANSFERPFC => 'payone/core/onlinebanktransfer.js',
-        Payone_Core_Model_System_Config_PaymentMethodCode::ONLINEBANKTRANSFERPFF => 'payone/core/onlinebanktransfer.js',
-        Payone_Core_Model_System_Config_PaymentMethodCode::ONLINEBANKTRANSFERSOFORT => 'payone/core/onlinebanktransfer.js',
-        Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTION => 'payone/core/payolution.js',
-        Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTIONDEBIT => 'payone/core/payolution.js',
-        Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTIONINSTALLMENT => 'payone/core/payolution.js',
-        Payone_Core_Model_System_Config_PaymentMethodCode::PAYOLUTIONINVOICING => 'payone/core/payolution.js',
-        Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAY => 'payone/core/ratepay.js',
-        Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAYDIRECTDEBIT => 'payone/core/ratepay.js',
-        Payone_Core_Model_System_Config_PaymentMethodCode::SAFEINVOICE => [
+        Payone_Core_Model_System_Config_PaymentMethodType::CREDITCARD => 'payone/core/creditcard.js',
+        Payone_Core_Model_System_Config_PaymentMethodType::DEBITPAYMENT => 'payone/core/debitpayment.js',
+        Payone_Core_Model_System_Config_PaymentMethodType::ONLINEBANKTRANSFER => 'payone/core/onlinebanktransfer.js',
+        Payone_Core_Model_System_Config_PaymentMethodType::ONLINEBANKTRANSFEREPS => 'payone/core/onlinebanktransfer.js',
+        Payone_Core_Model_System_Config_PaymentMethodType::ONLINEBANKTRANSFERIDL => 'payone/core/onlinebanktransfer.js',
+        Payone_Core_Model_System_Config_PaymentMethodType::ONLINEBANKTRANSFERBCT => 'payone/core/onlinebanktransfer.js',
+        Payone_Core_Model_System_Config_PaymentMethodType::ONLINEBANKTRANSFERGIROPAY => 'payone/core/onlinebanktransfer.js',
+        Payone_Core_Model_System_Config_PaymentMethodType::ONLINEBANKTRANSFERP24 => 'payone/core/onlinebanktransfer.js',
+        Payone_Core_Model_System_Config_PaymentMethodType::ONLINEBANKTRANSFERPFC => 'payone/core/onlinebanktransfer.js',
+        Payone_Core_Model_System_Config_PaymentMethodType::ONLINEBANKTRANSFERPFF => 'payone/core/onlinebanktransfer.js',
+        Payone_Core_Model_System_Config_PaymentMethodType::ONLINEBANKTRANSFERSOFORT => 'payone/core/onlinebanktransfer.js',
+        Payone_Core_Model_System_Config_PaymentMethodType::PAYOLUTION => 'payone/core/payolution.js',
+        Payone_Core_Model_System_Config_PaymentMethodType::PAYOLUTIONDEBIT => 'payone/core/payolution.js',
+        Payone_Core_Model_System_Config_PaymentMethodType::PAYOLUTIONINSTALLMENT => 'payone/core/payolution.js',
+        Payone_Core_Model_System_Config_PaymentMethodType::PAYOLUTIONINVOICING => 'payone/core/payolution.js',
+        Payone_Core_Model_System_Config_PaymentMethodType::RATEPAY => 'payone/core/ratepay.js',
+        Payone_Core_Model_System_Config_PaymentMethodType::RATEPAYDIRECTDEBIT => 'payone/core/ratepay.js',
+        Payone_Core_Model_System_Config_PaymentMethodType::SAFEINVOICE => [
             'payone/core/safe_invoice.js',
             'payone/core/klarna.js',
         ],
     );
+
+    /** @var Payone_Core_Model_Factory */
+    private $factory;
 
     /**
      * @return array
@@ -60,13 +63,14 @@ class Payone_Core_Block_PaymentAdditionalScript extends Mage_Core_Block_Template
             $this->getJsUrl('payone/core/sepa_validation.js')
         );
 
+        $storeId = $session->getQuote()->getStoreId();
         /** @var Payone_Core_Model_Config_Payment $paymentConfig */
-        $paymentConfig = Mage::getSingleton('payment/config');
+        $paymentConfig = $this->getFactory()->helperConfig()->getConfigPayment($storeId);
 
-        /** @var Mage_Payment_Model_Method_Abstract $method */
-        foreach ($paymentConfig->getAllMethods() as $method) {
+        /** @var Payone_Core_Model_Config_Payment_Method $method */
+        foreach ($paymentConfig->getAvailableMethods() as $method) {
             $addScript = (
-                $method->isAvailable($session->getQuote()) &&
+                $method->getEnabled() &&
                 isset($this->scriptsUrls[$method->getCode()])
             );
 
@@ -83,5 +87,17 @@ class Payone_Core_Block_PaymentAdditionalScript extends Mage_Core_Block_Template
         }
 
         return array_unique($loadedScripts);
+    }
+
+    /**
+     * @return Payone_Core_Model_Factory
+     */
+    protected function getFactory()
+    {
+        if ($this->factory === null) {
+            $this->factory = Mage::getModel('payone_core/factory');
+        }
+
+        return $this->factory;
     }
 }
