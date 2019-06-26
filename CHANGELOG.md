@@ -1,5 +1,7 @@
 # Changelog
 
+**The changelog is continued on the Github releases page**
+
 ## 4.1.6
 **Features**
 
