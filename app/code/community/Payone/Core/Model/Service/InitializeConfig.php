@@ -55,21 +55,24 @@ class Payone_Core_Model_Service_InitializeConfig
      * @param int $storeId
      * @return Payone_Core_Model_Config_Interface
      */
-    public function execute($storeId = null)
+    public function execute($storeId = null, $useCache = true)
     {
         $this->setStoreId($storeId);
 
         $helperRegistry = $this->helperRegistry();
         $registryKey = $this->getConfigRegistryKey($storeId);
-        $config = $helperRegistry->registry($registryKey);
-        if ($config instanceof Payone_Core_Model_Config_Interface) {
-            return $config;
-        }
 
-        $config = $this->loadFromCache();
-        if ($config instanceof Payone_Core_Model_Config_Interface) {
-            $helperRegistry->register($registryKey, $config);
-            return $config;
+        if($useCache === true) {
+            $config = $helperRegistry->registry($registryKey);
+            if ($config instanceof Payone_Core_Model_Config_Interface) {
+                return $config;
+            }
+
+            $config = $this->loadFromCache();
+            if ($config instanceof Payone_Core_Model_Config_Interface) {
+                $helperRegistry->register($registryKey, $config);
+                return $config;
+            }
         }
 
         /** @var $config Payone_Core_Model_Config */
@@ -95,7 +98,9 @@ class Payone_Core_Model_Service_InitializeConfig
         $config->setMisc($misc);
 
         // Caching
-        $this->saveToCache($config);
+        if ($useCache === true) {
+            $this->saveToCache($config);
+        }
 
         return $config;
     }

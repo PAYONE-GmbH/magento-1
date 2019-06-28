@@ -37,11 +37,13 @@ class Payone_Core_Helper_Config
 
     /**
      * @param int $storeId
+     * @param bool $useCache
+     *
      * @return bool|Payone_Core_Model_Config_Interface
      */
-    public function getConfigStore($storeId = null)
+    public function getConfigStore($storeId = null, $useCache = true)
     {
-        $config = $this->getFactory()->getServiceInitializeConfig()->execute($storeId);
+        $config = $this->getFactory()->getServiceInitializeConfig()->execute($storeId, $useCache);
         return $config;
     }
 
