@@ -53,6 +53,8 @@ class Payone_Core_Model_Service_InitializeConfig
      * The Config Object will be cached
      *
      * @param int $storeId
+     * @param bool $useCache
+     *
      * @return Payone_Core_Model_Config_Interface
      */
     public function execute($storeId = null, $useCache = true)
@@ -64,12 +66,12 @@ class Payone_Core_Model_Service_InitializeConfig
             $registryKey = $this->getConfigRegistryKey($storeId);
 
             $config = $helperRegistry->registry($registryKey);
-            if ($config instanceof Payone_Core_Model_Config_Interface) {
+            if (($config instanceof Payone_Core_Model_Config_Interface) && $config->getStoreId() === $storeId) {
                 return $config;
             }
 
             $config = $this->loadFromCache();
-            if ($config instanceof Payone_Core_Model_Config_Interface) {
+            if (($config instanceof Payone_Core_Model_Config_Interface) && $config->getStoreId() === $storeId) {
                 $helperRegistry->register($registryKey, $config);
                 return $config;
             }
