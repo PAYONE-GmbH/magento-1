@@ -59,10 +59,10 @@ class Payone_Core_Model_Service_InitializeConfig
     {
         $this->setStoreId($storeId);
 
-        $helperRegistry = $this->helperRegistry();
-        $registryKey = $this->getConfigRegistryKey($storeId);
-
         if($useCache === true) {
+            $helperRegistry = $this->helperRegistry();
+            $registryKey = $this->getConfigRegistryKey($storeId);
+
             $config = $helperRegistry->registry($registryKey);
             if ($config instanceof Payone_Core_Model_Config_Interface) {
                 return $config;
