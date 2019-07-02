@@ -518,8 +518,7 @@ class Payone_Core_Block_Payment_Method_Form_Creditcard
             $cvcLength,
             function ($item) use ($hidden) {
                 return !in_array($item, $hidden);
-            },
-            ARRAY_FILTER_USE_KEY
+            }
         );
 
         return $cvcLength;
