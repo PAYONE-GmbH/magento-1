@@ -24,8 +24,10 @@ class Payone_Core_Model_Carrier_PaydirektExpress
     extends Mage_Shipping_Model_Carrier_Abstract
     implements Mage_Shipping_Model_Carrier_Interface
 {
+    const PAYDIREKT_EXPRESS_SHIPPING_CODE = 'paydirektexpress';
+
     /** @var string */
-    protected $_code = 'paydirektexpress';
+    protected $_code = self::PAYDIREKT_EXPRESS_SHIPPING_CODE;
     /** @var bool */
     protected $_isFixed = true;
 

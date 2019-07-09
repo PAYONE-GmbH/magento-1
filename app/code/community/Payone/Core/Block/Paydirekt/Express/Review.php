@@ -28,7 +28,7 @@ class Payone_Core_Block_Paydirekt_Express_Review extends Mage_Core_Block_Templat
     protected $billing;
     /** @var Payone_Core_Block_Paydirekt_Express_Review_Shipping */
     protected $shipping;
-    /** @var Payone_Core_Block_Paydirekt_Express_Review_ShippingMethods */
+    /** @var Payone_Core_Block_Checkout_Onepage_Shipping_Method_Available */
     protected $shippingMethods;
     /** @var Payone_Core_Block_Paydirekt_Express_Review_PaymentMethod */
     protected $paymentMethod;
@@ -105,7 +105,7 @@ class Payone_Core_Block_Paydirekt_Express_Review extends Mage_Core_Block_Templat
     }
 
     /**
-     * @return Payone_Core_Block_Paydirekt_Express_Review_ShippingMethods
+     * @return Payone_Core_Block_Checkout_Onepage_Shipping_Method_Available
      */
     public function getShippingMethods()
     {
@@ -113,7 +113,7 @@ class Payone_Core_Block_Paydirekt_Express_Review extends Mage_Core_Block_Templat
     }
 
     /**
-     * @param Payone_Core_Block_Paydirekt_Express_Review_ShippingMethods $shippingMethods
+     * @param Payone_Core_Block_Checkout_Onepage_Shipping_Method_Available $shippingMethods
      */
     public function setShippingMethods($shippingMethods)
     {

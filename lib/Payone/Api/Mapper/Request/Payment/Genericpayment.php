@@ -34,6 +34,14 @@ class Payone_Api_Mapper_Request_Payment_Genericpayment
             $this->mapAmount($request);
         }
 
+        if ($request instanceof Payone_Api_Request_PaydirektExpressSetCheckout && $request->getInvoicing())  {
+            foreach ($request->getInvoicing()->getItems() as $invoicingItem) {
+                $invoicingItem->setPr(
+                    round($invoicingItem->getPr(), 2) * 100
+                );
+            }
+        }
+
         return $request->toArray();
     }
 

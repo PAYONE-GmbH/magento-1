@@ -74,6 +74,7 @@ class Payone_Api_Enum_WalletType
     const AMAZONPAY = 'AMZ';
     const PAYPAL_EXPRESS = 'PPE';
     const PAYDIREKT = 'PDT';
+    const PAYDIREKTEXPRESS = 'PDT';
     const ALIPAY = 'ALP';
     const MASTERPASS = 'MPA';
 

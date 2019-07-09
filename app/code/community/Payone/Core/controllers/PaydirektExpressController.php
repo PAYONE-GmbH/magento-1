@@ -46,6 +46,8 @@ class Payone_Core_PaydirektExpressController extends Payone_Core_Controller_Abst
 
             if ($response instanceof Payone_Core_Model_Service_Paydirekt_Express_Response_InitCheckoutOkResponse) {
                 $this->_getSession()->setWorkOrderId($response->getWorkorderId());
+                $this->_getCheckoutSession()->setPayoneExternalCheckoutActive(true);
+                $this->_getCheckoutSession()->setPaydirektExpressCheckoutActive(true);
                 if ($response->getRedirectUrl()) {
                     $this->_redirectUrl($response->getRedirectUrl());
                     return;
@@ -100,12 +102,16 @@ class Payone_Core_PaydirektExpressController extends Payone_Core_Controller_Abst
 
     public function errorAction()
     {
+        $this->_getCheckoutSession()->unsPayoneExternalCheckoutActive();
+        $this->_getCheckoutSession()->unsPaydirektExpressCheckoutActive();
         $this->_getCheckoutSession()->addError($this->__('An error occured during the Paydirekt Express Checkout.'));
         $this->_redirect(self::CART_URL);
     }
 
     public function cancelAction()
     {
+        $this->_getCheckoutSession()->unsPayoneExternalCheckoutActive();
+        $this->_getCheckoutSession()->unsPaydirektExpressCheckoutActive();
         $this->_getCheckoutSession()->addSuccess($this->__('The Paydirekt Express Checkout has been canceled.'));
         $this->_redirect(self::CART_URL);
     }
@@ -148,9 +154,9 @@ class Payone_Core_PaydirektExpressController extends Payone_Core_Controller_Abst
             $shipping->setQuoteId($quoteId);
             $shipping->init();
 
-            /** @var Payone_Core_Block_Paydirekt_Express_Review_ShippingMethods $shippingMethods */
+            /** @var Payone_Core_Block_Checkout_Onepage_Shipping_Method_Available $shippingMethods */
             $shippingMethods = $reviewBlock->getLayout()
-                ->createBlock('payone_core/paydirekt_express_review_shippingMethods')
+                ->createBlock('payone_core/checkout_onepage_shipping_method_available')
                 ->setBlockId('paydirekt.express.review.shippingmethods')
                 ->setTemplate('checkout/onepage/shipping_method/available.phtml');
 
@@ -217,6 +223,8 @@ class Payone_Core_PaydirektExpressController extends Payone_Core_Controller_Abst
                 $redirectUrl = Mage::getUrl(self::REVIEW_URL);
             }
             else {
+                $this->_getCheckoutSession()->unsPayoneExternalCheckoutActive();
+                $this->_getCheckoutSession()->unsPaydirektExpressCheckoutActive();
                 $redirectUrl = Mage::getUrl(self::SUCCESS_REDIRECT_URL);
             }
 

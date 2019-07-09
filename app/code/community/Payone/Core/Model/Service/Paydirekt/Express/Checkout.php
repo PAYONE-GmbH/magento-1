@@ -89,6 +89,7 @@ class Payone_Core_Model_Service_Paydirekt_Express_Checkout
      */
     public function initCheckout(Payone_Core_Model_Service_Paydirekt_Express_Request_InitCheckoutRequest $request)
     {
+        $this->checkoutSession->unsLastQuoteId();
         $apiRequest = $this->_mapInitCheckoutParameters();
 
         $apiResponse = $this->serviceApi->request($apiRequest);
@@ -227,26 +228,6 @@ class Payone_Core_Model_Service_Paydirekt_Express_Checkout
             )
         );
 
-        $invoicing = new Payone_Api_Request_Parameter_Invoicing_Transaction();
-        // Quote items:
-        foreach ($this->quote->getItemsCollection() as $key => $itemData) {
-            /** @var $itemData Mage_Sales_Model_Quote_Item */
-            $number = $itemData->getQty();
-            if ($number <= 0 || $itemData->getParentItemId()) {
-                continue; // Do not map items with zero quantity
-            }
-
-            $params['it'] = Payone_Api_Enum_InvoicingItemType::GOODS;
-            $params['id'] = $itemData->getSku();
-            $params['pr'] = $this->getItemPrice($itemData);
-            $params['no'] = $number;
-            $params['de'] = $itemData->getName();
-
-            $item = new Payone_Api_Request_Parameter_Invoicing_Item();
-            $item->init($params);
-            $invoicing->addItem($item);
-        }
-
         /** @var Payone_Core_Model_Carrier_PaydirektExpress $carrier */
         $carrier = Mage::getModel('payone_core/carrier_paydirektExpress');
 
@@ -273,6 +254,30 @@ class Payone_Core_Model_Service_Paydirekt_Express_Checkout
         $shippingAddress->save();
         $this->quote->setShippingAddress($shippingAddress);
 
+        $this->quote->setTotalsCollectedFlag(false);
+        $this->quote->collectTotals();
+
+        $invoicing = new Payone_Api_Request_Parameter_Invoicing_Transaction();
+        // Quote items:
+        foreach ($this->quote->getItemsCollection() as $key => $itemData) {
+            /** @var $itemData Mage_Sales_Model_Quote_Item */
+            $number = $itemData->getQty();
+            if ($number <= 0 || $itemData->getParentItemId()) {
+                continue; // Do not map items with zero quantity
+            }
+
+            $params['it'] = Payone_Api_Enum_InvoicingItemType::GOODS;
+            $params['id'] = $itemData->getSku();
+            $params['pr'] = $this->getItemPrice($itemData);
+            $params['no'] = $number;
+            $params['de'] = $itemData->getName();
+            $params['va'] = $itemData->getTaxPercent();
+
+            $item = new Payone_Api_Request_Parameter_Invoicing_Item();
+            $item->init($params);
+            $invoicing->addItem($item);
+        }
+
         $configMiscShipping = $this->getHelperConfig()->getConfigMisc($this->quote->getStoreId())->getShippingCosts();
         $sku = $configMiscShipping->getSku();
         if (!empty($sku)) {
@@ -284,6 +289,7 @@ class Payone_Core_Model_Service_Paydirekt_Express_Checkout
         $params['pr'] = $shippingMethod['price'];
         $params['no'] = 1;
         $params['de'] = 'Shipping Costs';
+        $params['va'] = 0;
 
         $item = new Payone_Api_Request_Parameter_Invoicing_Item();
         $item->init($params);
@@ -308,6 +314,7 @@ class Payone_Core_Model_Service_Paydirekt_Express_Checkout
             $params['de'] = $description;
             $params['no'] = 1;
             $params['pr'] = $discountAmount;
+            $params['va'] = 0;
 
             $item = new Payone_Api_Request_Parameter_Invoicing_Item();
             $item->init($params);
