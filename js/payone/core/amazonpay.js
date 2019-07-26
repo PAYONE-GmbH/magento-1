@@ -106,7 +106,7 @@ var PayoneCheckout = {
         }
         this.displayOrderReview(result);
         $('checkoutStepInit').removeClassName('active');
-        $('checkoutStepFinish').classList.add('allow', 'active');
+        $('checkoutStepFinish').addClassName('allow').addClassName('active');
     },
     afterChooseMethod: function (result) {
         this.displayOrderReview(result);
