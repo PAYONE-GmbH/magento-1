@@ -23,7 +23,7 @@
 class Payone_Core_Model_Service_Paydirekt_Express_Checkout
 {
     const API_VERSION = '3.10';
-    const CURRENCY = 'EUR';
+    const SHIPPING_FEE_CURRENCY = 'EUR'; // TODO Move that to the XML configuration (or wherever fee are set up)
 
     const CHECKOUT_TYPE_FOR_AUTH = 'directsale';
     const CHECKOUT_TYPE_FOR_PREAUTH = 'order';
@@ -166,7 +166,9 @@ class Payone_Core_Model_Service_Paydirekt_Express_Checkout
         $request->setAmount($this->quote->getGrandTotal());
         $request->setApiVersion(self::API_VERSION);
         $request->setClearingtype(Payone_Enum_ClearingType::WALLET);
-        $request->setCurrency(self::CURRENCY);
+        $request->setCurrency($this->quote->getQuoteCurrencyCode());
+
+        $this->_convertRequestAmountCurrency($request, $this->quote);
 
         return $request;
     }
@@ -180,42 +182,8 @@ class Payone_Core_Model_Service_Paydirekt_Express_Checkout
         /** @var Payone_Api_Request_PaydirektExpressSetCheckout $request */
         $request = $this->_mapCommonParameters();
 
-        // PAYDATA //
-        $paydata = new Payone_Api_Request_Parameter_Paydata_Paydata();
-        $paydata->addItem(
-            new Payone_Api_Request_Parameter_Paydata_DataItem(
-                array('key' => 'action', 'data' => Payone_Api_Enum_GenericpaymentAction::PAYDIREKT_ECS_SET_EXPRESSCHECKOUT)
-            )
-        );
-
-        $authorization = $this->getHelperConfig()
-            ->getConfigPaymentMethodByType(
-                $this->quote->getStoreId(),
-                Payone_Core_Model_System_Config_PaymentMethodType::WALLETPAYDIREKTEXPRESS
-            )->getRequestType();
-
-        if ($authorization === 'authorization') {
-            $paydata->addItem(
-                new Payone_Api_Request_Parameter_Paydata_DataItem(
-                    array('key' => 'type', 'data' => self::CHECKOUT_TYPE_FOR_AUTH)
-                )
-            );
-        } else {
-            $paydata->addItem(
-                new Payone_Api_Request_Parameter_Paydata_DataItem(
-                    array('key' => 'type', 'data' => self::CHECKOUT_TYPE_FOR_PREAUTH)
-                )
-            );
-        }
-
-        $paydata->addItem(
-            new Payone_Api_Request_Parameter_Paydata_DataItem(
-                array('key' => 'web_url_shipping_terms', 'data' => Mage::getBaseUrl() . self::PRIVACY_POLICY_COOKIE_RESTRICTION_MODE_URL)
-            )
-        );
-
+        $paydata = $this->_initPaydata();
         $request->setPaydata($paydata);
-        // END PAYDATA //
 
         $request->setWallet(
             new Payone_Api_Request_Parameter_Authorization_PaymentMethod_Wallet(
@@ -228,27 +196,13 @@ class Payone_Core_Model_Service_Paydirekt_Express_Checkout
             )
         );
 
-        /** @var Payone_Core_Model_Carrier_PaydirektExpress $carrier */
-        $carrier = Mage::getModel('payone_core/carrier_paydirektExpress');
+        $shippingMethod = $this->_initShippingMethod();
 
-        //Rate request doesn't matter here, but is mandatory parameter in parent method's signature
-        /** @var Mage_Shipping_Model_Rate_Request $rateRequest */
-        $rateRequest = Mage::getModel('shipping/rate_request');
-        $shippingMethods = $carrier->collectRates($rateRequest)->getRatesByCarrier('paydirektexpress');
-
-        if (empty($shippingMethods)) {
-            throw new Exception(
-                Mage::helper('payone_core')->__('No shipping detail could be found for this transaction.')
-            );
-        }
-
-        /** @var Mage_Shipping_Model_Rate_Result_Method $shippingMethod */
-        $shippingMethod = $shippingMethods[0];
         $shippingAddress = $this->quote->getShippingAddress()
             ->setCountryId('DE')
             ->setShippingMethod($shippingMethod->getCarrier() . '_' . $shippingMethod->getMethod())
             ->setShippingAmount($shippingMethod->getPrice())
-            ->setBaseShippingAmount($shippingMethod->getPrice())
+            ->setBaseShippingAmount($shippingMethod->getBasePrice())
             ->setCollectShippingRates(1);
         $shippingAddress->collectTotals();
         $shippingAddress->save();
@@ -258,70 +212,9 @@ class Payone_Core_Model_Service_Paydirekt_Express_Checkout
         $this->quote->collectTotals();
 
         $invoicing = new Payone_Api_Request_Parameter_Invoicing_Transaction();
-        // Quote items:
-        foreach ($this->quote->getItemsCollection() as $key => $itemData) {
-            /** @var $itemData Mage_Sales_Model_Quote_Item */
-            $number = $itemData->getQty();
-            if ($number <= 0 || $itemData->getParentItemId()) {
-                continue; // Do not map items with zero quantity
-            }
-
-            $params['it'] = Payone_Api_Enum_InvoicingItemType::GOODS;
-            $params['id'] = $itemData->getSku();
-            $params['pr'] = $this->getItemPrice($itemData);
-            $params['no'] = $number;
-            $params['de'] = $itemData->getName();
-            $params['va'] = $itemData->getTaxPercent();
-
-            $item = new Payone_Api_Request_Parameter_Invoicing_Item();
-            $item->init($params);
-            $invoicing->addItem($item);
-        }
-
-        $configMiscShipping = $this->getHelperConfig()->getConfigMisc($this->quote->getStoreId())->getShippingCosts();
-        $sku = $configMiscShipping->getSku();
-        if (!empty($sku)) {
-            $sku = $this->getFactory()->helper()->__(self::DEFAULT_SHIPPING_SKU);
-        }
-
-        $params['it'] = Payone_Api_Enum_InvoicingItemType::SHIPMENT;
-        $params['id'] = $sku;
-        $params['pr'] = $shippingMethod['price'];
-        $params['no'] = 1;
-        $params['de'] = 'Shipping Costs';
-        $params['va'] = 0;
-
-        $item = new Payone_Api_Request_Parameter_Invoicing_Item();
-        $item->init($params);
-        $invoicing->addItem($item);
-
-        // Discounts
-        $discountAmount = $this->quote->getShippingAddress()->getDiscountAmount();
-        if ($discountAmount != 0) {
-            $configMiscDiscount = $this->getHelperConfig()->getConfigMisc()->getDiscount();
-            $sku = $configMiscDiscount->getSku();
-            $description = $configMiscDiscount->getDescription();
-            if (empty($sku)) {
-                $sku = $this->getFactory()->helper()->__(self::DEFAULT_DISCOUNT_SKU);
-            }
-
-            if (empty($description)) {
-                $description = $this->getFactory()->helper()->__(self::DEFAULT_DISCOUNT_SKU);
-            }
-
-            $params['it'] = Payone_Api_Enum_InvoicingItemType::VOUCHER;
-            $params['id'] = $sku;
-            $params['de'] = $description;
-            $params['no'] = 1;
-            $params['pr'] = $discountAmount;
-            $params['va'] = 0;
-
-            $item = new Payone_Api_Request_Parameter_Invoicing_Item();
-            $item->init($params);
-
-            $invoicing->addItem($item);
-        }
-
+        $this->_initQuoteItems($invoicing);
+        $this->_initsetShippingItem($invoicing, $shippingMethod);
+        $this->_initDiscountItem($invoicing);
         $request->setInvoicing($invoicing);
 
         // Recollect totals, as amounts got updated (shipping)
@@ -330,6 +223,7 @@ class Payone_Core_Model_Service_Paydirekt_Express_Checkout
             ->collectTotals()
             ->save();
         $request->setAmount($this->quote->getGrandTotal());
+        $this->_convertRequestAmountCurrency($request, $this->quote);
 
         return $request;
     }
@@ -519,6 +413,223 @@ class Payone_Core_Model_Service_Paydirekt_Express_Checkout
     }
 
     /**
+     * @param Payone_Api_Request_Genericpayment $request
+     * @param Mage_Sales_Model_Quote $quote
+     */
+    protected function _convertRequestAmountCurrency(Payone_Api_Request_Genericpayment $request, Mage_Sales_Model_Quote $quote)
+    {
+        if($this->configPayment->getCurrencyConvert()) {
+            $request->setCurrency($quote->getBaseCurrencyCode());
+            $request->setAmount($quote->getBaseGrandTotal());
+        }
+    }
+
+    /**
+     * @return Payone_Api_Request_Parameter_Paydata_Paydata
+     */
+    protected function _initPaydata()
+    {
+        $paydata = new Payone_Api_Request_Parameter_Paydata_Paydata();
+        $paydata->addItem(
+            new Payone_Api_Request_Parameter_Paydata_DataItem(
+                array('key' => 'action', 'data' => Payone_Api_Enum_GenericpaymentAction::PAYDIREKT_ECS_SET_EXPRESSCHECKOUT)
+            )
+        );
+
+        $authorization = $this->getHelperConfig()
+            ->getConfigPaymentMethodByType(
+                $this->quote->getStoreId(),
+                Payone_Core_Model_System_Config_PaymentMethodType::WALLETPAYDIREKTEXPRESS
+            )->getRequestType();
+
+        if ($authorization === 'authorization') {
+            $paydata->addItem(
+                new Payone_Api_Request_Parameter_Paydata_DataItem(
+                    array('key' => 'type', 'data' => self::CHECKOUT_TYPE_FOR_AUTH)
+                )
+            );
+        } else {
+            $paydata->addItem(
+                new Payone_Api_Request_Parameter_Paydata_DataItem(
+                    array('key' => 'type', 'data' => self::CHECKOUT_TYPE_FOR_PREAUTH)
+                )
+            );
+        }
+
+        $paydata->addItem(
+            new Payone_Api_Request_Parameter_Paydata_DataItem(
+                array('key' => 'web_url_shipping_terms', 'data' => Mage::getBaseUrl() . self::PRIVACY_POLICY_COOKIE_RESTRICTION_MODE_URL)
+            )
+        );
+
+        return $paydata;
+    }
+
+    /**
+     * @return Mage_Shipping_Model_Rate_Result_Method
+     * @throws Exception
+     */
+    protected function _initShippingMethod()
+    {
+        /** @var Payone_Core_Model_Carrier_PaydirektExpress $carrier */
+        $carrier = Mage::getModel('payone_core/carrier_paydirektExpress');
+
+        //Rate request doesn't matter here, but is mandatory parameter in parent method's signature
+        /** @var Mage_Shipping_Model_Rate_Request $rateRequest */
+        $rateRequest = Mage::getModel('shipping/rate_request');
+        $shippingMethods = $carrier->collectRates($rateRequest)->getRatesByCarrier('paydirektexpress');
+
+        if (empty($shippingMethods)) {
+            throw new Exception(
+                Mage::helper('payone_core')->__('No shipping detail could be found for this transaction.')
+            );
+        }
+
+        $shippingMethod = $this->_convertShippingPrice($shippingMethods[0]);
+
+        return $shippingMethod;
+    }
+
+    /**
+     * @param Mage_Shipping_Model_Rate_Result_Method $shippingMethod
+     * @return Mage_Shipping_Model_Rate_Result_Method
+     */
+    protected function _convertShippingPrice(Mage_Shipping_Model_Rate_Result_Method $shippingMethod)
+    {
+        /** @var Mage_Directory_Model_Currency $currencyModel */
+        $currencyModel = Mage::getModel('directory/currency');
+        $shippingFeeCurrency = $currencyModel->load(self::SHIPPING_FEE_CURRENCY);
+        $shipping = $shippingFeeCurrency->convert($shippingMethod->getPrice(), $this->quote->getQuoteCurrencyCode());
+        $baseShipping = $shippingFeeCurrency->convert($shippingMethod->getPrice(), $this->quote->getBaseCurrencyCode());
+
+        $shippingMethod->setPrice($shipping);
+        $shippingMethod->setBasePrice($baseShipping);
+
+        return $shippingMethod;
+    }
+
+    /**
+     * @param Payone_Api_Request_Parameter_Invoicing_Transaction $invoicing
+     */
+    protected function _initQuoteItems(Payone_Api_Request_Parameter_Invoicing_Transaction $invoicing)
+    {
+        foreach ($this->quote->getItemsCollection() as $key => $itemData) {
+            /** @var $itemData Mage_Sales_Model_Quote_Item */
+            $number = $itemData->getQty();
+            if ($number <= 0 || $itemData->getParentItemId()) {
+                continue; // Do not map items with zero quantity
+            }
+
+            $params['it'] = Payone_Api_Enum_InvoicingItemType::GOODS;
+            $params['id'] = $itemData->getSku();
+            $params['pr'] = $this->_convertItemPrice($itemData);
+            $params['no'] = $number;
+            $params['de'] = $itemData->getName();
+            $params['va'] = $itemData->getTaxPercent();
+
+            $item = new Payone_Api_Request_Parameter_Invoicing_Item();
+            $item->init($params);
+            $invoicing->addItem($item);
+        }
+    }
+
+    /**
+     * @param Mage_Sales_Model_Quote_Item $itemData
+     * @return float
+     */
+    protected function _convertItemPrice(Mage_Sales_Model_Quote_Item $itemData)
+    {
+        if ($this->configPayment->getCurrencyConvert()) {
+            return $itemData->getBasePriceInclTax();
+        }
+
+        return $itemData->getPriceInclTax();
+    }
+
+    /**
+     * @param Payone_Api_Request_Parameter_Invoicing_Transaction $invoicing
+     * @param Mage_Shipping_Model_Rate_Result_Method $shippingMethod
+     */
+    protected function _initsetShippingItem(
+        Payone_Api_Request_Parameter_Invoicing_Transaction $invoicing,
+        Mage_Shipping_Model_Rate_Result_Method $shippingMethod
+    ) {
+        $configMiscShipping = $this->getHelperConfig()->getConfigMisc($this->quote->getStoreId())->getShippingCosts();
+        $sku = $configMiscShipping->getSku();
+        if (!empty($sku)) {
+            $sku = $this->getFactory()->helper()->__(self::DEFAULT_SHIPPING_SKU);
+        }
+
+        $params['it'] = Payone_Api_Enum_InvoicingItemType::SHIPMENT;
+        $params['id'] = $sku;
+        $params['pr'] = $this->_convertShippingAmount($shippingMethod);
+        $params['no'] = 1;
+        $params['de'] = 'Shipping Costs';
+        $params['va'] = 0;
+
+        $item = new Payone_Api_Request_Parameter_Invoicing_Item();
+        $item->init($params);
+        $invoicing->addItem($item);
+    }
+
+    /**
+     * @param Mage_Shipping_Model_Rate_Result_Method $shippingMethod
+     * @return float
+     */
+    protected function _convertShippingAmount(Mage_Shipping_Model_Rate_Result_Method $shippingMethod)
+    {
+        if ($this->configPayment->getCurrencyConvert()) {
+            return $shippingMethod->getBasePrice();
+        }
+
+        return $shippingMethod->getPrice();
+    }
+
+    /**
+     * @param Payone_Api_Request_Parameter_Invoicing_Transaction $invoicing
+     */
+    protected function _initDiscountItem(Payone_Api_Request_Parameter_Invoicing_Transaction $invoicing)
+    {
+        $discountAmount = $this->_convertDiscountAmount();
+        if ($discountAmount != 0) {
+            $configMiscDiscount = $this->getHelperConfig()->getConfigMisc()->getDiscount();
+            $sku = $configMiscDiscount->getSku();
+            $description = $configMiscDiscount->getDescription();
+            if (empty($sku)) {
+                $sku = $this->getFactory()->helper()->__(self::DEFAULT_DISCOUNT_SKU);
+            }
+
+            if (empty($description)) {
+                $description = $this->getFactory()->helper()->__(self::DEFAULT_DISCOUNT_SKU);
+            }
+
+            $params['it'] = Payone_Api_Enum_InvoicingItemType::VOUCHER;
+            $params['id'] = $sku;
+            $params['de'] = $description;
+            $params['no'] = 1;
+            $params['pr'] = $discountAmount;
+            $params['va'] = 0;
+
+            $item = new Payone_Api_Request_Parameter_Invoicing_Item();
+            $item->init($params);
+
+            $invoicing->addItem($item);
+        }
+    }
+
+    /**
+     * @return float
+     */
+    protected function _convertDiscountAmount()
+    {
+        if ($this->configPayment->getCurrencyConvert()) {
+            return $this->quote->getShippingAddress()->getBaseDiscountAmount();
+        }
+
+        return $this->quote->getShippingAddress()->getDiscountAmount();
+    }
+
+    /**
      * @return Payone_Core_Helper_Config
      */
     protected function getHelperConfig()
@@ -536,18 +647,5 @@ class Payone_Core_Model_Service_Paydirekt_Express_Checkout
         }
 
         return $this->factory;
-    }
-
-    /**
-     * @param Mage_Sales_Model_Quote_Item $itemData
-     * @return float
-     */
-    private function getItemPrice(Mage_Sales_Model_Quote_Item $itemData)
-    {
-        if ($this->configPayment->getCurrencyConvert()) {
-            return $itemData->getBasePriceInclTax();
-        }
-
-        return $itemData->getPriceInclTax();
     }
 }
