@@ -177,3 +177,10 @@ function payonePayolutionCustomerDobInput(payment_code)
 
     hiddenDobFull.value = yearSelect.value + "-" + monthSelect.value + "-" + daySelect.value;
 }
+
+function payonePayolutionCopyDebitPaymentSepaIban(code)
+{
+    var input_sepa_iban_xxx_el = $(code + '_sepa_iban_xxx');
+    var input_sepa_iban_el = $(code + '_sepa_iban');
+    input_sepa_iban_el.value = input_sepa_iban_xxx_el.value;
+}

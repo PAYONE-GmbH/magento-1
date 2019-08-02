@@ -125,8 +125,8 @@ $getPayolutionTyp = $this->payolutionTypeMapping();
                                    class="validate-sepa-iban required-entry input-text"
                                    value=""
                                    autocomplete="off" maxlength="34"
-                                   onchange="inputToUppaerCaseAndNumbers(this); copyDebitPaymentSepaIban('<?php echo $code ?>');"
-                                   oninput="inputToUppaerCaseAndNumbers(this); copyDebitPaymentSepaIban('<?php echo $code ?>');"/>
+                                   onchange="inputToUppaerCaseAndNumbers(this); payonePayolutionCopyDebitPaymentSepaIban('<?php echo $code ?>');"
+                                   oninput="inputToUppaerCaseAndNumbers(this); payonePayolutionCopyDebitPaymentSepaIban('<?php echo $code ?>');"/>
                             <input type="hidden" id="<?php echo $code ?>_sepa_iban" name="payment[payone_payolution_iban]"
                                    value="">
                         </div>
