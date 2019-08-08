@@ -40,6 +40,7 @@ class Payone_Core_Block_PaymentAdditionalScript extends Mage_Core_Block_Template
         Payone_Core_Model_System_Config_PaymentMethodType::PAYOLUTIONINSTALLMENT => 'payone/core/payolution.js',
         Payone_Core_Model_System_Config_PaymentMethodType::PAYOLUTIONINVOICING => 'payone/core/payolution.js',
         Payone_Core_Model_System_Config_PaymentMethodType::RATEPAY => 'payone/core/ratepay.js',
+        Payone_Core_Model_System_Config_PaymentMethodType::RATEPAYINVOICING => 'payone/core/ratepay.js',
         Payone_Core_Model_System_Config_PaymentMethodType::RATEPAYDIRECTDEBIT => 'payone/core/ratepay.js',
         Payone_Core_Model_System_Config_PaymentMethodType::SAFEINVOICE => [
             'payone/core/safe_invoice.js',

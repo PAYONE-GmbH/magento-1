@@ -52,6 +52,7 @@ class Payone_Core_Model_System_Config_PaymentMethodType extends Payone_Core_Mode
     const WALLET = 'wallet';
     const BARZAHLEN = 'barzahlen';
     const RATEPAY = 'ratepay';
+    const RATEPAYINVOICING = 'ratepay_invoicing';
     const RATEPAYDIRECTDEBIT = 'ratepay_direct_debit';
     const PAYOLUTION = 'payolution';
     const PAYOLUTIONINVOICING = 'payolution_invoicing';
@@ -82,6 +83,7 @@ class Payone_Core_Model_System_Config_PaymentMethodType extends Payone_Core_Mode
             //self::WALLET => 'Wallet',
             self::BARZAHLEN => 'Barzahlen',
             self::RATEPAY => 'RatePay',
+            self::RATEPAYINVOICING => 'RatePay Invoicing',
             self::RATEPAYDIRECTDEBIT => 'Ratepay Direct Debit',
             // self::PAYOLUTION => 'Payolution',
             self::PAYOLUTIONINVOICING => 'Paysafe Pay Later™ Invoicing',

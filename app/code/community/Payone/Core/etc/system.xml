@@ -485,6 +485,15 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </ratepay>
+                        <ratepay_invoicing translate="label">
+                            <label>RatePay Invoicing</label>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_statusMapping</frontend_model>
+                            <backend_model>payone_core/system_config_backend_serialized_array</backend_model>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </ratepay_invoicing>
                         <ratepay_direct_debit translate="label">
                             <label>Ratepay Direct Debit</label>
                             <frontend_model>payone_core/adminhtml_system_config_form_field_statusMapping</frontend_model>
@@ -1577,6 +1586,36 @@
                         </show_customermessage>
                     </fields>
                 </template_ratepay>
+                <template_ratepay_invoicing translate="label" module="payone_core">
+                    <label>RatePay Invoicing</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>8</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <ratepay_config translate="label,comment">
+                            <label>RatePay Shop-IDs</label>
+                            <comment>Required</comment>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_ratePayInvoicingStoreIds</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <sort_order>250</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </ratepay_config>
+                        <show_customermessage translate="label,tooltip">
+                            <label>Show detailed error-messages</label>
+                            <tooltip>PAYONE_TOOLTIP_CUSTOMERMESSAGE</tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>41</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </show_customermessage>
+                    </fields>
+                </template_ratepay_invoicing>
                 <template_ratepay_direct_debit translate="label" module="payone_core">
                     <label>Ratepay Direct Debit</label>
                     <frontend_type>text</frontend_type>

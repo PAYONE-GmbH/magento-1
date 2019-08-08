@@ -215,6 +215,7 @@ abstract class Payone_Core_Model_Handler_Payment_Abstract
             $order->setData('payone_payment_method_type', $this->getPayment()->getData('payone_wallet_type'));
         } elseif (
             $this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_Ratepay ||
+            $this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_RatepayInvoicing ||
             $this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_RatepayDirectDebit
         ) {
             $order->setData('payone_payment_method_type', $this->getPayment()->getData('payone_ratepay_type'));
@@ -258,6 +259,7 @@ abstract class Payone_Core_Model_Handler_Payment_Abstract
             }
         } elseif (
             $paymentMethod instanceof Payone_Core_Model_Payment_Method_Ratepay ||
+            $paymentMethod instanceof Payone_Core_Model_Payment_Method_RatepayInvoicing ||
             $paymentMethod instanceof Payone_Core_Model_Payment_Method_RatepayDirectDebit
         ) {
             $oSession = Mage::getSingleton('checkout/session');

@@ -721,6 +721,11 @@
                 <model>payone_core/payment_method_ratepay</model>
                 <group>payone</group>
             </payone_ratepay>
+            <payone_ratepay_invoicing translate="title" module="payone_core">
+                <title>PAYONE - RatePay Invoicing</title>
+                <model>payone_core/payment_method_ratepayInvoicing</model>
+                <group>payone</group>
+            </payone_ratepay_invoicing>
             <payone_ratepay_direct_debit translate="title" module="payone_core">
                 <title>PAYONE - Ratepay Direct Debit</title>
                 <model>payone_core/payment_method_ratepayDirectDebit</model>
@@ -922,6 +927,9 @@
             <template_ratepay>
                 <use_global>1</use_global>
             </template_ratepay>
+            <template_ratepay_invoicing>
+                <use_global>1</use_global>
+            </template_ratepay_invoicing>
             <template_ratepay_direct_debit>
                 <use_global>1</use_global>
             </template_ratepay_direct_debit>
@@ -972,6 +980,7 @@
                 <wallet>a:1:{s:18:"_1788129889796_796";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</wallet>
                 <barzahlen>a:1:{s:18:"_1879871286403_403";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</barzahlen>
                 <ratepay>a:1:{s:18:"_2214159068875_875";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</ratepay>
+                <ratepay_invoicing>a:1:{s:18:"_2214159777775_775";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</ratepay_invoicing>
                 <ratepay_direct_debit>a:1:{s:18:"_2214159998975_975";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</ratepay_direct_debit>
                 <payolution>a:1:{s:18:"_2172060663488_488";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</payolution>
                 <payolution_invoicing>a:1:{s:18:"_2408863709483_483";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</payolution_invoicing>

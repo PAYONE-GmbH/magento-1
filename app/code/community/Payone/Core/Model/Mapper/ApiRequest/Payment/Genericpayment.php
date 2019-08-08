@@ -213,7 +213,7 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment
                 if($type == 'RPS'){
                     $request->setFinancingType(Payone_Api_Enum_RatepayType::RPS);
                 } else if($type == 'RPV') {
-                    $request->setFinancingType(Payone_Api_Enum_RatepayType::RPV);
+                    $request->setFinancingType(Payone_Api_Enum_RatepayInvoicingType::RPV);
                 }
             }
         } else {
@@ -233,7 +233,7 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment
      * @param string $sRatePayType
      * @return Payone_Api_Request_Genericpayment
      */
-    public function addRatePayParameters($sRatePayShopId, $sCurrency, $sRatePayType = Payone_Api_Enum_RatepayType::RPV)
+    public function addRatePayParameters($sRatePayShopId, $sCurrency, $sRatePayType = Payone_Api_Enum_RatepayInvoicingType::RPV)
     {
         $request = $this->getRequest();
         $this->mapDefaultParameters($request);

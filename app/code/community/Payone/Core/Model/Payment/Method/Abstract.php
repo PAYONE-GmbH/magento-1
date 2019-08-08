@@ -181,6 +181,7 @@ abstract class Payone_Core_Model_Payment_Method_Abstract
             || $this->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::SAFEINVOICE
             || $this->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::AMAZONPAY
             || $this->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAY
+            || $this->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAYINVOICING
             || $this->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAYDIRECTDEBIT
             || $this->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::WALLETPAYPALEXPRESS
             || $this->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::MASTERPASS
@@ -190,6 +191,7 @@ abstract class Payone_Core_Model_Payment_Method_Abstract
             // Add Ratepay support (08.01.2018)
             // Add Ratepay-Lastschrift support (MAGE-317 23.03.2018)
             // Add Paypal and Masterpass support (MAGE-356 15.06.2018)
+            // Add Ratepay Invoice support (MAGE-444 07.08.2019)
             $this->helperRegistry()->registerPaymentCancel($this->getInfoInstance());
             if ($session->getData('payment_processing_capture_zero_'.$payment->getId()) !== true) {
                 $session->setData('payment_processing_capture_zero_'.$payment->getId(), true);
