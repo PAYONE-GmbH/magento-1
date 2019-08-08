@@ -22,7 +22,7 @@
  */
 
 /**
- * Class Payone_Core_Block_Payment_Method_Info_Ratepay
+ * Class Payone_Core_Block_Payment_Method_Info_RatepayInvoicing
  */
 class Payone_Core_Block_Payment_Method_Info_RatepayInvoicing extends Payone_Core_Block_Payment_Method_Info_Abstract
 {

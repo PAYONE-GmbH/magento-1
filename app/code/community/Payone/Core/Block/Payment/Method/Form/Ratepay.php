@@ -270,4 +270,20 @@ class Payone_Core_Block_Payment_Method_Form_Ratepay extends Payone_Core_Block_Pa
             return false;
         }
     }
+
+    /**
+     * @return Payone_Core_Model_Config_Payment_Method_Interface[]
+     */
+    public function getPaymentConfigs()
+    {
+        $configs = parent::getPaymentConfigs();
+
+        foreach ($configs as $config) {
+            if ($config->getCode() == Payone_Core_Model_System_Config_PaymentMethodType::RATEPAY) {
+                $config->setTypes(array(Payone_Api_Enum_RatepayType::RPS));
+            }
+        }
+
+        return $configs;
+    }
 }

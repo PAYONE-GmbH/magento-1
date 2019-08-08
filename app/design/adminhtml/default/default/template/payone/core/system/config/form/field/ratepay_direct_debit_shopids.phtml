@@ -188,7 +188,7 @@ $_colspan = $_colspan > 1 ? 'colspan="' . $_colspan . '"' : '';
 
     // bind add action to "Add" button in last row
     Event.observe('addToEndBtn<?php echo $_htmlId ?>', 'click', arrayRow<?php echo $_htmlId ?>.add.bind(arrayRow<?php echo $_htmlId ?>, '', ''));
-        
+
     arrayRow<?php echo $_htmlId; ?>.rowsCount += <?php echo count($this->getArrayRows()); ?>;
 
     // initialize standalone button

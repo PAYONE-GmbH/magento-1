@@ -107,7 +107,7 @@ class Payone_Api_Request_Parameter_Authorization_PaymentMethod_RatePayDirectDebi
      * 
      * @param string $financingtype
      */
-    public function setFinancingtype($financingtype = 'RPV')
+    public function setFinancingtype($financingtype = 'RPD')
     {
         $this->financingtype = $financingtype;
     }

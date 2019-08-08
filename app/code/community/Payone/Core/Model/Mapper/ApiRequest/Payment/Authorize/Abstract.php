@@ -650,19 +650,26 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
             $payment->setApiVersion();
             $payment->setCashtype();
         }
-        elseif($paymentMethod instanceof Payone_Core_Model_Payment_Method_Ratepay) {
-            $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_RatePay();
-            $payment->setFinancingtype($this->_getRatePayType());
+        elseif($paymentMethod instanceof Payone_Core_Model_Payment_Method_Ratepay
+            || $paymentMethod instanceof Payone_Core_Model_Payment_Method_RatepayInvoicing
+        ) {
+            if($paymentMethod instanceof Payone_Core_Model_Payment_Method_RatepayInvoicing){
+                $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_RatePayInvoicing();
+                $payment->setFinancingtype(Payone_Api_Enum_RatepayInvoicingType::RPV);
+            }
+            else {
+                $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_RatePay();
+                $payment->setFinancingtype(Payone_Api_Enum_RatepayType::RPS);
+            }
             $payment->setApiVersion();
 
             $checkoutSession = $this->getFactory()->getSingletonCheckoutSession();
-
             $mandateStatus = $checkoutSession->getRatePayFingerprint();
             /**
              * if RatePay Type is Installment map Installmentplan Data
              * from payone session
              */
-            if($this->_getRatePayType() == 'RPV'){
+            if($payment->getFinancingtype() == 'RPV'){
                 $payData = new Payone_Api_Request_Parameter_Paydata_Paydata();
             } else {
                 $ratePayInstallmentData = $this->_getResult($paymentMethod->getCode());
@@ -693,68 +700,6 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
                 }
                 $payment->setBankaccountholder($info->getPayoneAccountOwner());
             }
-
-            $payData->addItem(
-                new Payone_Api_Request_Parameter_Paydata_DataItem(
-                    array('key' => 'customer_allow_credit_inquiry', 'data' => 'yes') // hardcoded by concept
-                )
-            );
-            if ($checkoutSession->getRatePayFingerprint()) { // MAGE-347 only in frontend
-                $payData->addItem(
-                    new Payone_Api_Request_Parameter_Paydata_DataItem(
-                        array('key' => 'device_token', 'data' => $checkoutSession->getRatePayFingerprint())
-                    )
-                );
-            }
-            $payData->addItem(
-                new Payone_Api_Request_Parameter_Paydata_DataItem(
-                    array('key' => 'shop_id', 'data' => $info->getPayoneRatepayShopId())
-                )
-            );
-
-            if ((bool)$info->getPayoneIsb2b() === true) {
-                $payData->addItem(
-                    new Payone_Api_Request_Parameter_Paydata_DataItem(
-                        array('key' => 'b2b', 'data' => 'yes')
-                    )
-                );
-                $payData->addItem(
-                    new Payone_Api_Request_Parameter_Paydata_DataItem(
-                        array('key' => 'company_id', 'data' => $info->getPayoneTradeRegistryNumber())
-                    )
-                );
-                $payData->addItem(
-                    new Payone_Api_Request_Parameter_Paydata_DataItem(
-                        array('key' => 'vat_id', 'data' => $info->getPayoneVatId())
-                    )
-                );
-            } else {
-                $birthdayDate = $info->getPayoneCustomerDob();
-                if (empty($birthdayDate)) {
-                    $birthdayDate = $this->getOrder()->getCustomerDob();
-                }
-                if ($birthdayDate) {
-                    $payment->setBirthday($this->formatBirthday($birthdayDate));
-                }
-            }
-
-            $payment->setPaydata($payData);
-            
-            $telephone = $info->getPayoneCustomerTelephone();
-            if (empty($telephone)) {
-                $telephone = $this->getOrder()->getBillingAddress()->getTelephone();
-            }
-
-            $payment->setTelephonenumber($telephone);
-        }
-        elseif($paymentMethod instanceof Payone_Core_Model_Payment_Method_RatepayInvoicing) {
-            $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_RatePayInvoicing();
-            $payment->setFinancingtype($this->_getRatePayType());
-            $payment->setApiVersion();
-
-            $checkoutSession = $this->getFactory()->getSingletonCheckoutSession();
-
-            $payData = new Payone_Api_Request_Parameter_Paydata_Paydata();
 
             $payData->addItem(
                 new Payone_Api_Request_Parameter_Paydata_DataItem(

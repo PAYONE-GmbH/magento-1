@@ -24,12 +24,11 @@
 /** @var $this Payone_Core_Block_Payment_Method_Form_RatepayInvoicing */
 $code = $this->getMethodCode();
 $configId = $this->getPaymentConfig()->getId();
-$paymentType = '';
+$paymentType = Payone_Api_Enum_RatepayInvoicingType::RPV;
 $ratePayShopId = $this->getMatchingRatePayShopId();
 $ratePayCurrency = $this->getRatePayCurrency();
 $types = $this->getTypes();
 $allowedSEPACountries = htmlspecialchars($this->getAllowedSEPACountries());
-$accountOwner = $this->getAccountOwner();
 $isAdminOrder = $this->getQuote()->getIsSuperMode();
 $quoteId = $this->getQuote()->getId();
 

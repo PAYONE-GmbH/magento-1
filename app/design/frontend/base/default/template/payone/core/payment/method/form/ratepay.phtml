@@ -24,7 +24,7 @@
 /** @var $this Payone_Core_Block_Payment_Method_Form_RatePay */
 $code = $this->getMethodCode();
 $configId = $this->getPaymentConfig()->getId();
-$paymentType = '';
+$paymentType = Payone_Api_Enum_RatepayType::RPS;
 $ratePayShopId = $this->getMatchingRatePayShopId();
 $ratePayCurrency = $this->getRatePayCurrency();
 $types = $this->getTypes();
@@ -40,29 +40,12 @@ $accountOwner = $this->getAccountOwner();
             ?>
         </p>
 
-        <?php
-        if (count($types) > 1) : ?>
-            <select id="<?php echo $code ?>_payrate_type_select" name="payment[payone_ratepay_type]"
-                    onchange="payoneSwitchPayRate(this)" class="no-submit required-entry">
-                <option selected="selected" value=""><?php echo $this->__('--Please Select--') ?></option>
-                <?php foreach ($this->getTypes() as $key => $type) : ?>
-                    <option value="<?php echo $type['code']; ?>" <?php  ?>>
-                        <?php echo $type['name'] ?><span><?php echo $type['fee']; ?></span>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-
-        <?php else :
-            $type = array_pop($types);
-            $paymentType = $type['code'];
-            ?>
-            <?php echo $type['name']; ?>&nbsp;<span><?php echo $type['fee']; ?></span>
-            <input type="hidden" id="<?php echo $code ?>_type" name="payment[payone_ratepay_type]" value="<?php echo $paymentType;?>"/>
-            <script type="text/javascript">
-                checkRequirementFields('<?php echo $paymentType;?>', -1);
-            </script>
-            <?php
-        endif;?>
+        <?php $type = array_pop($types); ?>
+        <?php echo $type['name']; ?>&nbsp;<span><?php echo $type['fee']; ?></span>
+        <input type="hidden" id="<?php echo $code ?>_type" name="payment[payone_ratepay_type]" value="<?php echo $paymentType;?>"/>
+        <script type="text/javascript">
+            checkRequirementFields('<?php echo $paymentType;?>', -1);
+        </script>
 
         <?php if ($this->isDobRequired()): ?>
             <li class="fields">
@@ -223,8 +206,6 @@ $accountOwner = $this->getAccountOwner();
                 </li>
             <?php endif; ?>
         </div>
-
-
 
         <li style="display:none;">
             <input type="hidden" name="payment[payone_config_payment_method_id]"  id="<?php echo $code ?>_config_id" value="<?php echo $configId; ?>"/>

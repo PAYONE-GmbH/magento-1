@@ -51,7 +51,7 @@ class Payone_Api_Request_Parameter_Authorization_PaymentMethod_RatePayInvoicing
     /**
      * @var string
      */
-    protected $ratePayType = NULL;
+    protected $ratePayType = Payone_Api_Enum_RatepayInvoicingType::RPV;
 
     /**
      * @var string
