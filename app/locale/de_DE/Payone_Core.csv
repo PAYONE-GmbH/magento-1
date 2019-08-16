@@ -1269,3 +1269,6 @@ RatePay Debit Type,RatePay Ratenkauf Typ
 "Learn more","Mehr erfahren"
 "-OR-","-ODER-"
 "Please check also CVC length","Bitte pr&uuml;fen Sie auch die CVC-L&auml;nge"
+
+"AMAZONPAY_MFA_FAILED", "Beim Zahlungsvorgang ist ein Problem aufgetreten. Ihre Bestellung wurde nicht aufgegeben und Ihr Konto nicht belastet."
+"AMAZONPAY_MFA_ABANDONED", "Mit dieser Zahlungsart ist ein Problem aufgetreten. Um Ihre Bestellung abzuschließen, wählen Sie bitte eine andere aus."

@@ -106,16 +106,34 @@ class Payone_Core_AmazonPayController extends Payone_Core_Controller_Abstract
 
     public function confirmOrderReferenceSuccessAction()
     {
-        // TODO VB Check/Validate/Complete
-        $this->_initCheckout();
-        $result = $this->_checkout->finalizeOrder();
-        $this->_redirectUrl($result['redirectUrl']);
+        try {
+            $this->_initCheckout();
+            $result = $this->_checkout->finalizeOrder();
+            $this->_redirectUrl($result['redirectUrl']);
+        } catch (Exception $e) {
+            Mage::logException($e);
+            $message = $this->helper()->__('Sorry, your transaction with Amazon Pay was not successful. Please try again.');
+            $this->_getCheckoutSession()->addError($message);
+
+            $redirectUrl = Mage::getUrl('payone_core/amazonpay/checkout', []);
+            $this->_redirectUrl($redirectUrl);
+        }
     }
 
     public function confirmOrderReferenceErrorAction()
     {
-        // TODO VB Complete
-        echo "Fail MFA";
+        $redirectUrl = Mage::getUrl('checkout/cart', []);
+        $message = $this->helper()->__("AMAZONPAY_MFA_FAILED");
+
+        $authenticationStatus = $this->getRequest()->getParam('AuthenticationStatus');
+        if (!empty($authenticationStatus) && $authenticationStatus === 'Abandoned') {
+            $message = $this->helper()->__("AMAZONPAY_MFA_ABANDONED");
+        }
+        $this->_getSession()->unsetData('work_order_id');
+        $this->_getSession()->unsetData('amazon_add_paydata');
+
+        $this->_getCheckoutSession()->addError($message);
+        $this->_redirectUrl($redirectUrl);
     }
 
     /**

@@ -116,14 +116,14 @@ var PayoneCheckout = {
         console.log(result);
         console.log(params);
         if (typeof params['confirmationFlow'] === 'object' && params['confirmationFlow'] !== null) {
-            confirmationFlow = params['confirmationFlow'];
+            var confirmationFlow = params['confirmationFlow'];
             if (result['result'] !== 'OK') {
-                console.log('error triggering placeOrder');
-                confirmationFlow.error();
                 amazon.Login.logout();
+                confirmationFlow.error();
+                window.location = result['redirectUrl'];
             }
             else {
-                console.log('success triggering placeOrder');
+                amazon.Login.logout();
                 confirmationFlow.success();
             }
         }

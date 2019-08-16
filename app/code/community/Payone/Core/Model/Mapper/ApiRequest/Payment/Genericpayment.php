@@ -462,7 +462,7 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment
      */
     public function requestAmazonPayConfirmOrderReference($workOrderId, $data = [], $currency = 'EUR', $amount = null)
     {
-        $request = $this->factory->getRequestAmazonPayConfirmOrderReference();
+        $request = $this->getRequest();
 
         $this->mapDefaultParameters($request);
         $request->setApiVersion('3.10');
@@ -473,6 +473,8 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment
         $request->setClearingtype(\Payone_Enum_ClearingType::AMAZONPAY);
         $request->setWallet(new \Payone_Api_Request_Parameter_Authorization_PaymentMethod_Wallet([
             'wallettype' => \Payone_Api_Enum_WalletType::AMAZONPAY,
+            'successurl' => $data['successUrl'],
+            'errorurl'   => $data['errorUrl']
         ]));
         $request->setWorkorderId($workOrderId);
 
@@ -496,14 +498,6 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment
             ]));
         }
         $request->setPaydata($paydata);
-
-        if (!empty($data['successUrl'])) {
-            $request->setSuccessurl($data['successUrl']);
-        }
-
-        if (!empty($data['errorUrl'])) {
-            $request->setErrorurl($data['errorUrl']);
-        }
 
         return $request;
     }
