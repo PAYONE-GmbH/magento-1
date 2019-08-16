@@ -1766,4 +1766,14 @@ class Payone_Core_Model_Factory
         $request = new Payone_Api_Request_MasterpassGetCheckout($data);
         return $request;
     }
+
+    /**
+     * @param array $data
+     * @return Payone_Api_Request_AmazonPayConfirmOrderReference
+     */
+    public function getRequestAmazonPayConfirmOrderReference(array $data = array())
+    {
+        $request = new Payone_Api_Request_AmazonPayConfirmOrderReference($data);
+        return $request;
+    }
 }

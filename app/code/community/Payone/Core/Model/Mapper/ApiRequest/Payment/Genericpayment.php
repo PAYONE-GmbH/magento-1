@@ -452,4 +452,59 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment
             $request->setAmount($quote->getBaseGrandTotal());
         }
     }
+
+    /**
+     * @param string $workOrderId
+     * @param array $data
+     * @param string $currency
+     * @param integer $amount
+     * @return \Payone_Api_Request_Genericpayment
+     */
+    public function requestAmazonPayConfirmOrderReference($workOrderId, $data = [], $currency = 'EUR', $amount = null)
+    {
+        $request = $this->factory->getRequestAmazonPayConfirmOrderReference();
+
+        $this->mapDefaultParameters($request);
+        $request->setApiVersion('3.10');
+        $request->setAid($this->getConfigPayment()->getAid());
+        $request->setCurrency($currency);
+        $request->setAmount($amount);
+
+        $request->setClearingtype(\Payone_Enum_ClearingType::AMAZONPAY);
+        $request->setWallet(new \Payone_Api_Request_Parameter_Authorization_PaymentMethod_Wallet([
+            'wallettype' => \Payone_Api_Enum_WalletType::AMAZONPAY,
+        ]));
+        $request->setWorkorderId($workOrderId);
+
+        $paydata = new Payone_Api_Request_Parameter_Paydata_Paydata();
+        if (!empty($data['action'])) {
+            $paydata->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem([
+                    'key' => 'action',
+                    'data' => $data['action']
+            ]));
+        }
+        if (!empty($data['amazonReferenceId'])) {
+            $paydata->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem([
+                'key'  => 'amazon_reference_id',
+                'data' => $data['amazonReferenceId']
+            ]));
+        }
+        if (!empty($data['shopOrderReference'])) {
+            $paydata->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem([
+                'key'  => 'reference',
+                'data' => $data['shopOrderReference']
+            ]));
+        }
+        $request->setPaydata($paydata);
+
+        if (!empty($data['successUrl'])) {
+            $request->setSuccessurl($data['successUrl']);
+        }
+
+        if (!empty($data['errorUrl'])) {
+            $request->setErrorurl($data['errorUrl']);
+        }
+
+        return $request;
+    }
 }

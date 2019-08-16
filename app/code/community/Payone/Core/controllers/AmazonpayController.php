@@ -85,12 +85,37 @@ class Payone_Core_AmazonPayController extends Payone_Core_Controller_Abstract
         } catch (\Payone_Api_Exception_InvalidParameters $e) {
             if (in_array($e->getCode(), [981, 985, 986])) {
                 $response->setBody(json_encode(['errorMessage' => $e->getMessage(), 'successful' => false]));
-            } else {
+            }
+            else {
                 $this->_handleUnknownException($e);
             }
         } catch (\Exception $e) {
-            $this->_handleUnknownException($e);
+            if ($e->getMessage() === 'RequiredAgreementsNotAccepted') {
+                $errorMessage = Mage::helper('payone_core')->__('Please agree to all the terms and conditions before placing the order.');
+                $this->getResponse()->setBody(json_encode([
+                    'errorShortType' => 'RequiredAgreementsNotAccepted',
+                    'errorMessage' => $errorMessage,
+                    'successful' => false
+                ]));
+            }
+            else {
+                $this->_handleUnknownException($e);
+            }
         }
+    }
+
+    public function confirmOrderReferenceSuccessAction()
+    {
+        // TODO VB Check/Validate/Complete
+        $this->_initCheckout();
+        $result = $this->_checkout->finalizeOrder();
+        $this->_redirectUrl($result['redirectUrl']);
+    }
+
+    public function confirmOrderReferenceErrorAction()
+    {
+        // TODO VB Complete
+        echo "Fail MFA";
     }
 
     /**

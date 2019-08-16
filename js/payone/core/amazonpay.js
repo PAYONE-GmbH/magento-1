@@ -66,7 +66,7 @@ var PayoneCheckout = {
             });
         });
     },
-    afterConfirmSelection: function (result) {
+    afterConfirmSelection: function (result, params) {
         quoteBaseGrandTotal = result['quoteBaseGrandTotal'];
         checkQuoteBaseGrandTotal = quoteBaseGrandTotal;
         $('shippingMethodsDiv').update(result['shippingRatesHtml']);
@@ -108,13 +108,25 @@ var PayoneCheckout = {
         $('checkoutStepInit').removeClassName('active');
         $('checkoutStepFinish').addClassName('allow').addClassName('active');
     },
-    afterChooseMethod: function (result) {
+    afterChooseMethod: function (result, params) {
         this.displayOrderReview(result);
         $('placeOrder').writeAttribute('disabled', false);
     },
-    afterPlaceOrder: function (result) {
-        amazon.Login.logout();
-        window.location = result['redirectUrl'];
+    afterPlaceOrder: function(result, params) {
+        console.log(result);
+        console.log(params);
+        if (typeof params['confirmationFlow'] === 'object' && params['confirmationFlow'] !== null) {
+            confirmationFlow = params['confirmationFlow'];
+            if (result['result'] !== 'OK') {
+                console.log('error triggering placeOrder');
+                confirmationFlow.error();
+                amazon.Login.logout();
+            }
+            else {
+                console.log('success triggering placeOrder');
+                confirmationFlow.success();
+            }
+        }
     }
 };
 
@@ -136,7 +148,9 @@ while (match = search.exec(query)) {
   }
 }
 
-window.onCheckoutProgress = function (target) {
+window.onCheckoutProgress = function (target, params) {
+    params = typeof params !== 'undefined' ? params : {};
+
     target.disabled = true;
     target.parentElement.addClassName('disabled');
     $('addressBookWidgetCover', 'walletWidgetCover').invoke('addClassName','show');
@@ -160,9 +174,11 @@ window.onCheckoutProgress = function (target) {
                     var Callback = "after"
                         + Progress.currentStep.charAt(0).toUpperCase()
                         + Progress.currentStep.slice(1);
-                    PayoneCheckout[Callback](Result);
+                    PayoneCheckout[Callback](Result, params);
                 } else if (['InvalidPaymentMethod', 'PaymentMethodNotAllowed', 'PaymentPlanNotSet'].indexOf(Result['errorMessage']) !== -1) {
                     window.onAmazonPaymentsInvalidPayment();
+                } else if (Result['errorShortType'] === 'RequiredAgreementsNotAccepted') {
+                    alert(Result['errorMessage']);
                 } else {
                     alert(Result['errorMessage']);
                     $('placeOrder').writeAttribute('disabled', true);
@@ -184,12 +200,21 @@ window.onDocumentReady = function () {
     for(var key in PayoneCheckoutParams)
         if(PayoneCheckoutParams.hasOwnProperty(key))
             PayoneCheckout[key] = PayoneCheckoutParams[key];
-    $$('button.amz').forEach(function(element) {
-        element.onclick = function (event) {
-            event.preventDefault();
-            window.onCheckoutProgress(event.currentTarget);
-        };
-    });
+
+    $('confirmSelection').onclick = function (event) {
+        event.preventDefault();
+        window.onCheckoutProgress(event.currentTarget);
+    };
+    $('placeOrder').onclick = function (event) {
+        event.preventDefault();
+        OffAmazonPayments.initConfirmationFlow(
+            PayoneCheckout.amazonSellerId,
+            PayoneCheckout.amazonOrderReferenceId,
+            function(confirmationFlow) {
+                placeOrder(event.currentTarget, confirmationFlow);
+            }
+        );
+    };
     $$('li.section').forEach(function(element) {
         element.onclick = function (event) {
             if (event.currentTarget.hasClassName('allow') &&
@@ -206,6 +231,10 @@ window.onDocumentReady = function () {
         };
     });
 };
+
+function placeOrder(target, confirmationFlow) {
+    window.onCheckoutProgress(target, {confirmationFlow:confirmationFlow});
+}
 
 window.onAmazonWidgetsInitialized = function (orderReference) {
     PayoneCheckout.amazonOrderReferenceId = orderReference.getAmazonOrderReferenceId();

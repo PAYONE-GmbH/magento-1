@@ -277,7 +277,6 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
     /**
      * @param array $params
      * @return array
-     * @throws Exception
      */
     public function placeOrder($params)
     {
@@ -288,11 +287,65 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
             $postedAgreements = array_keys(isset($params['agreement']) ? $params['agreement'] : []);
             $diff = array_diff($requiredAgreements, $postedAgreements);
             if ($diff) {
-                $agreementsErrorMessage = Mage::helper('payone_core')
-                    ->__('Please agree to all the terms and conditions before placing the order.');
+                $agreementsErrorMessage = 'RequiredAgreementsNotAccepted';
                 Mage::throwException($agreementsErrorMessage);
             }
         }
+
+        /** @var \Payone_Core_Model_Session $session */
+        $session = Mage::getSingleton('payone_core/session');
+        if (empty($this->quote->getReservedOrderId())) {
+            $this->quote->reserveOrderId()->save();
+            $session->setData('amazon_shop_order_reference', $this->quote->getReservedOrderId());
+        }
+        $session->setData('amazon_add_paydata', [
+            'amazon_reference_id'  => $params['amazonOrderReferenceId'],
+            'amazon_address_token' => $params['addressConsentToken'],
+        ]);
+
+        $successUrl = Mage::getUrl('payone_core/amazonpay/confirmOrderReferenceSuccess', []);  // TODO VB Complete
+        $errorUrl = Mage::getUrl('payone_core/amazonpay/confirmOrderReferenceError', []); // TODO VB Complete
+        $params = array(
+            'action' => \Payone_Api_Enum_GenericpaymentAction::AMAZONPAY_CONFIRMORDERREFERENCE,
+            'amazonReferenceId'   => $params['amazonOrderReferenceId'],
+            'shopOrderReference' => $this->quote->getReservedOrderId(),
+            'successUrl' => $successUrl,
+            'errorUrl' => $errorUrl
+        );
+
+        $service = $this->getFactory()->getServicePaymentGenericpayment($this->config);
+        /** @var \Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment $mapper */
+        $mapper = $service->getMapper();
+        $request = $mapper->requestAmazonPayConfirmOrderReference(
+            $this->workOrderId,
+            $params,
+            $this->quote->getQuoteCurrencyCode(),
+            $this->quote->getGrandTotal()
+        );
+        $this->checkCurrencyConversion($request);
+
+        $response = $this->getFactory()->getServiceApiPaymentGenericpayment()->request($request);
+        if ($response instanceof \Payone_Api_Response_Genericpayment_Ok !== true) {
+            // TODO VB Complete/Check
+            return [
+                'successful'  => true,
+                'result' => 'ERROR',
+                'redirectUrl' => $errorUrl
+            ];
+        }
+
+        return [
+            'successful'  => true,
+            'result' => $response->getStatus()
+        ];
+    }
+
+    /**
+     * @return array
+     * @throws Exception
+     */
+    public function finalizeOrder()
+    {
         $this->quote->getBillingAddress()
             ->setData('should_ignore_validation', true);
         $this->quote->getShippingAddress()
@@ -317,10 +370,7 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
         }
         /** @var \Payone_Core_Model_Session $session */
         $session = Mage::getSingleton('payone_core/session');
-        $session->setData('amazon_add_paydata', [
-            'amazon_reference_id'  => $params['amazonOrderReferenceId'],
-            'amazon_address_token' => $params['addressConsentToken'],
-        ]);
+        $amazonOrderReferenceId = $session->getData('amazon_reference_id');
 
         if ($this->quote->getGrandTotal() != $this->checkoutSession->getPayoneGenericpaymentGrandTotal()) {
             // The basket was changed - abort current checkout
@@ -339,7 +389,7 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
         } catch (\Exception $e) {
             if (in_array($e->getCode(), [981, 985, 986])) { // send to widgets
                 $session->setData('amazon_lock_order', true);
-                $session->setData('amazon_reference_id', $params['amazonOrderReferenceId']);
+                $session->setData('amazon_reference_id', $amazonOrderReferenceId);
                 $session->setData('amazon_shop_order_reference', $this->quote->getReservedOrderId());
                 $session->unsetData('amazon_add_paydata');
             } else { // logout and send to basket

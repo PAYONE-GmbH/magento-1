@@ -33,6 +33,10 @@ class Payone_Api_Enum_GenericpaymentAction
      */
     const AMAZONPAY_GETORDERREFERENCEDETAILS = 'getorderreferencedetails';
     /**
+     * send the confirmation request for Amazon before being allowed to complete the order
+     */
+    const AMAZONPAY_CONFIRMORDERREFERENCE = 'confirmorderreference';
+    /**
      * initalize paypal express checkout process
      */
     const PAYPAL_ECS_SET_EXPRESSCHECKOUT='setexpresscheckout';
