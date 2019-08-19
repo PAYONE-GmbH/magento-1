@@ -113,8 +113,6 @@ var PayoneCheckout = {
         $('placeOrder').writeAttribute('disabled', false);
     },
     afterPlaceOrder: function(result, params) {
-        console.log(result);
-        console.log(params);
         if (typeof params['confirmationFlow'] === 'object' && params['confirmationFlow'] !== null) {
             var confirmationFlow = params['confirmationFlow'];
             if (result['result'] !== 'OK') {
