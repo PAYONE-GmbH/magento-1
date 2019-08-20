@@ -116,12 +116,10 @@ var PayoneCheckout = {
         if (typeof params['confirmationFlow'] === 'object' && params['confirmationFlow'] !== null) {
             var confirmationFlow = params['confirmationFlow'];
             if (result['result'] !== 'OK') {
-                amazon.Login.logout();
                 confirmationFlow.error();
-                window.location = result['redirectUrl'];
+                window.location = result['failureRedirectUrl'];
             }
             else {
-                amazon.Login.logout();
                 confirmationFlow.success();
             }
         }
