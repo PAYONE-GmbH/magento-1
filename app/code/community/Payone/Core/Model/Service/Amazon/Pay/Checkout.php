@@ -290,18 +290,16 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
         $errorUrl = Mage::getUrl('payone_core/amazonpay/confirmOrderReferenceError', []);
         $response = $this->requestConfirmOrderReference($amazonReferenceId, $successUrl, $errorUrl);
 
-        if ($response instanceof \Payone_Api_Response_Genericpayment_Ok !== true) {
-            return [
-                'successful'  => true,
-                'result' => 'ERROR',
-                'redirectUrl' => $errorUrl
-            ];
-        }
+        $result = ($response instanceof \Payone_Api_Response_Genericpayment_Ok !== true)
+            ? 'ERROR'
+            : $response->getStatus();
 
-        return [
+        return array(
             'successful'  => true,
-            'result' => $response->getStatus()
-        ];
+            'result' => $result,
+            'shouldLogout' => true,
+            'failureRedirectUrl' => $errorUrl
+        );
     }
 
     /**
