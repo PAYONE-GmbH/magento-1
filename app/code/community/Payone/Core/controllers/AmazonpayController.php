@@ -85,12 +85,55 @@ class Payone_Core_AmazonPayController extends Payone_Core_Controller_Abstract
         } catch (\Payone_Api_Exception_InvalidParameters $e) {
             if (in_array($e->getCode(), [981, 985, 986])) {
                 $response->setBody(json_encode(['errorMessage' => $e->getMessage(), 'successful' => false]));
-            } else {
+            }
+            else {
                 $this->_handleUnknownException($e);
             }
         } catch (\Exception $e) {
-            $this->_handleUnknownException($e);
+            if ($e->getMessage() === 'RequiredAgreementsNotAccepted') {
+                $errorMessage = Mage::helper('payone_core')->__('Please agree to all the terms and conditions before placing the order.');
+                $this->getResponse()->setBody(json_encode([
+                    'errorShortType' => 'RequiredAgreementsNotAccepted',
+                    'errorMessage' => $errorMessage,
+                    'successful' => false
+                ]));
+            }
+            else {
+                $this->_handleUnknownException($e);
+            }
         }
+    }
+
+    public function confirmOrderReferenceSuccessAction()
+    {
+        try {
+            $this->_initCheckout();
+            $result = $this->_checkout->finalizeOrder();
+            $this->_redirectUrl($result['redirectUrl']);
+        } catch (Exception $e) {
+            Mage::logException($e);
+            $message = $this->helper()->__('Sorry, your transaction with Amazon Pay was not successful. Please try again.');
+            $this->_getCheckoutSession()->addError($message);
+
+            $redirectUrl = Mage::getUrl('payone_core/amazonpay/checkout', []);
+            $this->_redirectUrl($redirectUrl);
+        }
+    }
+
+    public function confirmOrderReferenceErrorAction()
+    {
+        $redirectUrl = Mage::getUrl('checkout/cart', []);
+        $message = $this->helper()->__("AMAZONPAY_MFA_FAILED");
+
+        $authenticationStatus = $this->getRequest()->getParam('AuthenticationStatus');
+        if (!empty($authenticationStatus) && $authenticationStatus === 'Abandoned') {
+            $message = $this->helper()->__("AMAZONPAY_MFA_ABANDONED");
+        }
+        $this->_getSession()->unsetData('work_order_id');
+        $this->_getSession()->unsetData('amazon_add_paydata');
+
+        $this->_getCheckoutSession()->addError($message);
+        $this->_redirectUrl($redirectUrl);
     }
 
     /**
