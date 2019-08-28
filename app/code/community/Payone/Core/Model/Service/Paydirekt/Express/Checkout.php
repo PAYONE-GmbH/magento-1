@@ -560,12 +560,15 @@ class Payone_Core_Model_Service_Paydirekt_Express_Checkout
             $sku = $this->getFactory()->helper()->__(self::DEFAULT_SHIPPING_SKU);
         }
 
+        $shippingVatRatio = $this->quote->getShippingAddress()->getShippingTaxAmount()
+            / $this->quote->getShippingAddress()->getShippingAmount();
+
         $params['it'] = Payone_Api_Enum_InvoicingItemType::SHIPMENT;
         $params['id'] = $sku;
-        $params['pr'] = $this->_convertShippingAmount($shippingMethod);
+        $params['pr'] = $this->_convertShippingAmount($this->quote->getShippingAddress());
         $params['no'] = 1;
         $params['de'] = 'Shipping Costs';
-        $params['va'] = 0;
+        $params['va'] = round($shippingVatRatio * 100);
 
         $item = new Payone_Api_Request_Parameter_Invoicing_Item();
         $item->init($params);
@@ -573,16 +576,16 @@ class Payone_Core_Model_Service_Paydirekt_Express_Checkout
     }
 
     /**
-     * @param Mage_Shipping_Model_Rate_Result_Method $shippingMethod
+     * @param Mage_Sales_Model_Quote_Address $shippingAddress
      * @return float
      */
-    protected function _convertShippingAmount(Mage_Shipping_Model_Rate_Result_Method $shippingMethod)
+    protected function _convertShippingAmount(Mage_Sales_Model_Quote_Address $shippingAddress)
     {
         if ($this->configPayment->getCurrencyConvert()) {
-            return $shippingMethod->getBasePrice();
+            return $shippingAddress->getBaseShippingInclTax();
         }
 
-        return $shippingMethod->getPrice();
+        return $shippingAddress->getShippingInclTax();
     }
 
     /**
