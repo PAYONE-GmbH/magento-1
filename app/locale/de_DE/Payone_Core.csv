@@ -1275,4 +1275,7 @@ RatePay Debit Type,RatePay Ratenkauf Typ
 "-OR-","-ODER-"
 "Please check also CVC length","Bitte pr&uuml;fen Sie auch die CVC-L&auml;nge"
 
+"AMAZONPAY_MFA_FAILED", "Beim Zahlungsvorgang ist ein Problem aufgetreten. Ihre Bestellung wurde nicht aufgegeben und Ihr Konto nicht belastet."
+"AMAZONPAY_MFA_ABANDONED", "Mit dieser Zahlungsart ist ein Problem aufgetreten. Um Ihre Bestellung abzuschließen, wählen Sie bitte eine andere aus."
+
 "Unable to initialize Paydirekt Express Checkout.","Der Paydirekt Express Checkout konnte nicht initialisiert werden."

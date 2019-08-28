@@ -108,22 +108,12 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
     public function confirmSelection($params)
     {
         $data = [];
-        $action = \Payone_Api_Enum_GenericpaymentAction::AMAZONPAY_GETORDERREFERENCEDETAILS;
-        $service = $this->getFactory()->getServicePaymentGenericpayment($this->config);
-        /** @var \Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment $mapper */
-        $mapper = $service->getMapper();
-        $request = $mapper->requestAmazonPayOrderReferenceDetails(
-            $this->workOrderId,
-            [
-                'action'               => $action,
-                'amazon_reference_id'  => $params['amazonOrderReferenceId'],
-                'amazon_address_token' => $params['addressConsentToken'],
-            ],
-            $this->quote->getQuoteCurrencyCode()
-        );
-        $this->checkCurrencyConversion($request);
 
-        $response = $this->getFactory()->getServiceApiPaymentGenericpayment()->request($request);
+        $amazonReferenceId = $params['amazonOrderReferenceId'];
+        $addressConsentToken = $params['addressConsentToken'];
+
+        $response = $this->requestGetOrderReferenceDetails($amazonReferenceId, $addressConsentToken);
+
         if ($response instanceof \Payone_Api_Response_Genericpayment_Ok) {
             $data = $response->getPayDataArray();
         } else {
@@ -217,30 +207,17 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
         }
         $this->quote->getShippingAddress()->setShippingMethod($params['shippingMethodCode']);
         $this->quote->setTotalsCollectedFlag(false)->collectTotals()->save();
-        $action = \Payone_Api_Enum_GenericpaymentAction::AMAZONPAY_SETORDERREFERENCEDETAILS;
-        $service = $this->getFactory()->getServicePaymentGenericpayment($this->config);
-        /** @var \Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment $mapper */
-        $mapper = $service->getMapper();
-        $request = $mapper->requestAmazonPayOrderReferenceDetails(
-            $this->workOrderId,
-            [
-                'action'               => $action,
-                'amazon_reference_id'  => $params['amazonOrderReferenceId'],
-                'amazon_address_token' => $params['addressConsentToken'],
-                'storename'            => Mage::app()->getStore()->getGroup()->getName(),
-            ],
-            $this->quote->getQuoteCurrencyCode(),
-            $this->quote->getGrandTotal()
-        );
-        $this->checkCurrencyConversion($request);
 
-        $this->checkoutSession->setPayoneGenericpaymentGrandTotal($this->quote->getGrandTotal());
-        $response = $this->getFactory()->getServiceApiPaymentGenericpayment()->request($request);
+        $amazonReferenceId = $params['amazonOrderReferenceId'];
+        $addressConsentToken = $params['addressConsentToken'];
+
+        $response = $this->requestSetOrderReferenceDetails($amazonReferenceId, $addressConsentToken);
         if ($response instanceof \Payone_Api_Response_Genericpayment_Ok !== true) {
             Mage::throwException(
                 Mage::helper('payone_core')->__('Unable to proceed with PAYONE Amazon Checkout.')
             );
         }
+
         /** @var \Payone_Core_AmazonPayController $controller */
         $controller = $params['controller'];
         $layout = $controller->getLayout();
@@ -277,7 +254,6 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
     /**
      * @param array $params
      * @return array
-     * @throws Exception
      */
     public function placeOrder($params)
     {
@@ -288,11 +264,50 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
             $postedAgreements = array_keys(isset($params['agreement']) ? $params['agreement'] : []);
             $diff = array_diff($requiredAgreements, $postedAgreements);
             if ($diff) {
-                $agreementsErrorMessage = Mage::helper('payone_core')
-                    ->__('Please agree to all the terms and conditions before placing the order.');
+                $agreementsErrorMessage = 'RequiredAgreementsNotAccepted';
                 Mage::throwException($agreementsErrorMessage);
             }
         }
+
+        $amazonReferenceId = $params['amazonOrderReferenceId'];
+        $addressConsentToken = $params['addressConsentToken'];
+        /** @var \Payone_Core_Model_Session $session */
+        $session = Mage::getSingleton('payone_core/session');
+        if (empty($this->quote->getReservedOrderId())) {
+            $this->quote->reserveOrderId()->save();
+            $session->setData('amazon_shop_order_reference', $this->quote->getReservedOrderId());
+        }
+        $session->setData('amazon_add_paydata', [
+            'amazon_reference_id'  => $amazonReferenceId,
+            'amazon_address_token' => $addressConsentToken,
+        ]);
+        $session->setData('amazon_reference_id', $amazonReferenceId);
+
+        // Play this request again to update the totals
+        $this->requestSetOrderReferenceDetails($amazonReferenceId, $addressConsentToken);
+
+        $successUrl = Mage::getUrl('payone_core/amazonpay/confirmOrderReferenceSuccess', []);
+        $errorUrl = Mage::getUrl('payone_core/amazonpay/confirmOrderReferenceError', []);
+        $response = $this->requestConfirmOrderReference($amazonReferenceId, $successUrl, $errorUrl);
+
+        $result = ($response instanceof \Payone_Api_Response_Genericpayment_Ok !== true)
+            ? 'ERROR'
+            : $response->getStatus();
+
+        return array(
+            'successful'  => true,
+            'result' => $result,
+            'shouldLogout' => true,
+            'failureRedirectUrl' => $errorUrl
+        );
+    }
+
+    /**
+     * @return array
+     * @throws Exception
+     */
+    public function finalizeOrder()
+    {
         $this->quote->getBillingAddress()
             ->setData('should_ignore_validation', true);
         $this->quote->getShippingAddress()
@@ -317,10 +332,7 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
         }
         /** @var \Payone_Core_Model_Session $session */
         $session = Mage::getSingleton('payone_core/session');
-        $session->setData('amazon_add_paydata', [
-            'amazon_reference_id'  => $params['amazonOrderReferenceId'],
-            'amazon_address_token' => $params['addressConsentToken'],
-        ]);
+        $amazonOrderReferenceId = $session->getData('amazon_reference_id');
 
         if ($this->quote->getGrandTotal() != $this->checkoutSession->getPayoneGenericpaymentGrandTotal()) {
             // The basket was changed - abort current checkout
@@ -339,7 +351,7 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
         } catch (\Exception $e) {
             if (in_array($e->getCode(), [981, 985, 986])) { // send to widgets
                 $session->setData('amazon_lock_order', true);
-                $session->setData('amazon_reference_id', $params['amazonOrderReferenceId']);
+                $session->setData('amazon_reference_id', $amazonOrderReferenceId);
                 $session->setData('amazon_shop_order_reference', $this->quote->getReservedOrderId());
                 $session->unsetData('amazon_add_paydata');
             } else { // logout and send to basket
@@ -392,6 +404,90 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
             'successful'  => true,
             'redirectUrl' => Mage::getUrl('payone_core/checkout_onepage_payment/success'),
         ];
+    }
+
+    /**
+     * @param string $amazonOrderReferenceId
+     * @param string $addressConsentToken
+     * @return Payone_Api_Response_Error|Payone_Api_Response_Genericpayment_Approved|Payone_Api_Response_Genericpayment_Redirect
+     */
+    protected function requestGetOrderReferenceDetails($amazonOrderReferenceId, $addressConsentToken)
+    {
+        $action = \Payone_Api_Enum_GenericpaymentAction::AMAZONPAY_GETORDERREFERENCEDETAILS;
+        $service = $this->getFactory()->getServicePaymentGenericpayment($this->config);
+        /** @var \Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment $mapper */
+        $mapper = $service->getMapper();
+        $request = $mapper->requestAmazonPayOrderReferenceDetails(
+            $this->workOrderId,
+            [
+                'action'               => $action,
+                'amazon_reference_id'  => $amazonOrderReferenceId,
+                'amazon_address_token' => $addressConsentToken,
+            ],
+            $this->quote->getQuoteCurrencyCode()
+        );
+        $this->checkCurrencyConversion($request);
+
+        return $this->getFactory()->getServiceApiPaymentGenericpayment()->request($request);
+    }
+
+    /**
+     * @param string $amazonOrderReferenceId
+     * @param string $addressConsentToken
+     * @return Payone_Api_Response_Error|Payone_Api_Response_Genericpayment_Approved|Payone_Api_Response_Genericpayment_Redirect
+     */
+    protected function requestSetOrderReferenceDetails($amazonOrderReferenceId, $addressConsentToken)
+    {
+        $action = \Payone_Api_Enum_GenericpaymentAction::AMAZONPAY_SETORDERREFERENCEDETAILS;
+        $service = $this->getFactory()->getServicePaymentGenericpayment($this->config);
+        /** @var \Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment $mapper */
+        $mapper = $service->getMapper();
+        $request = $mapper->requestAmazonPayOrderReferenceDetails(
+            $this->workOrderId,
+            [
+                'action'               => $action,
+                'amazon_reference_id'  => $amazonOrderReferenceId,
+                'amazon_address_token' => $addressConsentToken,
+                'storename'            => Mage::app()->getStore()->getGroup()->getName(),
+            ],
+            $this->quote->getQuoteCurrencyCode(),
+            $this->quote->getGrandTotal()
+        );
+        $this->checkCurrencyConversion($request);
+
+        $this->checkoutSession->setPayoneGenericpaymentGrandTotal($this->quote->getGrandTotal());
+
+        return $this->getFactory()->getServiceApiPaymentGenericpayment()->request($request);
+    }
+
+    /**
+     * @param string $amazonReferenceId
+     * @param string $successUrl
+     * @param string $errorUrl
+     * @return Payone_Api_Response_Error|Payone_Api_Response_Genericpayment_Approved|Payone_Api_Response_Genericpayment_Redirect
+     */
+    protected function requestConfirmOrderReference($amazonReferenceId, $successUrl, $errorUrl)
+    {
+        $params = array(
+            'action' => \Payone_Api_Enum_GenericpaymentAction::AMAZONPAY_CONFIRMORDERREFERENCE,
+            'amazonReferenceId'   => $amazonReferenceId,
+            'shopOrderReference' => $this->quote->getReservedOrderId(),
+            'successUrl' => $successUrl,
+            'errorUrl' => $errorUrl
+        );
+
+        $service = $this->getFactory()->getServicePaymentGenericpayment($this->config);
+        /** @var \Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment $mapper */
+        $mapper = $service->getMapper();
+        $request = $mapper->requestAmazonPayConfirmOrderReference(
+            $this->workOrderId,
+            $params,
+            $this->quote->getQuoteCurrencyCode(),
+            $this->quote->getGrandTotal()
+        );
+        $this->checkCurrencyConversion($request);
+
+        return $this->getFactory()->getServiceApiPaymentGenericpayment()->request($request);
     }
 
     /**
