@@ -149,11 +149,6 @@ $allowedSEPACountries = htmlspecialchars($this->getAllowedSEPACountries());
         </li>
 
         <li>
-            <div id="cover">
-                <div id="ajaxLoaderId">
-                    <img src="<?php echo Mage::getDesign()->getSkinUrl('/images/payone/ajaxloader.gif') ?>">
-                </div>
-            </div>
             <div id="ratepay-main-cont" style="<?php echo (count($this->getTypes()) == 1 && $paymentType == 'RPS') ? 'display: block' : 'display: none'; ?>">
                 <div id="ratepay-Header">
                     <div class="ratepay-FullWidth">
