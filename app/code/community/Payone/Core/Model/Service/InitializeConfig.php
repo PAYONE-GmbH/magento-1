@@ -61,10 +61,10 @@ class Payone_Core_Model_Service_InitializeConfig
     {
         $this->setStoreId($storeId);
 
-        if($useCache === true) {
-            $helperRegistry = $this->helperRegistry();
-            $registryKey = $this->getConfigRegistryKey($storeId);
+        $helperRegistry = $this->helperRegistry();
+        $registryKey = $this->getConfigRegistryKey($storeId);
 
+        if($useCache === true) {
             $config = $helperRegistry->registry($registryKey);
             if (($config instanceof Payone_Core_Model_Config_Interface) && $config->getStoreId() === $storeId) {
                 return $config;
@@ -102,6 +102,8 @@ class Payone_Core_Model_Service_InitializeConfig
         // Caching
         if ($useCache === true) {
             $this->saveToCache($config);
+            $helperRegistry->unregister($registryKey);
+            $helperRegistry->register($registryKey, $config);
         }
 
         return $config;
