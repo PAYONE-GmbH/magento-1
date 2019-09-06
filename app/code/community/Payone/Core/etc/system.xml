@@ -1500,7 +1500,17 @@
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
-                    <fields></fields>
+                    <fields>
+                        <associated_shipping_method translate="label">
+                            <label>Shipping Method</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>payone_core/system_config_shippingMethodCode</source_model>
+                            <sort_order>990</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </associated_shipping_method>
+                    </fields>
                 </template_wallet_paydirekt_express>
                 <template_wallet_paypal_express translate="label" module="payone_core">
                     <label>Paypal Express</label>

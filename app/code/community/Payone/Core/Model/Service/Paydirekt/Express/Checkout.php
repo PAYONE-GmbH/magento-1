@@ -23,7 +23,6 @@
 class Payone_Core_Model_Service_Paydirekt_Express_Checkout
 {
     const API_VERSION = '3.10';
-    const SHIPPING_FEE_CURRENCY = 'EUR'; // TODO Move that to the XML configuration (or wherever fee are set up)
 
     const CHECKOUT_TYPE_FOR_AUTH = 'directsale';
     const CHECKOUT_TYPE_FOR_PREAUTH = 'order';
@@ -196,15 +195,37 @@ class Payone_Core_Model_Service_Paydirekt_Express_Checkout
             )
         );
 
-        $shippingMethod = $this->_initShippingMethod();
-
+        $configShippingMethod = $this->configPayment->getAssociatedShippingMethod();
         $shippingAddress = $this->quote->getShippingAddress()
             ->setCountryId('DE')
-            ->setShippingMethod($shippingMethod->getCarrier() . '_' . $shippingMethod->getMethod())
-            ->setShippingAmount($shippingMethod->getPrice())
-            ->setBaseShippingAmount($shippingMethod->getBasePrice())
-            ->setCollectShippingRates(1);
-        $shippingAddress->collectTotals();
+            ->setCity('Stadt')
+            ->setPostcode('12345')
+            ->setShippingMethod($configShippingMethod);
+        $shippingAddress->setCollectShippingRates(1)->collectShippingRates();
+
+        if (empty($shippingAddress->getShippingMethod())) {
+            $rates = $shippingAddress->getShippingRatesCollection()->getItems();
+            if(empty($rates)) {
+                throw new Exception(
+                    Mage::helper('payone_core')
+                        ->__('Unable to initialize Paydirekt Express Checkout.')
+                );
+            }
+
+            $shippingMethod = array_shift($rates)->getCode();
+            $shippingAddress->setShippingMethod($shippingMethod)
+                ->setCollectShippingRates(1)
+                ->collectTotals();
+
+            // We keep a trace that the shipping method got changed
+            Mage::log(
+                'PAYONE - Paydirekt Express : '
+                . 'configured shipping method (' . $configShippingMethod . ') was unavailable. '
+                . 'It got replaced by first available method (' . $shippingMethod . ')',
+                Zend_Log::WARN
+            );
+        }
+
         $shippingAddress->save();
         $this->quote->setShippingAddress($shippingAddress);
 
@@ -213,13 +234,14 @@ class Payone_Core_Model_Service_Paydirekt_Express_Checkout
 
         $invoicing = new Payone_Api_Request_Parameter_Invoicing_Transaction();
         $this->_initQuoteItems($invoicing);
-        $this->_initsetShippingItem($invoicing, $shippingMethod);
+        $this->_initsetShippingItem($invoicing);
         $this->_initDiscountItem($invoicing);
         $request->setInvoicing($invoicing);
 
         // Recollect totals, as amounts got updated (shipping)
         // Update request amount with new GrandTotal
         $this->quote->setTotalsCollectedFlag(false)
+            ->setTriggerRecollect(1)
             ->collectTotals()
             ->save();
         $request->setAmount($this->quote->getGrandTotal());
@@ -342,10 +364,8 @@ class Payone_Core_Model_Service_Paydirekt_Express_Checkout
             /** @var Mage_Sales_Model_Quote $quote */
             $quote = Mage::getModel('sales/quote')->load($request->getQuoteId());
             $quote->setTotalsCollectedFlag(true);
-            $quote->getBillingAddress()
-                ->setData('should_ignore_validation', true);
-            $quote->getShippingAddress()
-                ->setData('should_ignore_validation', true);
+            $quote->getBillingAddress()->setData('should_ignore_validation', true);
+            $quote->getShippingAddress()->setData('should_ignore_validation', true);
 
             if (Mage::getSingleton('customer/session')->isLoggedIn()) {
                 $customer = Mage::getSingleton('customer/session')->getCustomer();
@@ -466,49 +486,6 @@ class Payone_Core_Model_Service_Paydirekt_Express_Checkout
     }
 
     /**
-     * @return Mage_Shipping_Model_Rate_Result_Method
-     * @throws Exception
-     */
-    protected function _initShippingMethod()
-    {
-        /** @var Payone_Core_Model_Carrier_PaydirektExpress $carrier */
-        $carrier = Mage::getModel('payone_core/carrier_paydirektExpress');
-
-        //Rate request doesn't matter here, but is mandatory parameter in parent method's signature
-        /** @var Mage_Shipping_Model_Rate_Request $rateRequest */
-        $rateRequest = Mage::getModel('shipping/rate_request');
-        $shippingMethods = $carrier->collectRates($rateRequest)->getRatesByCarrier('paydirektexpress');
-
-        if (empty($shippingMethods)) {
-            throw new Exception(
-                Mage::helper('payone_core')->__('No shipping detail could be found for this transaction.')
-            );
-        }
-
-        $shippingMethod = $this->_convertShippingPrice($shippingMethods[0]);
-
-        return $shippingMethod;
-    }
-
-    /**
-     * @param Mage_Shipping_Model_Rate_Result_Method $shippingMethod
-     * @return Mage_Shipping_Model_Rate_Result_Method
-     */
-    protected function _convertShippingPrice(Mage_Shipping_Model_Rate_Result_Method $shippingMethod)
-    {
-        /** @var Mage_Directory_Model_Currency $currencyModel */
-        $currencyModel = Mage::getModel('directory/currency');
-        $shippingFeeCurrency = $currencyModel->load(self::SHIPPING_FEE_CURRENCY);
-        $shipping = $shippingFeeCurrency->convert($shippingMethod->getPrice(), $this->quote->getQuoteCurrencyCode());
-        $baseShipping = $shippingFeeCurrency->convert($shippingMethod->getPrice(), $this->quote->getBaseCurrencyCode());
-
-        $shippingMethod->setPrice($shipping);
-        $shippingMethod->setBasePrice($baseShipping);
-
-        return $shippingMethod;
-    }
-
-    /**
      * @param Payone_Api_Request_Parameter_Invoicing_Transaction $invoicing
      */
     protected function _initQuoteItems(Payone_Api_Request_Parameter_Invoicing_Transaction $invoicing)
@@ -539,21 +516,21 @@ class Payone_Core_Model_Service_Paydirekt_Express_Checkout
      */
     protected function _convertItemPrice(Mage_Sales_Model_Quote_Item $itemData)
     {
+        // If tax is applied after discount, the item hold the tax compensation for that discount
+        // we have then to substract it from the item price
+        $dTC = $itemData->getDiscountTaxCompensation();
         if ($this->configPayment->getCurrencyConvert()) {
-            return $itemData->getBasePriceInclTax();
+            return $itemData->getBasePriceInclTax() - $dTC;
         }
 
-        return $itemData->getPriceInclTax();
+        return $itemData->getPriceInclTax() - $dTC;
     }
 
     /**
      * @param Payone_Api_Request_Parameter_Invoicing_Transaction $invoicing
-     * @param Mage_Shipping_Model_Rate_Result_Method $shippingMethod
      */
-    protected function _initsetShippingItem(
-        Payone_Api_Request_Parameter_Invoicing_Transaction $invoicing,
-        Mage_Shipping_Model_Rate_Result_Method $shippingMethod
-    ) {
+    protected function _initsetShippingItem(Payone_Api_Request_Parameter_Invoicing_Transaction $invoicing)
+    {
         $configMiscShipping = $this->getHelperConfig()->getConfigMisc($this->quote->getStoreId())->getShippingCosts();
         $sku = $configMiscShipping->getSku();
         if (!empty($sku)) {
@@ -562,13 +539,16 @@ class Payone_Core_Model_Service_Paydirekt_Express_Checkout
 
         $shippingVatRatio = $this->quote->getShippingAddress()->getShippingTaxAmount()
             / $this->quote->getShippingAddress()->getShippingAmount();
+        if (is_nan($shippingVatRatio) || !is_numeric($shippingVatRatio)) {
+            $shippingVatRatio = 0;
+        }
 
         $params['it'] = Payone_Api_Enum_InvoicingItemType::SHIPMENT;
         $params['id'] = $sku;
         $params['pr'] = $this->_convertShippingAmount($this->quote->getShippingAddress());
         $params['no'] = 1;
         $params['de'] = 'Shipping Costs';
-        $params['va'] = round($shippingVatRatio * 100);
+        $params['va'] = round($shippingVatRatio * 100, 2);
 
         $item = new Payone_Api_Request_Parameter_Invoicing_Item();
         $item->init($params);

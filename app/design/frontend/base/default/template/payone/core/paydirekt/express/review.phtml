@@ -55,27 +55,19 @@ $quote = $this->getQuote();
         ?>
     </div>
     <div class="col-2">
-        <form id="chooseMethod">
-            <div class="box-title">
-                <h3><?php echo $this->__('Shipping method') ?></h3>
+        <?php
+            echo $this->getShippingMethod()->toHtml();
+        ?>
+        <div class="fadeOut" style="display: none">
+            <div class="fadeOutContent">
+                <span class="please-wait">
+                    <img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>"
+                         alt="<?php echo $this->__('Please wait...') ?>"
+                         title="<?php echo $this->__('Please wait...') ?>"
+                         class="v-middle"/> <?php echo $this->__('Please wait...') ?>
+                </span>
             </div>
-            <div id='shippingMethodsDiv' class="box-content">
-                <?php
-                    echo $this->getShippingMethods()->toHtml();
-                ?>
-
-                <div class="fadeOut" style="display: none">
-                    <div class="fadeOutContent">
-                        <span class="please-wait">
-                            <img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>"
-                                 alt="<?php echo $this->__('Please wait...') ?>"
-                                 title="<?php echo $this->__('Please wait...') ?>"
-                                 class="v-middle"/> <?php echo $this->__('Please wait...') ?>
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 <div class="info-set">
@@ -96,7 +88,7 @@ $quote = $this->getQuote();
 </div>
 <div class="buttons-set">
     <button title="<?php echo $this->__('Place Order'); ?>" type="button"
-            class="button" id="placeOrder" disabled="disabled">
+            class="button" id="placeOrder">
         <?php echo $this->__('Place Order'); ?>
     </button>
 </div>

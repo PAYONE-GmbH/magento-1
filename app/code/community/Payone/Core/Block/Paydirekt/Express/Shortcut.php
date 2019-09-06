@@ -246,4 +246,76 @@ class Payone_Core_Block_Paydirekt_Express_Shortcut extends Mage_Core_Block_Templ
 
         return $paymentConfig;
     }
+
+    /**
+     * We try to collect the shipping rates *
+     * If not found, the method is not usable, and not displayed
+     *
+     * *2 tries :
+     *   - First try with the configured shipping method
+     *   - Second try, check if any other rate exists, if so, pick it
+     * The same mechanism will be used when processing the quote for real (during Checkout)
+     *
+     * Note for improvement : this might bring slight perf reduction on systems with many shipping options
+     *
+     * @return bool
+     */
+    public function isApplicable()
+    {
+        /** @var Mage_Sales_Model_Quote $quote */
+        $quote = Mage::getModel('sales/quote')->load($this->getQuoteId());
+
+        if (is_null($quote)) {
+            return false;
+        }
+
+        if (!empty($quote->getShippingAddress()->getShippingMethod())) {
+            return true;
+        }
+
+        $shippingAddress = $quote->getShippingAddress()
+            ->setCountryId('DE')
+            ->setCity('Stadt')
+            ->setPostcode('12345');
+        $shippingAddress->requestShippingRates();
+        /** @var Payone_Core_Model_Payment_Method_Abstract $methodInstance */
+        $methodInstance = Mage::helper('payment')->getMethodInstance(Payone_Core_Model_System_Config_PaymentMethodCode::WALLETPAYDIREKTEXPRESS);
+        /** @var Payone_Core_Model_Config_Payment_Method $config */
+        $config = $methodInstance->getConfigForQuote($quote);
+        $configShippingMethod = $config->getAssociatedShippingMethod();
+
+        // Try with configured shipping method
+        $found = $this->rateExistsForMethod($shippingAddress, $configShippingMethod);
+        if (!empty($found)) {
+            $shippingAddress->save();
+            return true;
+        }
+
+        // Try with first available shipping method
+        $rates = $shippingAddress->getShippingRatesCollection()->getItems();
+        if (!empty($rates)) {
+            /** @var Mage_Sales_Model_Quote_Address_Rate $availableRate */
+            $availableRate = array_shift($rates);
+            $shippingAddress->setShippingMethod($availableRate->getMethod())->save();
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param Mage_Sales_Model_Quote_Address $shippingAddress
+     * @param string $configShippingMethod
+     * @return bool
+     */
+    private function rateExistsForMethod($shippingAddress, $configShippingMethod)
+    {
+        $shippingAddress->setShippingMethod($configShippingMethod);
+        $shippingAddress
+            ->setCollectShippingRates(1)
+            ->collectShippingRates();
+
+        return !empty($shippingAddress->getShippingRateByCode($configShippingMethod));
+    }
 }

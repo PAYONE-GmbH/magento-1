@@ -28,8 +28,8 @@ class Payone_Core_Block_Paydirekt_Express_Review extends Mage_Core_Block_Templat
     protected $billing;
     /** @var Payone_Core_Block_Paydirekt_Express_Review_Shipping */
     protected $shipping;
-    /** @var Payone_Core_Block_Checkout_Onepage_Shipping_Method_Available */
-    protected $shippingMethods;
+    /** @var Payone_Core_Block_Paydirekt_Express_Review_ShippingMethod */
+    protected $shippingMethod;
     /** @var Payone_Core_Block_Paydirekt_Express_Review_PaymentMethod */
     protected $paymentMethod;
     /** @var Payone_Core_Block_Paydirekt_Express_Review_Items */
@@ -105,19 +105,19 @@ class Payone_Core_Block_Paydirekt_Express_Review extends Mage_Core_Block_Templat
     }
 
     /**
-     * @return Payone_Core_Block_Checkout_Onepage_Shipping_Method_Available
+     * @return Payone_Core_Block_Paydirekt_Express_Review_ShippingMethod
      */
-    public function getShippingMethods()
+    public function getShippingMethod()
     {
-        return $this->shippingMethods;
+        return $this->shippingMethod;
     }
 
     /**
-     * @param Payone_Core_Block_Checkout_Onepage_Shipping_Method_Available $shippingMethods
+     * @param Payone_Core_Block_Paydirekt_Express_Review_ShippingMethod $shippingMethod
      */
-    public function setShippingMethods($shippingMethods)
+    public function setShippingMethod($shippingMethod)
     {
-        $this->shippingMethods = $shippingMethods;
+        $this->shippingMethod = $shippingMethod;
     }
 
     /**

@@ -32,23 +32,7 @@ var PayoneCheckout = {
             window.placeOrder(PayoneCheckout.getPlaceOrderUrl());
         });
 
-        this.handlePlaceOrderButton();
-
         this.reloadReview();
-    },
-    handlePlaceOrderButton: function() {
-        var availableMethods = jQuery('input[type="radio"][name="shipping_method"]');
-        var checkedMethod = availableMethods.filter(':checked');
-        if (checkedMethod.length === 1) {
-            PayoneCheckout.shippingMethodCode = checkedMethod[0].value;
-            jQuery('#placeOrder').attr('disabled', false);
-        } else if (availableMethods.length === 1) {
-            // In case there's only one method that's not already checked
-            var singleMethod = availableMethods.filter(':first');
-            singleMethod.attr('checked', true);
-            jQuery('#placeOrder').attr('disabled', false);
-            PayoneCheckout.shippingMethodCode = singleMethod[0].value;
-        }
     },
     reloadReview: function () {
         jQuery.ajax(
@@ -61,7 +45,6 @@ var PayoneCheckout = {
                     var review = jQuery(result).filter('#checkout-review-table-wrapper');
                     var container = jQuery('#checkout-review-load');
                     container.html(review);
-                    PayoneCheckout.handlePlaceOrderButton();
                 },
                 complete: function(request, status) {
                     window.unlockActivity();

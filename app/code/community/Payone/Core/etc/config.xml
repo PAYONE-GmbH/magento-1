@@ -29,7 +29,7 @@
 <config>
     <modules>
         <Payone_Core>
-            <version>4.4.0</version>
+            <version>4.4.1</version>
         </Payone_Core>
     </modules>
 
@@ -42,7 +42,6 @@
             <checkout>
                 <rewrite>
                     <onepage_payment_methods>Payone_Core_Block_Checkout_Onepage_Payment_Methods</onepage_payment_methods>
-                    <onepage_shipping_method_available>Payone_Core_Block_Checkout_Onepage_Shipping_Method_Available</onepage_shipping_method_available>
                 </rewrite>
             </checkout>
         </blocks>
@@ -1046,18 +1045,6 @@ Detaillierte Informationen zur Arbeitsweise der ABC finde ich unter www.abc.de/f
                 <sku>shipping</sku>
             </shipping_costs>
         </payone_misc>
-        <carriers>
-            <paydirektexpress>
-                <active>1</active>
-                <sallowspecific>1</sallowspecific>
-                <specificcountry>DE</specificcountry>
-                <model>payone_core/carrier_paydirektExpress</model>
-                <name>Paydirekt Express Shipping</name>
-                <price>10.00</price>
-                <title>Paydirekt Express Shipping</title>
-                <specificerrmsg>This shipping method is currently unavailable.</specificerrmsg>
-            </paydirektexpress>
-        </carriers>
     </default>
 
     <crontab>

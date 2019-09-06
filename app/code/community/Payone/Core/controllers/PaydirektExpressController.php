@@ -154,11 +154,13 @@ class Payone_Core_PaydirektExpressController extends Payone_Core_Controller_Abst
             $shipping->setQuoteId($quoteId);
             $shipping->init();
 
-            /** @var Payone_Core_Block_Checkout_Onepage_Shipping_Method_Available $shippingMethods */
-            $shippingMethods = $reviewBlock->getLayout()
-                ->createBlock('payone_core/checkout_onepage_shipping_method_available')
-                ->setBlockId('paydirekt.express.review.shippingmethods')
-                ->setTemplate('checkout/onepage/shipping_method/available.phtml');
+            /** @var Payone_Core_Block_Paydirekt_Express_Review_ShippingMethod $shippingMethod */
+            $shippingMethod = $reviewBlock->getLayout()
+                ->createBlock('payone_core/paydirekt_express_review_shippingMethod')
+                ->setBlockId('paydirekt.express.review.shippingmethod')
+                ->setTemplate('payone/core/paydirekt/express/review/shipping_method.phtml');
+            $shippingMethod->setQuoteId($quoteId);
+            $shippingMethod->init();
 
             /** @var Payone_Core_Block_Paydirekt_Express_Review_PaymentMethod $paymentMethod */
             $paymentMethod = $reviewBlock->getLayout()
@@ -184,7 +186,7 @@ class Payone_Core_PaydirektExpressController extends Payone_Core_Controller_Abst
 
             $reviewBlock->setBilling($billing);
             $reviewBlock->setShipping($shipping);
-            $reviewBlock->setShippingMethods($shippingMethods);
+            $reviewBlock->setShippingMethod($shippingMethod);
             $reviewBlock->setPaymentMethod($paymentMethod);
             $reviewBlock->setItemsReview($itemsReview);
             $reviewBlock->setCheckoutAgreements($checkoutAgreements);

@@ -25,16 +25,18 @@
 /** @var $this Payone_Core_Block_Paydirekt_Express_Shortcut */
 ?>
 <?php if ($this->isPaydirektExpressActive()) : ?>
-    <p class="paydirekt-logo">
-        <?php $shortcutHtmlId = $this->getShortcutHtmlId() ?>
-        <?php if ($this->isOrPositionBefore()): ?>
-            <span class="paypal-or"><?php echo $this->__('-OR-');?></span>
-        <?php endif; ?>
-            <a href="<?php echo $this->getInitUrl() ?>">
-                <img src="<?php echo $this->getImageUrl()?>" alt="<?php echo Mage::helper('payone_core')->__('Checkout with Paydirekt Express');?>" title="<?php echo Mage::helper('payone_core')->__('Checkout with Paydirekt Express');?>"/>
-            </a>
-        <?php if ($this->isOrPositionAfter()): ?>
-            <span class="paypal-or"><?php echo $this->__('-OR-');?></span>
-        <?php endif; ?>
-    </p>
+    <?php if ($this->isApplicable()) : ?>
+        <p class="paydirekt-logo">
+            <?php $shortcutHtmlId = $this->getShortcutHtmlId() ?>
+            <?php if ($this->isOrPositionBefore()): ?>
+                <span class="paypal-or"><?php echo $this->__('-OR-');?></span>
+            <?php endif; ?>
+                <a href="<?php echo $this->getInitUrl() ?>">
+                    <img src="<?php echo $this->getImageUrl()?>" alt="<?php echo Mage::helper('payone_core')->__('Checkout with Paydirekt Express');?>" title="<?php echo Mage::helper('payone_core')->__('Checkout with Paydirekt Express');?>"/>
+                </a>
+            <?php if ($this->isOrPositionAfter()): ?>
+                <span class="paypal-or"><?php echo $this->__('-OR-');?></span>
+            <?php endif; ?>
+        </p>
+    <?php endif; ?>
 <?php endif; ?>

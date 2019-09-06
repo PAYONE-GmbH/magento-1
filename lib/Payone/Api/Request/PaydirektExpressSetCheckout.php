@@ -27,12 +27,6 @@ class Payone_Api_Request_PaydirektExpressSetCheckout
     protected $invoicing = null;
     /** @var string */
     protected $wallettype;
-    /** @var string */
-    protected $successurl = '';
-    /** @var string */
-    protected $errorurl = '';
-    /** @var string */
-    protected $backurl = '';
 
     /**
      * @param array $data
@@ -72,29 +66,5 @@ class Payone_Api_Request_PaydirektExpressSetCheckout
     public function getInvoicing()
     {
         return $this->invoicing;
-    }
-
-    /**
-     * @param string $successurl
-     */
-    public function setSuccessurl($successurl)
-    {
-        $this->successurl = $successurl;
-    }
-
-    /**
-     * @param string $errorurl
-     */
-    public function setErrorurl($errorurl)
-    {
-        $this->errorurl = $errorurl;
-    }
-
-    /**
-     * @param string $backurl
-     */
-    public function setBackurl($backurl)
-    {
-        $this->backurl = $backurl;
     }
 }

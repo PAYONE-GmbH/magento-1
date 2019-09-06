@@ -313,6 +313,11 @@ class Payone_Core_Model_Config_Payment_Method
     protected $ratepay_directdebit_allowspecific = 0;
 
     /**
+     * @var string
+     */
+    protected $associated_shipping_method = '';
+
+    /**
      * Check if Method can be used in Country
      *
      * @param string $country
@@ -1479,5 +1484,21 @@ class Payone_Core_Model_Config_Payment_Method
     public function getRatepayDirectdebitAllowspecific()
     {
         return $this->ratepay_directdebit_allowspecific;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAssociatedShippingMethod()
+    {
+        return $this->associated_shipping_method;
+    }
+
+    /**
+     * @param string $associated_shipping_method
+     */
+    public function setAssociatedShippingMethod($associated_shipping_method)
+    {
+        $this->associated_shipping_method = $associated_shipping_method;
     }
 }
