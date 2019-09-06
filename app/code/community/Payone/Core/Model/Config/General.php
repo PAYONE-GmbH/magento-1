@@ -52,6 +52,10 @@ class Payone_Core_Model_Config_General extends Payone_Core_Model_Config_AreaAbst
      * @var Payone_Core_Model_Config_General_PaymentPaypalExpressCheckout
      */
     protected $payment_paypal_express_checkout;
+    /**
+     * @var Payone_Core_Model_Config_General_PaymentPaydirektExpressCheckout
+     */
+    protected $payment_paydirekt_express_checkout;
 
     /**
      * @var Payone_Core_Model_Config_General_ParameterNarrativeText
@@ -137,6 +141,22 @@ class Payone_Core_Model_Config_General extends Payone_Core_Model_Config_AreaAbst
     public function getPaymentPaypalExpressCheckout()
     {
         return $this->payment_paypal_express_checkout;
+    }
+
+    /**
+     * @param Payone_Core_Model_Config_General_PaymentPaydirektExpressCheckout $payment_paydirekt_express_checkout
+     */
+    public function setPaymentPaydirektExpressCheckout(Payone_Core_Model_Config_General_PaymentPaydirektExpressCheckout $payment_paydirekt_express_checkout)
+    {
+        $this->payment_paydirekt_express_checkout = $payment_paydirekt_express_checkout;
+    }
+
+    /**
+     * @return Payone_Core_Model_Config_General_PaymentPaydirektExpressCheckout
+     */
+    public function getPaymentPaydirektExpressCheckout()
+    {
+        return $this->payment_paydirekt_express_checkout;
     }
 
     /**

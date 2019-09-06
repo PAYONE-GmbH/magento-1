@@ -126,6 +126,65 @@
         </reference>
     </payone_core_mastercardmasterpass_error>
 
+    <payone_core_paydirektexpress_review>
+        <label>Payone Paydirekt Express Order Review Form</label>
+        <remove name="right"/>
+        <remove name="left"/>
+
+        <reference name="root">
+            <action method="setTemplate"><template>page/1column.phtml</template></action>
+        </reference>
+        <reference name="head">
+            <action method="addJs"><script>payone/core/paydirektexpress.js</script></action>
+            <action method="addCss"><name>payone/core/paydirektexpress.css</name></action>
+        </reference>
+        <reference name="content">
+            <block type="payone_core/paydirekt_express_review" name="paydirekt.express.review" template="payone/core/paydirekt/express/review.phtml"/>
+        </reference>
+    </payone_core_paydirektexpress_review>
+
+    <payone_core_paydirektexpress_ordersuccess>
+        <label>Payone Paydirekt Express Order Success</label>
+        <remove name="right"/>
+        <remove name="left"/>
+
+        <reference name="root">
+            <action method="setTemplate"><template>page/3columns.phtml</template></action>
+        </reference>
+
+        <reference name="content">
+            <block type="checkout/onepage_success" name="paydirekt.express.success" template="checkout/success.phtml"/>
+        </reference>
+    </payone_core_paydirektexpress_ordersuccess>
+
+    <payone_core_paydirektexpress_cancel>
+        <label>Payone Paydirekt Express Payment Cancel</label>
+        <remove name="right"/>
+        <remove name="left"/>
+
+        <reference name="root">
+            <action method="setTemplate"><template>page/3columns.phtml</template></action>
+        </reference>
+
+        <reference name="content">
+            <block type="payone_core/paydirekt_express_cancel" name="paydirekt.express.cancel" template="payone/core/paydirekt/express/cancel.phtml"/>
+        </reference>
+    </payone_core_paydirektexpress_cancel>
+
+    <payone_core_paydirektexpress_error>
+        <label>Payone Paydirekt Express Payment Error</label>
+        <remove name="right"/>
+        <remove name="left"/>
+
+        <reference name="root">
+            <action method="setTemplate"><template>page/3columns.phtml</template></action>
+        </reference>
+
+        <reference name="content">
+            <block type="payone_core/paydirekt_express_cancel" name="paydirekt.express.cancel" template="payone/core/paydirekt/express/cancel.phtml"/>
+        </reference>
+    </payone_core_paydirektexpress_error>
+
     <checkout_cart_index>
         <reference name="head">
             <block type="core/template" name="payone_core_checkout_cart_helper" template="payone/core/checkout/cart/helper.phtml" />
@@ -148,6 +207,12 @@
                 <action method="setShowOrPosition"><value>after</value></action>
             </block>
         </reference>
+        <reference name="checkout.cart.top_methods">
+            <block type="payone_core/paydirekt_express_shortcut" name="payone.checkout.cart.methods.paydirekt_express.top" before="-" template="payone/core/paydirekt/express/shortcut.phtml">
+                <action method="setIsQuoteAllowed"><value>1</value></action>
+                <action method="setShowOrPosition"><value>after</value></action>
+            </block>
+        </reference>
         <reference name="checkout.cart.methods">
             <block type="payone_core/amazon_pay_shortcut" name="payone.checkout.cart.methods.amazon_pay.bottom" before="-" template="payone/core/amazon/pay/shortcut.phtml">
                 <action method="setIsQuoteAllowed"><value>1</value></action>
@@ -162,6 +227,12 @@
         </reference>
         <reference name="checkout.cart.methods">
             <block type="payone_core/mastercard_masterpass_shortcut" name="payone.checkout.cart.methods.mastercard_masterpass.bottom" before="-" template="payone/core/mastercard/masterpass/shortcut.phtml">
+                <action method="setIsQuoteAllowed"><value>1</value></action>
+                <action method="setShowOrPosition"><value>after</value></action>
+            </block>
+        </reference>
+        <reference name="checkout.cart.methods">
+            <block type="payone_core/paydirekt_express_shortcut" name="payone.checkout.cart.methods.paydirekt_express.bottom" before="-" template="payone/core/paydirekt/express/shortcut.phtml">
                 <action method="setIsQuoteAllowed"><value>1</value></action>
                 <action method="setShowOrPosition"><value>after</value></action>
             </block>
@@ -181,6 +252,10 @@
             <block type="payone_core/paypal_express_shortcut" name="payone.paypal.partner.top_cart.shortcut"
                    template="payone/core/paypal/express/shortcut.phtml"/>
         </reference>
+        <reference name="topCart.extra_actions">
+            <block type="payone_core/paydirekt_express_shortcut" name="payone.paydirekt.partner.top_cart.shortcut"
+                   template="payone/core/paydirekt/express/shortcut.phtml"/>
+        </reference>
         <reference name="cart_sidebar.extra_actions">
             <block type="payone_core/amazon_pay_shortcut" name="payone.amazon.partner.cart_sidebar.shortcut"
                    template="payone/core/amazon/pay/shortcut.phtml"/>
@@ -188,6 +263,10 @@
         <reference name="cart_sidebar.extra_actions">
             <block type="payone_core/paypal_express_shortcut" name="payone.paypal.partner.cart_sidebar.shortcut"
                    template="payone/core/paypal/express/shortcut.phtml"/>
+        </reference>
+        <reference name="cart_sidebar.extra_actions">
+            <block type="payone_core/paydirekt_express_shortcut" name="payone.paydirekt.partner.cart_sidebar.shortcut"
+                   template="payone/core/paydirekt/express/shortcut.phtml"/>
         </reference>
         <block type="payone_core/checkout_ratePayInstallmentplan" name="payone_ratepay.checkout.installmentplan"
                as="payone_installmentplan" />

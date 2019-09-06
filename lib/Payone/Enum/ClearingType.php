@@ -72,6 +72,7 @@ class Payone_Enum_ClearingType
     const MASTERPASS = 'wlt';
     const WALLETALIPAY = 'wlt';
     const WALLETPAYDIREKT = 'wlt';
+    const WALLETPAYDIREKTEXPRESS = 'wlt';
     const WALLETPAYPALEXPRESS = 'wlt';
     const WALLET = 'wlt';                   // Default wlt mapping
 }

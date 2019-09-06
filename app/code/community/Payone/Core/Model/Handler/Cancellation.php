@@ -39,6 +39,8 @@ class Payone_Core_Model_Handler_Cancellation extends Payone_Core_Model_Handler_A
         $oSession = Mage::getSingleton('checkout/session');
         if ($oSession->getPayoneExternalCheckoutActive() === true) {
             $oSession->unsPayoneExternalCheckoutActive();
+            $oSession->unsPaydirektExpressCheckoutActive();
+
             // Load last order by ID
             $orderId = $oSession->getLastOrderId();
             $oOrder  = $this->getFactory()->getModelSalesOrder();

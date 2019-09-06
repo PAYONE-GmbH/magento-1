@@ -45,6 +45,10 @@ class Payone_Core_Model_Config_General_ParameterNarrativeText
      * @var string
      */
     protected $paydirekt = '';
+    /**
+     * @var string
+     */
+    protected $paydirekt_express = '';
     
     /**
      * @var string
@@ -98,9 +102,25 @@ class Payone_Core_Model_Config_General_ParameterNarrativeText
     {
         return $this->paydirekt;
     }
-    
+
     /**
-     * @param string $paydirekt
+     * @param string $paydirekt_express
+     */
+    public function setPaydirektExpress($paydirekt_express)
+    {
+        $this->paydirekt_express = $paydirekt_express;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPaydirektExpress()
+    {
+        return $this->paydirekt_express;
+    }
+
+    /**
+     * @param string $paypal_express
      */
     public function setPaypalExpress($paypal_express)
     {

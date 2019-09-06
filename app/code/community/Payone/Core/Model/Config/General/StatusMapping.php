@@ -175,6 +175,12 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
      */
     protected $walletPaydirekt = null;
     /**
+     * Payment method wallet_paydirekt_express
+     *
+     * @var null
+     */
+    protected $walletPaydirektExpress = null;
+    /**
      * Payment method wallet_paypal_express
      *
      * @var null
@@ -757,6 +763,26 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
     public function getWalletPaydirekt()
     {
         return $this->walletPaydirekt;
+    }
+
+    /**
+     * @param $walletPaydirektExpress
+     */
+    public function setWalletPaydirektExpress($walletPaydirektExpress)
+    {
+        if (is_string($walletPaydirektExpress)) {
+            $walletPaydirektExpress = $this->initValue($walletPaydirektExpress);
+        }
+
+        $this->walletPaydirektExpress = $walletPaydirektExpress;
+    }
+
+    /**
+     * @return $walletPaydirektExpress|null
+     */
+    public function getWalletPaydirektExpress()
+    {
+        return $this->walletPaydirektExpress;
     }
 
     /**
