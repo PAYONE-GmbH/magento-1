@@ -50,15 +50,15 @@ class Payone_Core_RatepayController extends Mage_Core_Controller_Front_Action
 
                 if ($result instanceof Payone_Api_Response_Genericpayment_Ok) {
                     $responseData = $result->getPayData()->toAssocArray();
+                    /** @var Payone_Core_Block_Checkout_RatePayInstallmentplan $reviewBlock */
                     $reviewBlock = $this->getLayout()->getBlock('payone_ratepay.checkout.installmentplan');
-                    $html = $reviewBlock->showRateResultHtml($responseData);
+                    $reviewBlock->setData($responseData);
+                    $reviewBlock->setIsAdmin($isAdmin);
+                    $html = $reviewBlock->toHtml();
 
                     //if admin order, some fields are added to store,
                     //otherwise, data are stores into session
-                    if ($isAdmin) {
-                        $htmlAddition = $reviewBlock->addDataFields($responseData);
-                        $html .= PHP_EOL . $htmlAddition;
-                    } else {
+                    if (!$isAdmin) {
                         //set payone Session Data
                         $this->setSessionData($responseData, $paymentMethod);
                     }
@@ -112,15 +112,15 @@ class Payone_Core_RatepayController extends Mage_Core_Controller_Front_Action
 
                     if ($result instanceof Payone_Api_Response_Genericpayment_Ok) {
                         $responseData = $result->getPayData()->toAssocArray();
+                        /** @var Payone_Core_Block_Checkout_RatePayInstallmentplan $reviewBlock */
                         $reviewBlock = $this->getLayout()->getBlock('payone_ratepay.checkout.installmentplan');
-                        $html = $reviewBlock->showRateResultHtml($responseData);
+                        $reviewBlock->setData($responseData);
+                        $reviewBlock->setIsAdmin($isAdmin);
+                        $html = $reviewBlock->toHtml();
 
                         //if admin order, some fields are added to store,
                         //otherwise, data are stores into session
-                        if ($isAdmin) {
-                            $htmlAddition = $reviewBlock->addDataFields($responseData);
-                            $html .= PHP_EOL . $htmlAddition;
-                        } else {
+                        if (!$isAdmin) {
                             //set payone Session Data
                             $this->setSessionData($responseData, $paymentMethod);
                         }

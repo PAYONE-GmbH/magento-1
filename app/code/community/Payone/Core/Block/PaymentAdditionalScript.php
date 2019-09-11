@@ -59,9 +59,14 @@ class Payone_Core_Block_PaymentAdditionalScript extends Mage_Core_Block_Template
         /** @var \Mage_Checkout_Model_Session $session */
         $session = Mage::getSingleton('checkout/session');
 
+        // Introduced into MAGE-444
+        // CC javascript included because some function/parameter ($length)
+        // is used even when creditcard method is inactive. It makes all JS checkout crashing
+        // Has to be investigated then removed
         $loadedScripts = array(
             $this->getJsUrl('payone/core/sepa_input.js'),
-            $this->getJsUrl('payone/core/sepa_validation.js')
+            $this->getJsUrl('payone/core/sepa_validation.js'),
+            $this->getJsUrl('payone/core/creditcard.js')   // TODO VB Investigate and remove
         );
 
         $storeId = $session->getQuote()->getStoreId();

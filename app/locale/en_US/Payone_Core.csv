@@ -67,3 +67,5 @@
 
 "AMAZONPAY_MFA_FAILED", "There was a problem with your payment. Your order hasn't been placed, and you haven't been charged."
 "AMAZONPAY_MFA_ABANDONED", "Something's wrong with your payment method. To place your order, try another."
+
+"lang_runtime_duration_unit", "(in months)"

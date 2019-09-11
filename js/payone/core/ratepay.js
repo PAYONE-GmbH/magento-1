@@ -29,37 +29,30 @@
  * @link            http://www.e3n.de
  */
 
-/**
- *
- * @param mode
- * @param paymentMethod
- * @param url
- */
-function payoneSwitchRateOrRuntime(mode, paymentMethod, url)
-{
-    if (mode == 'rate') {
-        document.getElementById(paymentMethod + '_SwitchToTerm').className = 'ratepay-Active';
-        document.getElementById(paymentMethod + '_SwitchToRuntime').className = '';
-        document.getElementById(paymentMethod + '_ContentTerm').style.display = 'block';
-        document.getElementById(paymentMethod + '_ContentRuntime').style.display = 'none';
-    } else if (mode == 'runtime') {
-        document.getElementById(paymentMethod + '_SwitchToRuntime').className = 'ratepay-Active';
-        document.getElementById(paymentMethod + '_SwitchToTerm').className = '';
-        document.getElementById(paymentMethod + '_ContentRuntime').style.display = 'block';
-        document.getElementById(paymentMethod + '_ContentTerm').style.display = 'none';
+var Translator = new Translate([]);
+
+Validation.add(
+    'validate-18-years', Translator.translate('You have to be at least 18 years old to use this payment type!'), function (value) {
+        var oBirthDate = new Date(value);
+        var oMinDate = new Date(new Date().setYear(new Date().getFullYear() - 18));
+        if(oBirthDate > oMinDate) {
+            return false;
+        }
+
+        return true;
     }
-}
+);
 
 /**
  *
  * @param mode
  * @param paymentMethod
  * @param url
+ * @param calcValue
  */
-function payoneRatepayRateCalculatorAction(mode, paymentMethod, url)
+function payoneRatepayRateCalculatorAction (mode, paymentMethod, url, calcValue)
 {
-    var calcValue,
-        calcMethod,
+    var calcMethod,
         notification,
         html,
         ratePayshopId,
@@ -70,12 +63,12 @@ function payoneRatepayRateCalculatorAction(mode, paymentMethod, url)
 
     ajaxLoader.setStyle(
         {
-        display: 'block'
+            display: 'block'
         }
     );
     cover.setStyle(
         {
-        display: 'block'
+            display: 'block'
         }
     );
 
@@ -91,8 +84,6 @@ function payoneRatepayRateCalculatorAction(mode, paymentMethod, url)
     ratePayCurrency = document.getElementById('ratePayCurrency').value;
     if (mode == 'rate') {
         calcValue = document.getElementById(paymentMethod + '-rate').value;
-
-
         calcMethod = 'calculation-by-rate';
         if (document.getElementById('debitSelect')) {
             dueDate = document.getElementById('debitSelect').value;
@@ -100,7 +91,6 @@ function payoneRatepayRateCalculatorAction(mode, paymentMethod, url)
             dueDate= '';
         }
     } else if (mode == 'runtime') {
-        calcValue = document.getElementById(paymentMethod + '-runtime').value;
         calcMethod = 'calculation-by-time';
         notification = (document.getElementById(paymentMethod + '_Notification') == null) ? 0 : 1;
         if(document.getElementById('debitSelectRuntime')){
@@ -134,51 +124,48 @@ function payoneRatepayRateCalculatorAction(mode, paymentMethod, url)
         document.getElementById(paymentMethod + '_ResultContainer').innerHTML = html;
         document.getElementById(paymentMethod + '_ResultContainer').style.display = 'block';
         document.getElementById(paymentMethod + '_ResultContainer').style.padding = '3px 0 0 0';
-        document.getElementById(paymentMethod + '_SwitchToTerm').style.display = 'none';
 
         ajaxLoader.setStyle(
-            {
-            display: 'none'
-            }
-        );
-        cover.setStyle(
-            {
-            display: 'none'
-            }
-        );
-    }
-
-}
-/**
- * @param element
- */
-function payoneSwitchPayRate(element)
-{
-    if(element.value === 'RPS'){
-        $("ratepay-main-cont").setStyle(
-            {
-            display: 'block'
-            }
-        );
-        $("payone_ratepay_debit_details").setStyle(
-            {
-                display: 'block'
-            }
-        );
-        checkRequirementFields(element.value, -1);
-    } else {
-        $("ratepay-main-cont").setStyle(
-            {
-            display: 'none'
-            }
-        );
-        $("payone_ratepay_debit_details").setStyle(
             {
                 display: 'none'
             }
         );
-        checkRequirementFields(element.value, -1);
+        cover.setStyle(
+            {
+                display: 'none'
+            }
+        );
     }
+}
+
+function attachCalcButtonsListeners(code, urlRuntime, urlRate)
+{
+    $$('.' + code + '-btn-runtime').each(
+        function(v) {
+            v.on("click", function() { triggerRuntimeAction(v, code, urlRuntime); });
+        }
+    );
+
+    var rateBtn = $(code + '-btn-rate');
+    rateBtn.on("click", function() { triggerRateAction(rateBtn, code, urlRate); });
+}
+
+function triggerRuntimeAction(element, code, urlRuntime)
+{
+    $$('.' + code + '-btn-runtime').each( function(btn) { btn.removeClassName('btn-info') });
+    $(code + '-btn-rate').removeClassName('btn-info');
+    $(code + '-rate').value = "";
+    element.addClassName('btn-info');
+
+    payoneRatepayRateCalculatorAction('runtime', code, urlRuntime, element.dataset.bind);
+}
+
+function triggerRateAction(element, code, urlRate)
+{
+    $$('.' + code + '-btn-runtime').each(function(btn) { btn.removeClassName('btn-info') });
+    element.addClassName('btn-info');
+
+    payoneRatepayRateCalculatorAction('rate', code, urlRate);
 }
 
 /**
@@ -199,20 +186,6 @@ function payoneRatepayCustomerDobInput(payment_code)
 
     hiddenDobFull.value = yearSelect.value + "-" + monthSelect.value + "-" + daySelect.value;
 }
-
-var Translator = new Translate([]);
-
-Validation.add(
-    'validate-18-years', Translator.translate('You have to be at least 18 years old to use this payment type!'), function (value) {
-    var oBirthDate = new Date(value);
-    var oMinDate = new Date(new Date().setYear(new Date().getFullYear() - 18));
-    if(oBirthDate > oMinDate) {
-        return false;
-    }
-
-    return true;
-    }
-);
 
 /**
  *
@@ -323,9 +296,31 @@ function checkRequirementFields(method, forceRequirement)
         requireVat(forceRequirement, fieldPrefix);
         return;
     }
-
-    var b2b = document.getElementsByName('payment[payone_isb2b]').item(0).value;
-
-    forceRequirement = (b2b !== '1');
+    var b2b = document.getElementsByName('payment[payone_isb2b]');
+    forceRequirement = b2b.length>0 && (b2b.item(0).value !== '1');
     checkRequirementFields(method, forceRequirement);
+}
+
+function showInstallmentDetails()
+{
+    var target = $('ratepay-show-installment-plan-details');
+    target.hide();
+    $$('.ratepay-installment-plan-details').each(
+        function(el) {
+            el.show();
+        }
+    );
+    $('ratepay-hide-installment-plan-details').show();
+}
+
+function hideInstallmentDetails()
+{
+    var target = $('ratepay-hide-installment-plan-details');
+    target.hide();
+    $$('.ratepay-installment-plan-details').each(
+        function(el) {
+            el.hide();
+        }
+    );
+    $('ratepay-show-installment-plan-details').show();
 }

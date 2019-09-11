@@ -1083,8 +1083,9 @@ The <a target='_blank' href='https://www.ratepay.com/zgb-dse'>additional terms a
 "lang_calculate_runtime", "Laufzeit jetzt berechnen"
 "lang_choose_runtime", "Laufzeit ausw&auml;hlen"
 "lang_calculate_rate", "Rate jetzt berechnen"
+"lang_runtime_duration_unit", "(in Monaten)"
 "lang_or", "oder"
-"lang_individual_rate_calculation", "Individuelle Ratenberechnung*"
+"lang_individual_rate_calculation", "Individuelle Ratenberechnung"
 "lang_payment_text_wishrate", "<b>Monatliche Rate</b> angeben und die sich daraus ergebende Laufzeit berechnen lassen."
 "lang_payment_text_runtime", "<b>Laufzeit</b> angeben und die sich daraus ergebende monatliche Rate berechnen lassen."
 "lang_hint_rate_1", "Geben Sie dazu die von Ihnen gew&uuml;nschte Ratenh&ouml;he ein und lassen"
@@ -1095,7 +1096,9 @@ The <a target='_blank' href='https://www.ratepay.com/zgb-dse'>additional terms a
 "lang_months", " Monate"
 "lang_total_amount", "Gesamtbetrag"
 "lang_cash_payment_price", "Bestellwert"
-"lang_calulation_example", "*die Ratenberechnung kann zum Ratenplan abweichen"
+"lang_calulation_example", "Die Wunschrate entspricht den vorgegebenen Bedingungen.<br/>Die Ratenberechnung kann zum Ratenplan abweichen."
+"lang_calculation_detail_show", "Ratenberechnung anzeigen"
+"lang_calculation_detail_hide", "Ratenberechnung verbergen"
 "lang_calulation_result_text", "Aus Ihren Eingaben ergibt sich folgende Wunschrate"
 "lang_cash_payment_price_part_one", "Bitte entscheiden Sie sich nun, wie der Bestellwert von"
 "lang_cash_payment_price_part_two", "auf die monatlichen Raten verteilt werden soll. Hierzu haben Sie zwei M&ouml;glichkeiten:"
@@ -1279,3 +1282,4 @@ RatePay Debit Type,RatePay Ratenkauf Typ
 
 "AMAZONPAY_MFA_FAILED", "Beim Zahlungsvorgang ist ein Problem aufgetreten. Ihre Bestellung wurde nicht aufgegeben und Ihr Konto nicht belastet."
 "AMAZONPAY_MFA_ABANDONED", "Mit dieser Zahlungsart ist ein Problem aufgetreten. Um Ihre Bestellung abzuschließen, wählen Sie bitte eine andere aus."
+
