@@ -117,6 +117,28 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment
     }
 
     /**
+     * @return Payone_Api_Request_PaydirektExpressSetCheckout
+     */
+    public function getPaydirektExpressInitCheckoutRequest()
+    {
+        $request = $this->getFactory()->getRequestPaydirektExpressSetCheckout();
+        $this->mapDefaultParameters($request);
+
+        return $request;
+    }
+
+    /**
+     * @return Payone_Api_Request_PaydirektExpressGetStatus
+     */
+    public function getPaydirektExpressGetStatusRequest()
+    {
+        $request = $this->getFactory()->getRequestPaydirektExpressGetStatus();
+        $this->mapDefaultParameters($request);
+
+        return $request;
+    }
+
+    /**
      * @param $amount
      * @param $sRatePayShopId
      * @param $sCurrency

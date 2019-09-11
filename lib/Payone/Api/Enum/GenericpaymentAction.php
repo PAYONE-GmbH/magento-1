@@ -57,4 +57,7 @@ class Payone_Api_Enum_GenericpaymentAction
 
     const MASTERPASS_SET_CHECKOUT = 'setcheckout';
     const MASTERPASS_GET_CHECKOUT = 'getcheckout';
+
+    const PAYDIREKT_ECS_SET_EXPRESSCHECKOUT = 'checkout';
+    const PAYDIREKT_ECS_GET_EXPRESSCHECKOUTDETAILS = 'getstatus';
 }

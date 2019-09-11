@@ -60,6 +60,7 @@ class Payone_Core_Model_System_Config_PaymentMethodType extends Payone_Core_Mode
     const PAYOLUTIONINSTALLMENT = 'payolution_installment';
     const PAYMENTGUARANTEEINVOICE = 'payment_guarantee_invoice';
     const WALLETPAYDIREKT = 'wallet_paydirekt';
+    const WALLETPAYDIREKTEXPRESS = 'wallet_paydirekt_express';
     const WALLETPAYPALEXPRESS = 'wallet_paypal_express';
     const WALLETALIPAY = 'wallet_alipay';
     const MASTERPASS =  'masterpass';
@@ -91,6 +92,7 @@ class Payone_Core_Model_System_Config_PaymentMethodType extends Payone_Core_Mode
             self::PAYOLUTIONINSTALLMENT => 'Paysafe Pay Later™ Installment',
             self::PAYMENTGUARANTEEINVOICE => 'Invoice with Payment Guarantee',
             self::WALLETPAYDIREKT => 'Paydirekt',
+            self::WALLETPAYDIREKTEXPRESS => 'Paydirekt Express',
             self::WALLETPAYPALEXPRESS => 'Paypal Express',
             self::WALLETALIPAY => 'AliPay',
             self::ONLINEBANKTRANSFERSOFORT => 'Sofortueberweisung',

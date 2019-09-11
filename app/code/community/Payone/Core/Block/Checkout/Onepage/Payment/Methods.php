@@ -75,6 +75,7 @@ class Payone_Core_Block_Checkout_Onepage_Payment_Methods
         }
 
         $aRestrictedMethods = $this->getRestrictedMethods();
+        $aRestrictedMethods[] = Payone_Core_Model_System_Config_PaymentMethodCode::WALLETPAYDIREKTEXPRESS;
         if (!empty($aRestrictedMethods)) {
             $this->methods = array_filter(
                 $this->methods,

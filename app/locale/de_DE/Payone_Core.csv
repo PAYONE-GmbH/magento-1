@@ -126,6 +126,9 @@
 "New Paydirekt","Wallet Paydirekt"
 "Add Paydirekt","Wallet Paydirekt hinzufügen"
 "Edit Paydirekt","Wallet Paydirekt bearbeiten"
+"New Paydirekt Express","Wallet Paydirekt Express"
+"Add Paydirekt Express","Wallet Paydirekt Express hinzufügen"
+"Edit Paydirekt Express","Wallet Paydirekt Express bearbeiten"
 "New Paypal Express","Wallet Paypal Express"
 "Add Paypal Express","Wallet Paypal Express hinzufügen"
 "Edit Paypal Express","Wallet Paypal Express bearbeiten"
@@ -431,6 +434,7 @@ Debit type used for payment by installments,"Debittyp, der für die Ratenzahlung
 ">>>SDK TRANSLATIONS<<<",">>>SDK TRANSLATIONS<<<"
 "PAYPAL_EXPRESS","Paypal Express"
 "PAYDIREKT","Paydirekt"
+"PAYDIREKT_EXPRESS","Paydirekt Express"
 
 "YES","Ja"
 "NO","Nein"
@@ -547,6 +551,7 @@ DIRECT_DEBIT,Lastschrift
 "CASHONDELIVERY","Nachnahme"
 "WALLET","Wallet"
 "WALLETPAYDIREKT", "Paydirekt"
+"WALLETPAYDIREKTEXPRESS", "Paydirekt Express"
 "WALLETPAYPALEXPRESS", "Paypal Express"
 "WALLETALIPAY", "AliPay"
 
@@ -1283,3 +1288,4 @@ RatePay Debit Type,RatePay Ratenkauf Typ
 "AMAZONPAY_MFA_FAILED", "Beim Zahlungsvorgang ist ein Problem aufgetreten. Ihre Bestellung wurde nicht aufgegeben und Ihr Konto nicht belastet."
 "AMAZONPAY_MFA_ABANDONED", "Mit dieser Zahlungsart ist ein Problem aufgetreten. Um Ihre Bestellung abzuschließen, wählen Sie bitte eine andere aus."
 
+"Unable to initialize Paydirekt Express Checkout.","Der Paydirekt Express Checkout konnte nicht initialisiert werden."
