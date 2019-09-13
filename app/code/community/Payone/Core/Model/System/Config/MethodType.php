@@ -77,7 +77,7 @@ class Payone_Core_Model_System_Config_MethodType
             'Online Bank Transfer' => $settingsOnlineBankTransfer->getTypes(),
             'Wallet' => $settingsWallet->getTypes(),
             'Safe Invoice' => $settingsSafeInvoice->toArray(),
-            'Rate Pay' => $settingsSafeRatePay->getTypes(),
+            'Rate Pay Installments' => $settingsSafeRatePay->getTypes(),
             'Rate Pay Invoicing' => $settingsRatePayInvoicing->getTypes(),
             'Rate Pay Direct Debit' => $settingsRatePayDirectDebit->getTypes()
         );

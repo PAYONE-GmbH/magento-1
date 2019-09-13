@@ -687,7 +687,7 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
              * if RatePay Type is Installment map Installmentplan Data
              * from payone session
              */
-            if($payment->getFinancingtype() == 'RPV'){
+            if($payment->getFinancingtype() == Payone_Api_Enum_RatepayInvoicingType::RPV){
                 $payData = new Payone_Api_Request_Parameter_Paydata_Paydata();
             } else {
                 $ratePayInstallmentData = $this->_getResult($paymentMethod->getCode());
@@ -695,9 +695,10 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
 
                 // If RPS Lastschrift is not allowed for the country,
                 // debit-type is forced to Bank-Transfer
+                $ratepayDirectDebitAllowSpecific = $config->getRatepayDirectdebitAllowspecific();
                 $country = $this->getOrder()->getBillingAddress()->getCountry();
                 $allowedCountries = explode(',', $config->getRatepayDirectDebitSpecificCountry());
-                if (!in_array($country, $allowedCountries)) {
+                if ($ratepayDirectDebitAllowSpecific == 1 && !in_array($country, $allowedCountries)) {
                     $ratePayInstallmentData['payone_ratepay_debit-paytype'] = Payone_Api_Enum_RatepayDebitType::BANK_TRANSFER;
                 }
                 else {

@@ -721,7 +721,7 @@
                 <group>payone</group>
             </payone_barzahlen>
             <payone_ratepay translate="title" module="payone_core">
-                <title>PAYONE - RatePay</title>
+                <title>PAYONE - RatePay Installments</title>
                 <model>payone_core/payment_method_ratepay</model>
                 <group>payone</group>
             </payone_ratepay>

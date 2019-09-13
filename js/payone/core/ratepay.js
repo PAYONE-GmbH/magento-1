@@ -292,6 +292,9 @@ function checkRequirementFields(method, forceRequirement)
         if (method === 'RPD') {
             fieldPrefix += '_direct_debit';
         }
+        if (method === 'RPV') {
+            fieldPrefix += '_invoicing';
+        }
         requireRegistrationNumber(forceRequirement, fieldPrefix);
         requireVat(forceRequirement, fieldPrefix);
         return;
@@ -323,4 +326,11 @@ function hideInstallmentDetails()
         }
     );
     $('ratepay-show-installment-plan-details').show();
+}
+
+function copyDebitPaymentSepaIban(code)
+{
+    var input_sepa_iban_xxx_el = $(code + '_sepa_iban_xxx');
+    var input_sepa_iban_el = $(code + '_sepa_iban');
+    input_sepa_iban_el.value = input_sepa_iban_xxx_el.value;
 }

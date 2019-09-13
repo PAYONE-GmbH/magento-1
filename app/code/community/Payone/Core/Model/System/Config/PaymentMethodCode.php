@@ -84,7 +84,7 @@ class Payone_Core_Model_System_Config_PaymentMethodCode extends Payone_Core_Mode
             self::ONLINEBANKTRANSFER => 'Online Bank Transfer',
             self::WALLET => 'Wallet',
             self::BARZAHLEN => 'Barzahlen',
-            self::RATEPAY => 'RatePay',
+            self::RATEPAY => 'RatePay Installments',
             self::RATEPAYINVOICING => 'RatePay Invoicing',
             self::RATEPAYDIRECTDEBIT => 'Ratepay Direct Debit',
             //self::PAYOLUTION => 'Payolution',
