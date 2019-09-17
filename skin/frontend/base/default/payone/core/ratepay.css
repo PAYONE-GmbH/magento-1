@@ -520,3 +520,20 @@ table#ratepay-InstallmentTerms {
 .ratepay-installment-plan-link {
     cursor: pointer;
 }
+
+#method-switch-section {
+    display: inline-block;
+}
+
+#method-switch-section:hover .method-switch-icon {
+    background-color: lightblue;
+}
+
+.method-switch-icon {
+    width: 16px;
+    height: 16px;
+    border:solid 1px lightblue;
+    display: inline-block;
+    margin: 2px 6px 0 0;
+    float:left;
+}

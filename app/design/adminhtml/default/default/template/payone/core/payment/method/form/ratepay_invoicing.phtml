@@ -28,6 +28,8 @@ $paymentType = Payone_Api_Enum_RatepayInvoicingType::RPV;
 $ratePayShopId = $this->getMatchingRatePayShopId();
 $ratePayCurrency = $this->getRatePayCurrency();
 $types = $this->getTypes();
+$isAdminOrder = $this->getQuote()->getIsSuperMode();
+$quoteId = $this->getQuote()->getId();
 
 ?>
 <ul id="payment_form_<?php echo $code ?>" style="display:none">

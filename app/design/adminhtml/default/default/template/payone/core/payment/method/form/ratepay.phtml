@@ -13,7 +13,7 @@
  * needs please refer to http://www.payone.de for more information.
  *
  * @category        Payone
- * @package         design_frontend_base_default
+ * @package         design_adminhtml_default_default
  * @subpackage      template
  * @copyright       Copyright (c) 2015 <kontakt@fatchip.de> - www.fatchip.com
  * @author          Robert M�ller <robert.mueller@fatchip.de>
@@ -30,9 +30,11 @@ $ratePayCurrency = $this->getRatePayCurrency();
 $types = $this->getTypes();
 $allowedSEPACountries = htmlspecialchars($this->getAllowedSEPACountries());
 $accountOwner = $this->getAccountOwner();
+$configShowBankData = $this->getPaymentConfig()->getSepaDeShowBankData();
 $isAdminOrder = $this->getQuote()->getIsSuperMode();
 $quoteId = $this->getQuote()->getId();
-
+$configDebitCountries = $this->getConfigDebitCountries();
+$initialDebitType = Payone_Api_Enum_RatepayDebitType::DIRECT_DEBIT;
 ?>
 <ul id="payment_form_<?php echo $code ?>" style="display:none">
     <p>
@@ -46,7 +48,7 @@ $quoteId = $this->getQuote()->getId();
     <input type="hidden" id="<?php echo $code ?>_type" name="payment[payone_ratepay_type]" value="<?php echo $paymentType;?>"/>
 
     <?php if ($this->isDobRequired()): ?>
-    <li>
+        <li>
             <div class="field">
                 <label for="<?php echo $code ?>_additional_fields_customer_dob_month"
                        class="required"><em>*</em><?php echo $this->__('Date of birth (DD MM YYYY)') ?>
@@ -110,7 +112,7 @@ $quoteId = $this->getQuote()->getId();
         </div>
     <?php } ?>
     <?php if ($this->isTelephoneRequired()) : ?>
-    <li>
+        <li>
             <div class="field">
                 <label for="<?php echo $code ?>_additional_fields_customer_telephone" class="required">
                     <em>*</em><?php echo $this->__('Telephone') ?>
@@ -124,7 +126,6 @@ $quoteId = $this->getQuote()->getId();
     <?php endif;?>
 
     <div id="<?php echo $code ?>_debit_details">
-        <?php if ($this->shouldDisplayIbanBic()) :?>
             <li>
                 <div id="ratepay-Header">
                     <div>
@@ -202,8 +203,20 @@ $quoteId = $this->getQuote()->getId();
                            oninput="inputToUppaerCaseAndNumbers(this); blockPaymentMethodInputs('<?php echo $code ?>', <?php echo $configShowBankData; ?>);"/>
                 </div>
             </li>
-        <?php endif; ?>
     </div>
+
+    <li>
+        <p id="method-switch-section" onclick="switchRatePaymentMethod('<?php echo $code ?>')">
+            <span class="method-switch-icon"></span>
+            <a id="<?php echo $code ?>_method_switch_invoice" style="cursor: pointer;">
+                <?php echo $this->__('I would like to make the installment payment myself and not pay by direct debit'); ?>
+            </a>
+            <a id="<?php echo $code ?>_method_switch_directdebit" style="cursor: pointer; display: none;">
+                <?php echo $this->__('I would like to settle the installment by direct debit'); ?>
+            </a>
+            <input id="<?php echo $code ?>_debit_type" name="payment[payone_ratepay_debit_type]" value="<?php echo $initialDebitType; ?>" type="hidden" />
+        </p>
+    </li>
 
     <li style="display:none;">
         <input type="hidden" name="payment[payone_config_payment_method_id]"  id="<?php echo $code ?>_config_id" value="<?php echo $configId; ?>"/>
@@ -307,4 +320,15 @@ $quoteId = $this->getQuote()->getId();
         '<?php echo $this->getUrl("payone_core/ratepay/runtime", array('_secure' => true)); ?>',
         '<?php echo $this->getUrl("payone_core/ratepay/rate", array('_secure' => true)); ?>'
     );
+
+    var billingAddressSelector = $('order-billing_address_customer_address_id');
+    billingAddressSelector.on('change', function() {
+        updateRatePaymentMethod('<?php echo $code; ?>', '<?php echo $configDebitCountries; ?>');
+    });
+
+    var billingCountrySelector = $('order-billing_address_country_id');
+    billingCountrySelector.on('change', function() {
+        updateRatePaymentMethod('<?php echo $code; ?>', '<?php echo $configDebitCountries; ?>');
+    });
+    updateRatePaymentMethod('<?php echo $code; ?>', '<?php echo $configDebitCountries; ?>');
 </script>

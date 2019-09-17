@@ -30,7 +30,9 @@ $ratePayCurrency = $this->getRatePayCurrency();
 $types = $this->getTypes();
 $allowedSEPACountries = htmlspecialchars($this->getAllowedSEPACountries());
 $accountOwner = $this->getAccountOwner();
-
+$configShowBankData = $this->getPaymentConfig()->getSepaDeShowBankData();
+$isAllowedDirectDebit = $this->isAllowedDirectDebit();
+$initialDebitType = $isAllowedDirectDebit ? Payone_Api_Enum_RatepayDebitType::DIRECT_DEBIT : Payone_Api_Enum_RatepayDebitType::BANK_TRANSFER;
 ?>
 <fieldset class="form-list">
     <ul id="payment_form_<?php echo $code ?>" style="display:none">
@@ -43,15 +45,6 @@ $accountOwner = $this->getAccountOwner();
         <?php $type = array_pop($types); ?>
         <?php echo $type['name']; ?>&nbsp;<span><?php echo $type['fee']; ?></span>
         <input type="hidden" id="<?php echo $code ?>_type" name="payment[payone_ratepay_type]" value="<?php echo $paymentType;?>"/>
-        <script type="text/javascript">
-            checkRequirementFields('<?php echo $paymentType;?>', -1);
-
-            attachCalcButtonsListeners(
-                '<?php echo $code ?>',
-                '<?php echo $this->getUrl("payone_core/ratepay/runtime", array('_secure' => true)); ?>',
-                '<?php echo $this->getUrl("payone_core/ratepay/rate", array('_secure' => true)); ?>'
-            );
-        </script>
 
         <?php if ($this->isDobRequired()): ?>
             <li class="fields">
@@ -87,7 +80,7 @@ $accountOwner = $this->getAccountOwner();
                             </option>
                         <?php endfor; ?>
                     </select>
-                    
+
                     <input type="hidden" id="<?php echo $code ?>_additional_fields_customer_dob_full"
                             name="payment[payone_customer_dob]" class="validate-18-years">
                 </div>
@@ -132,7 +125,7 @@ $accountOwner = $this->getAccountOwner();
         <?php endif;?>
 
         <div id="<?php echo $code ?>_debit_details">
-            <?php if ($this->shouldDisplayIbanBic()) :?>
+            <?php if ($isAllowedDirectDebit) : ?>
                 <li>
                     <div id="ratepay-Header">
                         <div>
@@ -212,6 +205,19 @@ $accountOwner = $this->getAccountOwner();
                 </li>
             <?php endif; ?>
         </div>
+
+        <li <?php if (!$isAllowedDirectDebit) { echo 'style="display: none"'; } ?>>
+            <p id="method-switch-section" onclick="switchRatePaymentMethod('<?php echo $code ?>')">
+                <span class="method-switch-icon"></span>
+                <a id="<?php echo $code ?>_method_switch_invoice" style="cursor: pointer;">
+                    <?php echo $this->__('I would like to make the installment payment myself and not pay by direct debit'); ?>
+                </a>
+                <a id="<?php echo $code ?>_method_switch_directdebit" style="cursor: pointer; display: none;">
+                    <?php echo $this->__('I would like to settle the installment by direct debit'); ?>
+                </a>
+                <input id="<?php echo $code ?>_debit_type" name="payment[payone_ratepay_debit_type]" value="<?php echo $initialDebitType; ?>" type="hidden" />
+            </p>
+        </li>
 
         <li style="display:none;">
             <input type="hidden" name="payment[payone_config_payment_method_id]"  id="<?php echo $code ?>_config_id" value="<?php echo $configId; ?>"/>
@@ -322,4 +328,11 @@ $accountOwner = $this->getAccountOwner();
 <script type="text/javascript">
     //    Add validation messages translation
     Translator.add('You have to be at least 18 years old to use this payment type!', '<?php echo $this->__('You have to be at least 18 years old to use this payment type!'); ?>');
+
+    checkRequirementFields('<?php echo $paymentType;?>', -1);
+    attachCalcButtonsListeners(
+        '<?php echo $code ?>',
+        '<?php echo $this->getUrl("payone_core/ratepay/runtime", array('_secure' => true)); ?>',
+        '<?php echo $this->getUrl("payone_core/ratepay/rate", array('_secure' => true)); ?>'
+    );
 </script>

@@ -1,0 +1,39 @@
+<?php
+/**
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the GNU General Public License (GPL 3)
+ * that is bundled with this package in the file LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Payone_Core to newer
+ * versions in the future. If you wish to customize Payone_Core for your
+ * needs please refer to http://www.payone.de for more information.
+ *
+ * @category        Payone
+ * @package         design_adminhtml_default_default
+ * @subpackage      template
+ * @copyright       Copyright (c) 2019 <kontakt@fatchip.de> - www.fatchip.com
+ * @author          Vincent Boulanger <vincent.boulanger@fatchip.de>
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.fatchip.com
+ */
+
+/** @var $this Payone_Core_Block_Payment_Method_RatepayDirectDebitSepaAcceptance */
+?>
+<div>
+    <p>
+        <?php
+            $text = $this->__('I hereby consent to the forwarding of my data to %s according to %s and authorize them to collect payments related to this purchase contract from my account mentioned above by direct debit.');
+            $address = 'RatePAY GmbH, Franklinstraße 28-29, 10587 Berlin';
+            $link = '<a target="_blank" href="https://www.ratepay.com/zusaetzliche-geschaeftsbedingungen-und-datenschutzhinweis-dach">' . $this->__('RatePAY Privacy Policy') . '</a>';
+            $text = sprintf($text, $address ,$link);
+            echo $text;
+        ?>
+    </p>
+    <p><?php echo $this->__('Note:'); ?></p>
+    <p><?php echo $this->__('After conclusion of the contract, I will be notified of the mandate reference of RatePAY. I can claim reimbursement of the amount due within eight weeks of the debit date.'); ?></p>
+    <p><?php echo $this->__('Applicable in this regard by the contract with my bank conditions.'); ?></p>
+</div>

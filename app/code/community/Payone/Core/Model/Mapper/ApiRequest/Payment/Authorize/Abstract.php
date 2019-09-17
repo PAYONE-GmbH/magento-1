@@ -687,23 +687,16 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
              * if RatePay Type is Installment map Installmentplan Data
              * from payone session
              */
-            if($payment->getFinancingtype() == Payone_Api_Enum_RatepayInvoicingType::RPV){
+            if ($payment->getFinancingtype() == Payone_Api_Enum_RatepayInvoicingType::RPV) {
                 $payData = new Payone_Api_Request_Parameter_Paydata_Paydata();
             } else {
                 $ratePayInstallmentData = $this->_getResult($paymentMethod->getCode());
-                $config = $paymentMethod->getConfig();
 
-                // If RPS Lastschrift is not allowed for the country,
-                // debit-type is forced to Bank-Transfer
-                $ratepayDirectDebitAllowSpecific = $config->getRatepayDirectdebitAllowspecific();
-                $country = $this->getOrder()->getBillingAddress()->getCountry();
-                $allowedCountries = explode(',', $config->getRatepayDirectDebitSpecificCountry());
-                if ($ratepayDirectDebitAllowSpecific == 1 && !in_array($country, $allowedCountries)) {
-                    $ratePayInstallmentData['payone_ratepay_debit-paytype'] = Payone_Api_Enum_RatepayDebitType::BANK_TRANSFER;
-                }
-                else {
-                    $ratePayInstallmentData['payone_ratepay_debit-paytype'] = $config->getRatepayDebitType();
-                }
+                $postPayment = Mage::app()->getRequest()->getPost('payment');
+                $ratePayInstallmentData['payone_ratepay_debit-paytype'] = $this->getInstallmentDebitType(
+                    $postPayment['payone_ratepay_debit_type'],
+                    $paymentMethod->getConfig()
+                );
 
                 /*@var $payData Payone_Api_Request_Parameter_Paydata_Paydata*/
                 $payData = $this->mapRatePayInstallmentParameters($ratePayInstallmentData);
@@ -1256,5 +1249,35 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
         }
 
         return $order->getDiscountAmount();
+    }
+
+    /**
+     * @param string $paramDebitType
+     * @param Payone_Core_Model_Config_Payment_Method_Interface $config
+     * @return string
+     */
+    private function getInstallmentDebitType($paramDebitType, $config)
+    {
+        if ($paramDebitType == Payone_Api_Enum_RatepayDebitType::BANK_TRANSFER) {
+            return $paramDebitType;
+        }
+
+        // If Switzerland, debit-type is forced to Bank-Transfer
+        $country = $this->getOrder()->getBillingAddress()->getCountry();
+        if ($country == 'CH') {
+            return Payone_Api_Enum_RatepayDebitType::BANK_TRANSFER;
+        }
+
+        // If RPS Lastschrift is not allowed for the country,
+        // debit-type is forced to Bank-Transfer
+        $ratepayDirectDebitAllowSpecific = $config->getRatepayDirectdebitAllowspecific();
+        if ($ratepayDirectDebitAllowSpecific == 1) {
+            $allowedCountries = explode(',', $config->getRatepayDirectDebitSpecificCountry());
+            if (!in_array($country, $allowedCountries)) {
+                return Payone_Api_Enum_RatepayDebitType::BANK_TRANSFER;
+            }
+        }
+
+        return $paramDebitType;
     }
 }

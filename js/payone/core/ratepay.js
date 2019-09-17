@@ -334,3 +334,58 @@ function copyDebitPaymentSepaIban(code)
     var input_sepa_iban_el = $(code + '_sepa_iban');
     input_sepa_iban_el.value = input_sepa_iban_xxx_el.value;
 }
+
+function updateRatePaymentMethod(code, allowedDebitCountries) {
+    if ('undefined' !== typeof allowedDebitCountries && allowedDebitCountries !== null) {
+        var country = $('order-billing_address_country_id').value.toUpperCase();
+        var displaySwitchSection = true;
+        var rateMethod = 'DIRECT-DEBIT';
+
+        if (country === 'CH') {
+            rateMethod = 'BANK-TRANSFER';
+            displaySwitchSection = false;
+        } else {
+            if (allowedDebitCountries !== 'all') {
+                if (allowedDebitCountries.indexOf(country) === -1) {
+                    rateMethod = 'BANK-TRANSFER';
+                    displaySwitchSection = false;
+                }
+            }
+        }
+
+        switchRateMethodTo(rateMethod, code, displaySwitchSection);
+    }
+}
+
+function switchRatePaymentMethod(code)
+{
+    var currentMethod = $(code + '_debit_type').value;
+    currentMethod === 'DIRECT-DEBIT'
+        ? switchRateMethodTo('BANK-TRANSFER', code, true)
+        : switchRateMethodTo('DIRECT-DEBIT', code, true);
+}
+
+function switchRateMethodTo(method, code, displaySwitchSection)
+{
+    var debitTypeMethod = $(code + '_debit_type');
+    if ('undefined' !== typeof debitTypeMethod && debitTypeMethod !== null) {
+        var switchSection = $('method-switch-section');
+        if ('undefined' !== typeof switchSection && switchSection !== null) {
+            displaySwitchSection ? switchSection.show() : switchSection.hide();
+        }
+
+        $(code + '_debit_type').value = method;
+
+        if (method === 'DIRECT-DEBIT') {
+            $(code + '_debit_details').show();
+            $(code + '_method_switch_invoice').show();
+            $(code + '_method_switch_directdebit').hide();
+            $(code + '_sepa_iban_xxx').addClassName('required-entry');
+        } else {
+            $(code + '_debit_details').hide();
+            $(code + '_method_switch_invoice').hide();
+            $(code + '_method_switch_directdebit').show();
+            $(code + '_sepa_iban_xxx').removeClassName('required-entry');
+        }
+    }
+}

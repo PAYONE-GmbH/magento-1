@@ -204,6 +204,29 @@ class Payone_Core_Block_Payment_Method_Form_Ratepay extends Payone_Core_Block_Pa
     }
 
     /**
+     * Returns the string containing the configured countries
+     * allowed for ratepay installment direct debit
+     * Returns 'all' if all countries are allowed
+     *
+     * @return string
+     */
+    public function getConfigDebitCountries()
+    {
+        /** @var Payone_Core_Model_Payment_Method_Ratepay $method */
+        $method = Mage::getModel('payone_core/payment_method_ratepay');
+        /** @var Payone_Core_Model_Config_Payment_Method $config */
+        $config = $method->getConfigForQuote($this->getQuote());
+
+        if ($config->getAllowspecific() == "0") {
+            return 'all';
+        }
+
+        $ratepayDirectDebitAllowSpecific = $config->getRatepayDirectDebitSpecificCountry();
+
+        return $ratepayDirectDebitAllowSpecific;
+    }
+
+    /**
      * @return string
      */
     public function getAccountOwner()
@@ -230,12 +253,8 @@ class Payone_Core_Block_Payment_Method_Form_Ratepay extends Payone_Core_Block_Pa
     /**
      * @return bool
      */
-    public function shouldDisplayIbanBic()
+    public function isAllowedDirectDebit()
     {
-        if (!$this->isInstallmentDirectDebit()) {
-            return false;
-        }
-
         $country = $this->getQuote()->getBillingAddress()->getCountry();
         // Switzerland does not allow RPS Lastschrift, no need for fields
         if ($country == 'CH') {
@@ -253,22 +272,6 @@ class Payone_Core_Block_Payment_Method_Form_Ratepay extends Payone_Core_Block_Pa
         };
 
         return false;
-    }
-
-    /**
-     * return boolean
-     */
-    public function isInstallmentDirectDebit()
-    {
-        try {
-            /** @var Payone_Core_Model_Config_Payment_Method $config */
-            $config = $this->getPaymentConfig();
-            $debitType = $config->getRatepayDebitType();
-            return $debitType == Payone_Api_Enum_RatepayDebitType::DIRECT_DEBIT;
-        }
-        catch (\Exception $oEx) {
-            return false;
-        }
     }
 
     /**
