@@ -376,16 +376,15 @@ function switchRateMethodTo(method, code, displaySwitchSection)
 
         $(code + '_debit_type').value = method;
 
+        var methodSwitchCheckbox = $('method-switch-checkbox');
         if (method === 'DIRECT-DEBIT') {
             $(code + '_debit_details').show();
-            $(code + '_method_switch_invoice').show();
-            $(code + '_method_switch_directdebit').hide();
             $(code + '_sepa_iban_xxx').addClassName('required-entry');
+            methodSwitchCheckbox.style.backgroundColor = '';
         } else {
             $(code + '_debit_details').hide();
-            $(code + '_method_switch_invoice').hide();
-            $(code + '_method_switch_directdebit').show();
             $(code + '_sepa_iban_xxx').removeClassName('required-entry');
+            methodSwitchCheckbox.style.backgroundColor = methodSwitchCheckbox.getStyles().borderBottomColor;
         }
     }
 }

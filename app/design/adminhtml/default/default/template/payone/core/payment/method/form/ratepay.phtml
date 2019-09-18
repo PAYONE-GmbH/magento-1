@@ -207,12 +207,9 @@ $initialDebitType = Payone_Api_Enum_RatepayDebitType::DIRECT_DEBIT;
 
     <li>
         <p id="method-switch-section" onclick="switchRatePaymentMethod('<?php echo $code ?>')">
-            <span class="method-switch-icon"></span>
+            <span id="method-switch-checkbox"></span>
             <a id="<?php echo $code ?>_method_switch_invoice" style="cursor: pointer;">
                 <?php echo $this->__('I would like to make the installment payment myself and not pay by direct debit'); ?>
-            </a>
-            <a id="<?php echo $code ?>_method_switch_directdebit" style="cursor: pointer; display: none;">
-                <?php echo $this->__('I would like to settle the installment by direct debit'); ?>
             </a>
             <input id="<?php echo $code ?>_debit_type" name="payment[payone_ratepay_debit_type]" value="<?php echo $initialDebitType; ?>" type="hidden" />
         </p>

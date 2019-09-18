@@ -524,16 +524,17 @@ table#ratepay-InstallmentTerms {
 #method-switch-section {
     display: inline-block;
 }
-
-#method-switch-section:hover .method-switch-icon {
+#method-switch-section:hover #method-switch-checkbox {
     background-color: lightblue;
 }
 
-.method-switch-icon {
+#method-switch-checkbox {
     width: 16px;
     height: 16px;
-    border:solid 1px lightblue;
+    border:solid 2px lightblue;
     display: inline-block;
     margin: 2px 6px 0 0;
     float:left;
+    outline: solid 2px white;
+    outline-offset: -3px;
 }
