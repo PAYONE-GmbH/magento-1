@@ -117,6 +117,7 @@ class Payone_Core_Block_Adminhtml_System_Config_Payment extends Mage_Adminhtml_B
     public function getPaymentSelection(){
         $dropDownOptions = '';
         $methodTypes = $this->getFactory()->getModelSystemConfigPaymentMethodType()->toArray();
+        asort($methodTypes);
         echo '<script>var locations = {';
         foreach ($methodTypes as $key => $name) {
             $dropDownOptions.= '<option value = '.$key.'>'.$name.'</option>';
