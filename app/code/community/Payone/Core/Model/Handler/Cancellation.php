@@ -88,6 +88,7 @@ class Payone_Core_Model_Handler_Cancellation extends Payone_Core_Model_Handler_A
                     $oQuote->merge($oOldQuote);
                     $oQuote->collectTotals();
                     $oQuote->save();
+                    $oSession->setQuoteId($oQuote->getId());
                 }
             }
         }

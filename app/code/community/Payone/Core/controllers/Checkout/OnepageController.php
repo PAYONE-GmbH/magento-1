@@ -362,7 +362,14 @@ class Payone_Core_Checkout_OnepageController extends Mage_Checkout_OnepageContro
      */
     public function indexAction()
     {
-        $this->startCancellationHandler();
-        return parent::indexAction();
+        try {
+            $this->startCancellationHandler();
+            return parent::indexAction();
+        } catch (Exception $e) {
+            Mage::logException($e);
+
+            $redirectUrl = Mage::helper('checkout/cart')->getCartUrl();
+            $this->_redirectUrl($redirectUrl);
+        }
     }
 }
