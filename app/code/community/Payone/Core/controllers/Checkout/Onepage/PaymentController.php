@@ -148,7 +148,12 @@ class Payone_Core_Checkout_Onepage_PaymentController extends Payone_Core_Control
         $helper = $this->helper();
 
         if ($order->getStatus() == Mage_Sales_Model_Order::STATE_CANCELED) {
-            // Order was cancelled, reactivate quote, notify customer:
+            // Order was cancelled
+            if ($checkoutSession->getQuoteId() != $quote->getId()) {
+                // And the quote got duplicated in between. We need to use the new quote
+                $quote = Mage::getModel('sales/quote');
+                $quote->load($checkoutSession->getQuoteId());
+            }
             $this->reactivateQuote($quote);
 
             if (!empty($checkoutSession->getData('order_got_canceled'))) {

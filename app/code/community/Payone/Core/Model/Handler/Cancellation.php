@@ -76,21 +76,64 @@ class Payone_Core_Model_Handler_Cancellation extends Payone_Core_Model_Handler_A
                         $controller->setRedirectWithCookieCheck('checkout/cart/index');
                     }
                 }
-                // Load quote
-                $quoteId = $oSession->getLastQuoteId();
 
-                $oQuote = $oSession->getQuote();
+                // load old quote and duplicate it - don't reuse the old one to prevent cart-manipulation
+                $iNewQuoteId = $this->duplicateQuote(
+                    $oSession->getLastQuoteId(),
+                    $oSession->getQuote()
+                );
 
-                //load old quote and duplicate it - don't reuse the old one to prevent cart-manipulation
-                $oOldQuote = $this->getFactory()->getModelSalesQuote();
-                $oOldQuote->load($quoteId);
-                if ($oOldQuote && $oOldQuote->getId()) {
-                    $oQuote->merge($oOldQuote);
-                    $oQuote->collectTotals();
-                    $oQuote->save();
-                    $oSession->setQuoteId($oQuote->getId());
-                }
+                $oSession->setQuoteId($iNewQuoteId);
             }
         }
+    }
+
+    /**
+     * @param string $sLastQuoteId
+     * @param Mage_Sales_Model_Quote $oQuote
+     *
+     * @return mixed
+     */
+    private function duplicateQuote($sLastQuoteId, $oQuote)
+    {
+        /** @var Mage_Sales_Model_Quote $oOldQuote */
+        $oOldQuote = $this->getFactory()->getModelSalesQuote();
+        $oOldQuote->load($sLastQuoteId);
+        if ($oOldQuote && $oOldQuote->getId()) {
+            $oQuote->merge($oOldQuote);
+
+            /** @var Mage_Sales_Model_Quote_Address $oNewBillingAddress */
+            $oNewBillingAddress = Mage::getModel('sales/quote_address');
+            $oOldBillingAddress = $oOldQuote->getBillingAddress();
+            $oNewBillingAddress->setData($oOldBillingAddress->getData());
+            $oNewBillingAddress->setQuote($oQuote);
+            $oNewBillingAddress->save();
+
+            /** @var Mage_Sales_Model_Quote_Address $oNewShippingAddress */
+            $oNewShippingAddress = Mage::getModel('sales/quote_address');
+            $oOldShippingAddress = $oOldQuote->getShippingAddress();
+            $oNewShippingAddress->setData($oOldShippingAddress->getData());
+            $oNewShippingAddress->setQuote($oQuote);
+            $oNewShippingAddress->setCollectShippingRates(1);
+            $oNewShippingAddress->collectTotals();
+            $oNewShippingAddress->save();
+
+            /** @var Mage_Sales_Model_Quote_Payment $oNewQuotePayment */
+            $oNewQuotePayment = Mage::getModel('sales/quote_payment');
+            $oOldQuotePayment = $oOldQuote->getPayment();
+            $oNewQuotePayment->setData($oOldQuotePayment->getData());
+            $oNewQuotePayment->setQuote($oQuote);
+            $oNewQuotePayment->save();
+
+            $oQuote->setBillingAddress($oNewBillingAddress);
+            $oQuote->setShippingAddress($oNewShippingAddress);
+            $oQuote->setPayment($oNewQuotePayment);
+
+            $oQuote->setTotalsCollectedFlag(false);
+            $oQuote->collectTotals();
+            $oQuote->save();
+        }
+
+        return $oQuote->getId();
     }
 }
