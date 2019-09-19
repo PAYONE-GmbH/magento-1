@@ -114,4 +114,30 @@ class Payone_Core_Block_Adminhtml_System_Config_Payment extends Mage_Adminhtml_B
         return $this->helperPayone()->getFactory();
     }
 
+    public function getPaymentSelection(){
+        $dropDownOptions = '';
+        $methodTypes = $this->getFactory()->getModelSystemConfigPaymentMethodType()->toArray();
+        echo '<script>var locations = {';
+        foreach ($methodTypes as $key => $name) {
+            $dropDownOptions.= '<option value = '.$key.'>'.$name.'</option>';
+            $dropDownOptions.= '<br>';
+            echo '\''.$name.'\' : \''.$this->getNewUrl(array('type' => $key)).'\',';
+        }
+        echo '};</script>';
+
+        return 'Zahlungsart hinzufügen: <select name = "paymentsList" id="paymentsList">'
+            . $dropDownOptions .
+            '</select>
+         <button type="button" onclick="getLocation()" id="confirmNewPayment">Bestätigen</button>
+         
+         <script>
+             function getLocation(){
+                 var e = document.getElementById("paymentsList");
+                 var payment = e.options[e.selectedIndex].text;
+                 window.location.href = locations[payment];
+             }
+         </script>
+         ';
+    }
+
 }
