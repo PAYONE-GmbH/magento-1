@@ -149,6 +149,7 @@ class Payone_Core_Block_Adminhtml_System_Config_Payment extends Mage_Adminhtml_B
             echo '\''.$name.'\' : \''.$this->getNewUrl(array('type' => $key)).'\',';
         }
         echo '};</script>';
+        return $dropDownOptions;
     }
 
 }
