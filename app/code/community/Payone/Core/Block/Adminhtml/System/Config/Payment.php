@@ -114,20 +114,12 @@ class Payone_Core_Block_Adminhtml_System_Config_Payment extends Mage_Adminhtml_B
         return $this->helperPayone()->getFactory();
     }
 
+    /**
+     * @return string
+     */
     public function getPaymentSelection(){
-        $dropDownOptions = '';
-        $methodTypes = $this->getFactory()->getModelSystemConfigPaymentMethodType()->toArray();
-        natcasesort($methodTypes);
-        echo '<script>var locations = {';
-        foreach ($methodTypes as $key => $name) {
-            $dropDownOptions.= '<option value = '.$key.'>'.$name.'</option>';
-            $dropDownOptions.= '<br>';
-            echo '\''.$name.'\' : \''.$this->getNewUrl(array('type' => $key)).'\',';
-        }
-        echo '};</script>';
-
         return 'Zahlungsart hinzufügen: <select name = "paymentsList" id="paymentsList">'
-            . $dropDownOptions .
+            . $this->parseDropDown() .
             '</select>
          <button type="button" onclick="getLocation()" id="confirmNewPayment">Bestätigen</button>
          
@@ -139,6 +131,24 @@ class Payone_Core_Block_Adminhtml_System_Config_Payment extends Mage_Adminhtml_B
              }
          </script>
          ';
+    }
+
+    /**
+     * prepare html part of selection drop down
+     * prepare locations array for payments
+     */
+    private function parseDropDown()
+    {
+        $dropDownOptions = '';
+        $methodTypes = $this->getFactory()->getModelSystemConfigPaymentMethodType()->toArray();
+        natcasesort($methodTypes);
+        echo '<script>var locations = {';
+        foreach ($methodTypes as $key => $name) {
+            $dropDownOptions.= '<option value = '.$key.'>'.$name.'</option>';
+            $dropDownOptions.= '<br>';
+            echo '\''.$name.'\' : \''.$this->getNewUrl(array('type' => $key)).'\',';
+        }
+        echo '};</script>';
     }
 
 }
