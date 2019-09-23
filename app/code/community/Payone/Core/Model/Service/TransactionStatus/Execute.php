@@ -43,6 +43,12 @@ class Payone_Core_Model_Service_TransactionStatus_Execute extends Payone_Core_Mo
     protected $serviceProcess = null;
 
     /**
+     * @var array
+     * Array of failed stransactionsStatus
+     */
+    private $failed = array();
+
+    /**
      * @return int
      */
     public function executePending()
@@ -67,6 +73,10 @@ class Payone_Core_Model_Service_TransactionStatus_Execute extends Payone_Core_Mo
                 $continue = false;
             }
         }
+
+        $this->handleFailed();
+
+
         Mage::helper('payone_core')->logCronjobMessage("executePending: finished ".$countExecuted);
         return $countExecuted;
     }
@@ -134,9 +144,11 @@ class Payone_Core_Model_Service_TransactionStatus_Execute extends Payone_Core_Mo
             $transactionStatus->setStatusOk();
             $this->helper()->logCronjobMessage("ID: {$transactionStatus->getId()} - Execute - Finished service execution, set status to complete", $storeId);
         } catch (Exception $e) {
+            $this->failed[] = $transactionStatus;
             $transactionStatus->setStatusError();
             $transactionStatus->setProcessingError($e->getMessage());
             $this->helper()->logCronjobMessage("ID: {$transactionStatus->getId()} - Execute - Error during service execution, set status to error with message {$e->getMessage()}", $storeId);
+
         }
         $transactionStatus->setProcessedAt(date('Y-m-d H:i:s'));
         $transactionStatus->save();
@@ -197,5 +209,58 @@ class Payone_Core_Model_Service_TransactionStatus_Execute extends Payone_Core_Mo
     public function getMaxExecutionTime()
     {
         return $this->maxExecutionTime;
+    }
+
+    /**
+     *
+     */
+    private function handleFailed()
+    {
+        //Check if there are failed transactions
+        if (count($this->failed) > 0) {
+            //@ToDo: get retry counter from back end
+            $retryCounter = 3;
+            $failed = array();
+            $list = array();
+
+            //retry failed transactions
+            while ($retryCounter > 0 && count($this->failed) > 0) {
+                $transactionsToRetry = $this->failed;
+                $this->failed = array();
+                foreach ($transactionsToRetry as $transactionStatus) {
+                    /**
+                     * @var Payone_Core_Model_Domain_Protocol_TransactionStatus $transactionStatus
+                     */
+                    $this->execute($transactionStatus);
+
+                    //are all retries failed?
+                    if ($retryCounter == 1) {
+                        //add transaction to finally failed
+                        $failed[] = $transactionStatus;
+                        $list[] = $transactionStatus->getOrderId();
+                    }
+                }
+                $retryCounter--;
+            }
+
+            //are any failed transactions left? Than prepare report email
+            if (count($failed) > 0) {
+                //@ToDo: get Email from Configuration
+                $emailTo = '';
+                if (!filter_var($emailTo, FILTER_VALIDATE_EMAIL)) {
+                    return;
+                }
+                //prepare Email
+                //@ToDo: get Template for TransactionStatus Error
+                $template = 'transaction_status_error_report';
+
+                $params = array();
+                $params['failed'] = $failed;
+                $params['list'] = implode(',' , $list);
+
+                //send Email with Error information
+                $this->getFactory()->helperEmail()->send('general', $emailTo, false, $template, $params);
+            }
+        }
     }
 }
