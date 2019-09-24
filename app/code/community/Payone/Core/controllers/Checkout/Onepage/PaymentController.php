@@ -32,6 +32,11 @@
  */
 class Payone_Core_Checkout_Onepage_PaymentController extends Payone_Core_Controller_Abstract
 {
+    /** @var array */
+    protected $acceptedReferrerPatterns = array(
+        '/.*payments-eu.amazon.com.*/',
+    );
+
     /**
      * Payment has been canceled by user.
      *
@@ -55,6 +60,11 @@ class Payone_Core_Checkout_Onepage_PaymentController extends Payone_Core_Control
     public function successAction()
     {
         try {
+            if (!$this->validateRequestOrigin()) {
+                $this->_redirect('checkout/cart');
+                return;
+            }
+
             $oSession = Mage::getSingleton('checkout/session');
             $oSession->unsPayoneExternalCheckoutActive();
             $success = $this->checkoutSucccess();
@@ -345,5 +355,34 @@ class Payone_Core_Checkout_Onepage_PaymentController extends Payone_Core_Control
 
         Mage::getSingleton('customer/session')->addError($this->helper()->__("Error trying to download the pdf"));
         $this->_redirect('');
+    }
+
+    /**
+     * Validates the origin of the call (MAGE-427)
+     * At the moment, checks the HTTP_REFERER value, against an arbitrary set of values (from class members)
+     *
+     * @return bool
+     */
+    protected function validateRequestOrigin()
+    {
+        if (!isset($_SERVER['HTTP_REFERER'])) {
+            return false;
+        }
+
+        $referrer = $_SERVER['HTTP_REFERER'];
+        $referrerNotAccepted = array_reduce(
+            $this->acceptedReferrerPatterns,
+            function ($carry, $pattern) use ($referrer) {
+                if (!$carry) {
+                    return $carry;
+                }
+
+                $found = preg_match($pattern, $referrer) === 1;
+                return $carry * !$found;
+            },
+            true
+        );
+
+        return !$referrerNotAccepted;
     }
 }
