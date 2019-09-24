@@ -377,6 +377,7 @@ class Payone_Core_Checkout_OnepageController extends Mage_Checkout_OnepageContro
 
         // this should be unset by Payone_Core_Checkout_Onepage_PaymentController
         if ($oSession->getPayoneExternalCheckoutActive() === true) {
+            $this->startCancellationHandler();
             $this->_redirect('checkout/cart');
             return;
         }
