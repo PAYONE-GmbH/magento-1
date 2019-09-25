@@ -59,7 +59,13 @@ function payoneRatepayRateCalculatorAction (mode, paymentMethod, url, calcValue)
         amount,
         ratePayCurrency,
         ajaxLoader = $("ajaxLoaderId"),
-        cover = $("cover");
+        cover = $("cover"),
+        calculationFlag = $("calculationValidationFlag");
+
+    // MAGE-444 : set the flag down before calculation
+    // so it's possible to check if the calculation happened
+    // and if it was successful
+    calculationFlag.value = "";
 
     ajaxLoader.setStyle(
         {
@@ -124,6 +130,12 @@ function payoneRatepayRateCalculatorAction (mode, paymentMethod, url, calcValue)
         document.getElementById(paymentMethod + '_ResultContainer').innerHTML = html;
         document.getElementById(paymentMethod + '_ResultContainer').style.display = 'block';
         document.getElementById(paymentMethod + '_ResultContainer').style.padding = '3px 0 0 0';
+
+        // MAGE-444 : if calculation succeeded, the validation is raised
+        if (html.search('.*rateError.*') === -1) {
+            calculationFlag.value = "1";
+            $('advice-required-entry-calculationValidationFlag').hide();
+        }
 
         ajaxLoader.setStyle(
             {
