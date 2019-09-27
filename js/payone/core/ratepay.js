@@ -134,7 +134,11 @@ function payoneRatepayRateCalculatorAction (mode, paymentMethod, url, calcValue)
         // MAGE-444 : if calculation succeeded, the validation is raised
         if (html.search('.*rateError.*') === -1) {
             calculationFlag.value = "1";
-            $('advice-required-entry-calculationValidationFlag').hide();
+            var validationAdvice = $('advice-required-entry-calculationValidationFlag');
+            if ('undefined' !== typeof validationAdvice && validationAdvice !== null ) {
+                validationAdvice.hide();
+            }
+
         }
 
         ajaxLoader.setStyle(
