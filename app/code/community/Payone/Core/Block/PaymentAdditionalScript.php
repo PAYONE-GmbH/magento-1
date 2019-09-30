@@ -26,6 +26,7 @@ class Payone_Core_Block_PaymentAdditionalScript extends Mage_Core_Block_Template
     private $scriptsUrls = array(
         Payone_Core_Model_System_Config_PaymentMethodType::CREDITCARD => 'payone/core/creditcard.js',
         Payone_Core_Model_System_Config_PaymentMethodType::DEBITPAYMENT => 'payone/core/debitpayment.js',
+        Payone_Core_Model_System_Config_PaymentMethodType::PAYMENTGUARANTEEINVOICE => 'payone/core/guaranteeinvoice.js',
         Payone_Core_Model_System_Config_PaymentMethodType::ONLINEBANKTRANSFER => 'payone/core/onlinebanktransfer.js',
         Payone_Core_Model_System_Config_PaymentMethodType::ONLINEBANKTRANSFEREPS => 'payone/core/onlinebanktransfer.js',
         Payone_Core_Model_System_Config_PaymentMethodType::ONLINEBANKTRANSFERIDL => 'payone/core/onlinebanktransfer.js',
