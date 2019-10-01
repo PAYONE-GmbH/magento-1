@@ -26,11 +26,10 @@ class Payone_Core_Block_PaymentAdditionalScript extends Mage_Core_Block_Template
     const JS_DIR_PREFIX = 'payone/core/';
 
     private $sharedJsFiles = array(
-        self::JS_DIR_PREFIX . 'client_api.js',
-        self::JS_DIR_PREFIX . 'opcheckoutmod.js',
-        self::JS_DIR_PREFIX . 'sepa_inputs.js',
-        self::JS_DIR_PREFIX . 'sepa_validation.js',
-        self::JS_DIR_PREFIX . 'shared.js',
+        'client_api.js',
+        'sepa_inputs.js',
+        'sepa_validation.js',
+        'shared.js',
     );
 
     private $scriptsUrls = array(
@@ -65,7 +64,12 @@ class Payone_Core_Block_PaymentAdditionalScript extends Mage_Core_Block_Template
         /** @var \Mage_Checkout_Model_Session $session */
         $session = Mage::getSingleton('checkout/session');
 
-        $loadedScripts = array_merge(array(), $this->sharedJsFiles);
+        $loadedScripts = array_map(
+            function($url) {
+                return $this->getJsUrl(self::JS_DIR_PREFIX . $url);
+            },
+            $this->sharedJsFiles
+        );
 
         $storeId = $session->getQuote()->getStoreId();
         /** @var Payone_Core_Model_Config_Payment $paymentConfig */

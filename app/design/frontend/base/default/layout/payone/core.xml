@@ -300,6 +300,7 @@
         </reference>
 
         <reference name="content">
+            <block type="core/template" name="payone_core_opcheckoutmod" template="payone/core/opcheckoutmod.phtml" />
             <block type="payone_core/amazon_pay_shortcut" name="payone_core_amazonpay_login" template="payone/core/amazonpay_login.phtml" />
         </reference>
     </checkout_onepage_index>
