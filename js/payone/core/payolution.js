@@ -158,22 +158,3 @@ function switchInstallmentPlan(sKey, sCode, iInstallments)
     switchVisibility(aShow, true);
     $(sCode + '_selected_installmentplan').value = iInstallments;
 }
-
-/**
- *
- * @param payment_code
- */
-function payonePayolutionCustomerDobInput(payment_code)
-{
-    var daySelect = $(payment_code + '_additional_fields_customer_dob_day');
-    var monthSelect = $(payment_code + '_additional_fields_customer_dob_month');
-    var yearSelect = $(payment_code + '_additional_fields_customer_dob_year');
-    var hiddenDobFull = $(payment_code + '_additional_fields_customer_dob_full');
-
-    if (daySelect == undefined || monthSelect == undefined || yearSelect == undefined
-        || hiddenDobFull == undefined)  {
-        return;
-    }
-
-    hiddenDobFull.value = yearSelect.value + "-" + monthSelect.value + "-" + daySelect.value;
-}

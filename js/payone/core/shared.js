@@ -21,9 +21,10 @@
  */
 
 /**
+ *
  * @param payment_code
  */
-function payoneGuaranteeInvoiceCustomerDobInput(payment_code)
+function payoneCustomerDobInput(payment_code)
 {
     var daySelect = $(payment_code + '_additional_fields_customer_dob_day');
     var monthSelect = $(payment_code + '_additional_fields_customer_dob_month');

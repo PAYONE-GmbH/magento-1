@@ -35,7 +35,7 @@ $configId = $this->getPaymentConfig()->getId();
                 </label>
                 <br class="clear"/>
                 <select id="<?php echo $code ?>_additional_fields_customer_dob_day" class="required-entry"
-                        style="width: 60px;" onchange="payoneRatepayCustomerDobInput('<?php echo $code ?>')">
+                        style="width: 60px;" onchange="payoneCustomerDobInput('<?php echo $code ?>')">
                     <option value="">--</option>
                     <?php for ($x = 1; $x <= 31; $x++): ?>
                         <option value="<?php echo sprintf('%02d', $x); ?>">
@@ -44,7 +44,7 @@ $configId = $this->getPaymentConfig()->getId();
                     <?php endfor; ?>
                 </select>
                 <select id="<?php echo $code ?>_additional_fields_customer_dob_month" class="required-entry"
-                        style="width: 60px;" onchange="payoneRatepayCustomerDobInput('<?php echo $code ?>')">
+                        style="width: 60px;" onchange="payoneCustomerDobInput('<?php echo $code ?>')">
                     <option value="">--</option>
                     <?php for ($x = 1; $x <= 12; $x++) : ?>
                         <option value="<?php echo sprintf('%02d', $x); ?>">
@@ -53,7 +53,7 @@ $configId = $this->getPaymentConfig()->getId();
                     <?php endfor; ?>
                 </select>
                 <select id="<?php echo $code ?>_additional_fields_customer_dob_year" class="required-entry"
-                        style="width: 60px;" onchange="payoneRatepayCustomerDobInput('<?php echo $code ?>')">
+                        style="width: 60px;" onchange="payoneCustomerDobInput('<?php echo $code ?>')">
                     <option value="">----</option>
                     <?php for ($x = date('Y'); $x > (date('Y') - 100); $x--) : ?>
                         <option value="<?php echo $x; ?>">

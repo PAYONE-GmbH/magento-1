@@ -277,11 +277,9 @@
 
     <checkout_onepage_index>
         <reference name="head">
-            <action method="addJs"><script>payone/core/client_api.js</script></action>
             <action method="addJs" ifconfig="payone_protect/general/enabled">
                 <script>payone/core/addresscheck.js</script>
             </action>
-            <action method="addJs"><script helper="payone_core/payolution/getPayolutionFraudPreventionJs"/></action>
             <action method="addCss"><name>payone/core/mandate.css</name></action>
             <action method="addCss"><name>payone/core/payolution.css</name></action>
             <action method="addCss"><name>payone/core/ratepay.css</name></action>
@@ -304,7 +302,6 @@
         </reference>
 
         <reference name="content">
-            <block type="core/template" name="payone_core_opcheckoutmod" template="payone/core/opcheckoutmod.phtml" />
             <block type="payone_core/amazon_pay_shortcut" name="payone_core_amazonpay_login" template="payone/core/amazonpay_login.phtml" />
         </reference>
     </checkout_onepage_index>
