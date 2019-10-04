@@ -953,8 +953,11 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
             }';
             */
 
+            $token = $session->getData('work_order_id');
+            $params = $this->helperUrl()->getCheckoutTokenParams($token);
+
             $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_AmazonPay([
-                'successurl' => $this->helperUrl()->getSuccessUrl(),
+                'successurl' => $this->helperUrl()->getSuccessUrl($params),
                 'errorurl'   => $this->helperUrl()->getErrorUrl(),
             ], $paydata);
         } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_PaymentGuaranteeInvoice) {
@@ -998,8 +1001,12 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
         }
 
         if ($isRedirect === true) {
+            $params = $this->helperUrl()->getCheckoutTokenParams();
+
             $encodedOrderId = base64_encode($this->getOrder()->getEntityId());
-            $successurl = $this->helperUrl()->getSuccessUrl() . "reference/{$encodedOrderId}/";
+            $params['reference'] = $encodedOrderId;
+
+            $successurl = $this->helperUrl()->getSuccessUrl($params);
             $errorurl = $this->helperUrl()->getErrorUrl() . "reference/{$encodedOrderId}/";
             $backurl = $this->helperUrl()->getBackUrl() . "reference/{$encodedOrderId}/";
 

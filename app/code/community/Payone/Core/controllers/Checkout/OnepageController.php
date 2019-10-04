@@ -367,6 +367,7 @@ class Payone_Core_Checkout_OnepageController extends Mage_Checkout_OnepageContro
     }
 
     /**
+     * Git Issue : https://github.com/PAYONE-GmbH/magento-1/pull/340
      * Prevents success action for non-paid orders
      * @return void
      */
@@ -381,6 +382,8 @@ class Payone_Core_Checkout_OnepageController extends Mage_Checkout_OnepageContro
             $this->_redirect('checkout/cart');
             return;
         }
+
+        $this->getFactory()->helper()->unsPayoneExternalCheckout();
 
         parent::successAction();
     }

@@ -359,4 +359,13 @@ class Payone_Core_Helper_Data
     {
         return "<a target='_blank' href='https://pmi.pay1.de/'>Payone Merchant Interface</a>";
     }
+
+    public function unsPayoneExternalCheckout()
+    {
+        $payoneSession = Mage::getSingleton('payone_core/session');
+        $payoneSession->unsPayoneCheckoutToken();
+
+        $checkoutSession = Mage::getSingleton('checkout/session');
+        $checkoutSession->unsPayoneExternalCheckoutActive();
+    }
 }

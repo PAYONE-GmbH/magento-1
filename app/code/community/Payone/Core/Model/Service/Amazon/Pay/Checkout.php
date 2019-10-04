@@ -398,11 +398,19 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
             'checkout_submit_all_after',
             ['order' => $order, 'quote' => $this->quote, 'recurring_profiles' => []]
         );
+
+        $token = $session->getData('work_order_id');
+        $params = $this->getFactory()->helperUrl()->getCheckoutTokenParams($token);
         $session->unsetData('work_order_id');
+
+        $url = Mage::getUrl(
+            'payone_core/checkout_onepage_payment/success',
+            $params
+        );
 
         return [
             'successful'  => true,
-            'redirectUrl' => Mage::getUrl('payone_core/checkout_onepage_payment/success'),
+            'redirectUrl' => $url
         ];
     }
 

@@ -32,11 +32,6 @@
  */
 class Payone_Core_Checkout_Onepage_PaymentController extends Payone_Core_Controller_Abstract
 {
-    /** @var array */
-    protected $acceptedReferrerPatterns = array(
-        '/.*payments-eu.amazon.com.*/',
-    );
-
     /**
      * Payment has been canceled by user.
      *
@@ -45,8 +40,7 @@ class Payone_Core_Checkout_Onepage_PaymentController extends Payone_Core_Control
     public function backAction()
     {
         try {
-            $oSession = Mage::getSingleton('checkout/session');
-            $oSession->unsPayoneExternalCheckoutActive();
+            $this->helper()->unsPayoneExternalCheckout();
             $this->checkoutCancel(true);
         } catch (Exception $e) {
             $this->handleException($e);
@@ -65,8 +59,8 @@ class Payone_Core_Checkout_Onepage_PaymentController extends Payone_Core_Control
                 return;
             }
 
-            $oSession = Mage::getSingleton('checkout/session');
-            $oSession->unsPayoneExternalCheckoutActive();
+            $this->helper()->unsPayoneExternalCheckout();
+
             $success = $this->checkoutSucccess();
             if ($success === true) {
                 // Payment is okay. Redirect to standard Magento success page:
@@ -89,8 +83,7 @@ class Payone_Core_Checkout_Onepage_PaymentController extends Payone_Core_Control
     public function errorAction()
     {
         try {
-            $oSession = Mage::getSingleton('checkout/session');
-            $oSession->unsPayoneExternalCheckoutActive();
+            $this->helper()->unsPayoneExternalCheckout();
             $this->checkoutCancel(true);
         } catch (Exception $e) {
             $this->handleException($e);
@@ -359,30 +352,19 @@ class Payone_Core_Checkout_Onepage_PaymentController extends Payone_Core_Control
 
     /**
      * Validates the origin of the call (MAGE-427)
-     * At the moment, checks the HTTP_REFERER value, against an arbitrary set of values (from class members)
+     * Check the request token against the payone session token
      *
      * @return bool
      */
     protected function validateRequestOrigin()
     {
-        if (!isset($_SERVER['HTTP_REFERER'])) {
-            return false;
-        }
+        $payoneSession = Mage::getSingleton('payone_core/session');
+        $sessionToken = $payoneSession->getPayoneCheckoutToken();
 
-        $referrer = $_SERVER['HTTP_REFERER'];
-        $referrerNotAccepted = array_reduce(
-            $this->acceptedReferrerPatterns,
-            function ($carry, $pattern) use ($referrer) {
-                if (!$carry) {
-                    return $carry;
-                }
+        $paramToken = $this->_request->getParam('payoneCheckoutToken');
 
-                $found = preg_match($pattern, $referrer) === 1;
-                return $carry * !$found;
-            },
-            true
-        );
+        $return = $paramToken && $paramToken == $sessionToken;
 
-        return !$referrerNotAccepted;
+        return $return;
     }
 }

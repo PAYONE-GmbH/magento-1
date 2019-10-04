@@ -322,7 +322,7 @@ class Payone_Core_Block_Payment_Method_Form_Creditcard
                 'integrator_version' => $helper->getMagentoVersion(),
                 'integrator_name' => 'Magento',
                 'storecarddata' => 'yes',
-                'successurl' => $helperUrl->getSuccessUrl(),
+                'successurl' => $helperUrl->getSuccessUrl($helperUrl->getCheckoutTokenParams()),
                 'errorurl' => $helperUrl->getErrorUrl()
 
             );

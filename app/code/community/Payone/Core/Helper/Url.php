@@ -37,16 +37,21 @@ class Payone_Core_Helper_Url
      * Retrieve complete Magento Url
      *
      * @param string $controllerAction in the form "module/controller/action"
+     * @param array $extraParams
      * @return string
      */
-    public function getMagentoUrl($controllerAction)
+    public function getMagentoUrl($controllerAction, $extraParams = array())
     {
         $isSecure = Mage::app()->getStore()->isCurrentlySecure();
+        $params = array('_nosid' => true, '_secure' => $isSecure);
+
+        if ($extraParams && is_array($extraParams)) {
+            $params = array_merge($params, $extraParams);
+        }
 
         $url = Mage::getUrl(
-            $controllerAction, array(
-            '_nosid' => true,
-            '_secure' => $isSecure)
+            $controllerAction,
+            $params
         );
         return $url;
     }
@@ -54,9 +59,9 @@ class Payone_Core_Helper_Url
     /**
      * @return string
      */
-    public function getSuccessUrl()
+    public function getSuccessUrl($params = array())
     {
-        $successurl = $this->getMagentoUrl('payone_core/checkout_onepage_payment/success', false);
+        $successurl = $this->getMagentoUrl('payone_core/checkout_onepage_payment/success', $params);
 
         return $successurl;
     }
@@ -81,4 +86,35 @@ class Payone_Core_Helper_Url
         return $backurl;
     }
 
+    /**
+     * @param string $token
+     * @return array
+     */
+    public function getCheckoutTokenParams($token = '')
+    {
+        /** @var Payone_Core_Model_Session $session */
+        $session = Mage::getSingleton('payone_core/session');
+        if (empty($token)) {
+            $sessionToken = $session->getPayoneCheckoutToken();
+            if (!empty($sessionToken)) {
+                $token = $sessionToken;
+            } else {
+                $token = $this->getCheckoutToken();
+            }
+        }
+
+        $session->setPayoneCheckoutToken($token);
+
+        return array('_query' => array('payoneCheckoutToken' => $token));
+    }
+
+    /**
+     * @return string
+     */
+    protected function getCheckoutToken()
+    {
+        $token = strtolower(Mage::helper('core')->getRandomString(16));
+
+        return $token;
+    }
 }
