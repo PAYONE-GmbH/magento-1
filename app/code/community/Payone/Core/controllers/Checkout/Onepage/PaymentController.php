@@ -361,9 +361,10 @@ class Payone_Core_Checkout_Onepage_PaymentController extends Payone_Core_Control
         $payoneSession = Mage::getSingleton('payone_core/session');
         $sessionToken = $payoneSession->getPayoneCheckoutToken();
 
-        $paramToken = $this->_request->getParam('payoneCheckoutToken');
+        $paramToken = (string) $this->_request->getParam('payoneCheckoutToken');
+        $paramToken = trim($paramToken);
 
-        $return = $paramToken && $paramToken == $sessionToken;
+        $return = $paramToken && $paramToken === $sessionToken;
 
         return $return;
     }
