@@ -22,11 +22,14 @@
  */
 
 /** @var $this Payone_Core_Block_Payment_Method_Form_Creditcard */
-$hideCvcTypes = $this->getHideCvcTypes();
-$hideCcTypeSelector = $this->getHideCreditCardSelectorConfig();
-$cvcLength = $this->getCvcLength();
-$code = $this->getMethodCode();
-$iCheckValidation = (int)$this->showCvcInput();
+
+    $hideCvcTypes = $this->getHideCvcTypes();
+    $hideCcTypeSelector = $this->getHideCreditCardSelectorConfig();
+    $cvcLength = $this->getCvcLength();
+
+    $code = $this->getMethodCode();
+    $iCheckValidation = (int)$this->showCvcInput();
+    $payoneCreditCardCheckValidation = $this->getPayoneCreditCardCheckValidation();
 ?>
 <script type="text/javascript">
     var sCCRequestType = '<?php echo $this->getCCRequestType(); ?>';
@@ -48,7 +51,7 @@ $iCheckValidation = (int)$this->showCvcInput();
                     <?php
                     foreach ($this->getTypes() as $key => $type):
                         $selected = $this->getCreditCardType() == $type['code'] ? 'selected="selected"' : '';
-                        if($this->getPayoneCreditCardCheckValidation() == '0' && $this->getCreditCardType() == $type['code']) {
+                        if($payoneCreditCardCheckValidation == '0' && $this->getCreditCardType() == $type['code']) {
                             $selected =  'selected="selected"';
                         }
                         ?>
@@ -66,9 +69,10 @@ $iCheckValidation = (int)$this->showCvcInput();
                 <label for="<?php echo $code; ?>_cc_number">
                     <?php echo $this->__('Credit Card Number'); ?>&nbsp;<span class="required">*</span>
                 </label><br class="clear"/>
-                <input type="text" id="<?php echo $code; ?>_cc_number" name="payment[cc_number]" value=""
-                       title="<?php echo $this->__('Credit Card Number'); ?>"
-                       class="input-text validate-cc-number validate-payone-cc-type no-submit"/>
+                <input type="text" id="<?php echo $code; ?>_cc_number"
+                       value=""
+                       name="payment[cc_number]" title="<?php echo $this->__('Credit Card Number'); ?>"
+                       class="input-text validate-cc-number validate-payone-cc-type no-submit"
                        onchange="inputToNumbers(this); payoneChangedCreditCardInfo();"
                        oninput="inputToNumbers(this); payoneChangedCreditCardInfo();"/>
             </div>
@@ -79,9 +83,11 @@ $iCheckValidation = (int)$this->showCvcInput();
                 <label for="<?php echo $code ?>_expiration">
                     <?php echo $this->__('Expiration Date') ?>&nbsp;<span class="required">*</span>
                 </label><br class="clear"/>
+
                 <div class="v-fix">
-                    <select id="<?php echo $code ?>_cc_expiration_month" name="payment[cc_exp_month]" style="width:140px;"
-                            class="required-entry no-submit month validate-payone-cc-validity-period">
+                    <select id="<?php echo $code ?>_cc_expiration_month" name="payment[cc_exp_month]" 
+                        style="width:140px;"
+                        class="required-entry no-submit month validate-payone-cc-validity-period ">
                         <?php foreach ($this->getCcMonths() as $key => $month): ?>
                         <option value="<?php echo $key ? $key : '' ?>"<?php if ($key == $this->getCreditCardExpireMonth()): ?>
                                 selected="selected"<?php endif ?>><?php echo $month ?></option>
@@ -89,8 +95,9 @@ $iCheckValidation = (int)$this->showCvcInput();
                     </select>
                 </div>
                 <div class="v-fix" style="padding-left:5px;">
-                    <select id="<?php echo $code ?>_cc_expiration_year" name="payment[cc_exp_year]" style="width:103px;"
-                            class="year required-entry no-submit">
+                    <select id="<?php echo $code ?>_cc_expiration_year" name="payment[cc_exp_year]"
+                        style="width:103px;"
+                        class="year required-entry no-submit">
                         <?php foreach ($this->getCcYears() as $key => $year): ?>
                         <option value="<?php echo $key ? $key : '' ?>"<?php if ($key == $this->getCreditCardExpireYear()): ?>
                                 selected="selected"<?php endif ?>><?php echo $year ?></option>
@@ -124,16 +131,14 @@ $iCheckValidation = (int)$this->showCvcInput();
         <li>
             <input type="hidden" id="payone_pseudocardpan" name="payment[payone_pseudocardpan]" value=""/>
             <input type="hidden" id="payone_truncatedcardpan" name="payment[cc_number_enc]" value=""/>
-            <input type="hidden" id="<?php echo $code ?>_config_id"
-                   name="payment[payone_config_payment_method_id]" value=""/>
+            <input type="hidden" id="<?php echo $code ?>_config_id" name="payment[payone_config_payment_method_id]"
+                value=""/>
             <input type="hidden" id="<?php echo $code ?>_config" name="payment[request_config]"
                    value="<?php echo $this->escapeHtml($this->getClientApiConfigAsJson()); ?>" class=""/>
             <input type="hidden" id="<?php echo $code ?>_config_cvc" name="payment[payone_config_cvc]"
                    value="<?php echo $this->escapeHtml($this->getCvcJson()); ?>" class=""/>
-            <input type="hidden" id="payone_cc_check_validation"
-                   value="<?php echo $this->getPayoneCreditCardCheckValidation();?>"/>
-            <input type="hidden" id="payone_cc_check_validation_types"
-                   value="<?php echo $this->escapeHtml(($hideCvcTypes)); ?>"/>
+            <input type="hidden" id="payone_cc_check_validation" value="<?php echo $payoneCreditCardCheckValidation;?>"/>
+            <input type="hidden" id="payone_cc_check_validation_types" value="<?php echo $this->escapeHtml(($hideCvcTypes)); ?>"/>
         </li>
     </ul>
 <?php } else { ?>
@@ -157,35 +162,33 @@ $iCheckValidation = (int)$this->showCvcInput();
         </li>
         <li <?php if($hideCcTypeSelector): ?>style="display: none" <?php endif; ?>>
             <div class="input-box">
-                <label for="<?php echo $code; ?>_cc_type"><?php echo $this->__('Credit Card Type'); ?>
+                <label for="<?php echo $code; ?>_cc_type">
+                    <?php echo $this->__('Credit Card Type'); ?>
                     <span class="required">*</span>
                 </label><br class="clear"/>
                 <select id="<?php echo $code ?>_cc_type_select" name="<?php echo $code ?>_cc_type_select"
                         class="no-submit required-entry">
                     <option value=""><?php echo $this->__('--Please Select--') ?></option>
-                    <?php
-                    foreach ($this->getTypes() as $key => $type) :
-                        $selected = $this->getCreditCardType() == $type['code'] ? 'selected="selected"' : '';
-                        ?>
-                        <option value="<?php echo $key ?>" <?php echo $selected; ?>>
+                    <?php foreach ($this->getTypes() as $key => $type) { ?>
+                       <?php $selected = $this->getCreditCardType() == $type['code'] ? 'selected="selected"' : ''; ?>
+                       <option value="<?php echo $key ?>" <?php echo $selected; ?>>
                             <?php echo $type['name'] ?><span><?php echo $type['fee']; ?></span>
                         </option>
-                    <?php endforeach; ?>
+                    <?php } ?>
                 </select>
                 <input type="hidden" id="<?php echo $code ?>_cc_type" name="payment[cc_type]" value="<?php echo $this->getCreditCardType();?>" class=""/>
             </div>
         </li>
         <li>
             <div class="input-box" id="<?php echo $code ?>_cc_cid_div">
-                <label for="cvcInput"><?php echo $this->__('Card Verification Number') ?>&nbsp;<span class="required">*</span></label>
-                <br class="clear"/>
+                <label for="cvcInput"><?php echo $this->__('Card Verification Number') ?></label><br class="clear"/>
                 <span id="cardcvc2" class="inputIframe"></span>
 
                 <a href="#" class="cvv-payone-what-is-this"><?php echo $this->__('What is this?') ?></a>
 
                 <div class="tool-tip" id="payment-tool-tip-payone" style="display:none;">
                     <div class="tool-tip-payone-content">
-                        <img style="max-width: 400px;" src="<?php echo $this->getSkinUrl('images/payone/cvv.gif') ?>" alt="<?php echo Mage::helper('core')->quoteEscape($this->__('Card Verification Number Visual Reference')) ?>" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Card Verification Number Visual Reference')) ?>" />
+                        <img style="max-width: 400px;" src="<?php echo $this->getSkinUrl('payone/core/images/cvv.gif') ?>" alt="<?php echo Mage::helper('core')->quoteEscape($this->__('Card Verification Number Visual Reference')) ?>" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Card Verification Number Visual Reference')) ?>" />
                     </div>
                 </div>
             </div>
@@ -203,22 +206,18 @@ $iCheckValidation = (int)$this->showCvcInput();
         <li>
             <div id="errorOutput"></div>
             <input type="hidden" id="<?php echo $code; ?>_cc_number" value=""/>
-            <input type="hidden" id="payone_pseudocardpan" name="payment[payone_pseudocardpan]"
-                   value="<?php echo $this->getPayonePseudocardpan();?>"/>
+            <input type="hidden" id="payone_pseudocardpan" name="payment[payone_pseudocardpan]" value="<?php echo $this->getPayonePseudocardpan();?>"/>
             <input type="hidden" id="payone_cardexpiredate" name="payment[payone_cardexpiredate]" value=""/>
-            <input type="hidden" id="payone_truncatedcardpan" name="payment[cc_number_enc]"
-                   value="<?php echo $this->getCreditCardNumberEnc();?>"/>
+            <input type="hidden" id="payone_truncatedcardpan" name="payment[cc_number_enc]" value="<?php echo $this->getCreditCardNumberEnc();?>"/>
             <input type="hidden" id="<?php echo $code ?>_config_id" name="payment[payone_config_payment_method_id]"
                    value="<?php echo $this->getPayoneConfigPaymentMethodId();?>"/>
             <input type="hidden" id="<?php echo $code ?>_config" name="payment[payone_config]"
                    value="<?php echo $this->escapeHtml($this->getHostedClientApiConfigAsJson()); ?>" class=""/>
             <input type="hidden" id="<?php echo $code ?>_config_cvc" name="payment[payone_config_cvc]"
                    value="<?php echo $this->escapeHtml($this->getCvcJson()); ?>" class=""/>
-            <input type="hidden" id="payone_cc_check_validation"
-                   value="<?php echo $this->getPayoneCreditCardCheckValidation();?>"/>
-            <input type="hidden" id="payone_cc_check_validation_types"
-                   value="<?php echo $this->escapeHtml(($hideCvcTypes)); ?>"/>
+            <input type="hidden" id="payone_cc_check_validation" value="<?php echo $payoneCreditCardCheckValidation;?>"/>
             <input type="hidden" id="payone_cc_use_cvc" value="<?php echo $this->escapeHtml(($iCheckValidation)); ?>"/>
+            <input type="hidden" id="payone_cc_check_validation_types" value="<?php echo $this->escapeHtml(($hideCvcTypes)); ?>"/>
         </li>
     </ul>
     <script>
@@ -237,10 +236,7 @@ $iCheckValidation = (int)$this->showCvcInput();
                     selector: "cardcvc2", // put name of your div-container here
                     type: "text", // text (default), password, tel
                     size: "10",
-                    maxlength: "5",
-                    <?php if ($iCheckValidation == 1) {?>
-                        length: <?php echo json_encode($cvcLength); ?>
-                    <?php } ?>
+                    maxlength: "5"
                 },
                 cardexpiremonth: {
                     selector: "cardexpiremonth", // put name of your div-container here
