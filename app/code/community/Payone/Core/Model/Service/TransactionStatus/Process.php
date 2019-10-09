@@ -85,6 +85,13 @@ class Payone_Core_Model_Service_TransactionStatus_Process extends Payone_Core_Mo
         }
         $config = $this->helperConfig()->getConfigStore($order->getStoreId());
 
+        // if store-ids differ, reload config bypassing the cache
+        $this->helper()->logCronjobMessage("ID: {$transactionStatus->getId()} - Process - Config loaded with config.store-id={$config->getStoreId()}, order.store-id: {$order->getStoreId()}", $order->getStoreId());
+        if ($config->getStoreId() != $order->getStoreId()) {
+            $config = $this->helperConfig()->getConfigStore($order->getStoreId(), false);
+            // @todo we should stop processing here, this will only produce errors when working with the wrong config
+        }
+
         $this->helper()->logCronjobMessage("ID: {$transactionStatus->getId()} - Process - Update TransactionStatus", $order->getStoreId());
         $transactionStatus->setStoreId($order->getStoreId());
         $transactionStatus->setOrderId($order->getId());

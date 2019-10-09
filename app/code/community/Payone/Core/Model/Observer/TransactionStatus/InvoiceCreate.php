@@ -96,6 +96,8 @@ class Payone_Core_Model_Observer_TransactionStatus_InvoiceCreate
                 $invoice = $this->getInvoiceForOrder();
             }
 
+            // @todo check if invoice has actual data, when InvoiceCreate failed onAppointed we get an empty Invoice here
+
             if ($invoice) {
                 if ($invoice->getState() != Mage_Sales_Model_Order_Invoice::STATE_PAID) {
                     $invoice->pay();
@@ -191,8 +193,40 @@ class Payone_Core_Model_Observer_TransactionStatus_InvoiceCreate
         $id = $this->payment->getPayoneConfigPaymentMethodId();
         $configPaymentMethod = $this->config->getPayment()->getMethodById($id);
 
+        // Adding Fallback to an uncached config
         if (empty($configPaymentMethod)) {
+            // this case "should" not happen with the config cache bypass in
+            // \Payone_Core_Model_Service_TransactionStatus_Process::execute , but it is left here non-the-less
+            $orderId = $this->order->getId();
+            $orderStoreId = $this->order->getStoreId();
+
+            $config = $this->helperConfig()->getConfigStore($orderStoreId, false);
+
+            $configPaymentMethod = $config->getPayment()->getMethodById($id);
+
+            $this->helper()->logCronjobMessage(
+                "order.id: $orderId - InvoiceCreate - PaymentMethod loaded bypassing the cache", $orderStoreId
+            );
+        }
+
+        if (empty($configPaymentMethod)) {
+            // Additional Output in case payment method could not be found
+            // This should not happen with the cache bypass above, but is left here anyway to have details in this case
+            $storeId = $this->config->getStoreId();
+            $availableMethods = $this->config->getPayment()->getAvailableMethods();
+
+            $methods = '';
+            if (is_array($availableMethods) && count($availableMethods)) {
+                foreach ($availableMethods as $methodId => $method) {
+                    /** @var $method Payone_Core_Model_Config_Payment_Method_Interface */
+                    $methodCode = $method->getCode();
+
+                    $methods .= "$methodId => $methodCode,";
+                }
+            }
+
             $message = 'Payment method configuration with id "' . $id . '" not found.';
+            $message .= "\nDEBUG: config.storeId:$storeId, availableMethods: [$methods]";
             throw new Payone_Core_Exception_PaymentMethodConfigNotFound($message);
         }
 
