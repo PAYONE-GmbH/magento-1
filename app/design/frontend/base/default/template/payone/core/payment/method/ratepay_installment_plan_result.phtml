@@ -33,7 +33,9 @@
     </tr>
     <tr>
         <td class="warning small text-center" colspan="2">
-            <?php echo $this->__('lang_calulation_example'); ?>
+            <?php echo $this->getData('calculation-result-message'); ?>
+            <br />
+            <?php echo $this->__('lang_calculation_result_text'); ?>
         </td>
     </tr>
     <tr>
@@ -51,28 +53,28 @@
             <?php echo $this->__('lang_cash_payment_price'); ?>
             <p class="ratepay-installment-plan-description small"><?php echo $this->__('lang_mouseover_cash_payment_price'); ?></p>
         </td>
-        <td class="text-right"><?php echo $this->getData('amount'); ?> €</td>
+        <td class="text-right"><?php echo $this->getFormattedNumber('amount'); ?> €</td>
     </tr>
     <tr class="ratepay-installment-plan-details" style="display: none;">
         <td class="ratepay-installment-plan-title">
             <?php echo $this->__('lang_service_charge'); ?>
             <p class="ratepay-installment-plan-description small"><?php echo $this->__('lang_mouseover_service_charge'); ?></p>
         </td>
-        <td class="text-right"><?php echo $this->getData('service-charge'); ?> €</td>
+        <td class="text-right"><?php echo $this->getFormattedNumber('service-charge'); ?> €</td>
     </tr>
     <tr class="ratepay-installment-plan-details" style="display: none;">
         <td class="ratepay-installment-plan-title">
             <?php echo $this->__('lang_effective_rate'); ?>
             <p class="ratepay-installment-plan-description small"><?php echo $this->__('lang_mouseover_effective_rate'); ?></p>
         </td>
-        <td class="text-right"><?php echo $this->getData('annual-percentage-rate'); ?>%</td>
+        <td class="text-right"><?php echo $this->getFormattedNumber('annual-percentage-rate'); ?>%</td>
     </tr>
     <tr class="ratepay-installment-plan-details" style="display: none;">
         <td class="ratepay-installment-plan-title">
             <?php echo $this->__('lang_interestrate_default'); ?>
             <p class="ratepay-installment-plan-description small"><?php echo $this->__('lang_mouseover_debit_rate'); ?></p>
         </td>
-        <td class="text-right"><?php echo $this->getData('interest-rate'); ?>%</td>
+        <td class="text-right"><?php echo $this->getFormattedNumber('interest-rate'); ?>%</td>
     </tr>
     <tr class="ratepay-installment-plan-details" style="display: none;">
 
@@ -82,7 +84,7 @@
             <?php echo $this->__('lang_interest_amount'); ?>
             <p class="ratepay-installment-plan-description small"><?php echo $this->__('lang_mouseover_interest_amount'); ?></p>
         </td>
-        <td class="text-right"><?php echo $this->getData('interest-amount'); ?> €</td>
+        <td class="text-right"><?php echo $this->getFormattedNumber('interest-amount'); ?> €</td>
     </tr>
     <tr class="ratepay-installment-plan-details" style="display: none;">
         <td colspan="2"></td>
@@ -92,31 +94,31 @@
             <?php echo $numberOfRates . $this->__('lang_duration_month'); ?>
             <p class="ratepay-installment-plan-description small"><?php echo $this->__('lang_mouseover_duration_month'); ?></p>
         </td>
-        <td class="text-right"><?php echo $this->getData('rate'); ?> €</td>
+        <td class="text-right"><?php echo $this->getFormattedNumber('rate'); ?> €</td>
     </tr>
     <tr>
         <td class="ratepay-installment-plan-title">
             <?php echo $this->__('lang_last_rate'); ?>
             <p class="ratepay-installment-plan-description small"><?php echo $this->__('lang_mouseover_last_rate'); ?></p>
         </td>
-        <td class="text-right"><?php echo $this->getData('last-rate'); ?> €</td>
+        <td class="text-right"><?php echo $this->getFormattedNumber('last-rate'); ?> €</td>
     </tr>
     <tr>
         <td class="ratepay-installment-plan-title">
             <?php echo $this->__('lang_total_amount'); ?>
             <p class="ratepay-installment-plan-description small"><?php echo $this->__('lang_mouseover_total_amount'); ?></p>
         </td>
-        <td class="text-right"><?php echo $this->getData('total-amount'); ?> €</td>
+        <td class="text-right"><?php echo $this->getFormattedNumber('total-amount'); ?> €</td>
     </tr>
     </tbody>
 </table>
 <?php if ($this->isAdmin()): ?>
     <div style="display: none">
-        <input name="payone_ratepay_installment[payone_ratepay_rate]" type="hidden" value="<?php echo $this->getData('rate'); ?>" />
-        <input name="payone_ratepay_installment[payone_ratepay_last-rate]" type="hidden" value="<?php echo $this->getData('last-rate'); ?>" />
-        <input name="payone_ratepay_installment[payone_ratepay_total-amount]" type="hidden" value="<?php echo $this->getData('total-amount'); ?>" />
-        <input name="payone_ratepay_installment[payone_ratepay_interest-rate]" type="hidden" value="<?php echo $this->getData('interest-rate'); ?>" />
-        <input name="payone_ratepay_installment[payone_ratepay_number-of-rates]" type="hidden" value="<?php echo $this->getData('number-of-rates'); ?>" />
-        <input name="payone_ratepay_installment[payone_ratepay_payment-firstday]" type="hidden" value="<?php echo $this->getData('payment-firstday'); ?>" />
+        <input name="payone_ratepay_installment[payone_ratepay_rate]" type="hidden" value="<?php echo $this->getFormattedNumber('rate'); ?>" />
+        <input name="payone_ratepay_installment[payone_ratepay_last-rate]" type="hidden" value="<?php echo $this->getFormattedNumber('last-rate'); ?>" />
+        <input name="payone_ratepay_installment[payone_ratepay_total-amount]" type="hidden" value="<?php echo $this->getFormattedNumber('total-amount'); ?>" />
+        <input name="payone_ratepay_installment[payone_ratepay_interest-rate]" type="hidden" value="<?php echo $this->getFormattedNumber('interest-rate'); ?>" />
+        <input name="payone_ratepay_installment[payone_ratepay_number-of-rates]" type="hidden" value="<?php echo $this->getFormattedNumber('number-of-rates'); ?>" />
+        <input name="payone_ratepay_installment[payone_ratepay_payment-firstday]" type="hidden" value="<?php echo $this->getFormattedNumber('payment-firstday'); ?>" />
     </div>
 <?php endif ?>

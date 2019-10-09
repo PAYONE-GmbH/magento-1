@@ -50,4 +50,17 @@ class Payone_Core_Block_Checkout_RatePayInstallmentplan extends Mage_Core_Block_
     {
         $this->isAdmin = $isAdmin;
     }
+
+    /**
+     * @param string $paramName
+     * @return string
+     */
+    public function getFormattedNumber($paramName)
+    {
+        if (empty($this->getData($paramName))) {
+            return '';
+        }
+
+        return number_format($this->getData($paramName), 2, ',', '.');
+    }
 }
