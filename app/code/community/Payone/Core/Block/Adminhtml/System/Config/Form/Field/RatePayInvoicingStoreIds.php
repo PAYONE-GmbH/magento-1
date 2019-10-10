@@ -15,14 +15,14 @@
  * @category        Payone
  * @package         Payone_Core_Model
  * @subpackage      Payment
- * @copyright       Copyright (c) 2016 <kontakt@fatchip.de> - www.fatchip.com
- * @author          Robert Müller <robert.mueller@fatchip.de>
+ * @copyright       Copyright (c) 2019 <kontakt@fatchip.de> - www.fatchip.com
+ * @author          Vincent Boulanger <vincent.boulanger@fatchip.de>
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
  * @link            http://www.fatchip.com
  */
 
 
-class Payone_Core_Block_Adminhtml_System_Config_Form_Field_RatePayStoreIds
+class Payone_Core_Block_Adminhtml_System_Config_Form_Field_RatePayInvoicingStoreIds
     extends Payone_Core_Block_Adminhtml_System_Config_Form_Field_Abstract
 {
 
@@ -31,7 +31,7 @@ class Payone_Core_Block_Adminhtml_System_Config_Form_Field_RatePayStoreIds
     public function __construct()
     {
         parent::__construct();
-        $this->setTemplate('payone/core/system/config/form/field/ratepay_shopids.phtml');
+        $this->setTemplate('payone/core/system/config/form/field/ratepay_invoicing_shopids.phtml');
     }
 
     protected function _prepareToRender()
@@ -75,7 +75,7 @@ class Payone_Core_Block_Adminhtml_System_Config_Form_Field_RatePayStoreIds
         $oConfig = $oConfigHelper->getConfigPaymentMethodById($sMethodId);
         $oService = $this->getFactory()->getServicePaymentGenericpayment($oConfig);
         $oMapper = $oService->getMapper();
-        $oRequest = $oMapper->addRatePayParameters($sRatePayShopId, $sCurrency, Payone_Api_Enum_RatepayType::RPS);
+        $oRequest = $oMapper->addRatePayParameters($sRatePayShopId, $sCurrency, Payone_Api_Enum_RatepayInvoicingType::RPV);
 
         $oResponse = $this->getFactory()->getServiceApiPaymentGenericpayment()->request($oRequest);
 

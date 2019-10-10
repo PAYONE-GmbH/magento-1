@@ -1642,6 +1642,14 @@ class Payone_Core_Model_Factory
     }
 
     /**
+     * @return Payone_Core_Model_System_Config_RatepayInvoicingType|Mage_Core_Model_Abstract
+     */
+    public function getModelSystemConfigRatePayInvoicingType()
+    {
+        return Mage::getSingleton('payone_core/system_config_ratepayInvoicingType');
+    }
+
+    /**
      * @return Payone_Core_Model_System_Config_SafeInvoiceType|Mage_Core_Model_Abstract
      */
     public function getModelSystemConfigSafeInvoiceType()

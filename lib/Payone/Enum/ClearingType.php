@@ -46,6 +46,7 @@ class Payone_Enum_ClearingType
     const PAYOLUTIONINSTALLMENT = 'fnc';
     const PAYOLUTIONINVOICING = 'fnc';
     const RATEPAY = 'fnc';
+    const RATEPAYINVOICING = 'fnc';
     const RATEPAYDIRECTDEBIT = 'fnc';
     const FINANCING = 'fnc';                // Default fnc mapping
 

@@ -15,10 +15,10 @@
  * @category        Payone
  * @package         Payone_Core_Block
  * @subpackage      Checkout
- * @copyright       Copyright (c) 2016 <support@e3n.de> - www.e3n.de
- * @author          Tim Rein <tim.rein@e3n.de>
+ * @copyright       Copyright (c) 2016 <support@e3n.de> - www.e3n.de, Copyright (c) 2019 <kontakt@fatchip.de> - www.fatchip.com
+ * @author          Tim Rein <tim.rein@e3n.de>, Vincent Boulanger <vincent.boulanger@fatchip.de>
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
- * @link            http://www.e3n.de
+ * @link            http://www.e3n.de, http://www.fatchip.com
  */
 
 /**
@@ -26,162 +26,41 @@
  */
 class Payone_Core_Block_Checkout_RatePayInstallmentplan extends Mage_Core_Block_Template
 {
-    /**
-     * show calculated installmentplan
-     * @param $result
-     * @return string
-     */
-    public function showRateResultHtml($result) 
+    /** @var bool */
+    protected $isAdmin = false;
+
+    protected function _construct()
     {
-
-        $numberOfRates = $result['last-rate']?$result['number-of-rates']-1:$result['number-of-rates'];
-        $html = '
-        <h2 class="ratepay-mid-heading"><b>' . $this->__('lang_individual_rate_calculation') . '</b></h2>
-        <table id="ratepay-InstallmentTerms" cellspacing="0">
-            <tr>
-                <th>
-                    <div class="ratepay-InfoDiv">
-                        <div class="ratepay-InfoImgDiv"><img class="ratepay-InfoImg" src="' . Mage::getDesign()->getSkinUrl('/images/payone/info-icon.png') .'"/></div>
-                        <div class="ratepay-FloatLeft">' . $this->__('lang_cash_payment_price') . ':</div>
-                        <div class="ratepay-RelativePosition">
-                            <div class="ratepay-MouseoverInfo" id="ratepayMouseoverInfoPaymentPrice">' . $this->__('lang_mouseover_cash_payment_price') . '</div>
-                         </div>
-                     </div>
-                </th>
-                <td>&nbsp;' . $result['amount'] . '</td>
-                <td class="ratepay-TextAlignLeft">&euro;</td>
-            </tr>
-            <tr class="piTableHr">
-                <th>
-                    <div class="ratepay-InfoDiv">
-                        <div class="ratepay-InfoImgDiv"><img class="ratepay-InfoImg" src="' . Mage::getDesign()->getSkinUrl('/images/payone/info-icon.png') .'"/></div>
-                         <div class="ratepay-FloatLeft">' . $this->__('lang_service_charge') . ':</div>
-                        <div class="ratepay-RelativePosition">
-                            <div class="ratepay-MouseoverInfo" id="ratepayMouseoverInfoServiceCharge">' . $this->__('lang_mouseover_service_charge') . '</div>
-                        </div>
-                    </div>
-                </th>
-                <td>&nbsp;' . $result['service-charge'] . '</td>
-                <td class="ratepay-TextAlignLeft">&euro;</td>
-            </tr>
-            <tr class="piPriceSectionHead">
-                <th class="ratepay-PercentWidth">
-                    <div class="ratepay-InfoDiv">
-                        <div class="ratepay-InfoImgDiv"><img class="ratepay-InfoImg" src="' . Mage::getDesign()->getSkinUrl('images/payone/info-icon.png') . '"/></div>
-                        <div class="ratepay-FloatLeft">' . $this->__('lang_effective_rate') . ':</div>
-                        <div class="ratepay-RelativePosition">
-                            <div class="ratepay-MouseoverInfo" id="ratepayMouseoverInfoEffectiveRate">' . $this->__('lang_mouseover_effective_rate') . ':</div>
-                        </div>
-                    </div>
-                </th>
-                <td colspan="2"><div class="ratepay-FloatLeft">&nbsp;<div class="ratepay-PercentWith">' . $result['annual-percentage-rate'] . '%</div></div></td>
-            </tr>
-            <tr class="piTableHr">
-                <th>
-                    <div class="ratepay-InfoDiv">
-                        <div class="ratepay-InfoImgDiv"><img class="ratepay-InfoImg" src="' . Mage::getDesign()->getSkinUrl('images/payone/info-icon.png') . '"/></div>
-                        <div class="ratepay-FloatLeft">' . $this->__('lang_interestrate_default') . ':</div>
-                        <div class="ratepay-RelativePosition">
-                            <div class="ratepay-MouseoverInfo" id="ratepayMouseoverInfoDebitRate">' . $this->__('lang_mouseover_debit_rate') . ':</div>
-                        </div>
-                    </div>
-                 </th>
-                <td colspan="2"><div class="ratepay-FloatLeft">&nbsp;<div class="ratepay-PercentWith">' . $result['interest-rate'] . '%</div></div></td>
-            </tr>
-            <tr>
-                <th>
-                    <div class="ratepay-InfoDiv">
-                        <div class="ratepay-InfoImgDiv"><img class="ratepay-InfoImg" src="' . Mage::getDesign()->getSkinUrl('images/payone/info-icon.png') . '"/></div>
-                        <div class="ratepay-FloatLeft">' . $this->__('lang_interest_amount') . ':</div>
-                        <div class="ratepay-RelativePosition">
-                            <div class="ratepay-MouseoverInfo" id="ratepayMouseoverInfoInterestAmount">' . $this->__('lang_mouseover_interest_amount') . ':</div>
-                        </div>
-                    </div>
-                </th>
-                <td>&nbsp;' . $result['interest-amount'] . '</td>
-                <td class="ratepay-TextAlignLeft">&euro;</td>
-            </tr>
-            <tr>
-                <th>
-                    <div class="ratepay-InfoDiv">
-                        <div class="ratepay-InfoImgDiv"><img class="ratepay-InfoImg" src="' . Mage::getDesign()->getSkinUrl('images/payone/info-icon.png') . '"/></div>
-                        <div class="ratepay-FloatLeft"><b>' . $this->__('lang_total_amount') . ':</b></div>
-                        <div class="ratepay-RelativePosition">
-                            <div class="ratepay-MouseoverInfo" id="ratepayMouseoverInfoTotalAmount">' . $this->__('lang_mouseover_total_amount') . '</div>
-                        </div>
-                    </div>
-                </th>
-                <td><b>&nbsp;' . $result['total-amount'] . '</b></td>
-                <td class="ratepay-TextAlignLeft"><b>&euro;</b></td>
-            </tr>
-            <tr>
-                <td colspan="2"><div class="ratepay-FloatLeft">&nbsp;<div></td>
-            </tr>
-            <tr>
-                <td colspan="2"><div class="ratepay-FloatLeft">' . $this->__('lang_calulation_result_text') . '<div></td>
-            </tr>
-             <tr class="ratepay-result piPriceSectionHead">
-                <th class="ratepay-PaddingTop">
-                    <div class="ratepay-InfoDiv">
-                        <div class="ratepay-InfoImgDiv"><img class="ratepay-InfoImg" src="' . Mage::getDesign()->getSkinUrl('images/payone/info-icon.png') . '"/></div>
-                        <div class="ratepay-FloatLeft"><b>' . $this->__('lang_duration_time') . ':</b></div>
-                        <div class="ratepay-RelativePosition">
-                            <div class="ratepay-MouseoverInfo" id="ratepayMouseoverInfoDurationTime">' . $this->__('lang_mouseover_duration_time') . '</div>
-                        </div>
-                    </div>
-                </th>
-                <td><b>&nbsp;' . $result['number-of-rates'] .$this->__('lang_months') . '</b></td>
-                <td>&nbsp;</td>
-            </tr>
-            <tr class="ratepay-result">
-                <th>
-                    <div class="ratepay-InfoDiv">
-                        <div class="ratepay-InfoImgDiv"><img class="ratepay-InfoImg" src="' . Mage::getDesign()->getSkinUrl('images/payone/info-icon.png') . '"/></div>
-                        <div class="ratepay-FloatLeft piRpPaddingLeft"><b>' . $numberOfRates  . '' . $this->__('lang_duration_month') . ':</b></div>
-                        <div class="ratepay-RelativePosition">
-                            <div class="ratepay-MouseoverInfo" id="ratepayMouseoverInfoDurationMonth">' . $this->__('lang_mouseover_duration_month') . '</div>
-                        </div>
-                    </div>
-                </th>
-                <td><b>&nbsp;' . $result['rate'] . '</b></td>
-                <td class="ratepay-PaddingRight"><b>&euro;</b></td>
-            </tr>
-            <tr class="ratepay-result piRpPaddingBottom">
-                <th class="ratepay-PaddingBottom">
-                    <div class="ratepay-InfoDiv">
-                        <div class="ratepay-InfoImgDiv"><img class="ratepay-InfoImg" src="' . Mage::getDesign()->getSkinUrl('images/payone/info-icon.png') . '"/></div>
-                        <div class="ratepay-FloatLeft piRpPaddingLeft"><b>' . $this->__('lang_last_rate') . ':</b></div>
-                        <div class="ratepay-RelativePosition">
-                            <div class="ratepay-MouseoverInfo" id="ratepayMouseoverInfoLastRate">' . $this->__('lang_mouseover_last_rate') . '</div>
-                        </div>
-                    </div>
-                </th>
-                <td class="ratepay-PaddingBottom"><b>&nbsp;' . $result['last-rate'] . '</b></td>
-                <td class="ratepay-PaddingRight piRpPaddingBottom"><b>&euro;</b></td>
-            </tr>
-            <tr>
-                <td colspan="2"><div class="ratepay-CalculationText ">' . $this->__('lang_calulation_example') . '</div></td>
-            </tr>
-        </table>';
-
-        return $html;
+        parent::_construct();
+        $this->setTemplate('payone/core/payment/method/ratepay_installment_plan_result.phtml');
     }
 
     /**
-     * @param array $result
+     * @return bool
+     */
+    public function isAdmin()
+    {
+        return $this->isAdmin;
+    }
+
+    /**
+     * @param bool $isAdmin
+     */
+    public function setIsAdmin($isAdmin)
+    {
+        $this->isAdmin = $isAdmin;
+    }
+
+    /**
+     * @param string $paramName
      * @return string
      */
-    public function addDataFields($result)
+    public function getFormattedNumber($paramName)
     {
-        $html = '<div style="display: none">' . PHP_EOL;
-        $html .= '<input name="payone_ratepay_installment[payone_ratepay_rate]" type="hidden" value="' . $result['rate'] . '" />' . PHP_EOL;
-        $html .= '<input name="payone_ratepay_installment[payone_ratepay_last-rate]" type="hidden" value="' . $result['last-rate'] . '" />' . PHP_EOL;
-        $html .= '<input name="payone_ratepay_installment[payone_ratepay_total-amount]" type="hidden" value="' . $result['total-amount'] . '" />' . PHP_EOL;
-        $html .= '<input name="payone_ratepay_installment[payone_ratepay_interest-rate]" type="hidden" value="' . $result['interest-rate'] . '" />' . PHP_EOL;
-        $html .= '<input name="payone_ratepay_installment[payone_ratepay_number-of-rates]" type="hidden" value="' . $result['number-of-rates'] . '" />' . PHP_EOL;
-        $html .= '<input name="payone_ratepay_installment[payone_ratepay_payment-firstday]" type="hidden" value="' . $result['payment-firstday'] . '" />' . PHP_EOL;
-        $html .= '</div>';
+        if (empty($this->getData($paramName))) {
+            return '';
+        }
 
-        return $html;
+        return number_format($this->getData($paramName), 2, ',', '.');
     }
 }

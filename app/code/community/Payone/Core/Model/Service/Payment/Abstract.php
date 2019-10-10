@@ -70,6 +70,7 @@ abstract class Payone_Core_Model_Service_Payment_Abstract
      */
     protected $aRestrictableMethods = array(
         Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAY => array(307),
+        Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAYINVOICING => array(307),
         Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAYDIRECTDEBIT => array(307), // Add Ratepay-Lastschrift support (MAGE-317 23.03.2018)
         Payone_Core_Model_System_Config_PaymentMethodCode::PAYMENTGUARANTEEINVOICE => array(351)
     );

@@ -15,13 +15,13 @@
  * @category        Payone
  * @package         Payone_Api
  * @subpackage      Request
- * @copyright       Copyright (c) 2015 <kontakt@fatchip.de> - www.fatchip.com
- * @author          Robert Müller <robert.mueller@fatchip.de>
+ * @copyright       Copyright (c) 2019 <kontakt@fatchip.de> - www.fatchip.com
+ * @author          Vincent Boulanger <vincent.boulanger@fatchip.de>
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
  * @link            http://www.fatchip.com
  */
 
-class Payone_Api_Request_Parameter_Authorization_PaymentMethod_RatePay
+class Payone_Api_Request_Parameter_Authorization_PaymentMethod_RatePayInvoicing
     extends Payone_Api_Request_Parameter_Authorization_PaymentMethod_Abstract
 {
 
@@ -29,7 +29,7 @@ class Payone_Api_Request_Parameter_Authorization_PaymentMethod_RatePay
      * Enum FinancingType
      * @var string
      */
-    protected $financingtype = Payone_Api_Enum_RatepayType::RPS;
+    protected $financingtype = NULL;
     /**
      * @var null
      */
@@ -42,7 +42,7 @@ class Payone_Api_Request_Parameter_Authorization_PaymentMethod_RatePay
      * @var null
      */
     protected $telephonenumber = NULL;
-    
+
     /**
      * @var string
      */
@@ -51,7 +51,7 @@ class Payone_Api_Request_Parameter_Authorization_PaymentMethod_RatePay
     /**
      * @var string
      */
-    protected $ratePayType = Payone_Api_Enum_RatepayType::RPS;
+    protected $ratePayType = Payone_Api_Enum_RatepayInvoicingType::RPV;
 
     /**
      * @var string
@@ -102,14 +102,13 @@ class Payone_Api_Request_Parameter_Authorization_PaymentMethod_RatePay
     {
         return $this->ratePayType;
     }
-    
+
     /**
-     * Original Ratepay is now turned into RPS only
-     * MAGE-444: RPV was implemented as separate method
-     * 
+     * For now there is only "RPV" for Invoicing, but there will be more added.
+     *
      * @param string $financingtype
      */
-    public function setFinancingtype($financingtype = 'RPS')
+    public function setFinancingtype($financingtype = 'RPV')
     {
         $this->financingtype = $financingtype;
     }
@@ -121,24 +120,24 @@ class Payone_Api_Request_Parameter_Authorization_PaymentMethod_RatePay
     {
         return $this->financingtype;
     }
-    
+
     /**
      * @param Payone_Api_Request_Parameter_Paydata_Paydata $paydata
      */
-    public function setPaydata($paydata) 
+    public function setPaydata($paydata)
     {
         $this->paydata = $paydata;
     }
 
     /**
-     * 
+     *
      * @return Payone_Api_Request_Parameter_Paydata_Paydata
      */
-    public function getPaydata() 
+    public function getPaydata()
     {
         return $this->paydata;
     }
-    
+
     /**
      * @param string $birthday
      */
@@ -154,7 +153,7 @@ class Payone_Api_Request_Parameter_Authorization_PaymentMethod_RatePay
     {
         return $this->birthday;
     }
-    
+
     /**
      * @param string $telephonenumber
      */

@@ -269,7 +269,8 @@
                    template="payone/core/paydirekt/express/shortcut.phtml"/>
         </reference>
         <block type="payone_core/checkout_ratePayInstallmentplan" name="payone_ratepay.checkout.installmentplan"
-               as="payone_installmentplan" />
+               as="payone_installmentplan"
+               template="payone/core/payment/method/ratepay_installment_plan_result.phtml"/>
         <reference name="cart_sidebar.extra_actions">
             <block type="payone_core/mastercard_masterpass_shortcut" name="masterpass.partner.cart_sidebar.shortcut" template="payone/core/mastercard/masterpass/shortcut.phtml"/>
         </reference>
@@ -285,6 +286,7 @@
             <action method="addCss"><name>payone/core/mandate.css</name></action>
             <action method="addCss"><name>payone/core/payolution.css</name></action>
             <action method="addCss"><name>payone/core/ratepay.css</name></action>
+            <action method="addLinkRel"><rel>stylesheet</rel><href>//dev.ratepay.com/shops/ratenrechner/resources/ratepay-bootstrap.min.css</href></action>
             <block type="payone_core/paymentAdditionalScript" name="payone_core_paymentadditionalscript" template="payone/core/payment_additional_script.phtml" />
         </reference>
 
