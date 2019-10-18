@@ -13,7 +13,7 @@
  * needs please refer to http://www.payone.de for more information.
  *
  * @category        Payone
- * @package         design_frontend_base_default
+ * @package         design_adminhtml_default_default
  * @subpackage      template
  * @copyright       Copyright (c) 2019 <kontakt@fatchip.de> - www.fatchip.com
  * @author          Vincent Boulanger <vincent.boulanger@fatchip.de>
@@ -27,10 +27,8 @@ $configId = $this->getPaymentConfig()->getId();
 $paymentType = Payone_Api_Enum_RatepayInvoicingType::RPV;
 $ratePayShopId = $this->getMatchingRatePayShopId();
 $ratePayCurrency = $this->getRatePayCurrency();
-$types = $this->getTypes();
 $isAdminOrder = $this->getQuote()->getIsSuperMode();
 $quoteId = $this->getQuote()->getId();
-
 ?>
 <ul id="payment_form_<?php echo $code ?>" style="display:none">
     <p>
@@ -39,12 +37,7 @@ $quoteId = $this->getQuote()->getId();
         ?>
     </p>
 
-    <?php $type = array_pop($types); ?>
-    <?php echo $type['name']; ?>&nbsp;<span><?php echo $type['fee']; ?></span>
     <input type="hidden" id="<?php echo $code ?>_type" name="payment[payone_ratepay_type]" value="<?php echo $paymentType;?>"/>
-    <script type="text/javascript">
-        checkRequirementFields('<?php echo $paymentType;?>', -1);
-    </script>
 
     <?php if ($this->isDobRequired()): ?>
         <li>
@@ -82,15 +75,14 @@ $quoteId = $this->getQuote()->getId();
                 </select>
 
                 <input type="hidden" id="<?php echo $code ?>_additional_fields_customer_dob_full"
-                        name="payment[payone_customer_dob]" class="validate-18-years">
+                       name="payment[payone_customer_dob]" class="validate-18-years">
             </div>
         </li>
     <?php endif;?>
-    <?php if ($this->isB2BMode()) { ?>
+    <?php if ($this->isB2BMode()) : ?>
         <div id="<?php echo $code; ?>_b2b_wrap" class="field">
             <div class="input-box">
-                <label
-                        for="<?php echo $code ?>_trade_registry_number"><?php echo $this->__('Company trade registry number') ?>
+                <label for="<?php echo $code ?>_trade_registry_number"><?php echo $this->__('Company trade registry number') ?>
                     <span class="required">*</span>
                 </label>
                 <br class="clear"/>
@@ -99,8 +91,7 @@ $quoteId = $this->getQuote()->getId();
                        value="" title="" class="required-entry input-text no-submit"/>
             </div>
             <div class="input-box">
-                <label
-                        for="<?php echo $code ?>_vat_id"><?php echo $this->__('VAT ID number') ?>
+                <label for="<?php echo $code ?>_vat_id"><?php echo $this->__('VAT ID number') ?>
                     <span class="required">*</span>
                 </label>
                 <br class="clear"/>
@@ -109,7 +100,7 @@ $quoteId = $this->getQuote()->getId();
                        value="" title="" class="required-entry input-text no-submit"/>
             </div>
         </div>
-    <?php } ?>
+    <?php endif; ?>
     <?php if ($this->isTelephoneRequired()) : ?>
         <li>
             <div class="field">
@@ -130,29 +121,14 @@ $quoteId = $this->getQuote()->getId();
         <input type="hidden" id="ratePayCurrency" name="payment[payone_ratepay_currency]" value="<?php echo $ratePayCurrency; ?>"/>
         <input type="hidden" name="payment[payone_isb2b]" value="<?php echo (int)$this->isB2BMode(); ?>"/>
         <input type="hidden" name="payment[payone_country]" value="<?php echo $this->getCountry(); ?>"/>
-        <?php
-            $sDeviceIdentToken = $this->getRatePayDeviceFingerprint();
-            $sDeviceIdentId = $this->getRatePayDeviceFingerprintSnippetId();
-        ?>
         <input type="hidden" id="isAdminOrder" value="<?php echo $isAdminOrder; ?>" />
         <input type="hidden" id="quoteId" value="<?php echo $quoteId; ?>" />
-
-        <script language="JavaScript">
-            var di = {t:'<?php echo $sDeviceIdentToken; ?>',v:'<?php echo $sDeviceIdentId; ?>',l:'Checkout'};
-        </script>
-        <script type="text/javascript" src="//d.ratepay.com/<?php echo $sDeviceIdentId; ?>/di.js"></script>
-        <noscript>
-            <link rel="stylesheet" type="text/css" href="//d.ratepay.com/di.css?t=<?php echo $sDeviceIdentToken; ?>&v=<?php echo $sDeviceIdentId; ?>&l=Checkout">
-        </noscript>
-        <object  type="application/x-shockwave-flash" data="//d.ratepay.com/<?php echo $sDeviceIdentId; ?>/c.swf" width="0" height="0">
-            <param name="movie" value="//d.ratepay.com/<?php echo $sDeviceIdentId; ?>/c.swf" />
-            <param name="flashvars" value="t=<?php echo $sDeviceIdentToken; ?>&v=<?php echo $sDeviceIdentId; ?>"/>
-            <param name="AllowScriptAccess" value="always"/>
-        </object>
     </li>
 </ul>
 
 <script type="text/javascript">
     //    Add validation messages translation
     Translator.add('You have to be at least 18 years old to use this payment type!', '<?php echo $this->__('You have to be at least 18 years old to use this payment type!'); ?>');
+
+    checkRequirementFields('<?php echo $paymentType; ?>', -1);
 </script>

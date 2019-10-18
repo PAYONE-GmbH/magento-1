@@ -43,6 +43,21 @@ Validation.add(
     }
 );
 
+var billingAddressSelector = $('order-billing_address_customer_address_id');
+if (undefined !== typeof billingAddressSelector && billingAddressSelector !== null) {
+    billingAddressSelector.on('change', function() {
+        updateRatePaymentMethod('<?php echo $code; ?>', '<?php echo $configDebitCountries; ?>');
+        checkRequirementFields('<?php echo $paymentType;?>', -1);
+    });
+}
+
+var billingCountrySelector = $('order-billing_address_country_id');
+if (undefined !== typeof billingCountrySelector && billingCountrySelector !== null) {
+    billingCountrySelector.on('change', function() {
+        updateRatePaymentMethod('<?php echo $code; ?>', '<?php echo $configDebitCountries; ?>');
+    });
+}
+
 /**
  *
  * @param mode

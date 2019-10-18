@@ -112,6 +112,9 @@
             <block type="payone_core/adminhtml_sales_order_create_init" name="payone_core_init"
                    template="payone/core/sales/order/create/init.phtml" />
         </reference>
+        <block type="payone_core/checkout_ratePayInstallmentplan" name="payone_ratepay.checkout.installmentplan"
+               as="payone_installmentplan"
+               template="payone/core/payment/method/ratepay_installment_plan_result.phtml"/>
     </adminhtml_sales_order_create_index>
 
     <!--
