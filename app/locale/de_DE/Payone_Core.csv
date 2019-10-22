@@ -1292,3 +1292,5 @@ The <a target='_blank' href='https://www.ratepay.com/zgb-dse'>additional terms a
 "AMAZONPAY_MFA_FAILED", "Beim Zahlungsvorgang ist ein Problem aufgetreten. Ihre Bestellung wurde nicht aufgegeben und Ihr Konto nicht belastet."
 "AMAZONPAY_MFA_ABANDONED", "Mit dieser Zahlungsart ist ein Problem aufgetreten. Um Ihre Bestellung abzuschließen, wählen Sie bitte eine andere aus."
 
+"Error while loading method","Beim Laden der Methode ist ein Fehler aufgetreten"
+

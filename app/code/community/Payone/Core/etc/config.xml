@@ -50,6 +50,11 @@
             <payone_core>
                 <class>Payone_Core_Helper</class>
             </payone_core>
+            <payment>
+                <rewrite>
+                    <data>Payone_Core_Helper_Payment_Data</data>
+                </rewrite>
+            </payment>
         </helpers>
 
         <models>

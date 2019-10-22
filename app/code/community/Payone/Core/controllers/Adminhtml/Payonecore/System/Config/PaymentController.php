@@ -87,37 +87,42 @@ class Payone_Core_Adminhtml_Payonecore_System_Config_PaymentController
      */
     public function editAction()
     {
-        $id = $this->getRequest()->getParam('id');
-        $website = $this->getRequest()->getParam('website');
-        $store = $this->getRequest()->getParam('store');
-        $type = $this->getRequest()->getParam('type');
+        try {
+            $id = $this->getRequest()->getParam('id');
+            $website = $this->getRequest()->getParam('website');
+            $store = $this->getRequest()->getParam('store');
+            $type = $this->getRequest()->getParam('type');
 
-        /** @var $model Payone_Core_Model_Domain_Config_PaymentMethod */
-        $model = $this->getModelDomainConfigPaymentMethod()->load($id);
+            /** @var $model Payone_Core_Model_Domain_Config_PaymentMethod */
+            $model = $this->getModelDomainConfigPaymentMethod()->load($id);
 
-        if ($model->getId() || $id == 0) {
-            $data = Mage::getSingleton('adminhtml/session')->getFormData(true);
-            if (!empty($data)) {
-                $model->setData($data);
+            if ($model->getId() || $id == 0) {
+                $data = Mage::getSingleton('adminhtml/session')->getFormData(true);
+                if (!empty($data)) {
+                    $model->setData($data);
+                }
+
+                $model->setWebsite($website);
+                $model->setStore($store);
+                $model->setCode($type);
+
+                Mage::register('payone_core_config_payment_method', $model);
+                Mage::register('payone_core_config_active_scope', $this->determineActiveScope($website, $store));
+
+
+                $this->loadLayout();
+
+                $this->getLayout()->getBlock('head')->setCanLoadExtJs(true);
+
+                $this->renderLayout();
+            } else {
+                Mage::getSingleton('adminhtml/session')->addError(
+                    $this->helper()->__('PaymentMethod-Config does not exist.')
+                );
+                $this->_redirect('*/*/', array('_current' => true));
             }
-
-            $model->setWebsite($website);
-            $model->setStore($store);
-            $model->setCode($type);
-
-            Mage::register('payone_core_config_payment_method', $model);
-            Mage::register('payone_core_config_active_scope', $this->determineActiveScope($website, $store));
-
-
-            $this->loadLayout();
-
-            $this->getLayout()->getBlock('head')->setCanLoadExtJs(true);
-
-            $this->renderLayout();
-        } else {
-            Mage::getSingleton('adminhtml/session')->addError(
-                $this->helper()->__('PaymentMethod-Config does not exist.')
-            );
+        } catch (Exception $e) {
+            Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
             $this->_redirect('*/*/', array('_current' => true));
         }
     }

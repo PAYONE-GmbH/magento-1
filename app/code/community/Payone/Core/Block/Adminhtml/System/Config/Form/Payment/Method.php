@@ -121,8 +121,8 @@ class Payone_Core_Block_Adminhtml_System_Config_Form_Payment_Method
     }
 
     /**
-     *
      * @return Mage_Adminhtml_Block_System_Config_Form
+     * @throws Exception
      */
     public function initForm()
     {
@@ -142,9 +142,20 @@ class Payone_Core_Block_Adminhtml_System_Config_Form_Payment_Method
 
         $groupName = self::GROUP_TEMPLATE_PREFIX . $this->getMethodType();
         $group = $groups->$groupName;
-        
+
         $groupNameDefault = self::GROUP_TEMPLATE_PREFIX . self::GROUP_TEMPLATE_DEFAULT;
         $groupDefault = $groups->$groupNameDefault;
+
+        // MAGE-457 : If payment method config was not found, the method files
+        // were probably deleted while method was still configured.
+        // Then we load an empty form, so it is possible to delete the method from the list.
+        // An error message warns the user once landing on the edit page.
+        if (is_null($group->fields)) {
+            $message = $this->__('Error while loading method') . ' : ' . $this->getMethodType();
+            Mage::getSingleton('adminhtml/session')->addError($message);
+
+            $group = $groups->$groupNameDefault;
+        }
 
         /**
          * @var $fieldsetRenderer Mage_Adminhtml_Block_System_Config_Form_Fieldset
@@ -177,6 +188,13 @@ class Payone_Core_Block_Adminhtml_System_Config_Form_Payment_Method
 
         $this->_prepareFieldOriginalData($fieldset, $group);
         $this->_addElementTypes($fieldset);
+
+        // MAGE-457 : alternative/extra check in case the previous mechanism fails.
+        // The previous fix relies on shop's default behaviour
+        // This one is independant and triggers an Exception for outter handling
+        if (is_null($group->fields)) {
+            throw new Exception($this->__('Error while loading method') . ' : ' . $this->getMethodType());
+        }
 
         foreach ($groupDefault->fields as $elements) {
             foreach ($elements as $e) {
