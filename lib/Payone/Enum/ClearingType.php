@@ -70,7 +70,6 @@ class Payone_Enum_ClearingType
 
     /** Wallets */
     const AMAZONPAY = 'wlt';
-    const MASTERPASS = 'wlt';
     const WALLETALIPAY = 'wlt';
     const WALLETPAYDIREKT = 'wlt';
     const WALLETPAYDIREKTEXPRESS = 'wlt';
