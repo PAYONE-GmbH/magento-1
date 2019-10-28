@@ -15,13 +15,13 @@
  * @category        Payone
  * @package         design_adminhtml_default_default
  * @subpackage      template
- * @copyright       Copyright (c) 2015 <kontakt@fatchip.de> - www.fatchip.com
- * @author          Robert Müller <robert.mueller@fatchip.de>
+ * @copyright       Copyright (c) 2019 <kontakt@fatchip.de> - www.fatchip.com
+ * @author          Vincent Boulanger <vincent.boulanger@fatchip.de>
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
  * @link            http://www.fatchip.com
  */
 
-/** @var $this Payone_Core_Block_Payment_Method_Info_Ratepay */
+/** @var $this Payone_Core_Block_Payment_Method_Info_RatepayDirectDebit */
 ?>
 <?php
 echo $this->escapeHtml($this->getMethodTitle()) ?>
@@ -42,4 +42,3 @@ echo $this->escapeHtml($this->getMethodTitle()) ?>
     <?php echo $this->__('Payment Reference: %s', $this->escapeHtml($this->getPayoneClearingReference())) ?><br/>
 <?php endif; ?>
 <br/>
-
