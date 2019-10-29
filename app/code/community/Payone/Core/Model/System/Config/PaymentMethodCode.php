@@ -65,7 +65,7 @@ class Payone_Core_Model_System_Config_PaymentMethodCode extends Payone_Core_Mode
     const WALLETPAYDIREKTEXPRESS = 'payone_wallet_paydirekt_express';
     const WALLETPAYPALEXPRESS = 'payone_wallet_paypal_express';
     const WALLETALIPAY = 'payone_wallet_alipay';
-    const MASTERPASS =  'payone_masterpass';
+//    const MASTERPASS =  'payone_masterpass'; // MAGE-457 : method removed
 
     /**
      * @return array
@@ -104,7 +104,7 @@ class Payone_Core_Model_System_Config_PaymentMethodCode extends Payone_Core_Mode
             self::ONLINEBANKTRANSFERPFC => 'PostFinance Card',
             self::ONLINEBANKTRANSFERP24 => 'Przelewy24',
             self::ONLINEBANKTRANSFERBCT => 'Bancontact',
-            self::MASTERPASS => 'Masterpass'
+//            self::MASTERPASS => 'Masterpass' // MAGE-457 : method removed
         );
     }
 }

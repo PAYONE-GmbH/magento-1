@@ -1757,26 +1757,6 @@ class Payone_Core_Model_Factory
 
     /**
      * @param array $data
-     * @return Payone_Api_Request_MasterpassSetCheckout
-     */
-    public function getRequestMasterpassSetCheckout(array $data = array())
-    {
-        $request = new Payone_Api_Request_MasterpassSetCheckout($data);
-        return $request;
-    }
-
-    /**
-     * @param array $data
-     * @return Payone_Api_Request_MasterpassGetCheckout
-     */
-    public function getRequestMasterpassGetCheckout(array $data = array())
-    {
-        $request = new Payone_Api_Request_MasterpassGetCheckout($data);
-        return $request;
-    }
-
-    /**
-     * @param array $data
      * @return Payone_Api_Request_PaydirektExpressSetCheckout
      */
     public function getRequestPaydirektExpressSetCheckout(array $data = array())

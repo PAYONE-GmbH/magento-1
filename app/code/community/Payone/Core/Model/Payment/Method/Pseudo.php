@@ -14,20 +14,16 @@
  *
  * @category        Payone
  * @package         Payone_Core_Model
- * @copyright       Copyright (c) 2018 <kontakt@fatchip.de> - www.fatchip.de
- * @author          FATCHIP GmbH <kontakt@fatchip.de>
+ * @subpackage      Payment
+ * @copyright       Copyright (c) 2019 <kontakt@fatchip.de> - www.fatchip.com
+ * @author          Vincent Boulanger <vincent.boulanger@fatchip.de>
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
- * @link            http://www.fatchip.de
+ * @link            http://www.fatchip.com
  */
 
-class Payone_Core_Model_Service_Mastercard_Masterpass_Request_InitCheckoutRequest
-    implements Payone_Core_Model_Service_Mastercard_Masterpass_RequestInterface
+class Payone_Core_Model_Payment_Method_Pseudo extends Payone_Core_Model_Payment_Method_Abstract
 {
-    /**
-     * @return string
-     */
-    public function getType()
-    {
-        return Payone_Core_Model_Service_Mastercard_Masterpass_RequestInterface::INIT_CHECKOUT_REQUEST_TYPE;
-    }
+    protected $methodType = 'pseudo';
+    protected $_code = 'payone_pseudo';
+    protected $_infoBlockType = 'payone_core/payment_method_info_pseudo';
 }

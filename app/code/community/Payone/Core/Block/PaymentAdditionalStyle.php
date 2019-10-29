@@ -24,7 +24,6 @@
 class Payone_Core_Block_PaymentAdditionalStyle extends Mage_Core_Block_Template
 {
     private $stylesheetUrls = array(
-        Payone_Core_Model_System_Config_PaymentMethodCode::MASTERPASS => 'payone/core/masterpass.css',
         Payone_Core_Model_System_Config_PaymentMethodCode::AMAZONPAY => 'payone/core/amazonpay_button.css',
         Payone_Core_Model_System_Config_PaymentMethodCode::WALLETPAYDIREKTEXPRESS => 'payone/core/paydirektexpress.css',
     );

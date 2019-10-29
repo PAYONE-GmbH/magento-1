@@ -15,21 +15,42 @@
  * @category        Payone
  * @package         Payone_Settings
  * @subpackage      Data
- * @copyright       Copyright (c) 2018 <kontakt@fatchip.de> - www.fatchip.com
+ * @copyright       Copyright (c) 2019 <kontakt@fatchip.de> - www.fatchip.com
  * @author          Vincent Boulanger <vincent.boulanger@fatchip.de>
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
  * @link            http://www.fatchip.com
  */
 
-class Payone_Settings_Data_ConfigFile_PaymentMethod_Masterpass
+/**
+ *
+ * @category        Payone
+ * @package         Payone_Settings
+ * @subpackage      Data
+ * @copyright       Copyright (c) 2019 <kontakt@fatchip.de> - www.fatchip.com
+ * @author          Vincent Boulanger <vincent.boulanger@fatchip.de>
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.e3n.de
+ */
+class Payone_Settings_Data_ConfigFile_PaymentMethod_Pseudo
     extends Payone_Settings_Data_ConfigFile_PaymentMethod_Abstract
     implements Payone_Settings_Data_ConfigFile_Interface
 {
     /** @var string */
-    protected $key = Payone_Enum_ClearingType::MASTERPASS;
+    protected $key = '';
 
+    /**
+     * @return string
+     */
     public function getKey()
     {
         return $this->key;
+    }
+
+    /**
+     * @param string $key
+     */
+    public function setKey($key)
+    {
+        $this->key = $key;
     }
 }
