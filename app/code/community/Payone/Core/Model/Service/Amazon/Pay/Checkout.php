@@ -340,29 +340,37 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
             return $this->cancelAmazonPayment($session, $text);
         }
 
-        try {
-            if (!empty($session->getData('amazon_shop_order_reference'))) {
-                $this->quote->setReservedOrderId($session->getData('amazon_shop_order_reference'));
-            }
+        $remainingAttempts = $this->fetchAllowedCheckoutAttempts();
+        while($remainingAttempts > 0) {
+            $remainingAttempts--;
+            try {
+                if (!empty($session->getData('amazon_shop_order_reference'))) {
+                    $this->quote->setReservedOrderId($session->getData('amazon_shop_order_reference'));
+                }
 
-            /** @var \Mage_Sales_Model_Service_Quote $service */
-            $service = Mage::getModel('sales/service_quote', $this->quote);
-            $service->submitAll();
-        } catch (\Exception $e) {
-            if (in_array($e->getCode(), [981, 985, 986])) { // send to widgets
-                $session->setData('amazon_lock_order', true);
-                $session->setData('amazon_reference_id', $amazonOrderReferenceId);
-                $session->setData('amazon_shop_order_reference', $this->quote->getReservedOrderId());
-                $session->unsetData('amazon_add_paydata');
-            } else { // logout and send to basket
-                // Transaction cannot be completed by Amazon
-                // and the order reference object was closed
-                $text = 'Sorry, your transaction with Amazon Pay was not successful. Please choose another payment method.';
-                $session->unsetData('amazon_shop_order_reference');
-                return $this->cancelAmazonPayment($session, $text);
+                /** @var \Mage_Sales_Model_Service_Quote $service */
+                $service = Mage::getModel('sales/service_quote', $this->quote);
+                $service->submitAll();
+                $remainingAttempts = 0;
+            } catch (\Exception $e) {
+                if ($remainingAttempts == 0 || !($e instanceof Zend_Db_Statement_Exception)) {
+                    if (in_array($e->getCode(), [981, 985, 986])) { // send to widgets
+                        $session->setData('amazon_lock_order', true);
+                        $session->setData('amazon_reference_id', $amazonOrderReferenceId);
+                        $session->setData('amazon_shop_order_reference', $this->quote->getReservedOrderId());
+                        $session->unsetData('amazon_add_paydata');
+                    } else { // logout and send to basket
+                        // Transaction cannot be completed by Amazon
+                        // and the order reference object was closed
+                        $text = 'Sorry, your transaction with Amazon Pay was not successful. Please choose another payment method.';
+                        $session->unsetData('amazon_shop_order_reference');
+                        return $this->cancelAmazonPayment($session, $text);
+                    }
+                    throw $e;
+                }
             }
-            throw $e;
         }
+
         $session->unsetData('amazon_add_paydata');
         $session->unsetData('amazon_shop_order_reference');
         $this->checkoutSession->setData('last_quote_id', $this->quote->getId());
@@ -551,5 +559,25 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
             $request->setCurrency($this->quote->getBaseCurrencyCode());
             $request->setAmount($this->quote->getBaseGrandTotal());
         }
+    }
+
+    /**
+     * @return int
+     */
+    private function fetchAllowedCheckoutAttempts()
+    {
+        /** @var Payone_Core_Helper_Config $configHelper */
+        $configHelper = $this->getFactory()->helperConfig();
+        $generalConfig = $configHelper->getConfigGeneral($this->quote->getStoreId());
+        $allowedAttempts = (int) (floor($generalConfig->getPaymentAmazonPayCheckout()->getAmazonPayCheckoutRetries()));
+
+        if (is_null($allowedAttempts)
+            || empty($allowedAttempts)
+            || is_nan($allowedAttempts)
+            || $allowedAttempts < 1) {
+            $allowedAttempts = 1;
+        }
+
+        return $allowedAttempts;
     }
 }

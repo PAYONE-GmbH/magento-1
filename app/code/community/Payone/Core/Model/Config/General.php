@@ -56,6 +56,10 @@ class Payone_Core_Model_Config_General extends Payone_Core_Model_Config_AreaAbst
      * @var Payone_Core_Model_Config_General_PaymentPaydirektExpressCheckout
      */
     protected $payment_paydirekt_express_checkout;
+    /**
+     * @var Payone_Core_Model_Config_General_PaymentAmazonPayCheckout
+     */
+    protected $payment_amazon_pay_checkout;
 
     /**
      * @var Payone_Core_Model_Config_General_ParameterNarrativeText
@@ -189,5 +193,21 @@ class Payone_Core_Model_Config_General extends Payone_Core_Model_Config_AreaAbst
     public function getParameterNarrativeText()
     {
         return $this->parameter_narrative_text;
+    }
+
+    /**
+     * @param Payone_Core_Model_Config_General_PaymentAmazonPayCheckout $payment_amazon_pay_checkout
+     */
+    public function setPaymentAmazonPayCheckout($payment_amazon_pay_checkout)
+    {
+        $this->payment_amazon_pay_checkout = $payment_amazon_pay_checkout;
+    }
+
+    /**
+     * @return Payone_Core_Model_Config_General_PaymentAmazonPayCheckout
+     */
+    public function getPaymentAmazonPayCheckout()
+    {
+        return $this->payment_amazon_pay_checkout;
     }
 }
