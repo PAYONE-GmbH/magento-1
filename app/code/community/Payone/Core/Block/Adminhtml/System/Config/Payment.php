@@ -118,10 +118,10 @@ class Payone_Core_Block_Adminhtml_System_Config_Payment extends Mage_Adminhtml_B
      * @return string
      */
     public function getPaymentSelection(){
-        return 'Zahlungsart hinzufügen: <select name = "paymentsList" id="paymentsList">'
+        return $this->helperPayone()->__('Add payment method') . ': <select name = "paymentsList" id="paymentsList">'
             . $this->parseDropDown() .
             '</select>
-         <button type="button" onclick="getLocation()" id="confirmNewPayment">Bestätigen</button>
+         <button type="button" onclick="getLocation()" id="confirmNewPayment">'.$this->helperPayone()->__('Confirm') . '</button>
          
          <script>
              function getLocation(){
