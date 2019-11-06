@@ -353,6 +353,7 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
                 $service->submitAll();
                 $remainingAttempts = 0;
             } catch (\Exception $e) {
+                Mage::logException($e);
                 if ($remainingAttempts == 0 || !($e instanceof Zend_Db_Statement_Exception)) {
                     if (in_array($e->getCode(), [981, 985, 986])) { // send to widgets
                         $session->setData('amazon_lock_order', true);
