@@ -72,6 +72,9 @@ class Payone_Core_Model_Service_InitializeConfig
 
             $config = $this->loadFromCache();
             if (($config instanceof Payone_Core_Model_Config_Interface) && $config->getStoreId() === $storeId) {
+                // MAGE-466 : force unregister the variable if set already.
+                // Avoids the "Mage registry key "payone_core_config_1" already exists" exception
+                $helperRegistry->unregister($registryKey);
                 $helperRegistry->register($registryKey, $config);
                 return $config;
             }
