@@ -219,7 +219,7 @@ class Payone_Core_Model_Service_TransactionStatus_Execute extends Payone_Core_Mo
         //Check if there are failed transactions
         if (count($this->failed) > 0) {
             //@ToDo: get retry counter from back end
-            $retryCounter = 3;
+            $retryCounter = Mage::helper('payone_core')->getTxRetries();;
             $failed = array();
             $list = array();
 
@@ -245,13 +245,11 @@ class Payone_Core_Model_Service_TransactionStatus_Execute extends Payone_Core_Mo
 
             //are any failed transactions left? Than prepare report email
             if (count($failed) > 0) {
-                //@ToDo: get Email from Configuration
-                $emailTo = '';
+                Mage::helper('payone_core')->getTxReportEmail();
                 if (!filter_var($emailTo, FILTER_VALIDATE_EMAIL)) {
                     return;
                 }
                 //prepare Email
-                //@ToDo: get Template for TransactionStatus Error
                 $template = 'transaction_status_error_report';
 
                 $params = array();

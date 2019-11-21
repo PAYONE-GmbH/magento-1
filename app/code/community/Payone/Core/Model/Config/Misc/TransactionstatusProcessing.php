@@ -47,6 +47,13 @@ class Payone_Core_Model_Config_Misc_TransactionstatusProcessing
     /** @var int */
     protected $logging_active = 0;
 
+    /**
+     * @var string
+     */
+    protected $report_email = '';
+
+    protected $retries = 0;
+
     public function init(array $data)
     {
         foreach ($data as $key => $value) {
@@ -141,5 +148,39 @@ class Payone_Core_Model_Config_Misc_TransactionstatusProcessing
     {
         return $this->logging_active;
     }
+
+    /**
+     * @return string
+     */
+    public function getReportEmail()
+    {
+        return $this->report_email;
+    }
+
+    /**
+     * @param string $report_email
+     */
+    public function setReportEmail($report_email)
+    {
+        $this->report_email = $report_email;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRetries()
+    {
+        return $this->retries;
+    }
+
+    /**
+     * @param int $retries
+     */
+    public function setRetries($retries)
+    {
+        $this->retries = $retries;
+    }
+
+
 
 }
