@@ -21,16 +21,18 @@
  * @link            http://www.fatchip.com,  http://www.e3n.de
  */
 
-/** @var $this Payone_Core_Block_Payment_Method_Form_RatePay */
+/** @var $this Payone_Core_Block_Payment_Method_Form_Ratepay */
 $code = $this->getMethodCode();
 $configId = $this->getPaymentConfig()->getId();
-$paymentType = '';
+$paymentType = Payone_Api_Enum_RatepayType::RPS;
 $ratePayShopId = $this->getMatchingRatePayShopId();
 $ratePayCurrency = $this->getRatePayCurrency();
 $types = $this->getTypes();
 $allowedSEPACountries = htmlspecialchars($this->getAllowedSEPACountries());
 $accountOwner = $this->getAccountOwner();
-
+$configShowBankData = $this->getPaymentConfig()->getSepaDeShowBankData();
+$isAllowedDirectDebit = $this->isAllowedDirectDebit();
+$initialDebitType = $isAllowedDirectDebit ? Payone_Api_Enum_RatepayDebitType::DIRECT_DEBIT : Payone_Api_Enum_RatepayDebitType::BANK_TRANSFER;
 ?>
 <fieldset class="form-list">
     <ul id="payment_form_<?php echo $code ?>" style="display:none">
@@ -40,29 +42,9 @@ $accountOwner = $this->getAccountOwner();
             ?>
         </p>
 
-        <?php
-        if (count($types) > 1) : ?>
-            <select id="<?php echo $code ?>_payrate_type_select" name="payment[payone_ratepay_type]"
-                    onchange="payoneSwitchPayRate(this)" class="no-submit required-entry">
-                <option selected="selected" value=""><?php echo $this->__('--Please Select--') ?></option>
-                <?php foreach ($this->getTypes() as $key => $type) : ?>
-                    <option value="<?php echo $type['code']; ?>" <?php  ?>>
-                        <?php echo $type['name'] ?><span><?php echo $type['fee']; ?></span>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-
-        <?php else :
-            $type = array_pop($types);
-            $paymentType = $type['code'];
-            ?>
-            <?php echo $type['name']; ?>&nbsp;<span><?php echo $type['fee']; ?></span>
-            <input type="hidden" id="<?php echo $code ?>_type" name="payment[payone_ratepay_type]" value="<?php echo $paymentType;?>"/>
-            <script type="text/javascript">
-                checkRequirementFields('<?php echo $paymentType;?>', -1);
-            </script>
-            <?php
-        endif;?>
+        <?php $type = array_pop($types); ?>
+        <?php echo $type['name']; ?>&nbsp;<span><?php echo $type['fee']; ?></span>
+        <input type="hidden" id="<?php echo $code ?>_type" name="payment[payone_ratepay_type]" value="<?php echo $paymentType;?>"/>
 
         <?php if ($this->isDobRequired()): ?>
             <li class="fields">
@@ -98,7 +80,7 @@ $accountOwner = $this->getAccountOwner();
                             </option>
                         <?php endfor; ?>
                     </select>
-                    
+
                     <input type="hidden" id="<?php echo $code ?>_additional_fields_customer_dob_full"
                             name="payment[payone_customer_dob]" class="validate-18-years">
                 </div>
@@ -142,8 +124,8 @@ $accountOwner = $this->getAccountOwner();
             </li>
         <?php endif;?>
 
-        <div id="<?php echo $code ?>_debit_details" style="display:none;" >
-            <?php if ($this->shouldDisplayIbanBic()) :?>
+        <div id="<?php echo $code ?>_debit_details">
+            <?php if ($isAllowedDirectDebit) : ?>
                 <li>
                     <div id="ratepay-Header">
                         <div>
@@ -224,7 +206,15 @@ $accountOwner = $this->getAccountOwner();
             <?php endif; ?>
         </div>
 
-
+        <li <?php if (!$isAllowedDirectDebit) { echo 'style="display: none"'; } ?>>
+            <p id="method-switch-section" onclick="switchRatePaymentMethod('<?php echo $code ?>')">
+                <span id="method-switch-checkbox"></span>
+                <a id="<?php echo $code ?>_method_switch_invoice" style="cursor: pointer;">
+                    <?php echo $this->__('I would like to make the installment payment myself and not pay by direct debit'); ?>
+                </a>
+                <input id="<?php echo $code ?>_debit_type" name="payment[payone_ratepay_debit_type]" value="<?php echo $initialDebitType; ?>" type="hidden" />
+            </p>
+        </li>
 
         <li style="display:none;">
             <input type="hidden" name="payment[payone_config_payment_method_id]"  id="<?php echo $code ?>_config_id" value="<?php echo $configId; ?>"/>
@@ -264,83 +254,73 @@ $accountOwner = $this->getAccountOwner();
                      </div>
                     <br class="ratepay-ClearFix" />
                 </div>
-
-                <div id="ratepay-ContentSwitch">
-                    <div class="ratepay-ChooseRuntime">
-                        <?php echo $this->__('lang_cash_payment_price_part_one'); ?>:
-                        <span><b><?php echo Mage::helper('checkout')->formatPrice($this->getAmount(), true, true); ?></b></span>
-                        <input type="hidden" id="amount" value="<?php echo $this->getAmount() ?>">
-                        <?php echo $this->__('lang_cash_payment_price_part_two'); ?>
-                        <br />
-                        <label for="firstInput" style="width:100%;">
-                            <div class="ratepay-ChooseInput" id="<?php echo $code ?>_ChooseInputRate">
-                                <input id="firstInput" class="ratepay-FloatLeft" type="radio" name="Zahlmethode" value="wishrate"  onClick="payoneSwitchRateOrRuntime('rate', '<?php echo $code ?>', '<?php echo $this->getSkinUrl('images/ratepay/'); ?>');" checked="checked">
-                            </div>
-                            <div class="ratepay-NintyPercentWidth ratepay-FloatLeft" style="color: black; width: 390px;"><?php echo $this->__('lang_payment_text_wishrate'); ?></div>
-                        </label>
-                        <div id="<?php echo $code ?>_ContentTerm" class="ratepay-Content" style="display: none;">
-
-                            <br class="ratepay-ClearFix" />
-                            <div class="ratepay-MarginTop">
-                                <span class="ratepay-VertAlignMiddle"><?php echo $this->__('lang_please') . " " . $this->__('lang_insert_wishrate'); ?>:</span>
-                                <input id="<?php echo $code ?>-rate" class="ratepay-Input-amount" type="text">
-                                <span class="ratepay-Currency"> &euro;</span>
-                                <input onclick="payoneRatepayRateCalculatorAction('rate', '<?php echo $code ?>', '<?php echo $this->getUrl("payone_core/ratepay/rate", array('_secure' => true)); ?>');" value="<?php echo $this->__('lang_calculate_runtime'); ?>" id="<?php echo $code ?>_Input-button" class="ratepay-Input-button" type="button">
-                            </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <?php echo $this->__('lang_cash_payment_price_part_one'); ?>:
+                            <span><b><?php echo Mage::helper('checkout')->formatPrice($this->getAmount(), true, true); ?></b></span>
+                            <input type="hidden" id="amount" value="<?php echo $this->getAmount() ?>">
+                            <?php echo $this->__('lang_cash_payment_price_part_two'); ?>
                         </div>
-                        <br class="ratepay-ClearFix" />
-                        <label for="secondInput" style="width:100%;">
-                            <div class="ratepay-ChooseInput" id="<?php echo $code ?>_ChooseInputRuntime">
-                                <input id="secondInput" class="ratepay-FloatLeft" type="radio" name="Zahlmethode" value="runtime" onClick="payoneSwitchRateOrRuntime('runtime', '<?php echo $code ?>', '<?php echo $this->getSkinUrl('images/ratepay/'); ?>');">
-                            </div>
-                            <div class="ratepay-NintyPercentWidth ratepay-FloatLeft" style="color: black;"><?php echo $this->__('lang_choose_runtime'); ?></div>
-                        </label>
-                        <div id="<?php echo $code ?>_ContentRuntime" class="ratepay-Content" style="display: none;">
-
-                                <div id="<?php echo $code ?>_DueDate" class="ratepay-DueDate">
-                                    <div class="ratepay-DueText"><?php echo $this->__('lang_due_date'); ?></div>
-                                    <span style="float: right;">
-
-                                    </span>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <input id="calculationValidationFlag" class="required-entry" type="hidden" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="panel panel-default">
+                                <div class="panel-heading text-center" id="firstInput">
+                                    <h2><?php echo $this->__('lang_choose_runtime'); ?></h2>
+                                    <?php echo $this->__('lang_payment_text_runtime'); ?> <b><?php echo $this->__('lang_runtime_duration_unit'); ?></b>
                                 </div>
-
-                            <br class="ratepay-ClearFix" />
-                            <div class="ratepay-MarginTop">
-                                <span class="ratepay-VertAlignMiddle" style="float: left;"><?php echo $this->__('lang_please') . " " . $this->__('lang_insert_runtime'); ?>:</span>
-                                <select id="<?php echo $code ?>-runtime">
-                                  <option value="3"><?php echo $this->__('3 month'); ?></option>
-                                  <option value="6"><?php echo $this->__('6 month'); ?></option>
-                                  <option value="9" selected="selected"><?php echo $this->__('9 month'); ?></option>
-                                  <option value="12" selected="selected"><?php echo $this->__('12 month'); ?></option>
-                                  <option value="24" selected="selected"><?php echo $this->__('24 month'); ?></option>
-                                  <option value="36" selected="selected"><?php echo $this->__('36 month'); ?></option>
-                                </select>
-                                <input name="" onclick="payoneRatepayRateCalculatorAction('runtime', '<?php echo $code ?>', '<?php echo $this->getUrl("payone_core/ratepay/runtime", array('_secure' => true)); ?>');" value="<?php echo $this->__('lang_calculate_rate'); ?>" value="<?php echo $this->__('lang_calculate_rate'); ?>" type="button" id="<?php echo $code ?>_Input-buttonRuntime"  class="ratepay-Input-button2">
+                                <div class="panel-body">
+                                    <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <input class="btn btn-default <?php echo $code ?>-btn-runtime" data-bind="3" value="3" readonly="readonly"/>
+                                        </div>
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <input class="btn btn-default <?php echo $code ?>-btn-runtime" data-bind="6" value="6" readonly="readonly"/>
+                                        </div>
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <input class="btn btn-default <?php echo $code ?>-btn-runtime" data-bind="12" value="12" readonly="readonly"/>
+                                        </div>
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <input class="btn btn-default <?php echo $code ?>-btn-runtime" data-bind="24" value="24" readonly="readonly"/>
+                                        </div>
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <input class="btn btn-default <?php echo $code ?>-btn-runtime" data-bind="36" value="36" readonly="readonly"/>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <br class="ratepay-ClearFix" />
-                        <div class="ratepay-ContentSwitchDiv" id="<?php echo $code ?>_SwitchToTerm" class="ratepay-Active" style="display: none">
-                            <span id="<?php echo $code ?>_spanrate">
-                                <?php echo $this->__('lang_insert_wishrate'); ?> <?php echo $this->__('lang_calculate_runtime'); ?>
-                            </span>
-                            <input name="" value="<?php echo $this->__('lang_calculate_runtime'); ?>" type="button" class="ratepay-Input-button ratepay-ContentSwitchInput ">
+                        <div class="col-md-4">
+                            <div class="panel panel-default">
+                                <div class="panel-heading text-center" id="secondInput">
+                                    <h2><?php echo $this->__('lang_insert_wishrate'); ?></h2>
+                                    <?php echo $this->__('lang_payment_text_wishrate'); ?>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="input-group input-group-sm">
+                                        <span class="input-group-addon">€</span>
+                                        <input type="text" id="<?php echo $code ?>-rate" class="form-control" aria-label="Amount" data-com.agilebits.onepassword.user-edited="yes">
+                                        <span class="input-group-btn">
+                                            <input id="<?php echo $code ?>-btn-rate" class="btn btn-default <?php echo $code ?>-btn-rate" value="<?php echo $this->__('lang_calculate_rate'); ?>" readonly="readonly"/>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="ratepay-ContentSwitchDiv"  id="<?php echo $code ?>_SwitchToRuntime" style="display: none">
-                            <span id="<?php echo $code ?>_spanruntime" class="ratepay-active">
-                                <?php echo $this->__('lang_choose_runtime'); ?> <?php echo $this->__('lang_calculate_rate'); ?>
-                            </span>
-                            <input name="" value="<?php echo $this->__('lang_calculate_rate'); ?>" type="button" class="ratepay-Input-button ratepay-ContentSwitchInput ">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div id="<?php echo $code ?>_ResultContainer">
+                            </div>
                         </div>
-                        <div id="<?php echo $code ?>_ResultContainer">
-
-                        </div>
-
                     </div>
                 </div>
-                <script>
-                    payoneSwitchRateOrRuntime('rate', '<?php echo $code ?>', '<?php echo $this->getSkinUrl(); ?>');
-                </script>
-
                 <br class="ratepay-ClearFix" />
             </div>
         </li>
@@ -350,4 +330,11 @@ $accountOwner = $this->getAccountOwner();
 <script type="text/javascript">
     //    Add validation messages translation
     Translator.add('You have to be at least 18 years old to use this payment type!', '<?php echo $this->__('You have to be at least 18 years old to use this payment type!'); ?>');
+
+    checkRequirementFields('<?php echo $paymentType;?>', -1);
+    attachCalcButtonsListeners(
+        '<?php echo $code ?>',
+        '<?php echo $this->getUrl("payone_core/ratepay/runtime", array('_secure' => true)); ?>',
+        '<?php echo $this->getUrl("payone_core/ratepay/rate", array('_secure' => true)); ?>'
+    );
 </script>

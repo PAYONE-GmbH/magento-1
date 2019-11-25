@@ -24,7 +24,6 @@
 #ratepay-main-cont, #ratepay-main-cont div, #ratepay-main-cont span, #ratepay-main-cont p, #ratepay-main-cont input, #ratepay-main-cont select, #ratepay-main-cont h2, #ratepay-main-cont table, #ratepay-main-cont td {
     font-size: 13px;
     line-height: 17px;
-    text-align: left;
 }
 
 /* RatePAY Calculator */
@@ -501,4 +500,41 @@ table#ratepay-InstallmentTerms {
 
 .ratepay-overlay .right {
     float:right;
+}
+
+.ratepay-installment-plan-description {
+    display: none;
+}
+
+.ratepay-details-icon {
+}
+
+.ratepay-installment-plan-title:hover p {
+    display: block;
+}
+
+.ratepay-row-space {
+    margin-bottom: 10px;
+}
+
+.ratepay-installment-plan-link {
+    cursor: pointer;
+}
+
+#method-switch-section {
+    display: inline-block;
+}
+#method-switch-section:hover #method-switch-checkbox {
+    background-color: lightblue;
+}
+
+#method-switch-checkbox {
+    width: 16px;
+    height: 16px;
+    border:solid 2px lightblue;
+    display: inline-block;
+    margin: 2px 6px 0 0;
+    float:left;
+    outline: solid 2px white;
+    outline-offset: -3px;
 }

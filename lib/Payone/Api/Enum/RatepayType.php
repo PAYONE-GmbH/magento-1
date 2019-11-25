@@ -23,7 +23,7 @@
 
 class Payone_Api_Enum_RatepayType
 {
-    const RPV = 'RPV'; // Ratepay-Invoicing
+    #const RPV = 'RPV'; // Ratepay-Invoicing // From MAGE-444 RPV got moved to separate method
     const RPS = 'RPS'; // Ratepay-Installment
     #const RPD = 'RPD'; // Ratepay-Debit
     #const RPP = 'RPP'; // Ratepay-Prepayment not implemented yet

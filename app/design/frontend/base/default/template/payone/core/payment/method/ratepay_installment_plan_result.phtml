@@ -1,0 +1,124 @@
+<?php
+/**
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the GNU General Public License (GPL 3)
+ * that is bundled with this package in the file LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Payone_Core to newer
+ * versions in the future. If you wish to customize Payone_Core for your
+ * needs please refer to http://www.payone.de for more information.
+ *
+ * @category        Payone
+ * @package         design_frontend_base_default
+ * @subpackage      template
+ * @copyright       Copyright (c) 2019 <kontakt@fatchip.de> - www.fatchip.com
+ * @author          Vincent Boulanger <vincent.boulanger@fatchip.de>
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.fatchip.com
+ */
+
+/** @var $this Payone_Core_Block_Checkout_RatePayInstallmentplan */
+?>
+<?php
+    $numberOfRates = $this->getData('last-rate') ? $this->getData('number-of-rates') - 1 : $this->getData('number-of-rates');
+?>
+<table class="table table-striped">
+    <tbody>
+    <tr>
+        <td class="text-center text-uppercase" colspan="2"><?php echo $this->__('lang_individual_rate_calculation'); ?></td>
+    </tr>
+    <tr>
+        <td class="warning small text-center" colspan="2">
+            <?php echo $this->getData('calculation-result-message'); ?>
+            <br />
+            <?php echo $this->__('lang_calculation_result_text'); ?>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" class="small text-right">
+            <a class="ratepay-installment-plan-link" id="ratepay-show-installment-plan-details" onclick="showInstallmentDetails()" style="">
+                <?php echo $this->__('lang_calculation_detail_show'); ?>
+            </a>
+            <a class="ratepay-installment-plan-link" id="ratepay-hide-installment-plan-details" onclick="hideInstallmentDetails()" style="display: none;">
+                <?php echo $this->__('lang_calculation_detail_hide'); ?>
+            </a>
+        </td>
+    </tr>
+    <tr class="ratepay-installment-plan-details" style="display: none;">
+        <td class="ratepay-installment-plan-title">
+            <?php echo $this->__('lang_cash_payment_price'); ?>
+            <p class="ratepay-installment-plan-description small"><?php echo $this->__('lang_mouseover_cash_payment_price'); ?></p>
+        </td>
+        <td class="text-right"><?php echo $this->getFormattedNumber('amount'); ?> €</td>
+    </tr>
+    <tr class="ratepay-installment-plan-details" style="display: none;">
+        <td class="ratepay-installment-plan-title">
+            <?php echo $this->__('lang_service_charge'); ?>
+            <p class="ratepay-installment-plan-description small"><?php echo $this->__('lang_mouseover_service_charge'); ?></p>
+        </td>
+        <td class="text-right"><?php echo $this->getFormattedNumber('service-charge'); ?> €</td>
+    </tr>
+    <tr class="ratepay-installment-plan-details" style="display: none;">
+        <td class="ratepay-installment-plan-title">
+            <?php echo $this->__('lang_effective_rate'); ?>
+            <p class="ratepay-installment-plan-description small"><?php echo $this->__('lang_mouseover_effective_rate'); ?></p>
+        </td>
+        <td class="text-right"><?php echo $this->getFormattedNumber('annual-percentage-rate'); ?>%</td>
+    </tr>
+    <tr class="ratepay-installment-plan-details" style="display: none;">
+        <td class="ratepay-installment-plan-title">
+            <?php echo $this->__('lang_interestrate_default'); ?>
+            <p class="ratepay-installment-plan-description small"><?php echo $this->__('lang_mouseover_debit_rate'); ?></p>
+        </td>
+        <td class="text-right"><?php echo $this->getFormattedNumber('interest-rate'); ?>%</td>
+    </tr>
+    <tr class="ratepay-installment-plan-details" style="display: none;">
+
+    </tr>
+    <tr class="ratepay-installment-plan-details" style="display: none;">
+        <td class="ratepay-installment-plan-title">
+            <?php echo $this->__('lang_interest_amount'); ?>
+            <p class="ratepay-installment-plan-description small"><?php echo $this->__('lang_mouseover_interest_amount'); ?></p>
+        </td>
+        <td class="text-right"><?php echo $this->getFormattedNumber('interest-amount'); ?> €</td>
+    </tr>
+    <tr class="ratepay-installment-plan-details" style="display: none;">
+        <td colspan="2"></td>
+    </tr>
+    <tr>
+        <td class="ratepay-installment-plan-title">
+            <?php echo $numberOfRates . $this->__('lang_duration_month'); ?>
+            <p class="ratepay-installment-plan-description small"><?php echo $this->__('lang_mouseover_duration_month'); ?></p>
+        </td>
+        <td class="text-right"><?php echo $this->getFormattedNumber('rate'); ?> €</td>
+    </tr>
+    <tr>
+        <td class="ratepay-installment-plan-title">
+            <?php echo $this->__('lang_last_rate'); ?>
+            <p class="ratepay-installment-plan-description small"><?php echo $this->__('lang_mouseover_last_rate'); ?></p>
+        </td>
+        <td class="text-right"><?php echo $this->getFormattedNumber('last-rate'); ?> €</td>
+    </tr>
+    <tr>
+        <td class="ratepay-installment-plan-title">
+            <?php echo $this->__('lang_total_amount'); ?>
+            <p class="ratepay-installment-plan-description small"><?php echo $this->__('lang_mouseover_total_amount'); ?></p>
+        </td>
+        <td class="text-right"><?php echo $this->getFormattedNumber('total-amount'); ?> €</td>
+    </tr>
+    </tbody>
+</table>
+<?php if ($this->isAdmin()): ?>
+    <div style="display: none">
+        <input name="payone_ratepay_installment[payone_ratepay_rate]" type="hidden" value="<?php echo $this->getData('rate'); ?>" />
+        <input name="payone_ratepay_installment[payone_ratepay_last-rate]" type="hidden" value="<?php echo $this->getData('last-rate'); ?>" />
+        <input name="payone_ratepay_installment[payone_ratepay_total-amount]" type="hidden" value="<?php echo $this->getData('total-amount'); ?>" />
+        <input name="payone_ratepay_installment[payone_ratepay_interest-rate]" type="hidden" value="<?php echo $this->getData('interest-rate'); ?>" />
+        <input name="payone_ratepay_installment[payone_ratepay_number-of-rates]" type="hidden" value="<?php echo $this->getData('number-of-rates'); ?>" />
+        <input name="payone_ratepay_installment[payone_ratepay_payment-firstday]" type="hidden" value="<?php echo $this->getData('payment-firstday'); ?>" />
+    </div>
+<?php endif ?>

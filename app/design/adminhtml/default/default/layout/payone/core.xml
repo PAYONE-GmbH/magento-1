@@ -104,6 +104,7 @@
             <action method="addJs"><script>payone/core/sepa_validation.js</script></action>
             <action method="addJs"><script>payone/core/ratepay.js</script></action>
             <action method="addJs"><script>payone/core/payolution.js</script></action>
+            <action method="addCss"><script>payone/core/ratepay.css</script></action>
         </reference>
         <reference name="js">
             <block type="adminhtml/template" name="payone_core_clientapi"
@@ -111,6 +112,9 @@
             <block type="payone_core/adminhtml_sales_order_create_init" name="payone_core_init"
                    template="payone/core/sales/order/create/init.phtml" />
         </reference>
+        <block type="payone_core/checkout_ratePayInstallmentplan" name="payone_ratepay.checkout.installmentplan"
+               as="payone_installmentplan"
+               template="payone/core/payment/method/ratepay_installment_plan_result.phtml"/>
     </adminhtml_sales_order_create_index>
 
     <!--

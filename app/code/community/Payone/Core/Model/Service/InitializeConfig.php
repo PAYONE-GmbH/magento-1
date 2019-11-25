@@ -53,23 +53,31 @@ class Payone_Core_Model_Service_InitializeConfig
      * The Config Object will be cached
      *
      * @param int $storeId
+     * @param bool $useCache
+     *
      * @return Payone_Core_Model_Config_Interface
      */
-    public function execute($storeId = null)
+    public function execute($storeId = null, $useCache = true)
     {
         $this->setStoreId($storeId);
 
         $helperRegistry = $this->helperRegistry();
         $registryKey = $this->getConfigRegistryKey($storeId);
-        $config = $helperRegistry->registry($registryKey);
-        if ($config instanceof Payone_Core_Model_Config_Interface) {
-            return $config;
-        }
 
-        $config = $this->loadFromCache();
-        if ($config instanceof Payone_Core_Model_Config_Interface) {
-            $helperRegistry->register($registryKey, $config);
-            return $config;
+        if($useCache === true) {
+            $config = $helperRegistry->registry($registryKey);
+            if (($config instanceof Payone_Core_Model_Config_Interface) && $config->getStoreId() === $storeId) {
+                return $config;
+            }
+
+            $config = $this->loadFromCache();
+            if (($config instanceof Payone_Core_Model_Config_Interface) && $config->getStoreId() === $storeId) {
+                // MAGE-466 : force unregister the variable if set already.
+                // Avoids the "Mage registry key "payone_core_config_1" already exists" exception
+                $helperRegistry->unregister($registryKey);
+                $helperRegistry->register($registryKey, $config);
+                return $config;
+            }
         }
 
         /** @var $config Payone_Core_Model_Config */
@@ -95,7 +103,11 @@ class Payone_Core_Model_Service_InitializeConfig
         $config->setMisc($misc);
 
         // Caching
-        $this->saveToCache($config);
+        if ($useCache === true) {
+            $this->saveToCache($config);
+            $helperRegistry->unregister($registryKey);
+            $helperRegistry->register($registryKey, $config);
+        }
 
         return $config;
     }

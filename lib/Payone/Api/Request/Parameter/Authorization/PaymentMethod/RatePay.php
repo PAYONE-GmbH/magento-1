@@ -29,7 +29,7 @@ class Payone_Api_Request_Parameter_Authorization_PaymentMethod_RatePay
      * Enum FinancingType
      * @var string
      */
-    protected $financingtype = NULL;
+    protected $financingtype = Payone_Api_Enum_RatepayType::RPS;
     /**
      * @var null
      */
@@ -51,7 +51,7 @@ class Payone_Api_Request_Parameter_Authorization_PaymentMethod_RatePay
     /**
      * @var string
      */
-    protected $ratePayType = NULL;
+    protected $ratePayType = Payone_Api_Enum_RatepayType::RPS;
 
     /**
      * @var string
@@ -104,11 +104,12 @@ class Payone_Api_Request_Parameter_Authorization_PaymentMethod_RatePay
     }
     
     /**
-     * For now there is only "RPV" for Invoicing, but there will be more added.
+     * Original Ratepay is now turned into RPS only
+     * MAGE-444: RPV was implemented as separate method
      * 
      * @param string $financingtype
      */
-    public function setFinancingtype($financingtype = 'RPV')
+    public function setFinancingtype($financingtype = 'RPS')
     {
         $this->financingtype = $financingtype;
     }

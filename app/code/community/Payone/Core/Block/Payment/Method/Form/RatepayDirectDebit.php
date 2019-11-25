@@ -223,4 +223,20 @@ class Payone_Core_Block_Payment_Method_Form_RatepayDirectDebit extends Payone_Co
 
         return $block->toHtml();
     }
+
+    /**
+     * @return Payone_Core_Model_Config_Payment_Method_Interface[]
+     */
+    public function getPaymentConfigs()
+    {
+        $configs = parent::getPaymentConfigs();
+
+        foreach ($configs as $config) {
+            if ($config->getCode() == Payone_Core_Model_System_Config_PaymentMethodType::RATEPAYDIRECTDEBIT) {
+                $config->setTypes(array(Payone_Api_Enum_RatepayDirectDebitType::RPD));
+            }
+        }
+
+        return $configs;
+    }
 }

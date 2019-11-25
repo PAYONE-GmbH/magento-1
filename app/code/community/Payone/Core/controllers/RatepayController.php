@@ -50,15 +50,34 @@ class Payone_Core_RatepayController extends Mage_Core_Controller_Front_Action
 
                 if ($result instanceof Payone_Api_Response_Genericpayment_Ok) {
                     $responseData = $result->getPayData()->toAssocArray();
+                    $initialRateChoice = $this->getRequest()->getParam('calcValue');
+                    $message = $this->__('lang_calculation_rate_ok');
+
+                    // if the calculated installment value is different from the choice, we notify the user
+                    if ($initialRateChoice != $responseData['rate']) {
+                        // if value is lower than choice AND number of months is at maximum (36)
+                        // then the choice was too low
+                        // otherwise, it just got adapted to the closest available installment value
+                        if (
+                            $initialRateChoice < $responseData['rate']
+                            && $responseData['number-of-rates'] == 36
+                        ) {
+                            $message = $this->__('lang_calculation_rate_too_low');
+                        } else {
+                            $message = $this->__('lang_calculation_rate_not_available');
+                        }
+                    }
+                    $responseData['calculation-result-message'] = $message;
+
+                    /** @var Payone_Core_Block_Checkout_RatePayInstallmentplan $reviewBlock */
                     $reviewBlock = $this->getLayout()->getBlock('payone_ratepay.checkout.installmentplan');
-                    $html = $reviewBlock->showRateResultHtml($responseData);
+                    $reviewBlock->setData($responseData);
+                    $reviewBlock->setIsAdmin($isAdmin);
+                    $html = $reviewBlock->toHtml();
 
                     //if admin order, some fields are added to store,
                     //otherwise, data are stores into session
-                    if ($isAdmin) {
-                        $htmlAddition = $reviewBlock->addDataFields($responseData);
-                        $html .= PHP_EOL . $htmlAddition;
-                    } else {
+                    if (!$isAdmin) {
                         //set payone Session Data
                         $this->setSessionData($responseData, $paymentMethod);
                     }
@@ -112,15 +131,23 @@ class Payone_Core_RatepayController extends Mage_Core_Controller_Front_Action
 
                     if ($result instanceof Payone_Api_Response_Genericpayment_Ok) {
                         $responseData = $result->getPayData()->toAssocArray();
+                        $message = $this->__('lang_calculation_runtime_ok');
+
+                        // if the calculated runtime value is different from the choice, we notify the user
+                        if ($responseData['number-of-rates'] != $calcValue) {
+                            $message = $this->__('lang_calculation_runtime_not_available');
+                        }
+                        $responseData['calculation-result-message'] = $message;
+
+                        /** @var Payone_Core_Block_Checkout_RatePayInstallmentplan $reviewBlock */
                         $reviewBlock = $this->getLayout()->getBlock('payone_ratepay.checkout.installmentplan');
-                        $html = $reviewBlock->showRateResultHtml($responseData);
+                        $reviewBlock->setData($responseData);
+                        $reviewBlock->setIsAdmin($isAdmin);
+                        $html = $reviewBlock->toHtml();
 
                         //if admin order, some fields are added to store,
                         //otherwise, data are stores into session
-                        if ($isAdmin) {
-                            $htmlAddition = $reviewBlock->addDataFields($responseData);
-                            $html .= PHP_EOL . $htmlAddition;
-                        } else {
+                        if (!$isAdmin) {
                             //set payone Session Data
                             $this->setSessionData($responseData, $paymentMethod);
                         }

@@ -65,65 +65,6 @@
         <block type="core/text_list" name="additional.product.info" />
     </payone_core_pexpress_review>
 
-    <payone_core_mastercardmasterpass_review>
-        <label>Payone Mastercard Masterpass Order Review Form</label>
-        <remove name="right"/>
-        <remove name="left"/>
-
-        <reference name="root">
-            <action method="setTemplate"><template>page/1column.phtml</template></action>
-        </reference>
-        <reference name="head">
-            <action method="addJs"><script>payone/core/masterpass.js</script></action>
-            <action method="addCss"><name>payone/core/masterpass.css</name></action>
-        </reference>
-        <reference name="content">
-            <block type="payone_core/mastercard_masterpass_review" name="mastercard.masterpass.review" template="payone/core/mastercard/masterpass/review.phtml"/>
-        </reference>
-    </payone_core_mastercardmasterpass_review>
-
-    <payone_core_mastercardmasterpass_ordersuccess>
-        <label>Payone Mastercard Masterpass Order Success</label>
-        <remove name="right"/>
-        <remove name="left"/>
-
-        <reference name="root">
-            <action method="setTemplate"><template>page/3columns.phtml</template></action>
-        </reference>
-
-        <reference name="content">
-            <block type="checkout/onepage_success" name="mastercard.masterpass.success" template="checkout/success.phtml"/>
-        </reference>
-    </payone_core_mastercardmasterpass_ordersuccess>
-
-    <payone_core_mastercardmasterpass_cancel>
-        <label>Payone Mastercard Masterpass Payment Cancel</label>
-        <remove name="right"/>
-        <remove name="left"/>
-
-        <reference name="root">
-            <action method="setTemplate"><template>page/3columns.phtml</template></action>
-        </reference>
-
-        <reference name="content">
-            <block type="payone_core/mastercard_masterpass_cancel" name="mastercard.masterpass.cancel" template="payone/core/mastercard/masterpass/cancel.phtml"/>
-        </reference>
-    </payone_core_mastercardmasterpass_cancel>
-
-    <payone_core_mastercardmasterpass_error>
-        <label>Payone Mastercard Masterpass Payment Error</label>
-        <remove name="right"/>
-        <remove name="left"/>
-
-        <reference name="root">
-            <action method="setTemplate"><template>page/3columns.phtml</template></action>
-        </reference>
-
-        <reference name="content">
-            <block type="payone_core/mastercard_masterpass_cancel" name="mastercard.masterpass.cancel" template="payone/core/mastercard/masterpass/cancel.phtml"/>
-        </reference>
-    </payone_core_mastercardmasterpass_error>
-
     <payone_core_paydirektexpress_review>
         <label>Payone Paydirekt Express Order Review Form</label>
         <remove name="right"/>
@@ -200,12 +141,6 @@
             </block>
         </reference>
         <reference name="checkout.cart.top_methods">
-            <block type="payone_core/mastercard_masterpass_shortcut" name="payone.checkout.cart.methods.mastercard_masterpass.top" before="-" template="payone/core/mastercard/masterpass/shortcut.phtml">
-                <action method="setIsQuoteAllowed"><value>1</value></action>
-                <action method="setShowOrPosition"><value>after</value></action>
-            </block>
-        </reference>
-        <reference name="checkout.cart.top_methods">
             <block type="payone_core/paydirekt_express_shortcut" name="payone.checkout.cart.methods.paydirekt_express.top" before="-" template="payone/core/paydirekt/express/shortcut.phtml">
                 <action method="setIsQuoteAllowed"><value>1</value></action>
                 <action method="setShowOrPosition"><value>after</value></action>
@@ -219,12 +154,6 @@
         </reference>
         <reference name="checkout.cart.methods">
             <block type="payone_core/paypal_express_shortcut" name="payone.checkout.cart.methods.paypal_express.bottom" before="-" template="payone/core/paypal/express/shortcut.phtml">
-                <action method="setIsQuoteAllowed"><value>1</value></action>
-                <action method="setShowOrPosition"><value>after</value></action>
-            </block>
-        </reference>
-        <reference name="checkout.cart.methods">
-            <block type="payone_core/mastercard_masterpass_shortcut" name="payone.checkout.cart.methods.mastercard_masterpass.bottom" before="-" template="payone/core/mastercard/masterpass/shortcut.phtml">
                 <action method="setIsQuoteAllowed"><value>1</value></action>
                 <action method="setShowOrPosition"><value>after</value></action>
             </block>
@@ -267,10 +196,8 @@
                    template="payone/core/paydirekt/express/shortcut.phtml"/>
         </reference>
         <block type="payone_core/checkout_ratePayInstallmentplan" name="payone_ratepay.checkout.installmentplan"
-               as="payone_installmentplan" />
-        <reference name="cart_sidebar.extra_actions">
-            <block type="payone_core/mastercard_masterpass_shortcut" name="masterpass.partner.cart_sidebar.shortcut" template="payone/core/mastercard/masterpass/shortcut.phtml"/>
-        </reference>
+               as="payone_installmentplan"
+               template="payone/core/payment/method/ratepay_installment_plan_result.phtml"/>
     </default>
 
     <checkout_onepage_index>
@@ -283,6 +210,7 @@
             <action method="addCss"><name>payone/core/mandate.css</name></action>
             <action method="addCss"><name>payone/core/payolution.css</name></action>
             <action method="addCss"><name>payone/core/ratepay.css</name></action>
+            <action method="addLinkRel"><rel>stylesheet</rel><href>//dev.ratepay.com/shops/ratenrechner/resources/ratepay-bootstrap.min.css</href></action>
             <block type="payone_core/paymentAdditionalScript" name="payone_core_paymentadditionalscript" template="payone/core/payment_additional_script.phtml" />
         </reference>
 

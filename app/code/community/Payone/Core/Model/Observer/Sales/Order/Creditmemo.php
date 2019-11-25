@@ -13,8 +13,8 @@
  * needs please refer to http://www.payone.de for more information.
  *
  * @category        Payone
- * @package         Payone_Core_Block
- * @subpackage      Mastercard_Masterpass
+ * @package         Payone_Core_Model
+ * @subpackage      Observer
  * @copyright       Copyright (c) 2018 <kontakt@fatchip.de> - www.fatchip.de
  * @author          FATCHIP GmbH <kontakt@fatchip.de>
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)

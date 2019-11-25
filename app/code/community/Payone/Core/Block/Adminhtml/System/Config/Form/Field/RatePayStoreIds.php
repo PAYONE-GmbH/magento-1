@@ -16,7 +16,7 @@
  * @package         Payone_Core_Model
  * @subpackage      Payment
  * @copyright       Copyright (c) 2016 <kontakt@fatchip.de> - www.fatchip.com
- * @author          Robert Müller <robert.mueller@fatchip.de>
+ * @author          Robert MÃ¼ller <robert.mueller@fatchip.de>
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
  * @link            http://www.fatchip.com
  */
@@ -27,8 +27,8 @@ class Payone_Core_Block_Adminhtml_System_Config_Form_Field_RatePayStoreIds
 {
 
     protected $_oRatePay = null;
-    
-    public function __construct() 
+
+    public function __construct()
     {
         parent::__construct();
         $this->setTemplate('payone/core/system/config/form/field/ratepay_shopids.phtml');
@@ -52,8 +52,8 @@ class Payone_Core_Block_Adminhtml_System_Config_Form_Field_RatePayStoreIds
         $this->_addButtonLabel = Mage::helper('payone_core')->__('Add Shop-ID');
         parent::_prepareToRender();
     }
-    
-    protected function _getRatePayObject() 
+
+    protected function _getRatePayObject()
     {
         if($this->_oRatePay === null) {
             $this->_oRatePay = Mage::getModel('payone_core/payment_method_ratepay');
@@ -75,20 +75,17 @@ class Payone_Core_Block_Adminhtml_System_Config_Form_Field_RatePayStoreIds
         $oConfig = $oConfigHelper->getConfigPaymentMethodById($sMethodId);
         $oService = $this->getFactory()->getServicePaymentGenericpayment($oConfig);
         $oMapper = $oService->getMapper();
+        $oRequest = $oMapper->addRatePayParameters($sRatePayShopId, $sCurrency, Payone_Api_Enum_RatepayType::RPS);
 
-        foreach ($oConfig->getTypes() as $sType) {
-            $oRequest = $oMapper->addRatePayParameters($sRatePayShopId, $sCurrency, $sType);
+        $oResponse = $this->getFactory()->getServiceApiPaymentGenericpayment()->request($oRequest);
 
-            $oResponse = $this->getFactory()->getServiceApiPaymentGenericpayment()->request($oRequest);
+        if($oResponse instanceof Payone_Api_Response_Genericpayment_Ok) {
+            $aPayData = $oResponse->getPaydataArray();
+            $aPayData['shop_id'] = $sRatePayShopId;
 
-            if($oResponse instanceof Payone_Api_Response_Genericpayment_Ok) {
-                $aPayData = $oResponse->getPaydataArray();
-                $aPayData['shop_id'] = $sRatePayShopId;
-
-                $oRatePay = $this->_getRatePayObject();
-                $oRatePay->addRatePayConfig($aPayData);
-                return $aPayData;
-            }
+            $oRatePay = $this->_getRatePayObject();
+            $oRatePay->addRatePayConfig($aPayData);
+            return $aPayData;
         }
 
         return false;

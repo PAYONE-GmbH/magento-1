@@ -209,7 +209,14 @@ class Payone_Core_Model_Service_Config_XmlGenerate
         foreach ($payment->getMethods() as $paymentMethod) {
             /** @var $paymentMethod Payone_Core_Model_Config_Payment_Method */
             /** @var $paymentMethodConfig Payone_Settings_Data_ConfigFile_PaymentMethod_Abstract */
-            $paymentMethodConfig = $this->getPaymentMethodClass($paymentMethod->getCode());
+
+            try {
+                $paymentMethodConfig = $this->getPaymentMethodClass($paymentMethod->getCode());
+            } catch (Exception $e) {
+                // MAGE-457 : if an exception occurs, we log it and skip that payment method
+                Mage::logException($e);
+                continue;
+            }
 
             foreach ($paymentMethod->toArray() as $key => $value) {
                 if ($key === 'enabled') {
@@ -219,6 +226,19 @@ class Payone_Core_Model_Service_Config_XmlGenerate
                 $setterName = 'set' . uc_words($key, '');
                 if (method_exists($paymentMethodConfig, $setterName)) {
                     $paymentMethodConfig->$setterName($value);
+                }
+            }
+
+            // MAGE-457 : if we have a pseudo method, we need to specify the clearing type
+            // as this is used as a structural element in the exported file.
+            // and it can get erased during previous data setting (similar varname : $key)
+            if ($paymentMethodConfig instanceof Payone_Settings_Data_ConfigFile_PaymentMethod_Pseudo) {
+                /** @var Payone_Core_Helper_Payment_Data $paymentHelper */
+                $paymentHelper = Mage::helper('payone_core/payment_data');
+                $clearingType = $paymentHelper->getDeletedMethodClearingType($paymentMethod->getCode());
+
+                if (!empty($clearingType)) {
+                    $paymentMethodConfig->setKey($clearingType);
                 }
             }
 
@@ -389,6 +409,17 @@ class Payone_Core_Model_Service_Config_XmlGenerate
         } // safe_invoice is a sub-paymentmethod of financing in SDK.
         $key = uc_words($key, '');
         $classname = self::PAYMENT_METHOD_CLASS_PREFIX . $key;
+
+        // If the class file does not exist, we use a pseudo class instead
+        // and log the error
+        if (!class_exists($classname)) {
+            $message = $this->helper()->__('Impossible to export') . ' : ' . $key
+                . ' (' . $classname . ' does not exist). Pseudo class got used instead.';
+            Mage::logException(new Exception($message));
+
+            $classname = self::PAYMENT_METHOD_CLASS_PREFIX . 'Pseudo';
+        }
+
         $classInstance = new $classname();
         return $classInstance;
     }

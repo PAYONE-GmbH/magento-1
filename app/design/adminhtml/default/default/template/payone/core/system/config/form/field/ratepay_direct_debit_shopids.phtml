@@ -50,11 +50,11 @@ $_colspan = $_colspan > 1 ? 'colspan="' . $_colspan . '"' : '';
                 ?>
                 <tr id="<?php echo $sId; ?>">
                     <td>
-                        <input type="text" style="width:60px;" class="input-text required-entry" value="<?php echo $aRow['ratepay_shopid']; ?>" name="groups[template_ratepay_direct_debit][fields][ratepay_config][value][<?php echo $sId; ?>][ratepay_shopid]">
+                        <input type="text" style="width:60px;" class="input-text required-entry" value="" name="groups[template_ratepay_direct_debit][fields][ratepay_config][value][<?php echo $sId; ?>][ratepay_shopid]">
                         <span class="required">*</span>
                     </td>
                     <td>
-                        <input type="text" style="width:60px;" class="input-text required-entry" value="<?php echo $aRow['ratepay_currency']; ?>" name="groups[template_ratepay_direct_debit][fields][ratepay_config][value][<?php echo $sId; ?>][ratepay_currency]">
+                        <input type="text" style="width:60px;" class="input-text required-entry" value="" name="groups[template_ratepay_direct_debit][fields][ratepay_config][value][<?php echo $sId; ?>][ratepay_currency]">
                         <span class="required">*</span>
                     </td>
                 </tr>
@@ -188,7 +188,7 @@ $_colspan = $_colspan > 1 ? 'colspan="' . $_colspan . '"' : '';
 
     // bind add action to "Add" button in last row
     Event.observe('addToEndBtn<?php echo $_htmlId ?>', 'click', arrayRow<?php echo $_htmlId ?>.add.bind(arrayRow<?php echo $_htmlId ?>, '', ''));
-        
+
     arrayRow<?php echo $_htmlId; ?>.rowsCount += <?php echo count($this->getArrayRows()); ?>;
 
     // initialize standalone button

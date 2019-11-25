@@ -54,6 +54,7 @@ class Payone_Core_Model_System_Config_PaymentMethodCode extends Payone_Core_Mode
     const WALLET = 'payone_wallet';
     const BARZAHLEN = 'payone_barzahlen';
     const RATEPAY = 'payone_ratepay';
+    const RATEPAYINVOICING = 'payone_ratepay_invoicing';
     const RATEPAYDIRECTDEBIT = 'payone_ratepay_direct_debit';
     const PAYOLUTION = 'payone_payolution';
     const PAYOLUTIONINVOICING = 'payone_payolution_invoicing';
@@ -64,7 +65,7 @@ class Payone_Core_Model_System_Config_PaymentMethodCode extends Payone_Core_Mode
     const WALLETPAYDIREKTEXPRESS = 'payone_wallet_paydirekt_express';
     const WALLETPAYPALEXPRESS = 'payone_wallet_paypal_express';
     const WALLETALIPAY = 'payone_wallet_alipay';
-    const MASTERPASS =  'payone_masterpass';
+//    const MASTERPASS =  'payone_masterpass'; // MAGE-457 : method removed
 
     /**
      * @return array
@@ -83,7 +84,8 @@ class Payone_Core_Model_System_Config_PaymentMethodCode extends Payone_Core_Mode
             self::ONLINEBANKTRANSFER => 'Online Bank Transfer',
             self::WALLET => 'Wallet',
             self::BARZAHLEN => 'Barzahlen',
-            self::RATEPAY => 'RatePay',
+            self::RATEPAY => 'RatePay Installments',
+            self::RATEPAYINVOICING => 'RatePay Invoicing',
             self::RATEPAYDIRECTDEBIT => 'Ratepay Direct Debit',
             //self::PAYOLUTION => 'Payolution',
             self::PAYOLUTIONINVOICING => 'Paysafe Pay Later™ Invoicing',
@@ -102,7 +104,7 @@ class Payone_Core_Model_System_Config_PaymentMethodCode extends Payone_Core_Mode
             self::ONLINEBANKTRANSFERPFC => 'PostFinance Card',
             self::ONLINEBANKTRANSFERP24 => 'Przelewy24',
             self::ONLINEBANKTRANSFERBCT => 'Bancontact',
-            self::MASTERPASS => 'Masterpass'
+//            self::MASTERPASS => 'Masterpass' // MAGE-457 : method removed
         );
     }
 }

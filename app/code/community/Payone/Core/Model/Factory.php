@@ -1642,6 +1642,14 @@ class Payone_Core_Model_Factory
     }
 
     /**
+     * @return Payone_Core_Model_System_Config_RatepayInvoicingType|Mage_Core_Model_Abstract
+     */
+    public function getModelSystemConfigRatePayInvoicingType()
+    {
+        return Mage::getSingleton('payone_core/system_config_ratepayInvoicingType');
+    }
+
+    /**
      * @return Payone_Core_Model_System_Config_SafeInvoiceType|Mage_Core_Model_Abstract
      */
     public function getModelSystemConfigSafeInvoiceType()
@@ -1745,26 +1753,6 @@ class Payone_Core_Model_Factory
         /** @var $configData Mage_Core_Model_Config_Data */
         $configData = Mage::getModel('core/config_data');
         return $configData;
-    }
-
-    /**
-     * @param array $data
-     * @return Payone_Api_Request_MasterpassSetCheckout
-     */
-    public function getRequestMasterpassSetCheckout(array $data = array())
-    {
-        $request = new Payone_Api_Request_MasterpassSetCheckout($data);
-        return $request;
-    }
-
-    /**
-     * @param array $data
-     * @return Payone_Api_Request_MasterpassGetCheckout
-     */
-    public function getRequestMasterpassGetCheckout(array $data = array())
-    {
-        $request = new Payone_Api_Request_MasterpassGetCheckout($data);
-        return $request;
     }
 
     /**
