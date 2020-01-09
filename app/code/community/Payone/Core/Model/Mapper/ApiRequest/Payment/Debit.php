@@ -234,12 +234,18 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Debit
 
             // Refund shipping
             if ($creditmemo->getShippingInclTax() > 0) {
-                $this->getInvoicing()->addItem($this->mapRefundShippingAsItemByCreditmemo($creditmemo));
+                // MAGE-451: skip if refund without basket (good will refund)
+                if (!$this->isGoodwillRefund($creditmemo)) {
+                    $this->getInvoicing()->addItem($this->mapRefundShippingAsItemByCreditmemo($creditmemo));
+                }
             }
 
             // Adjustment Refund (positive adjustment)
             if ($creditmemo->getAdjustmentPositive() > 0) {
-                $this->getInvoicing()->addItem($this->mapAdjustmentPositiveAsItemByCreditmemo($creditmemo));
+                // MAGE-451: skip if refund without basket (good will refund)
+                if (!$this->isGoodwillRefund($creditmemo)) {
+                    $this->getInvoicing()->addItem($this->mapAdjustmentPositiveAsItemByCreditmemo($creditmemo));
+                }
             }
 
             // Adjustment Fee (negative adjustment)
@@ -323,5 +329,14 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Debit
         }
 
         return $this->invoicing;
+    }
+
+    /**
+     * @param Mage_Sales_Model_Order_Creditmemo $creditmemo
+     * @return bool
+     */
+    protected function isGoodwillRefund(Mage_Sales_Model_Order_Creditmemo $creditmemo)
+    {
+        return $creditmemo->getTotalQty() == 0;
     }
 }
