@@ -102,6 +102,9 @@ $_colspan = $_colspan > 1 ? 'colspan="' . $_colspan . '"' : '';
                             <span class="required">*</span>
                         </td>
                         <td>
+                            <input type="text" style="width:60px;" class="input-text" value="<?php echo $aRow['ratepay_snippetid']; ?>" name="groups[template_ratepay_invoicing][fields][ratepay_config][value][<?php echo $aRow['_id']; ?>][ratepay_snippetid]">
+                        </td>
+                        <td>
                             <?php if (!$blFirstRow) : ?>
                                 <button type="button" class="scalable delete" onclick="arrayRow<?php echo $_htmlId ?>.del('<?php echo $aRow['_id']; ?>')"><span><span><span>Delete</span></span></span></button>
                             <?php endif;?>
@@ -139,7 +142,9 @@ $_colspan = $_colspan > 1 ? 'colspan="' . $_colspan . '"' : '';
                 <?php foreach ($this->_columns as $columnName => $column):?>
                     +'<td>'
                         +'<?php echo Mage::helper('core')->jsQuoteEscape($this->_renderCellTemplate($columnName)) ?>'
-                    +'<span class="required"> *<\/span>'
+                        <?php if ($columnName !== 'ratepay_snippetid') : ?>
+                        +'<span class="required"> *<\/span>'
+                        <?php endif; ?>
                     +'<\/td>'
                 <?php endforeach;?>
                 +'<td><button onclick="arrayRow<?php echo $_htmlId ?>.del(\'#{_id}\')" class="scalable delete" type="button"><span><span><span><?php echo Mage::helper('core')->jsQuoteEscape(Mage::helper('adminhtml')->__('Delete')) ?><\/span><\/span><\/span><\/button><\/td>'
@@ -168,6 +173,9 @@ $_colspan = $_colspan > 1 ? 'colspan="' . $_colspan . '"' : '';
             // Turns the shopid and currency newly created fields as required
             var inputs = $(templateData._id).getElementsByTagName('input');
             for (var i = 0, len = inputs.length; i < len; i++) {
+                if (inputs[i].name.indexOf('ratepay_snippetid') !== -1) {
+                    continue;
+                }
                 inputs[i].classList.add('required-entry');
             }
 
