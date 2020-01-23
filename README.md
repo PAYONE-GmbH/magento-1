@@ -10,7 +10,7 @@ The PAYONE payment extension for MAGENTO is with 50,000 downloads already a succ
 * Supports the multi-shipping extension
 * Supports simplified PCI DSS conformity in accordance with SAQ A
 * Payment methods can be automatically hidden depending on the amount of the order and the credit rating of the customer
-* Find all currently supported payment methods on www.payone.com/magento
+* Find all currently supported payment methods on www.payone.com
 
 ## Installation
 It is highly recommended to install the latest release from Github (either using modman or manual installation). The Magento Marketplace is updated infrequently.
