@@ -75,6 +75,7 @@ class Payone_Core_Block_Checkout_Onepage_Payment_Methods
         }
 
         $aRestrictedMethods = $this->getRestrictedMethods();
+        $aRestrictedMethods = array_merge($aRestrictedMethods, $this->getRatepayRestrictedMethods());
         $aRestrictedMethods[] = Payone_Core_Model_System_Config_PaymentMethodCode::WALLETPAYDIREKTEXPRESS;
         if (!empty($aRestrictedMethods)) {
             $this->methods = array_filter(
@@ -113,6 +114,36 @@ class Payone_Core_Block_Checkout_Onepage_Payment_Methods
         }
 
         return $aRestrictedMethods;
+    }
+
+    /**
+     * MAGE-450 : Add validations for Ratepay methods
+     *
+     * @return array
+     */
+    protected function getRatepayRestrictedMethods()
+    {
+        /** @var Payone_Core_Helper_Ratepay $helper */
+        $helper = Mage::helper('payone_core/ratepay');
+
+        $allowedMethods = $helper->getRatepayMethods();
+        $validationSteps = array(
+            Payone_Core_Helper_Ratepay::VALIDATION_STEP_POSTALCODE,
+            Payone_Core_Helper_Ratepay::VALIDATION_STEP_CURRENCY,
+            Payone_Core_Helper_Ratepay::VALIDATION_STEP_CUSTOMER_AGE,
+            Payone_Core_Helper_Ratepay::VALIDATION_STEP_PHONE_NUMBER,
+            Payone_Core_Helper_Ratepay::VALIDATION_STEP_BASKET_SIZE,
+            Payone_Core_Helper_Ratepay::VALIDATION_STEP_SHIPPING_ADDRESS,
+            Payone_Core_Helper_Ratepay::VALIDATION_STEP_SHIPPING_METHOD,
+        );
+
+        foreach ($validationSteps as $step) {
+            $allowedMethods = $helper->filterByValidation($step, $allowedMethods);
+        }
+
+        $restrictedMethods = array_diff($helper->getRatepayMethods(), $allowedMethods);
+
+        return $restrictedMethods;
     }
 
     /**
