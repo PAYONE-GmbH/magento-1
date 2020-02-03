@@ -38,7 +38,6 @@ class Payone_Core_Helper_Ratepay extends Payone_Core_Helper_Abstract
     const VALIDATION_STEP_PHONE_NUMBER = 'phone';
     const VALIDATION_STEP_BASKET_SIZE = 'basketSize';
     const VALIDATION_STEP_SHIPPING_ADDRESS = 'shippingAddress';
-    const VALIDATION_STEP_SHIPPING_METHOD = 'shippingMethod';
 
     const MINIMUM_CUSTOMER_AGE = 18;
 
@@ -137,6 +136,26 @@ class Payone_Core_Helper_Ratepay extends Payone_Core_Helper_Abstract
      * @param array $methodsList
      * @return array
      */
+    protected function validateBasketSize($methodsList)
+    {
+        $quote = $this->getQuote();
+        $basketSize = $quote->getGrandTotal();
+
+        $configs = array_filter(
+            $this->getRatepaySpecificConfig($quote),
+            function($config, $methodCode) use ($methodsList, $basketSize) {
+                return in_array($methodCode, $methodsList) && $basketSize >= $config['min_basket'] && $basketSize <= $config['max_basket'];
+            },
+            ARRAY_FILTER_USE_BOTH
+        );
+
+        return array_keys($configs);
+    }
+
+    /**
+     * @param array $methodsList
+     * @return array
+     */
     protected function validatePhone($methodsList)
     {
         /** @var Mage_Sales_Model_Quote $quote */
@@ -154,32 +173,6 @@ class Payone_Core_Helper_Ratepay extends Payone_Core_Helper_Abstract
     }
 
     /**
-     * TODO FCVB : Check what is exactly basket size (subtotal ?)
-     *
-     * @param array $methodsList
-     * @return array
-     */
-    protected function validateBasketSize($methodsList)
-    {
-        $quote = $this->getQuote();
-        $basketSize = $quote->getSubtotal();
-
-        $configs = array_filter(
-            $this->getRatepaySpecificConfig($quote),
-            function($config, $methodCode) use ($methodsList, $basketSize) {
-                return in_array($methodCode, $methodsList) && $basketSize >= $config['min_basket'] && $basketSize <= $config['max_basket'];
-            },
-            ARRAY_FILTER_USE_BOTH
-        );
-
-        return array_keys($configs);
-    }
-
-    /**
-     * FIXME Question still open
-     * TODO FCVB Ask for clarification : Currently different countries addresses are blocked earlier
-     * TODO do we have to unlock that based on profile info, or we stick to same country ?
-     *
      * @param array $methodsList
      * @return array
      */
@@ -214,17 +207,6 @@ class Payone_Core_Helper_Ratepay extends Payone_Core_Helper_Abstract
             return array();
         }
 
-        return $methodsList;
-    }
-
-    /**
-     * TODO FCVB : Question : What is Express Delivery
-     *
-     * @param array $methodsList
-     * @return array
-     */
-    protected function validateShippingMethod($methodsList)
-    {
         return $methodsList;
     }
 
@@ -319,7 +301,7 @@ class Payone_Core_Helper_Ratepay extends Payone_Core_Helper_Abstract
      */
     protected function compareAddresses($billAddress, $shipAddress)
     {
-        // TODO FCVB Filter out none-relevant
+        // TODO FCVB Filter out none-relevant if any
         $comparisonFields = array(
             'customer_id',
             'email',
