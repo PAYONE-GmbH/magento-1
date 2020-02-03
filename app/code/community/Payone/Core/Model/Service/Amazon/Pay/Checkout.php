@@ -179,7 +179,7 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
         $orderReviewHtml = $layout->getOutput();
         
         //convert the float value to a formatted string to avoind float rounding issues
-        $quoteGrandTotal = number_format($this->quote->getGrandTotal(), 4);
+        $quoteGrandTotal = number_format($this->quote->getGrandTotal(), 4, '.', '');
         
         $this->checkoutSession->setPayoneGenericpaymentGrandTotal($quoteGrandTotal); // MAGE-374: Force the total to be stored in session for further check
         if ($shippingRatesCount === 1) {
