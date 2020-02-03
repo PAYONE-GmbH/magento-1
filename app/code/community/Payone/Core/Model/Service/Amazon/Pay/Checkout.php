@@ -339,8 +339,19 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
         $amazonOrderReferenceId = $session->getData('amazon_reference_id');
         
         //compare the values with the same string format to avoid strange float rounding issues
-        $quoteGrandTotal    = number_format($this->quote->getGrandTotal(), 4);
-        $sessionGrandTotal  = number_format($this->checkoutSession->getPayoneGenericpaymentGrandTotal(), 4);
+        $quoteGrandTotal    = number_format(
+            $this->quote->getGrandTotal(),
+            4,
+            '.',
+            ''
+        );
+
+        $sessionGrandTotal  = number_format(
+            $this->checkoutSession->getPayoneGenericpaymentGrandTotal(),
+            4,
+            '.',
+            ''
+        );
 
         if ($quoteGrandTotal != $sessionGrandTotal) {
             // The basket was changed - abort current checkout
