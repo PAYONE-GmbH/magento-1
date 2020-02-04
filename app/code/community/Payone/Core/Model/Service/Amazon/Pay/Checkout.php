@@ -484,8 +484,9 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
             $this->quote->getGrandTotal()
         );
         $this->checkCurrencyConversion($request);
-
-        $this->checkoutSession->setPayoneGenericpaymentGrandTotal($this->quote->getGrandTotal());
+        
+        $quoteGrandTotal    = number_format($this->quote->getGrandTotal(), 4, '.', '');
+        $this->checkoutSession->setPayoneGenericpaymentGrandTotal($quoteGrandTotal);
 
         return $this->getFactory()->getServiceApiPaymentGenericpayment()->request($request);
     }
