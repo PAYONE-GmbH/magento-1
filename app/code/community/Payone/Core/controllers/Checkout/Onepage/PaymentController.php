@@ -40,8 +40,7 @@ class Payone_Core_Checkout_Onepage_PaymentController extends Payone_Core_Control
     public function backAction()
     {
         try {
-            $oSession = Mage::getSingleton('checkout/session');
-            $oSession->unsPayoneExternalCheckoutActive();
+            $this->helper()->unsPayoneExternalCheckout();
             $this->checkoutCancel(true);
         } catch (Exception $e) {
             $this->handleException($e);
@@ -55,8 +54,13 @@ class Payone_Core_Checkout_Onepage_PaymentController extends Payone_Core_Control
     public function successAction()
     {
         try {
-            $oSession = Mage::getSingleton('checkout/session');
-            $oSession->unsPayoneExternalCheckoutActive();
+            if (!$this->validateRequestOrigin()) {
+                $this->_redirect('checkout/cart');
+                return;
+            }
+
+            $this->helper()->unsPayoneExternalCheckout();
+
             $success = $this->checkoutSucccess();
             if ($success === true) {
                 // Payment is okay. Redirect to standard Magento success page:
@@ -79,8 +83,7 @@ class Payone_Core_Checkout_Onepage_PaymentController extends Payone_Core_Control
     public function errorAction()
     {
         try {
-            $oSession = Mage::getSingleton('checkout/session');
-            $oSession->unsPayoneExternalCheckoutActive();
+            $this->helper()->unsPayoneExternalCheckout();
             $this->checkoutCancel(true);
         } catch (Exception $e) {
             $this->handleException($e);
@@ -345,5 +348,24 @@ class Payone_Core_Checkout_Onepage_PaymentController extends Payone_Core_Control
 
         Mage::getSingleton('customer/session')->addError($this->helper()->__("Error trying to download the pdf"));
         $this->_redirect('');
+    }
+
+    /**
+     * Validates the origin of the call (MAGE-427)
+     * Check the request token against the payone session token
+     *
+     * @return bool
+     */
+    protected function validateRequestOrigin()
+    {
+        $payoneSession = Mage::getSingleton('payone_core/session');
+        $sessionToken = $payoneSession->getPayoneCheckoutToken();
+
+        $paramToken = (string) $this->_request->getParam('payoneCheckoutToken');
+        $paramToken = trim($paramToken);
+
+        $return = $paramToken && $paramToken === $sessionToken;
+
+        return $return;
     }
 }
