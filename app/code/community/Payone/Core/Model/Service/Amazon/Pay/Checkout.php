@@ -352,14 +352,19 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
             '.',
             ''
         );
-
         
         //check the difference between the values
-        $difference = abs((float) $quoteGrandTotal - (float) $sessionGrandTotal);
+        //calculate the difference in cents to avoid rounding issues again
+        //
+        // => using floats is evil try that:
+
+        //php > echo abs((float) '244.68' - (float) '244.67');
+        // => output: 0.010000000000019
+        $difference = number_format(abs((float) $quoteGrandTotal - (float) $sessionGrandTotal), 2) * 100;
 
         //@todo: add a feature toggle to the config for the 1 cent rounding tolerance
         //if the values are different and the difference is more than one cent (rounding issue) => cancel the payment
-        if ($quoteGrandTotal != $sessionGrandTotal && $difference > 0.01) { 
+        if ($quoteGrandTotal != $sessionGrandTotal && $difference > 1) {
             // The basket was changed - abort current checkout
             $text = 'Sorry, your transaction with Amazon Pay was not successful. Please try again.';
             return $this->cancelAmazonPayment($session, $text);
