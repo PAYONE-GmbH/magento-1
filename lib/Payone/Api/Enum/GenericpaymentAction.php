@@ -37,6 +37,10 @@ class Payone_Api_Enum_GenericpaymentAction
      */
     const AMAZONPAY_CONFIRMORDERREFERENCE = 'confirmorderreference';
     /**
+     * send the cancellation request for Amazon when order finalization failed in shop after approval from AzPay
+     */
+    const AMAZONPAY_CANCELORDERREFERENCE = 'cancelorderreference';
+    /**
      * initalize paypal express checkout process
      */
     const PAYPAL_ECS_SET_EXPRESSCHECKOUT='setexpresscheckout';

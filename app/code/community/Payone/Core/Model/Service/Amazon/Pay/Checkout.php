@@ -240,14 +240,14 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
      * Unset session variable, add error-message to session and redirect back to the cart
      *
      * @param  \Payone_Core_Model_Session $oSession
-     * @param  string $sTest
+     * @param  string $sText
      * @return array
      */
-    protected function cancelAmazonPayment($oSession, $sTest)
+    protected function cancelAmazonPayment($oSession, $sText)
     {
         $oSession->unsetData('work_order_id');
         $oSession->unsetData('amazon_add_paydata');
-        $this->checkoutSession->addError(Mage::helper('payone_core')->__($sTest));
+        $this->checkoutSession->addError(Mage::helper('payone_core')->__($sText));
         return [
             'successful'  => true,
             'shouldLogout' => true,
@@ -353,7 +353,6 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
             ''
         );
 
-        
         //check the difference between the values
         $difference = abs((float) $quoteGrandTotal - (float) $sessionGrandTotal);
 
@@ -361,8 +360,7 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
         //if the values are different and the difference is more than one cent (rounding issue) => cancel the payment
         if ($quoteGrandTotal != $sessionGrandTotal && $difference > 0.01) { 
             // The basket was changed - abort current checkout
-            $text = 'Sorry, your transaction with Amazon Pay was not successful. Please try again.';
-            return $this->cancelAmazonPayment($session, $text);
+            throw new Exception('Sorry, your transaction with Amazon Pay was not successful. Please try again.');
         }
 
         try {
@@ -374,18 +372,6 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
             $service = Mage::getModel('sales/service_quote', $this->quote);
             $service->submitAll();
         } catch (\Exception $e) {
-            if (in_array($e->getCode(), [981, 985, 986])) { // send to widgets
-                $session->setData('amazon_lock_order', true);
-                $session->setData('amazon_reference_id', $amazonOrderReferenceId);
-                $session->setData('amazon_shop_order_reference', $this->quote->getReservedOrderId());
-                $session->unsetData('amazon_add_paydata');
-            } else { // logout and send to basket
-                // Transaction cannot be completed by Amazon
-                // and the order reference object was closed
-                $text = 'Sorry, your transaction with Amazon Pay was not successful. Please choose another payment method.';
-                $session->unsetData('amazon_shop_order_reference');
-                return $this->cancelAmazonPayment($session, $text);
-            }
             throw $e;
         }
         $session->unsetData('amazon_add_paydata');
