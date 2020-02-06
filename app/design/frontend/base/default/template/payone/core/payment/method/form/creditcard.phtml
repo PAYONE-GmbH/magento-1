@@ -278,6 +278,28 @@
             ccTypeAutoRecognition = payone.ccTypeAutoRecognition;
             supportedCardtypes = payone.getSupportedCardTypes();
 
+            <?php
+            $aTranslations = $this->getTranslations();
+            $aProcessedKeys = array();
+            foreach ($aTranslations as $sVarname => $sValue) {
+                // MAGE-468 : Ensure that custom translation are taken in account
+                // for languaage not natively supported by payone
+                $aLang = explode('.', $sVarname);
+                if (count($aLang) >= 4) {
+                    $aEntry = array_slice($aLang, 3);
+                    for ($i = 0 ; $i <= count($aEntry) - 2 ; $i++) {
+                        $FieldName = $aEntry[$i];
+                        $sPreKey = join('.', array_slice($aLang, 0, $i + 4));
+                        if (!in_array($sPreKey,$aProcessedKeys)) {
+                            echo "if ('undefined' === typeof $sPreKey) { $sPreKey = {}; }";
+                            $aProcessedKeys[] = $sPreKey;
+                        }
+                    }
+                }
+                echo $sVarname." = '".$sValue."';";
+            }
+            ?>
+
             fieldconfig = {
                 fields: {
                     cardpan: {
@@ -387,13 +409,6 @@
                     <?php } ?>
                 <?php } ?>
             };
-
-            <?php 
-            $aTranslations = $this->getTranslations();
-            foreach ($aTranslations as $sVarname => $sValue) {
-                echo $sVarname." = '".$sValue."';";
-            }
-            ?>
 
             var iframes = payone.initHosted(fieldconfig, '<?php echo $code ?>_cc_type_select');
         </script>
