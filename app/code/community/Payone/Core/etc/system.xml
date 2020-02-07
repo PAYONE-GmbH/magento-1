@@ -710,6 +710,25 @@
                         </paydirekt_express_checkout_image>
                     </fields>
                 </payment_paydirekt_express_checkout>
+                <payment_amazon_pay_checkout>
+                    <label>Payment AmazonPay Checkout</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>130</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <amazon_pay_checkout_retries translate="label,comment">
+                            <label>Maximum attempts of order placement</label>
+                            <comment>How many times should the order placement be retried in case of database error.</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </amazon_pay_checkout_retries>
+                    </fields>
+                </payment_amazon_pay_checkout>
             </groups>
         </payone_general>
 
