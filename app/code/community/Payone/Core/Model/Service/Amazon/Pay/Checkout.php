@@ -177,7 +177,11 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
         $layout->removeOutputBlock('checkout_review_submit');
         $layout->generateXml()->generateBlocks();
         $orderReviewHtml = $layout->getOutput();
-        $this->checkoutSession->setPayoneGenericpaymentGrandTotal($this->quote->getGrandTotal()); // MAGE-374: Force the total to be stored in session for further check
+        
+        //convert the float value to a formatted string to avoind float rounding issues
+        $quoteGrandTotal = number_format($this->quote->getGrandTotal(), 4, '.', '');
+        
+        $this->checkoutSession->setPayoneGenericpaymentGrandTotal($quoteGrandTotal); // MAGE-374: Force the total to be stored in session for further check
         if ($shippingRatesCount === 1) {
             $params['shippingMethodCode'] = array_values($shippingRates)[0][0]['code'];
             if ($this->quote->getShippingAddress()->getShippingMethod() !== $params['shippingMethodCode']) {
@@ -333,8 +337,29 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
         /** @var \Payone_Core_Model_Session $session */
         $session = Mage::getSingleton('payone_core/session');
         $amazonOrderReferenceId = $session->getData('amazon_reference_id');
+        
+        //compare the values with the same string format to avoid strange float rounding issues
+        $quoteGrandTotal    = number_format(
+            $this->quote->getGrandTotal(),
+            4,
+            '.',
+            ''
+        );
 
-        if ($this->quote->getGrandTotal() != $this->checkoutSession->getPayoneGenericpaymentGrandTotal()) {
+        $sessionGrandTotal  = number_format(
+            $this->checkoutSession->getPayoneGenericpaymentGrandTotal(),
+            4,
+            '.',
+            ''
+        );
+
+        
+        //check the difference between the values
+        $difference = abs((float) $quoteGrandTotal - (float) $sessionGrandTotal);
+
+        //@todo: add a feature toggle to the config for the 1 cent rounding tolerance
+        //if the values are different and the difference is more than one cent (rounding issue) => cancel the payment
+        if ($quoteGrandTotal != $sessionGrandTotal && $difference > 0.01) { 
             // The basket was changed - abort current checkout
             $text = 'Sorry, your transaction with Amazon Pay was not successful. Please try again.';
             return $this->cancelAmazonPayment($session, $text);
