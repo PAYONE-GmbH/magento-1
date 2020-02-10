@@ -125,6 +125,7 @@ class Payone_Core_Block_Checkout_Onepage_Payment_Methods
     {
         /** @var Payone_Core_Helper_Ratepay $helper */
         $helper = Mage::helper('payone_core/ratepay');
+        $helper->init($this->methods);
 
         $allowedMethods = $helper->getRatepayMethods();
         $validationSteps = array(

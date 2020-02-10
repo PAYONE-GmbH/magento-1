@@ -41,7 +41,44 @@ class Payone_Core_Helper_Ratepay extends Payone_Core_Helper_Abstract
 
     const MINIMUM_CUSTOMER_AGE = 18;
 
-    protected $configCache = null;
+    protected $ratepaySpecificConfig = array();
+
+    /**
+     * @param array $checkoutMethodsList
+     */
+    public function init($checkoutMethodsList)
+    {
+        $checkoutMethodsList = array_map(
+            function ($method) {
+                return $method->getCode();
+            },
+            $checkoutMethodsList
+        );
+        $methodCodes = array();
+        if (in_array(Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAYINVOICING, $checkoutMethodsList))
+        {
+            $methodCodes[Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAYINVOICING] = array(
+                'model' => Mage::getSingleton('payone_core/payment_method_ratepayinvoicing'),
+                'suffix' => 'invoice'
+            );
+        }
+        if (in_array(Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAY, $checkoutMethodsList))
+        {
+            $methodCodes[Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAY] = array(
+                'model' => Mage::getSingleton('payone_core/payment_method_ratepay'),
+                'suffix' => 'installment'
+            );
+        }
+        if (in_array(Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAYDIRECTDEBIT, $checkoutMethodsList))
+        {
+            $methodCodes[Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAYDIRECTDEBIT] = array(
+                'model' => Mage::getSingleton('payone_core/payment_method_ratepaydirectdebit'),
+                'suffix' => 'elv'
+            );
+        }
+
+        $this->initRatepaySpecificConfig($this->getQuote(), $methodCodes);
+    }
 
     /**
      * @param string $step
@@ -142,7 +179,7 @@ class Payone_Core_Helper_Ratepay extends Payone_Core_Helper_Abstract
         $basketSize = $quote->getGrandTotal();
 
         $configs = array_filter(
-            $this->getRatepaySpecificConfig($quote),
+            $this->getRatepaySpecificConfig(),
             function($config, $methodCode) use ($methodsList, $basketSize) {
                 return in_array($methodCode, $methodsList) && $basketSize >= $config['min_basket'] && $basketSize <= $config['max_basket'];
             },
@@ -190,7 +227,7 @@ class Payone_Core_Helper_Ratepay extends Payone_Core_Helper_Abstract
             return $methodsList;
         }
 
-        $configs = $this->getRatepaySpecificConfig($quote);
+        $configs = $this->getRatepaySpecificConfig();
         $configs = array_filter(
             $configs,
             function($config, $methodCode) use ($methodsList) {
@@ -232,63 +269,52 @@ class Payone_Core_Helper_Ratepay extends Payone_Core_Helper_Abstract
     }
 
     /**
-     * @param Mage_Sales_Model_Quote$quote
      * @return array
      */
-    protected function getRatepaySpecificConfig($quote)
+    protected function getRatepaySpecificConfig()
     {
-        if (is_null($this->configCache)) {
-            $methodCodes = array(
-                Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAYINVOICING => array(
-                    'model' => Mage::getSingleton('payone_core/payment_method_ratepayinvoicing'),
-                    'suffix' => 'invoice'
-                ),
-                Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAY =>array(
-                    'model' => Mage::getSingleton('payone_core/payment_method_ratepay'),
-                    'suffix' => 'installment'
-                ),
-                Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAYDIRECTDEBIT => array(
-                    'model' => Mage::getSingleton('payone_core/payment_method_ratepaydirectdebit'),
-                    'suffix' => 'elv'
-                ),
-            );
+        return $this->ratepaySpecificConfig;
+    }
 
-            $finalConfigs = array();
-            $currency = strtolower($quote->getQuoteCurrencyCode());
-            $billCountry = strtolower($quote->getBillingAddress()->getCountryId());
-            $shipCountry = strtolower($quote->getShippingAddress()->getCountryId());
+    /**
+     * @param Mage_Sales_Model_Quote $quote
+     * @param array $methodCodes
+     */
+    protected function initRatepaySpecificConfig($quote, $methodCodes)
+    {
+        $finalConfigs = array();
+        $currency = strtolower($quote->getQuoteCurrencyCode());
+        $billCountry = strtolower($quote->getBillingAddress()->getCountryId());
+        $shipCountry = strtolower($quote->getShippingAddress()->getCountryId());
 
-            $cache = array();
-            foreach ($methodCodes as $methodCode => $methodData) {
-                $methodModel = $methodData['model'];
-                $methodSuffix = $methodCodes[$methodCode]['suffix'];
+        $cache = array();
+        foreach ($methodCodes as $methodCode => $methodData) {
+            $methodModel = $methodData['model'];
+            $methodSuffix = $methodCodes[$methodCode]['suffix'];
 
-                foreach ($methodModel->getConfigForQuote($quote)->getRatepayConfig() as $configDetails) {
-                    $ratepayShopId = $configDetails['ratepay_shopid'];
-                    if (!isset($cache[$ratepayShopId])) {
-                        $cache[$ratepayShopId] = $methodModel->getRatePayConfigById($ratepayShopId);
-                    }
-                    $configDetails = $cache[$ratepayShopId];
-                    $currOK = strtolower($configDetails['currency']) == $currency;
-                    $billOK = strtolower($configDetails['country_code_billing']) == $billCountry;
-                    $shipOK = strtolower($configDetails['country_code_delivery']) == $shipCountry;
-
-                    if ($currOK && $billOK && $shipOK) {
-                        $finalConfigs[$methodCode] = array(
-                            'different_addresses' => $configDetails['delivery_address_' . $methodSuffix],
-                            'min_basket' => $configDetails['tx_limit_' . $methodSuffix . '_min'],
-                            'max_basket' => $configDetails['tx_limit_' . $methodSuffix . '_max'],
-                        );
-                        continue 2;
-                    }
-
+            foreach ($methodModel->getConfigForQuote($quote)->getRatepayConfig() as $configDetails) {
+                $ratepayShopId = $configDetails['ratepay_shopid'];
+                if (!isset($cache[$ratepayShopId])) {
+                    $cache[$ratepayShopId] = $methodModel->getRatePayConfigById($ratepayShopId);
                 }
-            }
+                $configDetails = $cache[$ratepayShopId];
+                $currOK = strtolower($configDetails['currency']) == $currency;
+                $billOK = strtolower($configDetails['country_code_billing']) == $billCountry;
+                $shipOK = strtolower($configDetails['country_code_delivery']) == $shipCountry;
 
-            $this->configCache = $finalConfigs;
+                if ($currOK && $billOK && $shipOK) {
+                    $finalConfigs[$methodCode] = array(
+                        'different_addresses' => $configDetails['delivery_address_' . $methodSuffix],
+                        'min_basket' => $configDetails['tx_limit_' . $methodSuffix . '_min'],
+                        'max_basket' => $configDetails['tx_limit_' . $methodSuffix . '_max'],
+                    );
+                    continue 2;
+                }
+
+            }
         }
 
-        return $this->configCache;
+        $this->ratepaySpecificConfig = $finalConfigs;
     }
 
     /**
