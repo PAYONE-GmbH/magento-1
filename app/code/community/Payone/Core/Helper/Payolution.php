@@ -36,7 +36,6 @@ use Payone_Core_Model_Payment_Method_Abstract as PayonePaymentMethod;
 class Payone_Core_Helper_Payolution extends Payone_Core_Helper_Abstract
 {
     const ANALYSIS_SESSION_KEY_POSTFIX = 'analysis_session_id_key';
-    const PAYOLUTION_FRAUD_PREVENTION_JS_FILE_PATH = 'payone/core/payolutionfraudprevention.js';
 
     private $payolutionMethodCodes = [
         PaymentMethodCode::PAYOLUTION,
@@ -125,28 +124,4 @@ class Payone_Core_Helper_Payolution extends Payone_Core_Helper_Abstract
         return "https://h.online-metrix.net/fp/tags?org_id=363t8kgq&session_id={$this->getAnalysisSessionId()}";
     }
 
-    public function getPayolutionFraudPreventionJs()
-    {
-        return $this->isPayolutionMethodAvailable() ? self::PAYOLUTION_FRAUD_PREVENTION_JS_FILE_PATH : null;
-    }
-
-    private function isPayolutionMethodAvailable()
-    {
-        /** @var Mage_Payment_Model_Config $paymentConfig */
-        $paymentConfig = Mage::getSingleton('payment/config');
-        $allActivePaymentMethods = $paymentConfig->getAllMethods();
-
-        foreach ($this->payolutionMethodCodes as $payolutionMethodCode) {
-            if (!isset($allActivePaymentMethods[$payolutionMethodCode])) {
-                continue;
-            }
-            /** @var Payone_Core_Model_Payment_Method_Payolution $payolutionMethod */
-            $payolutionMethod = $allActivePaymentMethods[$payolutionMethodCode];
-            if ($payolutionMethod->isAvailable()) {
-                return true;
-            }
-        }
-
-        return false;
-    }
 }

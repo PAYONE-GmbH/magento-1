@@ -22,11 +22,11 @@
  */
 
 /** @var $this Payone_Core_Block_Payment_Method_Form_Creditcard */
-$hideCvcTypes = $this->getHideCvcTypes();
-$hideCcTypeSelector = $this->getHideCreditCardSelectorConfig();
-$cvcLength = $this->getCvcLength();
-$code = $this->getMethodCode();
-$iCheckValidation = (int)$this->showCvcInput();
+    $hideCvcTypes = $this->getHideCvcTypes();
+    $hideCcTypeSelector = $this->getHideCreditCardSelectorConfig();
+    $cvcLength = $this->getCvcLength();
+    $code = $this->getMethodCode();
+    $iCheckValidation = (int)$this->showCvcInput();
 ?>
 <script type="text/javascript">
     var sCCRequestType = '<?php echo $this->getCCRequestType(); ?>';
@@ -68,7 +68,7 @@ $iCheckValidation = (int)$this->showCvcInput();
                 </label><br class="clear"/>
                 <input type="text" id="<?php echo $code; ?>_cc_number" name="payment[cc_number]" value=""
                        title="<?php echo $this->__('Credit Card Number'); ?>"
-                       class="input-text validate-cc-number validate-payone-cc-type no-submit"/>
+                       class="input-text validate-cc-number validate-payone-cc-type no-submit"
                        onchange="inputToNumbers(this); payoneChangedCreditCardInfo();"
                        oninput="inputToNumbers(this); payoneChangedCreditCardInfo();"/>
             </div>
