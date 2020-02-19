@@ -115,34 +115,37 @@ class Payone_Core_AmazonPayController extends Payone_Core_Controller_Abstract
             $session = $this->_getSession();
             $amazonOrderReferenceId = $session->getData('amazon_reference_id');
 
-            // TODO FCVB Check behavior
-            if (in_array($e->getCode(), array(981, 985, 986))) { // send to widgets
-                $session->setData('amazon_lock_order', true);
-                $session->setData('amazon_reference_id', $amazonOrderReferenceId);
-                $session->setData('amazon_shop_order_reference', $this->_getQuote()->getReservedOrderId());
-                $session->unsetData('amazon_add_paydata');
-                $redirectUrl = Mage::getUrl('payone_core/amazonpay/checkout', []);
-                $this->_redirectUrl($redirectUrl);
-            } else {
+            $message = Mage::helper('payone_core')->__(
+                'Sorry, your transaction with Amazon Pay was not successful. Please choose another payment method.'
+            );
+
+            // MAGE-469 : If code is out of that list
+            // order is not cancelled on amazon side, we need the extra request
+            if (!in_array($e->getCode(), array(981, 985, 986))) {
                 /** @var Payone_Core_Helper_AmazonPay $helper */
                 $helper = Mage::helper('payone_core/amazonPay');
                 $workorderId = $session->getData('work_order_id');
 
                 $requestResult = $helper->cancelAmazonPayOrder($workorderId, $amazonOrderReferenceId);
                 if ($requestResult instanceof Payone_Api_Response_Genericpayment_Ok) {
-                    $message = $this->helper()->__('Sorry, your transaction with Amazon Pay was not successful. Please try again.');
+                    $message = $this->helper()->__(
+                        'Sorry, your transaction with Amazon Pay was not successful. Please try again.'
+                    );
                 } else {
-                    $message = Mage::helper('payone_core')->__('Sorry, your transaction with Amazon Pay was not successful. Please choose another payment method.');
+                    $message = Mage::helper('payone_core')->__(
+                        'Sorry, your transaction with Amazon Pay was not successful. Please choose another payment method.'
+                    );
                 }
-
-                $session->unsetData('amazon_shop_order_reference');
-                $session->unsetData('work_order_id');
-                $session->unsetData('amazon_add_paydata');
-                $this->_getCheckoutSession()->addError($message);
-
-                $redirectUrl = Mage::getUrl('checkout/cart/index');
-                $this->_redirectUrl($redirectUrl);
             }
+
+            $session->setData('amazon_lock_order', false);
+            $session->unsetData('amazon_shop_order_reference');
+            $session->unsetData('work_order_id');
+            $session->unsetData('amazon_add_paydata');
+            $this->_getCheckoutSession()->addError($message);
+
+            $redirectUrl = Mage::getUrl('checkout/cart/index');
+            $this->_redirectUrl($redirectUrl);
         }
     }
 
