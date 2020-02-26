@@ -43,8 +43,7 @@ class Payone_Core_Model_Service_TransactionStatus_Execute extends Payone_Core_Mo
     protected $serviceProcess = null;
 
     /**
-     * @var array
-     * Array of failed stransactionsStatus
+     * @var array Transaction status objects of which processing has failed.
      */
     private $failed = array();
 
@@ -73,13 +72,28 @@ class Payone_Core_Model_Service_TransactionStatus_Execute extends Payone_Core_Mo
                 $continue = false;
             }
         }
-        Mage::helper('payone_core')->logCronjobMessage("Amount of failed: ".count($this->failed));
 
+        // TODO: Move handling of failed transaction status to a separate cron.
         $this->handleFailed();
-
 
         Mage::helper('payone_core')->logCronjobMessage("executePending: finished ".$countExecuted);
         return $countExecuted;
+    }
+
+    /**
+     * @return int The max amount of allowed processing retries.
+     */
+    protected function getProcessMaxRetryCount()
+    {
+        return Mage::helper('payone_core')->getTransactionProcessingMaxRetryCount();
+    }
+
+    /**
+     * @return string The report email which receives processing reports.
+     */
+    protected function getProcessReportEmail()
+    {
+        return Mage::helper('payone_core')->getTransactionProcessingReportEmail();
     }
 
     protected function _getIncrementId($sReference)
@@ -145,11 +159,19 @@ class Payone_Core_Model_Service_TransactionStatus_Execute extends Payone_Core_Mo
             $transactionStatus->setStatusOk();
             $this->helper()->logCronjobMessage("ID: {$transactionStatus->getId()} - Execute - Finished service execution, set status to complete", $storeId);
         } catch (Exception $e) {
-            $this->failed[$transactionStatus->getOrderId()] = $transactionStatus;
-            $transactionStatus->setStatusError();
-            $transactionStatus->setProcessingError($e->getMessage());
-            $this->helper()->logCronjobMessage("ID: {$transactionStatus->getId()} - Execute - Error during service execution, set status to error with message {$e->getMessage()}", $storeId);
+            $processRetryCount = (int) $transactionStatus->getProcessRetryCount();
 
+            if ($processRetryCount >= $this->getProcessMaxRetryCount()) {
+                $transactionStatus->setStatusError();
+                $transactionStatus->setProcessingError($e->getMessage());
+                $this->failed[] = $transactionStatus;
+                $this->helper()->logCronjobMessage("ID: {$transactionStatus->getId()} - Execute - Error during service execution, set status to error with message {$e->getMessage()}", $storeId);
+            }
+            else {
+                $transactionStatus->setStatusPending();
+                $transactionStatus->setProcessRetryCount($processRetryCount + 1);
+                $this->helper()->logCronjobMessage("ID: {$transactionStatus->getId()} - Execute - Failed service execution with error '{$e->getMessage()}', retry execution next run", $storeId);
+            }
         }
         $transactionStatus->setProcessedAt(date('Y-m-d H:i:s'));
         $transactionStatus->save();
@@ -217,60 +239,21 @@ class Payone_Core_Model_Service_TransactionStatus_Execute extends Payone_Core_Mo
      */
     private function handleFailed()
     {
-        //Check if there are failed transactions
-        if (count($this->failed) > 0) {
-            Mage::helper('payone_core')->logCronjobMessage("Start failed handling");
-            $retryCounter = Mage::helper('payone_core')->getTxRetries();
+        $failedIds = array();
 
-            //retry failed transactions
-            while ($retryCounter > 0 && count($this->failed) > 0) {
-                Mage::helper('payone_core')->logCronjobMessage("Retries left ".$retryCounter);
-                Mage::helper('payone_core')->logCronjobMessage("Still failed: " . count($this->failed));
-                foreach ($this->failed as $id => $transactionStatus) {
-
-                    //remove current transaction from failed array
-                    //if it will fail again, it will be automatically appended in execute()
-                    unset($this->failed[$id]);
-                    /**
-                     * @var Payone_Core_Model_Domain_Protocol_TransactionStatus $transactionStatus
-                     */
-                    $this->execute($transactionStatus);
-                }
-                $retryCounter--;
-            }
-
-            if (count($this->failed) > 0) {
-                $list = array();
-                //are all retries failed?
-                foreach ($this->failed as $id => $transactionStatus) {
-                    //add transaction to finally failed
-                    Mage::helper('payone_core')->logCronjobMessage("Add to report list: Txid" . $transactionStatus->getTxid());
-                    $list[] = $transactionStatus->getTxid();
-                }
-
-            }
-
-            //are any failed transactions left? Than prepare report email
-            if (count($this->failed) > 0) {
-                $emailTo = Mage::helper('payone_core')->getTxReportEmail();
-                Mage::helper('payone_core')->logCronjobMessage("Total transactions failed after retries: " . count($this->failed));
-                Mage::helper('payone_core')->logCronjobMessage("Start prepare report email to: " . $emailTo );
-                if (!filter_var($emailTo, FILTER_VALIDATE_EMAIL)) {
-                    Mage::helper('payone_core')->logCronjobMessage("Abort sending E-mail. Invalid address.");
-                    return;
-                }
-                //prepare Email
-                $template = 'transaction_status_error_report';
-
-                $params = array();
-                $params['transactionsList'] = implode(',' , $list);
-                Mage::helper('payone_core')->logCronjobMessage("E-mail body contains: " . $params['transactionsList'] );
-
-                //send Email with Error information
-                Mage::helper('payone_core')->logCronjobMessage("Start sending report email to: " . $emailTo );
-                $this->getFactory()->helperEmail()->send('general', $emailTo, false, $template, $params);
-                Mage::helper('payone_core')->logCronjobMessage("E-mail send to: " . $emailTo );
-            }
+        /** @var Payone_Core_Model_Domain_Protocol_TransactionStatus $failedTransactionStatus */
+        foreach ($this->failed as $failedTransactionStatus) {
+            $failedIds[] = $failedTransactionStatus->getTxid();
         }
+
+        $this->getFactory()->helperEmail()->send(
+            'general',
+            $this->getProcessReportEmail(),
+            false,
+            'transaction_status_error_report',
+            array(
+                'failedIds' => $failedIds
+            )
+        );
     }
 }

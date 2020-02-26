@@ -204,7 +204,7 @@ class Payone_Core_Helper_Data
      * @param null $iStoreId
      * @return string
      */
-    public function getTxReportEmail($iStoreId = null)
+    public function getTransactionProcessingReportEmail($iStoreId = null)
     {
         $oConfig = $this->helperConfig()->getConfigMisc($iStoreId)->getTransactionstatusProcessing();
         return $oConfig->getReportEmail();
@@ -214,7 +214,7 @@ class Payone_Core_Helper_Data
      * @param null $iStoreId
      * @return int
      */
-    public function getTxRetries($iStoreId = null)
+    public function getTransactionProcessingMaxRetryCount($iStoreId = null)
     {
         $oConfig = $this->helperConfig()->getConfigMisc($iStoreId)->getTransactionstatusProcessing();
         return $oConfig->getRetries();

@@ -170,7 +170,7 @@ class Payone_Core_Model_Config_Misc_TransactionstatusProcessing
      */
     public function getRetries()
     {
-        return $this->retries;
+        return (int) $this->retries;
     }
 
     /**
@@ -178,7 +178,7 @@ class Payone_Core_Model_Config_Misc_TransactionstatusProcessing
      */
     public function setRetries($retries)
     {
-        $this->retries = $retries;
+        $this->retries = (int) $retries;
     }
 
 

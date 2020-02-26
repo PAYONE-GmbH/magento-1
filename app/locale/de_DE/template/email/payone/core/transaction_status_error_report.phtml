@@ -12,13 +12,13 @@
 {{inlinecss file="email-inline.css"}}
 
 <p>
-    Sehr geehrter Damen und Herren,<br><br>
+    Sehr geehrte Damen und Herren,<br><br>
 
-    Folgende Transactionen könnten nicht bearbeitet werden:
-    {{var transactionsList }}
-
-    Mit freundlichen Grüßen<br><br>
-
+    Folgende Transaktionen wurden nicht ordnungsgemäß verarbeitet:
+    {{ var failedIds }}
+    <br>
+    <br>
+    Mit freundlichen Grüßen<br>
     {{var store.getFrontendName()}}
 </p>
 
