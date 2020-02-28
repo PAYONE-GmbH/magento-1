@@ -121,7 +121,7 @@ class Payone_Core_AmazonPayController extends Payone_Core_Controller_Abstract
 
             // MAGE-469 : If code is out of that list
             // order is not cancelled on amazon side, we need the extra request
-            if (!in_array($e->getCode(), array(981, 985, 986))) {
+            if (!in_array($e->getCode(), array(981, 982, 985, 986))) {
                 /** @var Payone_Core_Helper_AmazonPay $helper */
                 $helper = Mage::helper('payone_core/amazonPay');
                 $workorderId = $session->getData('work_order_id');
