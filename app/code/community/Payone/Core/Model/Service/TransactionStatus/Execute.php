@@ -269,14 +269,18 @@ class Payone_Core_Model_Service_TransactionStatus_Execute extends Payone_Core_Mo
      */
     private function handleFailed()
     {
-        $this->getFactory()->helperEmail()->send(
-            'general',
-            $this->getProcessReportEmail(),
-            false,
-            'transaction_status_error_report',
-            array(
-                'failedIds' => $this->getFailedIds()
-            )
-        );
+        $failedIds = $this->getFailedIds();
+
+        if (!empty($failedIds)) {
+            $this->getFactory()->helperEmail()->send(
+                'general',
+                $this->getProcessReportEmail(),
+                false,
+                'transaction_status_error_report',
+                array(
+                    'failedIds' => $this->getFailedIds()
+                )
+            );
+        }
     }
 }
