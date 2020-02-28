@@ -79,11 +79,21 @@ class Payone_Core_Model_Service_TransactionStatus_Execute extends Payone_Core_Mo
             }
         }
 
-        // TODO: Move handling of failed transaction status to a separate cron.
-        $this->handleFailed();
+        if ($this->isProcessReportingActive()) {
+            // TODO: Move handling of failed transaction status to a separate cron.
+            $this->handleFailed();
+        }
 
         Mage::helper('payone_core')->logCronjobMessage("executePending: finished ".$countExecuted);
         return $countExecuted;
+    }
+
+    /**
+     * @return bool True if the reporting is enabled.
+     */
+    protected function isProcessReportingActive()
+    {
+        return (bool) Mage::helper('payone_core')->getTransactionProcessingReportingActive();
     }
 
     /**
