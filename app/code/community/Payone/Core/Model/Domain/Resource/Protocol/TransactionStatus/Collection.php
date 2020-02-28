@@ -69,7 +69,11 @@ class Payone_Core_Model_Domain_Resource_Protocol_TransactionStatus_Collection
         $status = Payone_Core_Model_Domain_Protocol_TransactionStatus::STATUS_PENDING;
 
         $this->clear();
-        $this->addFieldToFilter('id', array('nin' => $excludeIds));
+
+        if (!empty($excludeIds)) {
+            $this->addFieldToFilter('id', array('nin' => $excludeIds));
+        }
+
         $this->addFieldToFilter('processing_status', $status);
         $this->setOrder('id', 'ASC');
         $this->getSelect()->limit(1);
