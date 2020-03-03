@@ -57,6 +57,14 @@ else {
             'COMMENT' => 'Count of processing retries',
             'DEFAULT' => 0)
     );
+
+    $connection->addColumn(
+        $tableTransactionStatus, 'processing_error_stacktrace',
+        array(
+            'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
+            'NULLABLE' => true,
+            'COMMENT' => 'Detailed error stacktrace')
+    );
 }
 
 $installer->endSetup();
