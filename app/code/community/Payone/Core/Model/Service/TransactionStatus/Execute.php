@@ -203,6 +203,7 @@ class Payone_Core_Model_Service_TransactionStatus_Execute extends Payone_Core_Mo
             if ($processRetryCount >= $this->getProcessMaxRetryCount()) {
                 $transactionStatus->setStatusError();
                 $transactionStatus->setProcessingError($e->getMessage());
+                $transactionStatus->setProcessingErrorStacktrace($e->getTraceAsString());
                 $this->failed[] = $transactionStatus;
                 $this->helper()->logCronjobMessage("ID: {$transactionStatus->getId()} - Execute - Error during service execution, set status to error with message {$e->getMessage()}", $storeId);
             }
