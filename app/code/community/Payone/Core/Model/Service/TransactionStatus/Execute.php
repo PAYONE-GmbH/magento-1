@@ -132,6 +132,17 @@ class Payone_Core_Model_Service_TransactionStatus_Execute extends Payone_Core_Mo
         }, $this->failed);
     }
 
+    /**
+     * @return int[] The TxIDs of all failed transaction status.
+     */
+    protected function getFailedTxIds()
+    {
+        return array_map(function ($failed) {
+            /** @var Payone_Core_Model_Domain_Protocol_TransactionStatus $failed */
+            return (int) $failed->getTxid();
+        }, $this->failed);
+    }
+
     protected function _getIncrementId($sReference)
     {
         $oResource = Mage::getSingleton('core/resource');
@@ -281,15 +292,20 @@ class Payone_Core_Model_Service_TransactionStatus_Execute extends Payone_Core_Mo
     private function handleFailed()
     {
         $failedIds = $this->getFailedIds();
+        $failedTxIds = $this->getFailedTxIds();
 
         if (!empty($failedIds)) {
+            $failedIds = join(', ', $failedIds);
+            $failedTxIds = join(', ', $failedTxIds);
+
             $this->getFactory()->helperEmail()->send(
                 'general',
                 $this->getProcessReportEmail(),
                 false,
                 'transaction_status_error_report',
                 array(
-                    'failedIds' => $this->getFailedIds()
+                    'failedIds' => $failedIds,
+                    'failedTxIds' => $failedTxIds,
                 )
             );
         }
