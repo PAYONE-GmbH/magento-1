@@ -15,13 +15,13 @@
     Dear Sir or Madam,<br>
     <br>
     The following PAYONE payment status messages were not processed correctly:<br>
-    {{ var failedTxIds }}<br>
+    {{var failedTxIds}}<br>
     <br>
     You can find more detailed error information in the database table payone_protocol_transactionstatus.<br>
     Use the following SQL command to display the incorrect payment status messages.<br>
     <br>
 <pre>SELECT * FROM `payone_protocol_transactionstatus` WHERE `id` IN
-    ({{ var failedIds }});</pre>
+    ({{var failedIds}});</pre>
 <br>
 With kind regards<br>
 {{var store.getFrontendName()}}

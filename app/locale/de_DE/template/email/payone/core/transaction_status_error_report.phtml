@@ -15,13 +15,13 @@
     Sehr geehrte Damen und Herren,<br>
     <br>
     Folgende PAYONE Zahlstatusmeldungen wurden nicht ordnungsgemäß verarbeitet:<br>
-    {{ var failedTxIds }}<br>
+    {{var failedTxIds}}<br>
     <br>
     Sie finden weiterführende Fehlerinformationen in der Datenbanktabelle payone_protocol_transactionstatus.<br>
     Nutzen Sie den folgenden SQL Befehl, um die fehlerhaften Zahlstatusmeldungen anzuzeigen.<br>
     <br>
     <pre>SELECT * FROM `payone_protocol_transactionstatus` WHERE `id` IN
-    ({{ var failedIds }});</pre>
+    ({{var failedIds}});</pre>
     <br>
     Mit freundlichen Grüßen<br>
     {{var store.getFrontendName()}}
