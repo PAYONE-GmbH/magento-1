@@ -302,7 +302,7 @@ class Payone_Core_Model_Service_TransactionStatus_Execute extends Payone_Core_Mo
                 'general',
                 $this->getProcessReportEmail(),
                 false,
-                'transaction_status_error_report',
+                'payone_transaction_status_error_report',
                 array(
                     'failedIds' => $failedIds,
                     'failedTxIds' => $failedTxIds,
