@@ -710,6 +710,25 @@
                         </paydirekt_express_checkout_image>
                     </fields>
                 </payment_paydirekt_express_checkout>
+                <payment_amazonpay_checkout>
+                    <label>Payment Amazon Pay Checkout</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>130</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <allow_quote_one_cent_difference translate="label">
+                            <label>Allow 1 cent deviations on Amazon Pay</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </allow_quote_one_cent_difference>
+                    </fields>
+                </payment_amazonpay_checkout>
             </groups>
         </payone_general>
 
