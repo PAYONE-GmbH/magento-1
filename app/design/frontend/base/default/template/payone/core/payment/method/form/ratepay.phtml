@@ -270,44 +270,40 @@ $initialDebitType = $isAllowedDirectDebit ? Payone_Api_Enum_RatepayDebitType::DI
                     </div>
                     <div class="row">
                         <div class="col-md-4">
-                            <div class="panel panel-default">
-                                <div class="panel-heading text-center" id="firstInput">
+                            <div class="ratepay-panel panel panel-default">
+                                <div class="ratepay-panel-heading panel-heading text-center" id="firstInput">
                                     <h2><?php echo $this->__('lang_choose_runtime'); ?></h2>
                                     <?php echo $this->__('lang_payment_text_runtime'); ?> <b><?php echo $this->__('lang_runtime_duration_unit'); ?></b>
                                 </div>
-                                <div class="panel-body">
-                                    <div class="btn-group btn-group-justified" role="group" aria-label="...">
-                                        <div class="btn-group btn-group-sm" role="group">
-                                            <input class="btn btn-default <?php echo $code ?>-btn-runtime" data-bind="3" value="3" readonly="readonly"/>
-                                        </div>
-                                        <div class="btn-group btn-group-sm" role="group">
-                                            <input class="btn btn-default <?php echo $code ?>-btn-runtime" data-bind="6" value="6" readonly="readonly"/>
-                                        </div>
-                                        <div class="btn-group btn-group-sm" role="group">
-                                            <input class="btn btn-default <?php echo $code ?>-btn-runtime" data-bind="12" value="12" readonly="readonly"/>
-                                        </div>
-                                        <div class="btn-group btn-group-sm" role="group">
-                                            <input class="btn btn-default <?php echo $code ?>-btn-runtime" data-bind="24" value="24" readonly="readonly"/>
-                                        </div>
-                                        <div class="btn-group btn-group-sm" role="group">
-                                            <input class="btn btn-default <?php echo $code ?>-btn-runtime" data-bind="36" value="36" readonly="readonly"/>
+                                <div class="ratepay-panel-body panel-body">
+                                    <div class="input-group input-group-justified" role="group" aria-label="...">
+                                        <div class="input-group input-group-sm" role="group">
+                                            <input class="ratepay-runtime-btn btn btn-default <?php echo $code ?>-btn-runtime" data-bind="3" value="3" readonly="readonly"/>
+                                        
+                                            <input class="ratepay-runtime-btn btn btn-default <?php echo $code ?>-btn-runtime" data-bind="6" value="6" readonly="readonly"/>
+                                       
+                                            <input class="ratepay-runtime-btn btn btn-default <?php echo $code ?>-btn-runtime" data-bind="12" value="12" readonly="readonly"/>
+                                        
+                                            <input class="ratepay-runtime-btn btn btn-default <?php echo $code ?>-btn-runtime" data-bind="24" value="24" readonly="readonly"/>
+                                        
+                                            <input class="ratepay-runtime-btn btn btn-default <?php echo $code ?>-btn-runtime" data-bind="36" value="36" readonly="readonly"/>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <div class="panel panel-default">
-                                <div class="panel-heading text-center" id="secondInput">
+                            <div class="ratepay-panel panel panel-default">
+                                <div class="ratepay-panel-heading panel-heading text-center" id="secondInput">
                                     <h2><?php echo $this->__('lang_insert_wishrate'); ?></h2>
                                     <?php echo $this->__('lang_payment_text_wishrate'); ?>
                                 </div>
-                                <div class="panel-body">
+                                <div class="ratepay-panel-body panel-body">
                                     <div class="input-group input-group-sm">
                                         <span class="input-group-addon">€</span>
-                                        <input type="text" id="<?php echo $code ?>-rate" class="form-control" aria-label="Amount" data-com.agilebits.onepassword.user-edited="yes">
+                                        <input type="text" id="<?php echo $code ?>-rate" class="ratepay-rate-form-input form-control" aria-label="Amount" data-com.agilebits.onepassword.user-edited="yes">
                                         <span class="input-group-btn">
-                                            <input id="<?php echo $code ?>-btn-rate" class="btn btn-default <?php echo $code ?>-btn-rate" value="<?php echo $this->__('lang_calculate_rate'); ?>" readonly="readonly"/>
+                                            <input id="<?php echo $code ?>-btn-rate" class="ratepay-rate-btn btn btn-default <?php echo $code ?>-btn-rate" value="<?php echo $this->__('lang_calculate_rate'); ?>" readonly="readonly"/>
                                         </span>
                                     </div>
                                 </div>

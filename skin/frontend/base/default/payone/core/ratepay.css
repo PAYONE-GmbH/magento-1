@@ -35,7 +35,6 @@
 
 #ratepay-main-cont {
     color: black!important;
-    width: 472px !important;
     vertical-align: middle;
 }
 
@@ -519,6 +518,216 @@ table#ratepay-InstallmentTerms {
 
 .ratepay-installment-plan-link {
     cursor: pointer;
+}
+
+.ratepay-panel {
+    background-color: rgb(255, 255, 255);
+    border-image-outset: 0;
+    border-image-repeat: stretch stretch;
+    border-image-slice: 100%;
+    border-image-source: none;
+    border-image-width: 1;
+    border-radius: 4px;
+    border: 1px solid rgb(221, 221, 221);
+    box-shadow: rgba(0, 0, 0, 0.05) 0 1px 1px 0;
+    box-sizing: border-box;
+    color: rgb(0, 0, 0);
+    font-family: "Helvetica Neue", Verdana, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 17px;
+    list-style: none outside none;
+    margin: 0 0 20px;
+    padding: 0;
+}
+
+.ratepay-panel-heading {
+    background-color: rgb(245, 245, 245);
+    border-color: rgb(221, 221, 221);
+    border-bottom: 1px solid;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    box-sizing: border-box;
+    color: rgb(51, 51, 51);
+    font-family: "Helvetica Neue", Verdana, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 17px;
+    list-style: none outside none;
+    margin: 0;
+    padding: 10px 15px;
+}
+
+.ratepay-panel-body {
+    box-sizing: border-box;
+    color: rgb(0, 0, 0);
+    font-family: "Helvetica Neue", Verdana, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 17px;
+    list-style: none outside none;
+    margin: 0;
+    padding: 10px;
+}
+
+.input-group-btn :first-child {
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    margin-left: 0;
+}
+.input-group-btn :last-child {
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.ratepay-runtime-btn {
+    background: rgb(255, 255, 255) none;
+    border-collapse: separate;
+    border: 1px solid rgb(204, 204, 204);
+    border-image-outset: 0;
+    border-image-repeat: stretch stretch;
+    border-image-slice: 100%;
+    border-image-source: none;
+    border-image-width: 1;
+    box-sizing: border-box;
+    color: rgb(51, 51, 51);
+    cursor: pointer;
+    display: inline-block;
+    font-family: "Helvetica Neue", Verdana, Arial, sans-serif;
+    font-feature-settings: normal;
+    font-kerning: auto;
+    font-language-override: normal;
+    font-size: 13px;
+    font-size-adjust: none;
+    font-stretch: normal;
+    font-style: normal;
+    font-variant: normal;
+    font-variant-alternates: normal;
+    font-variant-caps: normal;
+    font-variant-east-asian: normal;
+    font-variant-ligatures: normal;
+    font-variant-numeric: normal;
+    font-variant-position: normal;
+    font-weight: 400;
+    height: 30px;
+    line-height: 17px;
+    list-style: none outside none;
+    margin: 0 0 0 -5px;
+    padding: 5px 10px;
+    position: relative;
+    text-align: center;
+    touch-action: manipulation;
+    vertical-align: middle;
+    white-space: nowrap;
+    width: 20%;
+}
+
+.ratepay-rate-form-input{
+    background: rgb(255, 255, 255) none;
+    border-collapse: separate;
+    border-image-outset: 0;
+    border-image-repeat: stretch stretch;
+    border-image-slice: 100%;
+    border-image-source: none;
+    border-image-width: 1;
+    border-radius: 0px;
+    border: 1px solid rgb(204, 204, 204);
+    box-shadow: rgba(0, 0, 0, 0.075) 0px 1px 1px 0px inset;
+    box-sizing: border-box;
+    color: rgb(85, 85, 85);
+    display: block;
+    float: left;
+    font-family: "Helvetica Neue", Verdana, Arial, sans-serif;
+    font-feature-settings: normal;
+    font-kerning: auto;
+    font-language-override: normal;
+    font-size: 13px;
+    font-size-adjust: none;
+    font-stretch: normal;
+    font-style: normal;
+    font-variant: normal;
+    font-variant-alternates: normal;
+    font-variant-caps: normal;
+    font-variant-east-asian: normal;
+    font-variant-ligatures: normal;
+    font-variant-numeric: normal;
+    font-variant-position: normal;
+    font-weight: 400;
+    height: 30px;
+    line-height: 17px;
+    list-style: none outside none;
+    margin: 0;
+    max-width: 100%;
+    padding: 5px 10px;
+    position: relative;
+    transition-delay: 0s, 0s;
+    transition-duration: 0.15s, 0.15s;
+    transition-property: border-color, box-shadow;
+    transition-timing-function: ease-in-out, ease-in-out;
+    width: 109px;
+    z-index: 2;
+}
+
+.input-group-addon {
+    border: 1px solid #ccc;
+    border-radius: 4px 0 0 4px;
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1;
+    color: #555;
+    text-align: center;
+    background-color: #eee;
+    width: 1%;
+    white-space: nowrap;
+    vertical-align: middle;
+    float: left;
+}
+
+.ratepay-rate-btn {
+    background: rgb(255, 255, 255) none;
+    border-collapse: separate;
+    border: 1px solid rgb(204, 204, 204);
+    border-image-outset: 0;
+    border-image-repeat: stretch stretch;
+    border-image-slice: 100%;
+    border-image-source: none;
+    border-image-width: 1;
+    border-radius: 0 3px 3px 0;
+    box-sizing: border-box;
+    color: rgb(51, 51, 51);
+    cursor: pointer;
+    display: inline-block;
+    font-family: "Helvetica Neue", Verdana, Arial, sans-serif;
+    font-feature-settings: normal;
+    font-kerning: auto;
+    font-language-override: normal;
+    font-size: 13px;
+    font-size-adjust: none;
+    font-stretch: normal;
+    font-style: normal;
+    font-variant: normal;
+    font-variant-alternates: normal;
+    font-variant-caps: normal;
+    font-variant-east-asian: normal;
+    font-variant-ligatures: normal;
+    font-variant-numeric: normal;
+    font-variant-position: normal;
+    font-weight: 400;
+    height: 30px;
+    line-height: 17px;
+    list-style: none outside none;
+    margin: 0 0 0 -1px;
+    padding: 0;
+    position: relative;
+    text-align: center;
+    touch-action: manipulation;
+    vertical-align: middle;
+    white-space: nowrap;
+    z-index: 2;
+}
+
+.btn-info {
+    color: #fff;
+    background-color: #5bc0de;
+    border-color: #46b8da
 }
 
 #method-switch-section {
