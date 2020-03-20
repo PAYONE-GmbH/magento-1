@@ -112,10 +112,39 @@ class Payone_Core_AmazonPayController extends Payone_Core_Controller_Abstract
             $this->_redirectUrl($result['redirectUrl']);
         } catch (Exception $e) {
             Mage::logException($e);
-            $message = $this->helper()->__('Sorry, your transaction with Amazon Pay was not successful. Please try again.');
+            $session = $this->_getSession();
+            $amazonOrderReferenceId = $session->getData('amazon_reference_id');
+
+            $message = Mage::helper('payone_core')->__(
+                'Sorry, your transaction with Amazon Pay was not successful. Please choose another payment method.'
+            );
+
+            // MAGE-469 : If code is out of that list
+            // order is not cancelled on amazon side, we need the extra request
+            if (!in_array($e->getCode(), array(981, 982, 985, 986))) {
+                /** @var Payone_Core_Helper_AmazonPay $helper */
+                $helper = Mage::helper('payone_core/amazonPay');
+                $workorderId = $session->getData('work_order_id');
+
+                $requestResult = $helper->cancelAmazonPayOrder($workorderId, $amazonOrderReferenceId);
+                if ($requestResult instanceof Payone_Api_Response_Genericpayment_Ok) {
+                    $message = $this->helper()->__(
+                        'Sorry, your transaction with Amazon Pay was not successful. Please try again.'
+                    );
+                } else {
+                    $message = Mage::helper('payone_core')->__(
+                        'Sorry, your transaction with Amazon Pay was not successful. Please choose another payment method.'
+                    );
+                }
+            }
+
+            $session->setData('amazon_lock_order', false);
+            $session->unsetData('amazon_shop_order_reference');
+            $session->unsetData('work_order_id');
+            $session->unsetData('amazon_add_paydata');
             $this->_getCheckoutSession()->addError($message);
 
-            $redirectUrl = Mage::getUrl('payone_core/amazonpay/checkout', []);
+            $redirectUrl = Mage::getUrl('checkout/cart/index');
             $this->_redirectUrl($redirectUrl);
         }
     }

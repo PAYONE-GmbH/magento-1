@@ -1003,6 +1003,9 @@
                 <amazon_pay>a:1:{s:18:"_1917707466274_274";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</amazon_pay>
                 <payment_guarantee_invoice>a:1:{s:18:"_2468232683254_254";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</payment_guarantee_invoice>
             </status_mapping>
+            <payment_amazonpay_checkout>
+                <allow_quote_one_cent_difference>0</allow_quote_one_cent_difference>
+            </payment_amazonpay_checkout>
         </payone_general>
         <payone_protect>
             <general>

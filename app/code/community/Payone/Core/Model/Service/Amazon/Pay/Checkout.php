@@ -177,7 +177,11 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
         $layout->removeOutputBlock('checkout_review_submit');
         $layout->generateXml()->generateBlocks();
         $orderReviewHtml = $layout->getOutput();
-        $this->checkoutSession->setPayoneGenericpaymentGrandTotal($this->quote->getGrandTotal()); // MAGE-374: Force the total to be stored in session for further check
+        
+        //convert the float value to a formatted string to avoind float rounding issues
+        $quoteGrandTotal = number_format($this->quote->getGrandTotal(), 4, '.', '');
+        
+        $this->checkoutSession->setPayoneGenericpaymentGrandTotal($quoteGrandTotal); // MAGE-374: Force the total to be stored in session for further check
         if ($shippingRatesCount === 1) {
             $params['shippingMethodCode'] = array_values($shippingRates)[0][0]['code'];
             if ($this->quote->getShippingAddress()->getShippingMethod() !== $params['shippingMethodCode']) {
@@ -236,14 +240,14 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
      * Unset session variable, add error-message to session and redirect back to the cart
      *
      * @param  \Payone_Core_Model_Session $oSession
-     * @param  string $sTest
+     * @param  string $sText
      * @return array
      */
-    protected function cancelAmazonPayment($oSession, $sTest)
+    protected function cancelAmazonPayment($oSession, $sText)
     {
         $oSession->unsetData('work_order_id');
         $oSession->unsetData('amazon_add_paydata');
-        $this->checkoutSession->addError(Mage::helper('payone_core')->__($sTest));
+        $this->checkoutSession->addError(Mage::helper('payone_core')->__($sText));
         return [
             'successful'  => true,
             'shouldLogout' => true,
@@ -333,11 +337,42 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
         /** @var \Payone_Core_Model_Session $session */
         $session = Mage::getSingleton('payone_core/session');
         $amazonOrderReferenceId = $session->getData('amazon_reference_id');
+        
+        //compare the values with the same string format to avoid strange float rounding issues
+        $quoteGrandTotal    = number_format(
+            $this->quote->getGrandTotal(),
+            4,
+            '.',
+            ''
+        );
 
-        if ($this->quote->getGrandTotal() != $this->checkoutSession->getPayoneGenericpaymentGrandTotal()) {
+        $sessionGrandTotal  = number_format(
+            $this->checkoutSession->getPayoneGenericpaymentGrandTotal(),
+            4,
+            '.',
+            ''
+        );
+
+        //check the difference between the values
+        //calculate the difference in cents to avoid rounding issues again
+        //
+        // => using floats is evil try that:
+
+        //php > echo abs((float) '244.68' - (float) '244.67');
+        // => output: 0.010000000000019
+        // MAGE-471: include config checking to toggle the rounding tolerance
+        $roundingTolerance = $this->getFactory()->helperConfig()->getStoreConfig('payone_general/payment_amazonpay_checkout/allow_quote_one_cent_difference');
+        if ($roundingTolerance) {
+            $difference = number_format(abs((float) $quoteGrandTotal - (float) $sessionGrandTotal), 2) * 100;
+        } else {
+            $difference = 2; // will be >1 and then not taking the rounding in account, see below
+        }
+
+        //@todo: add a feature toggle to the config for the 1 cent rounding tolerance
+        //if the values are different and the difference is more than one cent (rounding issue) => cancel the payment
+        if ($quoteGrandTotal != $sessionGrandTotal && $difference > 1) {
             // The basket was changed - abort current checkout
-            $text = 'Sorry, your transaction with Amazon Pay was not successful. Please try again.';
-            return $this->cancelAmazonPayment($session, $text);
+            throw new Exception('Sorry, your transaction with Amazon Pay was not successful. Please try again.');
         }
 
         try {
@@ -349,18 +384,6 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
             $service = Mage::getModel('sales/service_quote', $this->quote);
             $service->submitAll();
         } catch (\Exception $e) {
-            if (in_array($e->getCode(), [981, 985, 986])) { // send to widgets
-                $session->setData('amazon_lock_order', true);
-                $session->setData('amazon_reference_id', $amazonOrderReferenceId);
-                $session->setData('amazon_shop_order_reference', $this->quote->getReservedOrderId());
-                $session->unsetData('amazon_add_paydata');
-            } else { // logout and send to basket
-                // Transaction cannot be completed by Amazon
-                // and the order reference object was closed
-                $text = 'Sorry, your transaction with Amazon Pay was not successful. Please choose another payment method.';
-                $session->unsetData('amazon_shop_order_reference');
-                return $this->cancelAmazonPayment($session, $text);
-            }
             throw $e;
         }
         $session->unsetData('amazon_add_paydata');

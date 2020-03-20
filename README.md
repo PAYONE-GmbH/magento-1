@@ -10,7 +10,7 @@ The PAYONE payment extension for MAGENTO is with 50,000 downloads already a succ
 * Supports the multi-shipping extension
 * Supports simplified PCI DSS conformity in accordance with SAQ A
 * Payment methods can be automatically hidden depending on the amount of the order and the credit rating of the customer
-* Find all currently supported payment methods on www.payone.com/magento
+* Find all currently supported payment methods on www.payone.com
 
 ## Installation
 It is highly recommended to install the latest release from Github (either using modman or manual installation). The Magento Marketplace is updated infrequently.
@@ -36,11 +36,8 @@ Fraunhoferstraße 2–4<br>
 Phone +49 431 25968-400<br>
 Fax +49 431 25968-1400<br>
 magento@payone.de<br>
-www.payone.com/magento
+www.payone.com
 
-## License
-See our License Agreement at: https://www.payone.com/fileadmin/downloads/sonstiges/PAYONE_Haftungs_und_Lizenzvereinbarung_Extensions.pdf
-
-## About BS PAYONE
+## About PAYONE
 Since the end of August 2017, the two payment specialist companies PAYONE and B+S Card Service merged to become BS PAYONE GmbH. All current partnerships will be maintained the way they are. APIs, interfaces, and other technical parameters will stay the same. Your current contact persons will continue to gladly be at your service.<br>
 BS PAYONE GmbH is headquartered in Frankfurt am Main and is one of the leading omnichannel payment providers in Europe. In addition to providing customer support to numerous Sparkasse banks, the full-service payment service provider also provides cashless payment transactions services to more than 255,000 customers from various branches – whether that be in stationary retail or when completing e-commerce and mobile payment transactions.
