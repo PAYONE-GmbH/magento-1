@@ -51,6 +51,10 @@
  * @method string getClearingtype()
  * @method string getTransactionStatus()
  * @method string getReasoncode()
+ * @method int getProcessRetryCount()
+ * @method setProcessRetryCount(int $processRetryCount)
+ * @method string getProcessingErrorStacktrace()
+ * @method setProcessingErrorStacktrace(string $processingErrorStacktrace)
  */
 class Payone_Core_Model_Domain_Protocol_TransactionStatus extends Mage_Core_Model_Abstract
 {
