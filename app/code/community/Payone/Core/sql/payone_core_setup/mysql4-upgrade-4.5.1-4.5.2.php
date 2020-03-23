@@ -37,7 +37,7 @@ $helper = Mage::helper('payone_core');
 $useSqlInstaller = $helper->mustUseSqlInstaller();
 
 if ($useSqlInstaller) {
-    $sql = file_get_contents(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'upgrade-4.5.0-4.5.1.sql');
+    $sql = file_get_contents(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'upgrade-4.5.1-4.5.2.sql');
 
     $installSqlConfig = array(
         '{{payone_protocol_transactionstatus}}' => $tableTransactionStatus,
