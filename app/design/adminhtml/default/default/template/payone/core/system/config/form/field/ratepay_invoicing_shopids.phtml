@@ -57,6 +57,9 @@ $_colspan = $_colspan > 1 ? 'colspan="' . $_colspan . '"' : '';
                         <input type="text" style="width:60px;" class="input-text required-entry" value="" name="groups[template_ratepay_invoicing][fields][ratepay_config][value][<?php echo $sId; ?>][ratepay_currency]">
                         <span class="required">*</span>
                     </td>
+		    <td>
+                        <input type="text" style="width:60px;" class="input-text" value="" name="groups[template_ratepay_invoicing][fields][ratepay_config][value][<?php echo $sId; ?>][ratepay_snippetid]">
+                    </td>
                 </tr>
             <?php } else { ?>
                 <?php $blFirstRow = true; ?>
