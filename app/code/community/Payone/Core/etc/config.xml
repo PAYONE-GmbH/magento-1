@@ -29,7 +29,7 @@
 <config>
     <modules>
         <Payone_Core>
-            <version>4.5.0</version>
+            <version>4.5.2</version>
         </Payone_Core>
     </modules>
 
@@ -355,6 +355,11 @@
                     <file>payone/core/amazon_hard_decline.phtml</file>
                     <type>html</type>
                 </payone_amazon_hard_decline>
+                <payone_transaction_status_error_report translate="label" module="payone_core">
+                    <label>Error during transaction status processing</label>
+                    <file>payone/core/transaction_status_error_report.phtml</file>
+                    <type>html</type>
+                </payone_transaction_status_error_report>
             </email>
         </template>
 

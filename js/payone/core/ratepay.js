@@ -327,7 +327,8 @@ function checkRequirementFields(method, forceRequirement)
             fieldPrefix += '_invoicing';
         }
         requireRegistrationNumber(forceRequirement, fieldPrefix);
-        requireVat(forceRequirement, fieldPrefix);
+        // MAGE-450 : Vat is not required anymore
+        requireVat(false, fieldPrefix);
         return;
     }
     var b2b = document.getElementsByName('payment[payone_isb2b]');

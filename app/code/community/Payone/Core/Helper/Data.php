@@ -201,6 +201,36 @@ class Payone_Core_Helper_Data
     }
 
     /**
+     * @param null $iStoreId
+     * @return int
+     */
+    public function getTransactionProcessingReportingActive($iStoreId = null)
+    {
+        $oConfig = $this->helperConfig()->getConfigMisc($iStoreId)->getTransactionstatusProcessing();
+        return $oConfig->getReportingActive();
+    }
+
+    /**
+     * @param null $iStoreId
+     * @return string
+     */
+    public function getTransactionProcessingReportEmail($iStoreId = null)
+    {
+        $oConfig = $this->helperConfig()->getConfigMisc($iStoreId)->getTransactionstatusProcessing();
+        return $oConfig->getReportEmail();
+    }
+
+    /**
+     * @param null $iStoreId
+     * @return int
+     */
+    public function getTransactionProcessingMaxRetryCount($iStoreId = null)
+    {
+        $oConfig = $this->helperConfig()->getConfigMisc($iStoreId)->getTransactionstatusProcessing();
+        return $oConfig->getRetries();
+    }
+
+    /**
      * Format Magento Adress "street" into one string.
      *
      * @param $street
