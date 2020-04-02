@@ -1216,7 +1216,7 @@ The <a target='_blank' href='https://www.ratepay.com/zgb-dse'>additional terms a
 "Enables email notification for failed transaction status processing.","Aktiviert die E-Mail Benachrichtigung für fehlgeschlagene Transaktionstatus Verarbeitungen."
 "Processing retries","Verarbeitungs Versuche"
 "The number of retries for failed transaction status processings.","Die Anzahl Versuche für fehlgeschlagene Transaktionstatus Verarbeitungen."
-"Reporting email address":"Benachrichtigungs E-Mail Adresse"
+"Reporting email address","Benachrichtigungs E-Mail Adresse"
 
 "Unable to initialize PAYONE Amazon Checkout.","PAYONE Amazon Checkout kann leider nicht initialisieren."
 "Unable to initialize Paydirekt Express Checkout.","Der Paydirekt Express Checkout konnte nicht initialisiert werden."
