@@ -210,6 +210,7 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
         $billingAddress = $order->getBillingAddress();
         $billingCountry = $billingAddress->getCountry();
         $customer = $order->getCustomer();
+        $email = !empty($billingAddress->getEmail()) ? $billingAddress->getEmail() : $customer->getEmail();
         $paymentMethod = $this->getPaymentMethod();
 
         $personalData = new Payone_Api_Request_Parameter_Authorization_PersonalData();
@@ -225,7 +226,7 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
         $personalData->setZip($billingAddress->getPostcode());
         $personalData->setCity($billingAddress->getCity());
         $personalData->setCountry($billingCountry);
-        $personalData->setEmail($billingAddress->getEmail());
+        $personalData->setEmail($email);
         $personalData->setTelephonenumber($billingAddress->getTelephone());
 
         $birthday = $this->formatBirthday($order->getCustomerDob());
