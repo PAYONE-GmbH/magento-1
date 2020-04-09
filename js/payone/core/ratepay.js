@@ -201,25 +201,6 @@ function triggerRateAction(element, code, urlRate)
 
 /**
  *
- * @param payment_code
- */
-function payoneRatepayCustomerDobInput(payment_code)
-{
-    var daySelect = $(payment_code + '_additional_fields_customer_dob_day');
-    var monthSelect = $(payment_code + '_additional_fields_customer_dob_month');
-    var yearSelect = $(payment_code + '_additional_fields_customer_dob_year');
-    var hiddenDobFull = $(payment_code + '_additional_fields_customer_dob_full');
-
-    if (daySelect == undefined || monthSelect == undefined || yearSelect == undefined
-        || hiddenDobFull == undefined)  {
-        return;
-    }
-
-    hiddenDobFull.value = yearSelect.value + "-" + monthSelect.value + "-" + daySelect.value;
-}
-
-/**
- *
  * @param code
  * @param allowedCountryCodesList
  */
@@ -358,13 +339,6 @@ function hideInstallmentDetails()
         }
     );
     $('ratepay-show-installment-plan-details').show();
-}
-
-function copyDebitPaymentSepaIban(code)
-{
-    var input_sepa_iban_xxx_el = $(code + '_sepa_iban_xxx');
-    var input_sepa_iban_el = $(code + '_sepa_iban');
-    input_sepa_iban_el.value = input_sepa_iban_xxx_el.value;
 }
 
 function updateRatePaymentMethod(code, allowedDebitCountries) {
