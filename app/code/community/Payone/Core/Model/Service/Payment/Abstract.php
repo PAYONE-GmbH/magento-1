@@ -179,9 +179,11 @@ abstract class Payone_Core_Model_Service_Payment_Abstract
                      */
                     $restrictionDelay = '+1day';
                     if (
-                        $payment->getMethod() == Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAYINVOICING ||
+                        ($payment->getMethod() == Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAYINVOICING ||
                         $payment->getMethod() == Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAY ||
-                        $payment->getMethod() == Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAYDIRECTDEBIT
+                        $payment->getMethod() == Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAYDIRECTDEBIT)
+                        && $response->getErrorcode() == 307
+
                     ) {
                         $restrictionDelay = '+2days';
                     }
