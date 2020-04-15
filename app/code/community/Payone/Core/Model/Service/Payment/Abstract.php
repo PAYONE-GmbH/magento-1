@@ -63,7 +63,7 @@ abstract class Payone_Core_Model_Service_Payment_Abstract
     );
 
     /**
-     * Methods that can be restricted (hidden for 24h) with each list of handled return codes
+     * Methods that can be restricted (hidden for XX hours, see line 186) with each list of handled return codes
      * Format : key = method code, value = array of codes that trigger the ban
      *
      * @var array
@@ -173,6 +173,19 @@ abstract class Payone_Core_Model_Service_Payment_Abstract
             }
             elseif (isset($this->aRestrictableMethods[$payment->getMethod()])) {
                 if (in_array($response->getErrorcode(), $this->aRestrictableMethods[$payment->getMethod()])) {
+
+                    /**
+                     * MAGE-449 increase delay to 48h for Ratepay
+                     */
+                    $restrictionDelay = '+1day';
+                    if (
+                        $payment->getMethod() == Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAYINVOICING ||
+                        $payment->getMethod() == Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAY ||
+                        $payment->getMethod() == Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAYDIRECTDEBIT
+                    ) {
+                        $restrictionDelay = '+2days';
+                    }
+
                     /** @var Payone_Core_Model_Domain_PaymentBan $oPaymentBan */
                     $oPaymentBan = Mage::getModel('payone_core/domain_paymentBan');
                     $oPaymentBan = $oPaymentBan->loadByCustomerIdPaymentMethod(
@@ -182,7 +195,7 @@ abstract class Payone_Core_Model_Service_Payment_Abstract
                     $oPaymentBan->setCustomerId($payment->getOrder()->getCustomerId());
                     $oPaymentBan->setPaymentMethod($payment->getMethod());
                     $oPaymentBan->setFromDate((new DateTime())->format(DATE_ISO8601));
-                    $oPaymentBan->setToDate((new DateTime('+1day'))->format(DATE_ISO8601));
+                    $oPaymentBan->setToDate((new DateTime($restrictionDelay))->format(DATE_ISO8601));
                     $oPaymentBan->save();
                 }
 
