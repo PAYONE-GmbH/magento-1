@@ -58,7 +58,7 @@ $_colspan = $_colspan > 1 ? 'colspan="' . $_colspan . '"' : '';
                         <span class="required">*</span>
                     </td>
 		    <td>
-                        <input type="text" style="width:60px;" class="input-text" value="" name="groups[template_ratepay_invoicing][fields][ratepay_config][value][<?php echo $sId; ?>][ratepay_snippetid]">
+                        <input type="text" style="width:60px;" class="input-text" value="ratepay" name="groups[template_ratepay_invoicing][fields][ratepay_config][value][<?php echo $sId; ?>][ratepay_snippetid]">
                     </td>
                 </tr>
             <?php } else { ?>
@@ -105,7 +105,7 @@ $_colspan = $_colspan > 1 ? 'colspan="' . $_colspan . '"' : '';
                             <span class="required">*</span>
                         </td>
                         <td>
-                            <input type="text" style="width:60px;" class="input-text" value="<?php echo $aRow['ratepay_snippetid']; ?>" name="groups[template_ratepay_invoicing][fields][ratepay_config][value][<?php echo $aRow['_id']; ?>][ratepay_snippetid]">
+                            <input type="text" style="width:60px;" class="input-text" value="<?php echo !empty($aRow['ratepay_snippetid']) ? $aRow['ratepay_snippetid'] : 'ratepay'; ?>" name="groups[template_ratepay_invoicing][fields][ratepay_config][value][<?php echo $aRow['_id']; ?>][ratepay_snippetid]">
                         </td>
                         <td>
                             <?php if (!$blFirstRow) : ?>
@@ -177,6 +177,9 @@ $_colspan = $_colspan > 1 ? 'colspan="' . $_colspan . '"' : '';
             var inputs = $(templateData._id).getElementsByTagName('input');
             for (var i = 0, len = inputs.length; i < len; i++) {
                 if (inputs[i].name.indexOf('ratepay_snippetid') !== -1) {
+                    if (inputs[i].value == '') {
+                        inputs[i].value = 'ratepay';
+                    }
                     continue;
                 }
                 inputs[i].classList.add('required-entry');
