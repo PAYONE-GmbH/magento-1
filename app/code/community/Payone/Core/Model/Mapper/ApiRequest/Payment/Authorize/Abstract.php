@@ -754,6 +754,16 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
                 }
             }
 
+            // MAGE-448 : add customerId to transmitted data
+            $customerId = $this->getOrder()->getCustomerId();
+            if (!empty($customerId)) {
+                $payData->addItem(
+                    new Payone_Api_Request_Parameter_Paydata_DataItem(
+                        array('key' => 'merchant_consumer_id', 'data' => $customerId)
+                    )
+                );
+            }
+
             $payment->setPaydata($payData);
 
             $telephone = $info->getPayoneCustomerTelephone();
@@ -831,6 +841,16 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
                 if ($birthdayDate) {
                     $payment->setBirthday($this->formatBirthday($birthdayDate));
                 }
+            }
+
+            // MAGE-448 : add customerId to transmitted data
+            $customerId = $this->getOrder()->getCustomerId();
+            if (!empty($customerId)) {
+                $payData->addItem(
+                    new Payone_Api_Request_Parameter_Paydata_DataItem(
+                        array('key' => 'merchant_consumer_id', 'data' => $customerId)
+                    )
+                );
             }
 
             $payment->setPaydata($payData);
