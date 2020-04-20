@@ -35,7 +35,7 @@
             ["lib/Payone/*","lib/Payone/"],
             ["skin/adminhtml/default/default/payone/*","skin/adminhtml/default/default/payone/"],
             ["skin/frontend/base/default/payone/*","skin/frontend/base/default/payone/"],
-	    ["skin/frontend/base/default/images/payone/*","skin/frontend/base/default/images/payone/"]
+            ["skin/frontend/base/default/images/payone/*","skin/frontend/base/default/images/payone/"]
         ]
     }
 }
