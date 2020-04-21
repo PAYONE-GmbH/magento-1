@@ -135,6 +135,7 @@ class Payone_Core_Block_Checkout_Onepage_Payment_Methods
             Payone_Core_Helper_Ratepay::VALIDATION_STEP_PHONE_NUMBER,
             Payone_Core_Helper_Ratepay::VALIDATION_STEP_BASKET_SIZE,
             Payone_Core_Helper_Ratepay::VALIDATION_STEP_SHIPPING_ADDRESS,
+            Payone_Core_Helper_Ratepay::VALIDATION_STEP_B2B,
         );
 
         foreach ($validationSteps as $step) {
