@@ -114,7 +114,17 @@ class Payone_Core_Block_Payment_Method_Form_Ratepay extends Payone_Core_Block_Pa
     {
         $oMethod = $this->getMethod();
         $aConfig = $oMethod->getMatchingRatePayConfig();
-        return $aConfig['device_fingerprint_snippet_id'];
+        $ratepayConfig = $oMethod->getConfig()->getRatepayConfig();
+        foreach ($ratepayConfig as $config) {
+            if ($config['ratepay_shopid'] == $aConfig['shop_id']) {
+                $snippetId = $config['ratepay_snippetid'];
+                if (!empty($snippetId)) {
+                    return $snippetId;
+                }
+            }
+        }
+
+        return !empty($aConfig['device_fingerprint_snippet_id']) ? $aConfig['device_fingerprint_snippet_id'] : 'ratepay';
     }
 
     /**
