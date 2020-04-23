@@ -57,6 +57,7 @@
 }
 .paydirekt-logo a img {
     max-height: 42px;
+    display: inline;
 }
 
 .fadeOut {
