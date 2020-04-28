@@ -46,8 +46,6 @@ class Payone_Api_Enum_CreditcardType
     const MAESTRO_INTERNATIONAL = 'O';
     //U: Maestro UK
     const MAESTRO_UK = 'U';
-    //C: Discover
-    const DISCOVER = 'C';
     //B: Carte Bleue
     const CARTE_BLEUE = 'B';
     //P: China Union Pay
