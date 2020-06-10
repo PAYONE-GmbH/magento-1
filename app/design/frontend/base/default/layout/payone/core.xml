@@ -208,7 +208,6 @@
             <action method="addCss"><name>payone/core/mandate.css</name></action>
             <action method="addCss"><name>payone/core/payolution.css</name></action>
             <action method="addCss"><name>payone/core/ratepay.css</name></action>
-            <action method="addLinkRel"><rel>stylesheet</rel><href>//dev.ratepay.com/shops/ratenrechner/resources/ratepay-bootstrap.min.css</href></action>
             <block type="payone_core/paymentAdditionalScript" name="payone_core_paymentadditionalscript" template="payone/core/payment_additional_script.phtml" />
         </reference>
 
