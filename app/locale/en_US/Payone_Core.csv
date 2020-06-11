@@ -68,3 +68,9 @@
 "AMAZONPAY_MFA_ABANDONED", "Something's wrong with your payment method. To place your order, try another."
 
 "lang_runtime_duration_unit", "(in months)"
+
+"KLARNA_CHECKOUT_TITLE", "Pay with Klarna"
+"KLARNA_CHECKOUT_DISCLAIMER", "By continuing to shop, you confirm that you have read our <a target='_blank' href='https://cdn.klarna.com/1.0/shared/content/legal/terms/0/de_de/user'>terms and conditions</a> and <a target='_blank' href='https://cdn.klarna.com/1.0/shared/content/legal/terms/0/de_de/privacy'>privacy policy</a>."
+"payone_klarna_invoicing", Klarna "Pay Later" (Invoice)
+"payone_klarna_installment", Klarna "Slice It" (Installments)
+"payone_klarna_direct_debit", Klarna "Pay Now" (Direct Debit)

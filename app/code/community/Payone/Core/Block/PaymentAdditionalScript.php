@@ -57,6 +57,9 @@ class Payone_Core_Block_PaymentAdditionalScript extends Mage_Core_Block_Template
         Payone_Core_Model_System_Config_PaymentMethodType::RATEPAYINVOICING => 'ratepay.js',
         Payone_Core_Model_System_Config_PaymentMethodType::RATEPAYDIRECTDEBIT => 'ratepay.js',
         Payone_Core_Model_System_Config_PaymentMethodType::SAFEINVOICE => array('safe_invoice.js', 'klarna.js'),
+        Payone_Core_Model_System_Config_PaymentMethodType::KLARNAINVOICING => array('klarna.js'),
+        Payone_Core_Model_System_Config_PaymentMethodType::KLARNAINSTALLMENT => array('klarna.js'),
+        Payone_Core_Model_System_Config_PaymentMethodType::KLARNADIRECTDEBIT => array('klarna.js'),
     );
 
     /** @var Payone_Core_Model_Factory */
@@ -96,6 +99,11 @@ class Payone_Core_Block_PaymentAdditionalScript extends Mage_Core_Block_Template
 
                 foreach ($scriptUrl as $url) {
                     $loadedScripts[] = $this->getJsUrl(self::JS_DIR_PREFIX . $url);
+                }
+                if ($method->getCode() == Payone_Core_Model_System_Config_PaymentMethodType::KLARNAINVOICING
+                || $method->getCode() == Payone_Core_Model_System_Config_PaymentMethodType::KLARNAINSTALLMENT
+                || $method->getCode() == Payone_Core_Model_System_Config_PaymentMethodType::KLARNADIRECTDEBIT) {
+                    $loadedScripts[] = "https://x.klarnacdn.net/kp/lib/v1/api.js";
                 }
             }
         }

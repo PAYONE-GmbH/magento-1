@@ -1,0 +1,213 @@
+<?php
+/**
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the GNU General Public License (GPL 3)
+ * that is bundled with this package in the file LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Payone_Core to newer
+ * versions in the future. If you wish to customize Payone_Core for your
+ * needs please refer to http://www.payone.de for more information.
+ *
+ * @category        Payone
+ * @package         design_frontend_base_default
+ * @subpackage      template
+ * @copyright       Copyright (c) 2020 <kontakt@fatchip.de> - www.fatchip.com
+ * @author          Vincent Boulanger <vincent.boulanger@fatchip.de>
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.fatchip.com
+ */
+
+/** @var $this Payone_Core_Block_Payment_Method_Form_KlarnaBase */
+$code = $this->getMethodCode();
+$quote = $this->getQuote();
+$startSessionUrl = $this->getStartSessionUrl();
+$availableMethods = $this->getKlarnaMethods($quote->getId());
+$klarnaMethodNames = $this->getKlarnaMethodNames();
+$klarnaMethodConfigIds = $this->getKlarnaMethodConfigId();
+
+$customerDob = (new DateTime($quote->getCustomerDob()))->format('Y-m-d');
+$customerGender = $quote->getCustomerGender() == 2 ? 'female' : 'male';
+$quoteLocale = str_replace('_', '-' , Mage::app()->getLocale()->getLocaleCode());
+?>
+<fieldset class="form-list">
+    <ul id="payment_form_<?php echo $code ?>" style="display:none">
+        <li class="fields">
+            <h2><?php echo $this->__('KLARNA_CHECKOUT_TITLE') ?></h2>
+            <p><em><?php echo $this->__('KLARNA_CHECKOUT_DISCLAIMER') ?></em></p>
+            <div id="payone_klarna_method_overlay"><img src="<?php echo Mage::getDesign()->getSkinUrl('images/payone/ajaxloader.gif') ?>"></div>
+            <div class="payone_klarna_methods">
+                <?php foreach ($availableMethods as $methodType => $methodCode) { ?>
+                    <div id="<?php echo $methodCode ?>_payment_selection" class="button">
+                        <input type="hidden" id="<?php echo $methodCode ?>_payment_code" value="<?php echo $methodCode ?>" />
+                        <span><?php echo isset($klarnaMethodNames[$methodType]) ? $this->__($klarnaMethodNames[$methodType]) : $methodCode ?></span>
+                    </div>
+                <?php } ?>
+            </div>
+
+            <h2 id="klarna_payment_title"></h2>
+            <div id="klarna_payments_container"></div>
+        </li>
+        <li style="display:none;">
+            <input type="hidden" name="payment[payone_config_payment_method_id]"  id="klarna_config_id" value="<?php echo $configId; ?>"/>
+            <input type="hidden" name="payment[authorization_token]"  id="klarna_authorization_token" value=""/>
+            <input type="hidden" name="payment[payment_method_category_identifier]"  id="payment_method_category_identifier" value=""/>
+            <input type="hidden" id="quoteId" name="quoteId" value="<?php echo $quote->getId(); ?>" />
+        </li>
+    </ul>
+</fieldset>
+<script type="text/javascript">
+    var klarnaBaseCode = '<?php echo Payone_Core_Model_System_Config_PaymentMethodCode::KLARNABASE ?>';
+    var klarnaInvoicingCode = '<?php echo Payone_Core_Model_System_Config_PaymentMethodCode::KLARNAINVOICING ?>';
+    var klarnaInstallmentCode = '<?php echo Payone_Core_Model_System_Config_PaymentMethodCode::KLARNAINSTALLMENT ?>';
+    var klarnaDirectDebitCode = '<?php echo Payone_Core_Model_System_Config_PaymentMethodCode::KLARNADIRECTDEBIT ?>';
+
+    var klarnaInvoicingMethodId = '<?php echo $klarnaMethodConfigIds[Payone_Core_Model_System_Config_PaymentMethodType::KLARNAINVOICING] ?>';
+    var klarnaInstallmentMethodId = '<?php echo $klarnaMethodConfigIds[Payone_Core_Model_System_Config_PaymentMethodType::KLARNAINSTALLMENT] ?>';
+    var klarnaDirectDebitMethodId = '<?php echo $klarnaMethodConfigIds[Payone_Core_Model_System_Config_PaymentMethodType::KLARNADIRECTDEBIT] ?>';
+
+    var startSessionUrl = '<?php echo $startSessionUrl ?>';
+
+    jQuery('[id$=_payment_selection]').on(
+        "click",
+        function(event) {
+            payoneKlarnaSwitchOverlay(true);
+            var target = event.currentTarget;
+            var children = jQuery(target).find('input');
+            var methodCode = children.first().val();
+
+            var response = payoneKlarnaStartSession(startSessionUrl, methodCode);
+
+            var status = response.status;
+            if (status == 'OK') {
+                var paymentTitle = jQuery('#klarna_payment_title');
+                paymentTitle.empty();
+                var paymentTitleContent = '<img style="display: inline" src="' + response.payment_method_category_asset_url_descriptive + '" />'
+                    + ' <span>' + response.payment_method_category_name + '</span>';
+                paymentTitle.append(paymentTitleContent);
+
+                var formKlarnaPaymentMethodField= jQuery('#p_method_payone_klarna_base');
+                formKlarnaPaymentMethodField.val(methodCode);
+
+                var klarnaConfigIdField = jQuery('#klarna_config_id');
+                if (methodCode == klarnaDirectDebitCode) {
+                    klarnaConfigIdField.val(klarnaDirectDebitMethodId);
+                } else if (methodCode == klarnaInstallmentCode) {
+                    klarnaConfigIdField.val(klarnaInstallmentMethodId);
+                } else if (methodCode == klarnaInvoicingCode) {
+                    klarnaConfigIdField.val(klarnaInvoicingMethodId);
+                } else {
+                    klarnaConfigIdField.empty();
+                    formKlarnaPaymentMethodField.val(klarnaBaseCode);
+                }
+
+                jQuery('#klarna_payments_container').empty();
+                window.klarnaAsyncCallback(response);
+            } else {
+                alert(response.customer_message);
+            }
+            payoneKlarnaSwitchOverlay(false);
+        }
+    );
+
+    window.klarnaAsyncCallback = function (sessionData) {
+        Klarna.Payments.init({
+            client_token: sessionData.client_token
+        });
+
+        Klarna.Payments.load({
+            container: '#klarna_payments_container',
+            payment_method_category: sessionData.payment_method_category_identifier
+        }, function (res) {
+            if (!res.show_form) {
+                handlePaymentBan();
+            }
+        });
+
+        var paymentMethodCategoryIdentifier = jQuery('#payment_method_category_identifier');
+        paymentMethodCategoryIdentifier.val(sessionData.payment_method_category_identifier);
+    };
+
+    payment.save = payment.save.wrap(
+        function (origMethod) {
+            var paymentMethodCategoryIdentifier = jQuery('#payment_method_category_identifier').val();
+            var formKlarnaPaymentMethod = jQuery('#p_method_payone_klarna_base').val();
+
+            if (formKlarnaPaymentMethod == klarnaBaseCode || paymentMethodCategoryIdentifier == '') {
+                return payone.exec(origMethod);
+            }
+
+            var quoteLocale = "<?php echo $quoteLocale ?>";
+            Klarna.Payments.authorize(
+                {
+                    payment_method_category: paymentMethodCategoryIdentifier
+                },
+                {
+                    purchase_country: "<?php echo $this->getQuote()->getBillingAddress()->getCountry() ?>",
+                    purchase_currency: "<?php echo $this->getQuote()->getQuoteCurrencyCode() ?>",
+                    locale: quoteLocale,
+                    billing_address: {
+                        given_name: "<?php echo $this->getQuote()->getBillingAddress()->getFirstname() ?>",
+                        family_name: "<?php echo $this->getQuote()->getBillingAddress()->getLastname() ?>",
+                        email: "<?php echo $this->getQuote()->getBillingAddress()->getEmail() ?>",
+                        street_address: "<?php echo $this->getQuote()->getBillingAddress()->getStreetFull() ?>",
+                        street_address2: "",
+                        postal_code: "<?php echo $this->getQuote()->getBillingAddress()->getPostcode() ?>",
+                        city: "<?php echo $this->getQuote()->getBillingAddress()->getCity() ?>",
+                        region: "",
+                        phone: "<?php echo $this->getQuote()->getBillingAddress()->getTelephone() ?>",
+                        country: "<?php echo $this->getQuote()->getBillingAddress()->getCountry() ?>"
+                    },
+                    shipping_address: {
+                        given_name: "<?php echo $this->getQuote()->getShippingAddress()->getFirstname() ?>",
+                        family_name: "<?php echo $this->getQuote()->getShippingAddress()->getLastname() ?>",
+                        email: "<?php echo $this->getQuote()->getShippingAddress()->getEmail() ?>",
+                        street_address: "<?php echo $this->getQuote()->getShippingAddress()->getStreetFull() ?>",
+                        street_address2: "",
+                        postal_code: "<?php echo $this->getQuote()->getShippingAddress()->getPostcode() ?>",
+                        city: "<?php echo $this->getQuote()->getShippingAddress()->getCity() ?>",
+                        region: "",
+                        phone: "<?php echo $this->getQuote()->getShippingAddress()->getTelephone() ?>",
+                        country: "<?php echo $this->getQuote()->getShippingAddress()->getCountry() ?>"
+                    },
+                    customer: {
+                        date_of_birth: "<?php echo $customerDob ?>",
+                        gender: "<?php echo $customerGender ?>",
+                    }
+                },
+                function(res) {
+                    var status = res.approved;
+                    if (status) {
+                        var token = res.authorization_token;
+                        var tokenField = jQuery('#klarna_authorization_token');
+                        tokenField.val(token);
+                        payone.exec(origMethod);
+                    } else {
+                        if (!res.show_form) {
+                            handlePaymentBan();
+                        }
+                        alert(res.error);
+                    }
+                }
+            );
+        }
+    );
+
+    function handlePaymentBan() {
+        var paymentMethodCategoryIdentifier = jQuery('#payment_method_category_identifier');
+        paymentMethodCategoryIdentifier.val('');
+
+        var formKlarnaPaymentMethod = jQuery('#p_method_payone_klarna_base');
+        formKlarnaPaymentMethod.val(klarnaBaseCode);
+        console.debug(formKlarnaPaymentMethod);
+
+        var formKlarnaPaymentMethodSelector = jQuery('#dt_method_payone_klarna_base');
+        var formKlarnaPaymentMethodContainer = jQuery('#dd_method_payone_klarna_base');
+        formKlarnaPaymentMethodSelector.hide();
+        formKlarnaPaymentMethodContainer.hide();
+    }
+</script>
+<script src="https://x.klarnacdn.net/kp/lib/v1/api.js" async></script>

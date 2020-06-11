@@ -59,6 +59,7 @@ class Payone_Core_Checkout_Onepage_PaymentController extends Payone_Core_Control
             $oSession->unsPayoneExternalCheckoutActive();
             $success = $this->checkoutSucccess();
             if ($success === true) {
+                $this->cleanKlarnaCheckoutSession($oSession);
                 // Payment is okay. Redirect to standard Magento success page:
                 $this->_redirect('checkout/onepage/success', [
                     '_nosid'  => true,
@@ -81,6 +82,7 @@ class Payone_Core_Checkout_Onepage_PaymentController extends Payone_Core_Control
         try {
             $oSession = Mage::getSingleton('checkout/session');
             $oSession->unsPayoneExternalCheckoutActive();
+            $this->cleanKlarnaCheckoutSession($oSession);
             $this->checkoutCancel(true);
         } catch (Exception $e) {
             $this->handleException($e);
@@ -345,5 +347,16 @@ class Payone_Core_Checkout_Onepage_PaymentController extends Payone_Core_Control
 
         Mage::getSingleton('customer/session')->addError($this->helper()->__("Error trying to download the pdf"));
         $this->_redirect('');
+    }
+
+    /**
+     * MAGE-438: Clear klarna checkout session data
+     * @param Mage_Checkout_Model_Session $checkoutSession
+     */
+    private function cleanKlarnaCheckoutSession($checkoutSession)
+    {
+        $checkoutSession->unsetData('klarna_client_token');
+        $checkoutSession->unsetData('klarna_session_id');
+        $checkoutSession->unsetData('klarna_workorderid');
     }
 }

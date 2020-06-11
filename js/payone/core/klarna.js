@@ -41,3 +41,57 @@ function payoneKlarnaCustomerDobInput(output_element)
     hiddenDobFull.value = yearSelect.value + "-" + monthSelect.value + "-" + daySelect.value
         + " 00:00:00";
 }
+
+function payoneKlarnaStartSession(url, methodCode) {
+    if (window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    xmlhttp.open("POST", url, false);
+
+    xmlhttp.setRequestHeader(
+        "Content-Type",
+        "application/x-www-form-urlencoded"
+    );
+
+    var parameters = "method=" + methodCode;
+
+    if (document.getElementById('isAdminOrder')) {
+        var isAdmin = document.getElementById('isAdminOrder').value;
+        parameters += "&isAdmin=" + isAdmin
+    }
+    if (document.getElementById('quoteId')) {
+        var quoteId = document.getElementById('quoteId').value;
+        parameters += "&quoteId=" + quoteId
+    }
+
+    xmlhttp.send(parameters);
+
+    if (xmlhttp.responseText != null) {
+        try {
+            return JSON.parse(xmlhttp.responseText);
+        } catch (e) {
+            console.debug(e);
+            return {
+                status: 'ERROR',
+                customer_message: 'An error occured duing the operation.'
+            };
+        }
+    }
+}
+
+function payoneKlarnaSwitchOverlay(show) {
+    if (typeof show == 'undefined') {
+        show = false;
+    }
+
+    var overlay = jQuery('#payone_klarna_method_overlay');
+
+    if (show) {
+        overlay.show();
+    } else {
+        overlay.hide();
+    }
+}
