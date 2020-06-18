@@ -39,6 +39,21 @@ class Payone_Core_Block_Payment_Method_Form_KlarnaBase extends Payone_Core_Block
     }
 
     /**
+     * @return bool
+     */
+    public function isDobRequired()
+    {
+        // required for all countries
+        // required only if customer didn't enter Dob in previous checkout step
+        $customerDob = $this->getQuote()->getCustomerDob();
+        if (empty($customerDob)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * @param int $quoteId
      * @return array
      */

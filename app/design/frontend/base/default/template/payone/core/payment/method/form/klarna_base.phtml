@@ -29,16 +29,66 @@ $availableMethods = $this->getKlarnaMethods($quote->getId());
 $klarnaMethodNames = $this->getKlarnaMethodNames();
 $klarnaMethodConfigIds = $this->getKlarnaMethodConfigId();
 
-$customerDob = (new DateTime($quote->getCustomerDob()))->format('Y-m-d');
+$customerDob = !empty($quote->getCustomerDob()) ? (new DateTime($quote->getCustomerDob()))->format('Y-m-d') : '';
 $customerGender = $quote->getCustomerGender() == 2 ? 'female' : 'male';
 $quoteLocale = str_replace('_', '-' , Mage::app()->getLocale()->getLocaleCode());
 ?>
 <fieldset class="form-list">
     <ul id="payment_form_<?php echo $code ?>" style="display:none">
+        <div id="payone_klarna_method_overlay"><img src="<?php echo Mage::getDesign()->getSkinUrl('images/payone/ajaxloader.gif') ?>"></div>
+
+        <h2><?php echo $this->__('KLARNA_CHECKOUT_TITLE') ?></h2>
+
         <li class="fields">
-            <h2><?php echo $this->__('KLARNA_CHECKOUT_TITLE') ?></h2>
-            <p><em><?php echo $this->__('KLARNA_CHECKOUT_DISCLAIMER') ?></em></p>
-            <div id="payone_klarna_method_overlay"><img src="<?php echo Mage::getDesign()->getSkinUrl('images/payone/ajaxloader.gif') ?>"></div>
+            <div class="field">
+                <input type="checkbox" id="payone_klarna_additional_fields_agreement_checkbox"
+                       class="checkbox required-entry"/>
+                <label for="payone_klarna_additional_fields_agreement_checkbox" class="required" style="float:none;">
+                    <?php echo $this->__('KLARNA_CHECKOUT_DISCLAIMER') ?>
+                    <em style="float:none; position:relative;">*</em>
+                </label>
+            </div>
+        </li>
+
+        <?php if ($this->isDobRequired()) { ?>
+            <li class="fields">
+                <div class="field">
+                    <label for="payone_klarna_base_additional_fields_customer_dob_month"
+                           class="required"><em>*</em><?php echo $this->__('Date of birth (DD MM YYYY)') ?>
+                    </label>
+                    <br class="clear"/>
+                    <select id="payone_klarna_base_additional_fields_customer_dob_day" class="required-entry"
+                            style="width: 60px;" onchange="payoneKlarnaCustomerDobInput('payone_klarna_base_additional_fields_customer_dob_full')">
+                        <option value="">--</option>
+                        <?php for ($x = 1; $x <= 31; $x++): ?>
+                            <option value="<?php echo sprintf('%02d', $x); ?>">
+                                <?php echo sprintf('%02d', $x); ?>
+                            </option>
+                        <?php endfor; ?>
+                    </select>
+                    <select id="payone_klarna_base_additional_fields_customer_dob_month" class="required-entry"
+                            style="width: 60px;" onchange="payoneKlarnaCustomerDobInput('payone_klarna_base_additional_fields_customer_dob_full')">
+                        <option value="">--</option>
+                        <?php for ($x = 1; $x <= 12; $x++) : ?>
+                            <option value="<?php echo sprintf('%02d', $x); ?>">
+                                <?php echo sprintf('%02d', $x); ?>
+                            </option>
+                        <?php endfor; ?>
+                    </select>
+                    <select id="payone_klarna_base_additional_fields_customer_dob_year" class="required-entry"
+                            style="width: 60px;" onchange="payoneKlarnaCustomerDobInput('payone_klarna_base_additional_fields_customer_dob_full')">
+                        <option value="">----</option>
+                        <?php for ($x = date('Y'); $x > (date('Y') - 100); $x--) : ?>
+                            <option value="<?php echo $x; ?>">
+                                <?php echo $x; ?>
+                            </option>
+                        <?php endfor; ?>
+                    </select>
+                </div>
+            </li>
+        <?php } ?>
+
+        <li class="fields">
             <div class="payone_klarna_methods">
                 <?php foreach ($availableMethods as $methodType => $methodCode) { ?>
                     <div id="<?php echo $methodCode ?>_payment_selection" class="button">
@@ -52,9 +102,10 @@ $quoteLocale = str_replace('_', '-' , Mage::app()->getLocale()->getLocaleCode())
             <div id="klarna_payments_container"></div>
         </li>
         <li style="display:none;">
-            <input type="hidden" name="payment[payone_config_payment_method_id]"  id="klarna_config_id" value="<?php echo $configId; ?>"/>
-            <input type="hidden" name="payment[authorization_token]"  id="klarna_authorization_token" value=""/>
-            <input type="hidden" name="payment[payment_method_category_identifier]"  id="payment_method_category_identifier" value=""/>
+            <input type="hidden" id="klarna_config_id"  name="payment[payone_config_payment_method_id]"  value="<?php echo $configId; ?>"/>
+            <input type="hidden" id="klarna_authorization_token" name="payment[authorization_token]" value=""/>
+            <input type="hidden" id="payment_method_category_identifier" name="payment[payment_method_category_identifier]" value=""/>
+            <input type="hidden" id="payone_klarna_base_additional_fields_customer_dob_full" name="payment[payone_customer_dob]" value="<?php echo $customerDob; ?>">
             <input type="hidden" id="quoteId" name="quoteId" value="<?php echo $quote->getId(); ?>" />
         </li>
     </ul>
@@ -74,42 +125,45 @@ $quoteLocale = str_replace('_', '-' , Mage::app()->getLocale()->getLocaleCode())
     jQuery('[id$=_payment_selection]').on(
         "click",
         function(event) {
-            payoneKlarnaSwitchOverlay(true);
-            var target = event.currentTarget;
-            var children = jQuery(target).find('input');
-            var methodCode = children.first().val();
+            var validator = new Validation(payment.form);
+            if (validator.validate()) {
+                payoneKlarnaSwitchOverlay(true);
+                var target = event.currentTarget;
+                var children = jQuery(target).find('input');
+                var methodCode = children.first().val();
 
-            var response = payoneKlarnaStartSession(startSessionUrl, methodCode);
+                var response = payoneKlarnaStartSession(startSessionUrl, methodCode);
 
-            var status = response.status;
-            if (status == 'OK') {
-                var paymentTitle = jQuery('#klarna_payment_title');
-                paymentTitle.empty();
-                var paymentTitleContent = '<img style="display: inline" src="' + response.payment_method_category_asset_url_descriptive + '" />'
-                    + ' <span>' + response.payment_method_category_name + '</span>';
-                paymentTitle.append(paymentTitleContent);
+                var status = response.status;
+                if (status == 'OK') {
+                    var paymentTitle = jQuery('#klarna_payment_title');
+                    paymentTitle.empty();
+                    var paymentTitleContent = '<img style="display: inline" src="' + response.payment_method_category_asset_url_descriptive + '" />'
+                        + ' <span>' + response.payment_method_category_name + '</span>';
+                    paymentTitle.append(paymentTitleContent);
 
-                var formKlarnaPaymentMethodField= jQuery('#p_method_payone_klarna_base');
-                formKlarnaPaymentMethodField.val(methodCode);
+                    var formKlarnaPaymentMethodField= jQuery('#p_method_payone_klarna_base');
+                    formKlarnaPaymentMethodField.val(methodCode);
 
-                var klarnaConfigIdField = jQuery('#klarna_config_id');
-                if (methodCode == klarnaDirectDebitCode) {
-                    klarnaConfigIdField.val(klarnaDirectDebitMethodId);
-                } else if (methodCode == klarnaInstallmentCode) {
-                    klarnaConfigIdField.val(klarnaInstallmentMethodId);
-                } else if (methodCode == klarnaInvoicingCode) {
-                    klarnaConfigIdField.val(klarnaInvoicingMethodId);
+                    var klarnaConfigIdField = jQuery('#klarna_config_id');
+                    if (methodCode == klarnaDirectDebitCode) {
+                        klarnaConfigIdField.val(klarnaDirectDebitMethodId);
+                    } else if (methodCode == klarnaInstallmentCode) {
+                        klarnaConfigIdField.val(klarnaInstallmentMethodId);
+                    } else if (methodCode == klarnaInvoicingCode) {
+                        klarnaConfigIdField.val(klarnaInvoicingMethodId);
+                    } else {
+                        klarnaConfigIdField.empty();
+                        formKlarnaPaymentMethodField.val(klarnaBaseCode);
+                    }
+
+                    jQuery('#klarna_payments_container').empty();
+                    window.klarnaAsyncCallback(response);
                 } else {
-                    klarnaConfigIdField.empty();
-                    formKlarnaPaymentMethodField.val(klarnaBaseCode);
+                    alert(response.customer_message);
                 }
-
-                jQuery('#klarna_payments_container').empty();
-                window.klarnaAsyncCallback(response);
-            } else {
-                alert(response.customer_message);
+                payoneKlarnaSwitchOverlay(false);
             }
-            payoneKlarnaSwitchOverlay(false);
         }
     );
 
@@ -135,6 +189,7 @@ $quoteLocale = str_replace('_', '-' , Mage::app()->getLocale()->getLocaleCode())
         function (origMethod) {
             var paymentMethodCategoryIdentifier = jQuery('#payment_method_category_identifier').val();
             var formKlarnaPaymentMethod = jQuery('#p_method_payone_klarna_base').val();
+            var customerDoB = jQuery('#payone_klarna_base_additional_fields_customer_dob_full').val();
 
             if (formKlarnaPaymentMethod == klarnaBaseCode || paymentMethodCategoryIdentifier == '') {
                 return payone.exec(origMethod);
@@ -174,7 +229,7 @@ $quoteLocale = str_replace('_', '-' , Mage::app()->getLocale()->getLocaleCode())
                         country: "<?php echo $this->getQuote()->getShippingAddress()->getCountry() ?>"
                     },
                     customer: {
-                        date_of_birth: "<?php echo $customerDob ?>",
+                        date_of_birth: customerDoB,
                         gender: "<?php echo $customerGender ?>",
                     }
                 },
@@ -189,7 +244,7 @@ $quoteLocale = str_replace('_', '-' , Mage::app()->getLocale()->getLocaleCode())
                         if (!res.show_form) {
                             handlePaymentBan();
                         }
-                        alert(res.error);
+                        console.debug(res.error);
                     }
                 }
             );

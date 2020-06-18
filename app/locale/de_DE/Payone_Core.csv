@@ -1301,7 +1301,7 @@ The <a target='_blank' href='https://www.ratepay.com/zgb-dse'>additional terms a
 
 
 "KLARNA_CHECKOUT_TITLE", "Mit Klarna bezahlen"
-"KLARNA_CHECKOUT_DISCLAIMER", "Wenn du deinen Einkauf fortsetzt, bestätigst du, dass du unsere <a target='_blank' href='https://cdn.klarna.com/1.0/shared/content/legal/terms/0/de_de/user'>Allgemeinen Geschäftsbedingungen</a> sowie unsere <a target='_blank' href='https://cdn.klarna.com/1.0/shared/content/legal/terms/0/de_de/privacy'>Datenschutzerklärung</a> gelesen hast."
+"KLARNA_CHECKOUT_DISCLAIMER", "Wenn du deinen Einkauf fortsetzt, bestätigst du, dass du unsere <a style='float:none; margin:0' target='_blank' href='https://cdn.klarna.com/1.0/shared/content/legal/terms/0/de_de/user'>Allgemeinen Geschäftsbedingungen</a> sowie unsere <a style='float:none; margin:0' target='_blank' href='https://cdn.klarna.com/1.0/shared/content/legal/terms/0/de_de/privacy'>Datenschutzerklärung</a> gelesen hast."
 "payone_klarna_invoicing", Klarna "Pay Later" (Rechnung)
 "payone_klarna_installment", Klarna "Slice It" (Ratenkauf)
 "payone_klarna_direct_debit", Klarna "Pay Now" (Lastschrift)

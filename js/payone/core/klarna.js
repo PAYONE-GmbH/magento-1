@@ -22,15 +22,9 @@
 
 function payoneKlarnaCustomerDobInput(output_element)
 {
-    var daySelect = $('payone_klarna_additional_fields_customer_dob_day');
-    var monthSelect = $('payone_klarna_additional_fields_customer_dob_month');
-    var yearSelect = $('payone_klarna_additional_fields_customer_dob_year');
-    if(output_element == 'payone_financing_klarna_additional_fields_customer_dob_full') {
-        var daySelect = $('payone_financing_klarna_additional_fields_customer_dob_day');
-        var monthSelect = $('payone_financing_klarna_additional_fields_customer_dob_month');
-        var yearSelect = $('payone_financing_klarna_additional_fields_customer_dob_year');
-    }
-
+    var daySelect = $('payone_klarna_base_additional_fields_customer_dob_day');
+    var monthSelect = $('payone_klarna_base_additional_fields_customer_dob_month');
+    var yearSelect = $('payone_klarna_base_additional_fields_customer_dob_year');
     var hiddenDobFull = $(output_element);
 
     if (daySelect == undefined || monthSelect == undefined || yearSelect == undefined
@@ -38,8 +32,7 @@ function payoneKlarnaCustomerDobInput(output_element)
         return;
     }
 
-    hiddenDobFull.value = yearSelect.value + "-" + monthSelect.value + "-" + daySelect.value
-        + " 00:00:00";
+    hiddenDobFull.value = yearSelect.value + "-" + monthSelect.value + "-" + daySelect.value;
 }
 
 function payoneKlarnaStartSession(url, methodCode) {
