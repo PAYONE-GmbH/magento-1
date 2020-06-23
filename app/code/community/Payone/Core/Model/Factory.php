@@ -952,14 +952,24 @@ class Payone_Core_Model_Factory
      */
     public function getServiceTransactionStatusExecute()
     {
+        // Collect configuration options
         $maxExecutionTime = $this->helperConfig()
-                ->getStoreConfig('payone_general/transactionstatus_execute/max_execution_time');
+            ->getStoreConfig('payone_general/transactionstatus_execute/max_execution_time');
+        $maxRetryCount = (int) Mage::helper('payone_core')->getTransactionProcessingMaxRetryCount();
+        $processReportEnabled = (bool) Mage::helper('payone_core')->getTransactionProcessingReportingActive();
+        $processReportEmail = Mage::helper('payone_core')->getTransactionProcessingReportEmail();
 
         /** @var $service Payone_Core_Model_Service_TransactionStatus_Execute */
         $service = Mage::getModel('payone_core/service_transactionStatus_execute');
+
         $service->setServiceProcess($this->getServiceTransactionStatusProcess());
         $service->setFactory($this);
         $service->setMaxExecutionTime($maxExecutionTime);
+        $service->setMaxRetryCount($maxRetryCount);
+
+        if ($processReportEnabled) {
+            $service->setProcessReportEmail($processReportEmail);
+        }
 
         return $service;
     }

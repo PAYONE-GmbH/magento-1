@@ -59,32 +59,4 @@ class Payone_Core_Model_Domain_Resource_Protocol_TransactionStatus_Collection
     {
         $this->addFieldToFilter('txid', $transaction->getTxid());
     }
-
-    /**
-     * @param array $excludeIds A list of transaction status IDs to exclude from selection.
-     * @return Payone_Core_Model_Domain_Protocol_TransactionStatus
-     */
-    public function getNextPending(array $excludeIds)
-    {
-        $status = Payone_Core_Model_Domain_Protocol_TransactionStatus::STATUS_PENDING;
-
-        $this->clear();
-
-        if (!empty($excludeIds)) {
-            $this->addFieldToFilter('id', array('nin' => $excludeIds));
-        }
-
-        $this->addFieldToFilter('processing_status', $status);
-        $this->setOrder('id', 'ASC');
-        $this->getSelect()->limit(1);
-
-        $this->load();
-
-        foreach ($this as $data) {
-            return $data;
-        }
-
-        return null;
-    }
-
 }
