@@ -30,6 +30,8 @@ $klarnaMethodNames = $this->getKlarnaMethodNames();
 $klarnaMethodConfigIds = $this->getKlarnaMethodConfigId();
 
 $customerDob = !empty($quote->getCustomerDob()) ? (new DateTime($quote->getCustomerDob()))->format('Y-m-d') : '';
+$customerBillingPhone = '';//$this->getCustomerBillingPhone();
+$customerShippingPhone = '';//$this->getCustomerShippingPhone();
 $customerGender = $quote->getCustomerGender() == 2 ? 'female' : 'male';
 $quoteLocale = str_replace('_', '-' , Mage::app()->getLocale()->getLocaleCode());
 ?>
@@ -88,6 +90,43 @@ $quoteLocale = str_replace('_', '-' , Mage::app()->getLocale()->getLocaleCode())
             </li>
         <?php } ?>
 
+
+        <?php if (empty($customerBillingPhone)) { ?>
+            <li>
+                <div class="field">
+                    <label for="payone_klarna_base_additional_fields_customer_billing_telephone" class="required">
+                        <em>*</em><?php echo $this->__('Telephone') ?> (<?php echo $this->__('Billing') ?>)
+                    </label>
+                    <br class="clear"/>
+                    <input type="text" name="payment[payone_customer_billing_telephone]"
+                           id="payone_klarna_base_additional_fields_customer_billing_telephone"
+                           class="input-text required-entry"/>
+                </div>
+            </li>
+        <?php } else {?>
+            <input type="hidden" name="payment[payone_customer_billing_telephone]"
+                   id="payone_klarna_base_additional_fields_customer_telephone"
+                   value="<?php echo $customerBillingPhone; ?>"/>
+        <?php } ?>
+
+        <?php if (empty($customerShippingPhone)) { ?>
+            <li>
+                <div class="field">
+                    <label for="payone_klarna_base_additional_fields_customer_shipping_telephone" class="required">
+                        <em>*</em><?php echo $this->__('Telephone') ?> (<?php echo $this->__('Shipping') ?>)
+                    </label>
+                    <br class="clear"/>
+                    <input type="text" name="payment[payone_customer_shipping_telephone]"
+                           id="payone_klarna_base_additional_fields_customer_shipping_telephone"
+                           class="input-text required-entry"/>
+                </div>
+            </li>
+        <?php } else {?>
+            <input type="hidden" name="payment[payone_customer_shipping_telephone]"
+                   id="payone_klarna_base_additional_fields_customer_shipping_telephone"
+                   value="<?php echo $customerShippingPhone; ?>"/>
+        <?php } ?>
+
         <li class="fields">
             <div class="payone_klarna_methods">
                 <?php foreach ($availableMethods as $methodType => $methodCode) { ?>
@@ -106,6 +145,8 @@ $quoteLocale = str_replace('_', '-' , Mage::app()->getLocale()->getLocaleCode())
             <input type="hidden" id="klarna_authorization_token" name="payment[authorization_token]" value=""/>
             <input type="hidden" id="payment_method_category_identifier" name="payment[payment_method_category_identifier]" value=""/>
             <input type="hidden" id="payone_klarna_base_additional_fields_customer_dob_full" name="payment[payone_customer_dob]" value="<?php echo $customerDob; ?>">
+            <input type="hidden" id="payone_klarna_base_additional_fields_customer_billing_telephone" name="payment[payone_customer_billing_telephone]" value="<?php echo $customerBillingPhone; ?>">
+            <input type="hidden" id="payone_klarna_base_additional_fields_customer_shipping_telephone" name="payment[payone_customer_shipping_telephone]" value="<?php echo $customerShippingPhone; ?>">
             <input type="hidden" id="quoteId" name="quoteId" value="<?php echo $quote->getId(); ?>" />
         </li>
     </ul>
@@ -190,6 +231,8 @@ $quoteLocale = str_replace('_', '-' , Mage::app()->getLocale()->getLocaleCode())
             var paymentMethodCategoryIdentifier = jQuery('#payment_method_category_identifier').val();
             var formKlarnaPaymentMethod = jQuery('#p_method_payone_klarna_base').val();
             var customerDoB = jQuery('#payone_klarna_base_additional_fields_customer_dob_full').val();
+            var customerBillingPhone = jQuery('#payone_klarna_base_additional_fields_customer_billing_telephone').val();
+            var customerShippingPhone = jQuery('#payone_klarna_base_additional_fields_customer_shipping_telephone').val();
 
             if (formKlarnaPaymentMethod == klarnaBaseCode || paymentMethodCategoryIdentifier == '') {
                 return payone.exec(origMethod);
@@ -213,7 +256,7 @@ $quoteLocale = str_replace('_', '-' , Mage::app()->getLocale()->getLocaleCode())
                         postal_code: "<?php echo $this->getQuote()->getBillingAddress()->getPostcode() ?>",
                         city: "<?php echo $this->getQuote()->getBillingAddress()->getCity() ?>",
                         region: "",
-                        phone: "<?php echo $this->getQuote()->getBillingAddress()->getTelephone() ?>",
+                        phone: customerBillingPhone,
                         country: "<?php echo $this->getQuote()->getBillingAddress()->getCountry() ?>"
                     },
                     shipping_address: {
@@ -225,7 +268,7 @@ $quoteLocale = str_replace('_', '-' , Mage::app()->getLocale()->getLocaleCode())
                         postal_code: "<?php echo $this->getQuote()->getShippingAddress()->getPostcode() ?>",
                         city: "<?php echo $this->getQuote()->getShippingAddress()->getCity() ?>",
                         region: "",
-                        phone: "<?php echo $this->getQuote()->getShippingAddress()->getTelephone() ?>",
+                        phone: customerShippingPhone,
                         country: "<?php echo $this->getQuote()->getShippingAddress()->getCountry() ?>"
                     },
                     customer: {

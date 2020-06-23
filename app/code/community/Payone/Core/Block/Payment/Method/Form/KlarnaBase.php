@@ -54,6 +54,35 @@ class Payone_Core_Block_Payment_Method_Form_KlarnaBase extends Payone_Core_Block
     }
 
     /**
+     * @return bool
+     */
+    public function isTelephoneRequired()
+    {
+        return empty($this->getQuote()->getBillingAddress()->getTelephone())
+        && empty($this->getQuote()->getShippingAddress()->getTelephone());
+    }
+
+    /**
+     * @return string
+     */
+    public function getCustomerBillingPhone()
+    {
+        return !empty($this->getQuote()->getBillingAddress()->getTelephone())
+            ? $this->getQuote()->getBillingAddress()->getTelephone()
+            : $this->getQuote()->getShippingAddress()->getTelephone();
+    }
+
+    /**
+     * @return string
+     */
+    public function getCustomerShippingPhone()
+    {
+        return !empty($this->getQuote()->getShippingAddress()->getTelephone()) 
+            ? $this->getQuote()->getShippingAddress()->getTelephone()
+            : $this->getQuote()->getBillingAddress()->getTelephone();
+    }
+
+    /**
      * @param int $quoteId
      * @return array
      */

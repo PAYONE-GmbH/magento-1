@@ -1306,3 +1306,5 @@ The <a target='_blank' href='https://www.ratepay.com/zgb-dse'>additional terms a
 "payone_klarna_installment", Klarna "Slice It" (Ratenkauf)
 "payone_klarna_direct_debit", Klarna "Pay Now" (Lastschrift)
 "An error occurred during the operation.", "Während des Vorgangs ist ein Fehler aufgetreten."
+
+"This is a required field.", "Dies ist ein Pflichtfeld."
