@@ -134,6 +134,10 @@ abstract class Payone_Core_Model_Service_Payment_Abstract
 
         /** @var Payone_Core_Model_Session $session */
         $session = Mage::getSingleton('payone_core/session');
+
+        /** @var \Mage_Checkout_Model_Session $checkoutSession */
+        $checkoutSession = Mage::getSingleton('checkout/session');
+
         /** @var Payone_Api_Response_Error $response */
         if ($response instanceof Payone_Api_Response_Error) {
             if (!$isRetry && $session->getData('amazon_retry_async') && $response->getErrorcode() == 980) {
@@ -173,7 +177,6 @@ abstract class Payone_Core_Model_Service_Payment_Abstract
             }
             elseif (isset($this->aRestrictableMethods[$payment->getMethod()])) {
                 if (in_array($response->getErrorcode(), $this->aRestrictableMethods[$payment->getMethod()])) {
-
                     /**
                      * MAGE-449 increase delay to 48h for Ratepay
                      */
@@ -183,22 +186,41 @@ abstract class Payone_Core_Model_Service_Payment_Abstract
                         $payment->getMethod() == Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAY ||
                         $payment->getMethod() == Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAYDIRECTDEBIT)
                         && $response->getErrorcode() == 307
-
                     ) {
-                        $restrictionDelay = '+2days';
-                    }
 
-                    /** @var Payone_Core_Model_Domain_PaymentBan $oPaymentBan */
-                    $oPaymentBan = Mage::getModel('payone_core/domain_paymentBan');
-                    $oPaymentBan = $oPaymentBan->loadByCustomerIdPaymentMethod(
-                        $payment->getOrder()->getCustomerId(),
-                        $payment->getMethod()
-                    );
-                    $oPaymentBan->setCustomerId($payment->getOrder()->getCustomerId());
-                    $oPaymentBan->setPaymentMethod($payment->getMethod());
-                    $oPaymentBan->setFromDate((new DateTime())->format(DATE_ISO8601));
-                    $oPaymentBan->setToDate((new DateTime($restrictionDelay))->format(DATE_ISO8601));
-                    $oPaymentBan->save();
+                        /**
+                         * Raise the checkout flag for guest checkout cases
+                         */
+//                        $checkoutSession->setData('ratepay_checkout_banned', true); TODO FCVB RESTORE
+
+                        /**
+                         * Register ban for 48h for the 3 methods
+                         */
+                        $restrictionDelay = '+2days';
+                        if (!is_null($payment->getOrder()->getCustomerId())) {
+                            $this->registerPaymentBan(
+                                Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAYINVOICING,
+                                $payment->getOrder()->getCustomerId(),
+                                $restrictionDelay
+                            );
+
+                            $this->registerPaymentBan(
+                                Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAY,
+                                $payment->getOrder()->getCustomerId(),
+                                $restrictionDelay
+                            );
+
+                            $this->registerPaymentBan(
+                                Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAYDIRECTDEBIT,
+                                $payment->getOrder()->getCustomerId(),
+                                $restrictionDelay
+                            );
+                        }
+                    } else {
+                        if (!is_null($payment->getOrder()->getCustomerId())) {
+                            $this->registerPaymentBan($payment->getMethod(), $payment->getOrder()->getCustomerId(), $restrictionDelay);
+                        }
+                    }
                 }
 
                 throw new Mage_Payment_Model_Info_Exception(
@@ -223,8 +245,6 @@ abstract class Payone_Core_Model_Service_Payment_Abstract
                 'Your transaction with Amazon Pay is currently being validated. ' .
                 'Please be aware that we will inform you shortly as needed.'
             );
-            /** @var \Mage_Checkout_Model_Session $checkoutSession */
-            $checkoutSession = Mage::getSingleton('checkout/session');
             $checkoutSession->addNotice($message);
         }
         $session->unsetData('amazon_retry_async');
@@ -232,6 +252,28 @@ abstract class Payone_Core_Model_Service_Payment_Abstract
         $session->unsetData('amazon_lock_order');
 
         return $response;
+    }
+
+    /**
+     * @param string $paymentMethod
+     * @param int $customerId
+     * @param string $restrictionDelay
+     * @throws Exception
+     */
+    protected function registerPaymentBan($paymentMethod, $customerId, $restrictionDelay = '+1day')
+    {
+        /** @var Payone_Core_Model_Domain_PaymentBan $oPaymentBan */
+        $oPaymentBan = Mage::getModel('payone_core/domain_paymentBan');
+        $oPaymentBan = $oPaymentBan->loadByCustomerIdPaymentMethod($customerId, $paymentMethod);
+        if (empty($oPaymentBan->getId())) {
+
+        }
+
+        $oPaymentBan->setCustomerId($customerId);
+        $oPaymentBan->setPaymentMethod($paymentMethod);
+        $oPaymentBan->setFromDate((new DateTime())->format(DATE_ISO8601));
+        $oPaymentBan->setToDate((new DateTime($restrictionDelay))->format(DATE_ISO8601));
+        $oPaymentBan->save();
     }
 
     protected function getEventName()
