@@ -30,8 +30,8 @@ $klarnaMethodNames = $this->getKlarnaMethodNames();
 $klarnaMethodConfigIds = $this->getKlarnaMethodConfigId();
 
 $customerDob = !empty($quote->getCustomerDob()) ? (new DateTime($quote->getCustomerDob()))->format('Y-m-d') : '';
-$customerBillingPhone = '';//$this->getCustomerBillingPhone();
-$customerShippingPhone = '';//$this->getCustomerShippingPhone();
+$customerBillingPhone = $this->getCustomerBillingPhone();
+$customerShippingPhone = $this->getCustomerShippingPhone();
 $customerGender = $quote->getCustomerGender() == 2 ? 'female' : 'male';
 $quoteLocale = str_replace('_', '-' , Mage::app()->getLocale()->getLocaleCode());
 ?>
@@ -229,12 +229,12 @@ $quoteLocale = str_replace('_', '-' , Mage::app()->getLocale()->getLocaleCode())
     payment.save = payment.save.wrap(
         function (origMethod) {
             var paymentMethodCategoryIdentifier = jQuery('#payment_method_category_identifier').val();
-            var formKlarnaPaymentMethod = jQuery('#p_method_payone_klarna_base').val();
+            var formKlarnaPaymentMethod = jQuery('#p_method_payone_klarna_base');
             var customerDoB = jQuery('#payone_klarna_base_additional_fields_customer_dob_full').val();
             var customerBillingPhone = jQuery('#payone_klarna_base_additional_fields_customer_billing_telephone').val();
             var customerShippingPhone = jQuery('#payone_klarna_base_additional_fields_customer_shipping_telephone').val();
 
-            if (formKlarnaPaymentMethod == klarnaBaseCode || paymentMethodCategoryIdentifier == '') {
+            if (!formKlarnaPaymentMethod.is(':checked') || formKlarnaPaymentMethod.val() == klarnaBaseCode || paymentMethodCategoryIdentifier == '') {
                 return payone.exec(origMethod);
             }
 
