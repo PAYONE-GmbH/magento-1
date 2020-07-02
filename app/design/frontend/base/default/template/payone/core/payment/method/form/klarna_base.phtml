@@ -141,7 +141,7 @@ $quoteLocale = str_replace('_', '-' , Mage::app()->getLocale()->getLocaleCode())
             <div id="klarna_payments_container"></div>
         </li>
         <li style="display:none;">
-            <input type="hidden" id="klarna_config_id"  name="payment[payone_config_payment_method_id]"  value="<?php echo $configId; ?>"/>
+            <input type="hidden" id="klarna_config_id"  name="payment[payone_config_payment_method_id]"  value=""/>
             <input type="hidden" id="klarna_authorization_token" name="payment[authorization_token]" value=""/>
             <input type="hidden" id="payment_method_category_identifier" name="payment[payment_method_category_identifier]" value=""/>
             <input type="hidden" id="payone_klarna_base_additional_fields_customer_dob_full" name="payment[payone_customer_dob]" value="<?php echo $customerDob; ?>">
@@ -157,9 +157,9 @@ $quoteLocale = str_replace('_', '-' , Mage::app()->getLocale()->getLocaleCode())
     var klarnaInstallmentCode = '<?php echo Payone_Core_Model_System_Config_PaymentMethodCode::KLARNAINSTALLMENT ?>';
     var klarnaDirectDebitCode = '<?php echo Payone_Core_Model_System_Config_PaymentMethodCode::KLARNADIRECTDEBIT ?>';
 
-    var klarnaInvoicingMethodId = '<?php echo $klarnaMethodConfigIds[Payone_Core_Model_System_Config_PaymentMethodType::KLARNAINVOICING] ?>';
-    var klarnaInstallmentMethodId = '<?php echo $klarnaMethodConfigIds[Payone_Core_Model_System_Config_PaymentMethodType::KLARNAINSTALLMENT] ?>';
-    var klarnaDirectDebitMethodId = '<?php echo $klarnaMethodConfigIds[Payone_Core_Model_System_Config_PaymentMethodType::KLARNADIRECTDEBIT] ?>';
+    var klarnaInvoicingMethodId = '<?php echo isset($klarnaMethodConfigIds[Payone_Core_Model_System_Config_PaymentMethodType::KLARNAINVOICING]) ? $klarnaMethodConfigIds[Payone_Core_Model_System_Config_PaymentMethodType::KLARNAINVOICING] : '' ?>';
+    var klarnaInstallmentMethodId = '<?php echo isset($klarnaMethodConfigIds[Payone_Core_Model_System_Config_PaymentMethodType::KLARNAINSTALLMENT]) ? $klarnaMethodConfigIds[Payone_Core_Model_System_Config_PaymentMethodType::KLARNAINSTALLMENT] : '' ?>';
+    var klarnaDirectDebitMethodId = '<?php echo isset($klarnaMethodConfigIds[Payone_Core_Model_System_Config_PaymentMethodType::KLARNADIRECTDEBIT]) ? $klarnaMethodConfigIds[Payone_Core_Model_System_Config_PaymentMethodType::KLARNADIRECTDEBIT] : '' ?>';
 
     var startSessionUrl = '<?php echo $startSessionUrl ?>';
 

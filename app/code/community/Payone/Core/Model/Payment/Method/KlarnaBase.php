@@ -32,6 +32,8 @@ class Payone_Core_Model_Payment_Method_KlarnaBase extends Payone_Core_Model_Paym
     protected $_formBlockType = 'payone_core/payment_method_form_klarnaBase';
     protected $_infoBlockType = 'payone_core/payment_method_info_klarnaBase';
 
+    protected $_mustTransimitInvoicingData = true;
+
     public function getApiResponseErrorMessage($response)
     {
         if((bool)$this->getConfig()->getShowCustomermessage() === true) {

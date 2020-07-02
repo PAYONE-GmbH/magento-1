@@ -133,6 +133,9 @@ class Payone_Core_Block_Payment_Method_Form_KlarnaBase extends Payone_Core_Block
         );
         foreach ($this->klarnaMethods as $type => $id) {
             $config = $this->helperConfig()->getConfigPaymentMethodByType($this->getQuote()->getStoreId(), $type);
+            if (!$config) {
+                continue;
+            }
             $klarnaMethodConfigIds[$type] = $config->getId();
         }
 
