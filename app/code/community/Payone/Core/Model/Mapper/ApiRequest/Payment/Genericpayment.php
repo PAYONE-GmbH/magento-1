@@ -605,8 +605,6 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment
             ]));
         }
 
-
-        /** @var Mage_Customer_Model_Customer $customer */
         $billingAddress = $quote->getBillingAddress();
         $request->setFirstname($billingAddress->getFirstname());
         $request->setLastname($billingAddress->getLastname());
@@ -616,6 +614,9 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment
         $request->setCity($billingAddress->getCity());
         $request->setCountry($billingAddress->getCountry());
         $request->setTelephonenumber($billingAddress->getTelephone());
+        if (isset($data['dob'])) {
+            $request->setBirthday($data['dob']);
+        }
 
         $shippingAddress = $quote->getShippingAddress();
         if ($shippingAddress) {
@@ -661,6 +662,10 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment
             $paydata->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem([
                 'key' => 'shipping_telephonenumber',
                 'data' => !empty($shippingAddress->getTelephone()) ? $shippingAddress->getTelephone() : $billingAddress->getTelephone()
+            ]));
+            $paydata->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem([
+                'key' => 'shipping_title',
+                'data' => !empty($quote->getCustomerGender() == 2) ? $this->getFactory()->helper()->__('Mrs') : $this->getFactory()->helper()->__('Mr')
             ]));
         }
 
@@ -732,12 +737,15 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment
         if ($shippingAmount != 0) {
             $configMiscShipping = $this->getHelperConfig()->getConfigMisc($quote->getStoreId())->getShippingCosts();
             $sku = $configMiscShipping->getSku();
-            if (!empty($sku)) {
+            if (empty($sku)) {
                 $sku = $this->getFactory()->helper()->__(self::DEFAULT_SHIPPING_SKU);
             }
 
-            $shippingVatRatio = $quote->getShippingAddress()->getShippingTaxAmount()
-                / $quote->getShippingAddress()->getShippingAmount();
+            $store = $quote->getStore();
+            $taxCalculation = Mage::getModel('tax/calculation');
+            $request = $taxCalculation->getRateRequest(null, null, null, $store);
+            $taxRateId = Mage::getStoreConfig('tax/classes/shipping_tax_class', $store);
+            $shippingVatRatio = $taxCalculation->getRate($request->setProductClassId($taxRateId));
             if (is_nan($shippingVatRatio) || !is_numeric($shippingVatRatio)) {
                 $shippingVatRatio = 0;
             }
@@ -746,7 +754,7 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment
             $params['id'] = $sku;
             $params['pr'] = round($this->_convertShippingAmount($quote->getShippingAddress()) * 100, 2);
             $params['no'] = 1;
-            $params['de'] = 'Shipping Costs';
+            $params['de'] = $this->getFactory()->helper()->__('Shipping Costs');
             $params['va'] = round($shippingVatRatio * 100, 2);
 
             $item = new Payone_Api_Request_Parameter_Invoicing_Item();

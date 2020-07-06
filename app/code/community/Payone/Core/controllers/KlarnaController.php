@@ -36,9 +36,10 @@ class Payone_Core_KlarnaController extends Mage_Core_Controller_Front_Action
         $this->cleanKlarnaCheckoutSession();
 
         $methodCode = $this->getRequest()->getParam('method');
+        $dob = $this->getRequest()->getParam('dob');
 
         $this->initCheckout($methodCode);
-        $requestResult = $this->checkout->checkoutStartSession();
+        $requestResult = $this->checkout->checkoutStartSession($dob);
         if ($requestResult instanceof Payone_Api_Response_Genericpayment_Approved) {
             $responseData = $requestResult->getPaydata()->toAssocArray();
             $responseData['status'] = $requestResult->getStatus();

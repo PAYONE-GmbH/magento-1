@@ -77,13 +77,21 @@ class Payone_Core_Model_Service_Klarna_Checkout
      *
      * @return Payone_Api_Response_Error|Payone_Api_Response_Genericpayment_Approved|Payone_Api_Response_Genericpayment_Redirect
      */
-    public function checkoutStartSession()
+    public function checkoutStartSession($dobParam)
     {
         $params = array(
             'action' => \Payone_Api_Enum_GenericpaymentAction::KLARNA_START_SESSION,
             'quote' => $this->quote,
             'method' => $this->config->getCode()
         );
+
+        if (!empty($dobParam)) {
+            $params['dob'] = (new DateTime($dobParam))->format('Ymd');
+        } else {
+            if (!empty($this->quote->getCustomerDob())) {
+                $params['dob'] = (new DateTime($this->quote->getCustomerDob()))->format('Ymd');
+            }
+        }
 
         $service = $this->getFactory()->getServicePaymentGenericpayment($this->config);
         /** @var \Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment $mapper */

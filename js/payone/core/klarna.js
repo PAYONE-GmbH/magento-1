@@ -59,6 +59,10 @@ function payoneKlarnaStartSession(url, methodCode) {
         var quoteId = document.getElementById('quoteId').value;
         parameters += "&quoteId=" + quoteId
     }
+    if (document.getElementById('payone_klarna_base_additional_fields_customer_dob_full')) {
+        var dob = document.getElementById('payone_klarna_base_additional_fields_customer_dob_full').value;
+        parameters += "&dob=" + dob
+    }
 
     xmlhttp.send(parameters);
 
