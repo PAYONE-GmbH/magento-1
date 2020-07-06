@@ -6,6 +6,9 @@ app/design/adminhtml/default/default/template/payone/*  app/design/adminhtml/def
 app/design/frontend/base/default/layout/payone/*        app/design/frontend/base/default/layout/payone/
 app/design/frontend/base/default/template/payone/*      app/design/frontend/base/default/template/payone/
 
+app/design/frontend/rwd/default/layout/payone/*        app/design/frontend/rwd/default/layout/payone/
+app/design/frontend/rwd/default/template/payone/*      app/design/frontend/rwd/default/template/payone/
+
 app/etc/modules/*                                       app/etc/modules/
 
 app/locale/de_DE/*.csv                                  app/locale/de_DE/
