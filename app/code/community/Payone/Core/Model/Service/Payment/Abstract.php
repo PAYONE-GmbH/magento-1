@@ -176,52 +176,11 @@ abstract class Payone_Core_Model_Service_Payment_Abstract
 
             }
             elseif (isset($this->aRestrictableMethods[$payment->getMethod()])) {
-                if (in_array($response->getErrorcode(), $this->aRestrictableMethods[$payment->getMethod()])) {
-                    /**
-                     * MAGE-449 increase delay to 48h for Ratepay
-                     */
-                    $restrictionDelay = '+1day';
-                    if (
-                        ($payment->getMethod() == Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAYINVOICING ||
-                        $payment->getMethod() == Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAY ||
-                        $payment->getMethod() == Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAYDIRECTDEBIT)
-                        && $response->getErrorcode() == 307
-                    ) {
-
-                        /**
-                         * Raise the checkout flag for guest checkout cases
-                         */
-//                        $checkoutSession->setData('ratepay_checkout_banned', true); TODO FCVB RESTORE
-
-                        /**
-                         * Register ban for 48h for the 3 methods
-                         */
-                        $restrictionDelay = '+2days';
-                        if (!is_null($payment->getOrder()->getCustomerId())) {
-                            $this->registerPaymentBan(
-                                Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAYINVOICING,
-                                $payment->getOrder()->getCustomerId(),
-                                $restrictionDelay
-                            );
-
-                            $this->registerPaymentBan(
-                                Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAY,
-                                $payment->getOrder()->getCustomerId(),
-                                $restrictionDelay
-                            );
-
-                            $this->registerPaymentBan(
-                                Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAYDIRECTDEBIT,
-                                $payment->getOrder()->getCustomerId(),
-                                $restrictionDelay
-                            );
-                        }
-                    } else {
-                        if (!is_null($payment->getOrder()->getCustomerId())) {
-                            $this->registerPaymentBan($payment->getMethod(), $payment->getOrder()->getCustomerId(), $restrictionDelay);
-                        }
-                    }
-                }
+                /**
+                 * MAGE-449 : store the error code
+                 * for further handling in Payone_Core_Model_Observer_Sales_Quote_Submit_Failure::handlePaymentBan()
+                 */
+                $checkoutSession->setData('payone_ban_last_error_code', $response->getErrorcode());
 
                 throw new Mage_Payment_Model_Info_Exception(
                     $this->helper()->__($response->getCustomermessage())
