@@ -579,6 +579,10 @@
                         <class>payone_core/observer_sales_quote_submit_failure</class>
                         <method>protocol</method>
                     </payone_service_quote_submit_failure>
+                    <payone_service_quote_submit_failure>
+                        <class>payone_core/observer_sales_quote_submit_failure</class>
+                        <method>handlePaymentBan</method>
+                    </payone_service_quote_submit_failure>
                 </observers>
             </sales_model_service_quote_submit_failure>
             <checkout_onepage_controller_success_action>

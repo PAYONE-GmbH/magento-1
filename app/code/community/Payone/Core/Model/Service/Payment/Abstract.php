@@ -63,7 +63,7 @@ abstract class Payone_Core_Model_Service_Payment_Abstract
     );
 
     /**
-     * Methods that can be restricted (hidden for 24h) with each list of handled return codes
+     * Methods that can be restricted (hidden for XX hours, see line 186) with each list of handled return codes
      * Format : key = method code, value = array of codes that trigger the ban
      *
      * @var array
@@ -134,6 +134,10 @@ abstract class Payone_Core_Model_Service_Payment_Abstract
 
         /** @var Payone_Core_Model_Session $session */
         $session = Mage::getSingleton('payone_core/session');
+
+        /** @var \Mage_Checkout_Model_Session $checkoutSession */
+        $checkoutSession = Mage::getSingleton('checkout/session');
+
         /** @var Payone_Api_Response_Error $response */
         if ($response instanceof Payone_Api_Response_Error) {
             if (!$isRetry && $session->getData('amazon_retry_async') && $response->getErrorcode() == 980) {
@@ -172,19 +176,11 @@ abstract class Payone_Core_Model_Service_Payment_Abstract
 
             }
             elseif (isset($this->aRestrictableMethods[$payment->getMethod()])) {
-                if (in_array($response->getErrorcode(), $this->aRestrictableMethods[$payment->getMethod()])) {
-                    /** @var Payone_Core_Model_Domain_PaymentBan $oPaymentBan */
-                    $oPaymentBan = Mage::getModel('payone_core/domain_paymentBan');
-                    $oPaymentBan = $oPaymentBan->loadByCustomerIdPaymentMethod(
-                        $payment->getOrder()->getCustomerId(),
-                        $payment->getMethod()
-                    );
-                    $oPaymentBan->setCustomerId($payment->getOrder()->getCustomerId());
-                    $oPaymentBan->setPaymentMethod($payment->getMethod());
-                    $oPaymentBan->setFromDate((new DateTime())->format(DATE_ISO8601));
-                    $oPaymentBan->setToDate((new DateTime('+1day'))->format(DATE_ISO8601));
-                    $oPaymentBan->save();
-                }
+                /**
+                 * MAGE-449 : store the error code
+                 * for further handling in Payone_Core_Model_Observer_Sales_Quote_Submit_Failure::handlePaymentBan()
+                 */
+                $checkoutSession->setData('payone_ban_last_error_code', $response->getErrorcode());
 
                 throw new Mage_Payment_Model_Info_Exception(
                     $this->helper()->__($response->getCustomermessage())
@@ -208,8 +204,6 @@ abstract class Payone_Core_Model_Service_Payment_Abstract
                 'Your transaction with Amazon Pay is currently being validated. ' .
                 'Please be aware that we will inform you shortly as needed.'
             );
-            /** @var \Mage_Checkout_Model_Session $checkoutSession */
-            $checkoutSession = Mage::getSingleton('checkout/session');
             $checkoutSession->addNotice($message);
         }
         $session->unsetData('amazon_retry_async');
@@ -217,6 +211,28 @@ abstract class Payone_Core_Model_Service_Payment_Abstract
         $session->unsetData('amazon_lock_order');
 
         return $response;
+    }
+
+    /**
+     * @param string $paymentMethod
+     * @param int $customerId
+     * @param string $restrictionDelay
+     * @throws Exception
+     */
+    protected function registerPaymentBan($paymentMethod, $customerId, $restrictionDelay = '+1day')
+    {
+        /** @var Payone_Core_Model_Domain_PaymentBan $oPaymentBan */
+        $oPaymentBan = Mage::getModel('payone_core/domain_paymentBan');
+        $oPaymentBan = $oPaymentBan->loadByCustomerIdPaymentMethod($customerId, $paymentMethod);
+        if (empty($oPaymentBan->getId())) {
+
+        }
+
+        $oPaymentBan->setCustomerId($customerId);
+        $oPaymentBan->setPaymentMethod($paymentMethod);
+        $oPaymentBan->setFromDate((new DateTime())->format(DATE_ISO8601));
+        $oPaymentBan->setToDate((new DateTime($restrictionDelay))->format(DATE_ISO8601));
+        $oPaymentBan->save();
     }
 
     protected function getEventName()
