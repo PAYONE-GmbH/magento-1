@@ -39,6 +39,7 @@ class Payone_Core_Helper_Ratepay extends Payone_Core_Helper_Abstract
     const VALIDATION_STEP_BASKET_SIZE = 'basketSize';
     const VALIDATION_STEP_SHIPPING_ADDRESS = 'shippingAddress';
     const VALIDATION_STEP_B2B = 'b2b';
+    const VALIDATION_STEP_SESSION_BAN = 'sessionBan';
 
     const MINIMUM_CUSTOMER_AGE = 18;
 
@@ -280,6 +281,21 @@ class Payone_Core_Helper_Ratepay extends Payone_Core_Helper_Abstract
         $methodsList = array_intersect($methodsList, $allowedMethods);
 
         return $methodsList;
+    }
+
+    /**
+     * @param array $methodsList
+     * @return bool
+     */
+    protected function validateSessionBan($methodsList)
+    {
+        $checkoutSession = Mage::getSingleton('checkout/session');
+
+        if (is_null($checkoutSession->getData('ratepay_checkout_banned'))) {
+            return $methodsList;
+        }
+
+         return $checkoutSession->getData('ratepay_checkout_banned') ? array() : $methodsList;
     }
 
     /**
