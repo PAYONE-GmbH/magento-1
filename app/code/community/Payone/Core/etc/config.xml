@@ -29,7 +29,7 @@
 <config>
     <modules>
         <Payone_Core>
-            <version>4.6.0</version>
+            <version>4.6.1</version>
         </Payone_Core>
     </modules>
 

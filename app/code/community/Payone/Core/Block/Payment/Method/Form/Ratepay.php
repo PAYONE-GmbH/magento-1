@@ -312,9 +312,9 @@ class Payone_Core_Block_Payment_Method_Form_Ratepay extends Payone_Core_Block_Pa
         $aConfig = $oMethod->getMatchingRatePayConfig();
 
         $validPaymentFirstDay = $aConfig['valid_payment_firstdays'];
-        if($validPaymentFirstDay == 2) {
+        if($validPaymentFirstDay === "2") {
             return self::RATE_PAYMENT_DEBIT_ONLY_DIRECTDEBIT;
-        } elseif($validPaymentFirstDay == 28) {
+        } elseif($validPaymentFirstDay === "28") {
             return self::RATE_PAYMENT_DEBIT_ONLY_BANKTRANSFER;
         }
 
