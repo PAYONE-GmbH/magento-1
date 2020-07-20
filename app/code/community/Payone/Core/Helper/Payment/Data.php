@@ -66,4 +66,63 @@ class Payone_Core_Helper_Payment_Data extends Mage_Payment_Helper_Data
     {
         return isset($this->deletedMethodClearingTypes[$code]) ? $this->deletedMethodClearingTypes[$code] : '';
     }
+
+    /**
+     * Get and sort available payment methods for specified or current store
+     *
+     * array structure:
+     *  $index => Varien_Simplexml_Element
+     *
+     * @param mixed $store
+     * @param Mage_Sales_Model_Quote $quote
+     * @return array
+     */
+    public function getStoreMethods($store = null, $quote = null)
+    {
+        $res = array();
+        foreach ($this->getPaymentMethods($store) as $code => $methodConfig) {
+            $prefix = self::XML_PATH_PAYMENT_METHODS . '/' . $code . '/';
+            if (!$model = Mage::getStoreConfig($prefix . 'model', $store)) {
+                continue;
+            }
+            $methodInstance = Mage::getModel($model);
+            if (!$methodInstance) {
+                continue;
+            }
+            $methodInstance->setStore($store);
+
+            if (!$methodInstance->isAvailable($quote)) {
+                /* if the payment method cannot be used at this time */
+                continue;
+            }
+
+            /**
+             * MAGE-494 : code ported from KlarnaModule
+             * File : app/code/community/Klarna/Payments/Helper/Data.php
+             */
+            if ($methodInstance instanceof Klarna_Payments_Model_Payment_Payments) {
+                /** @var Klarna_Payments_Model_Quote $klarnaQuote */
+                $klarnaQuote = Mage::helper('klarna_payments/checkout')->getKlarnaQuote();
+                foreach ($klarnaQuote->getPaymentMethodCategories() as $values) {
+
+                    /** @var Klarna_Payments_Model_Payment_Payments $newRes */
+                    $newRes = clone $methodInstance;
+                    $newRes->setCategoryInformation($values);
+                    $newRes->setCode('klarna_payments_' . $values['identifier']);
+                    $newRes->setTitle($values['name']);
+
+                    $res[] = $newRes;
+                }
+
+                continue;
+            }
+
+            $sortOrder = (int)$methodInstance->getConfigData('sort_order', $store);
+            $methodInstance->setSortOrder($sortOrder);
+            $res[] = $methodInstance;
+        }
+
+        usort($res, array($this, '_sortMethods'));
+        return $res;
+    }
 }

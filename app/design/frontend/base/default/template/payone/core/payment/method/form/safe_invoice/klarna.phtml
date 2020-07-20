@@ -182,7 +182,7 @@ $paymentMethodConfig = $this->getPaymentMethodConfig();
         <script type="text/javascript">
             var terms = new Klarna.Terms.Invoice({
                 el: $('payone_klarna_invoice_terms'),
-                eid: <?php echo $this->getKlarnaStoreId() ?>,  // Your merchant ID
+                eid: '<?php echo $this->getKlarnaStoreId() ?>',  // Your merchant ID
                 country: '<?php echo strtolower($this->getCountry()) ?>',
                 charge: 0
             });

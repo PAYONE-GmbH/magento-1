@@ -563,6 +563,13 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
                 $isRedirect = true;
             } elseif ($info->getPayoneSafeInvoiceType() == Payone_Api_Enum_FinancingType::KLV) {
                 $payment->setApiVersion();
+                $birthdayDate = $this->getOrder()->getCustomerDob();
+                if (empty($birthdayDate)) {
+                    $birthdayDate = $info->getPayoneCustomerDob();
+                    if($birthdayDate) {
+                        $this->getOrder()->setCustomerDob($birthdayDate);
+                    }
+                }
             }
         }
         //Wallet PayDirekt

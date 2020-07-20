@@ -24,6 +24,7 @@
 /** @var Payone_Core_Helper_SafeInvoice $safeInvoiceHelper */
 $safeInvoiceHelper = Mage::helper('payone_core/safeInvoice');
 if ($safeInvoiceHelper->isSafeInvoiceMethodAvailable()) {
-    echo $safeInvoiceHelper->getKlarnaScriptLink() . PHP_EOL;
-    echo $safeInvoiceHelper->getKlarnaTermsScriptLink() . PHP_EOL;
+    // MAGE-494 : Commented to avoid collision with Klarna external module. Working, tested without those lines
+//    echo $safeInvoiceHelper->getKlarnaScriptLink() . PHP_EOL;
+//    echo $safeInvoiceHelper->getKlarnaTermsScriptLink() . PHP_EOL;
 }
