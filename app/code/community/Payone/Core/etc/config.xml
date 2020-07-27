@@ -734,6 +734,21 @@
                 <model>payone_core/payment_method_barzahlen</model>
                 <group>payone</group>
             </payone_barzahlen>
+            <payone_klarna_installment translate="title" module="payone_core">
+                <title>PAYONE - Klarna "Slice It" (Installments)</title>
+                <model>payone_core/payment_method_klarnaInstallment</model>
+                <group>payone</group>
+            </payone_klarna_installment>
+            <payone_klarna_invoicing translate="title" module="payone_core">
+                <title>PAYONE - Klarna "Pay Later" (Invoice)</title>
+                <model>payone_core/payment_method_klarnaInvoicing</model>
+                <group>payone</group>
+            </payone_klarna_invoicing>
+            <payone_klarna_direct_debit translate="title" module="payone_core">
+                <title>PAYONE - Klarna "Pay Now" (Direct Debit)</title>
+                <model>payone_core/payment_method_klarnaDirectDebit</model>
+                <group>payone</group>
+            </payone_klarna_direct_debit>
             <payone_ratepay translate="title" module="payone_core">
                 <title>PAYONE - RatePay Installments</title>
                 <model>payone_core/payment_method_ratepay</model>
@@ -954,6 +969,15 @@
             <template_ratepay_direct_debit>
                 <use_global>1</use_global>
             </template_ratepay_direct_debit>
+            <template_klarna_installment>
+                <use_global>1</use_global>
+            </template_klarna_installment>
+            <template_klarna_invoicing>
+                <use_global>1</use_global>
+            </template_klarna_invoicing>
+            <template_klarna_direct_debit>
+                <use_global>1</use_global>
+            </template_klarna_direct_debit>
             <template_payolution>
                 <use_global>1</use_global>
             </template_payolution>
@@ -1000,6 +1024,9 @@
                 <ratepay>a:1:{s:18:"_2214159068875_875";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</ratepay>
                 <ratepay_invoicing>a:1:{s:18:"_2214159777775_775";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</ratepay_invoicing>
                 <ratepay_direct_debit>a:1:{s:18:"_2214159998975_975";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</ratepay_direct_debit>
+                <klarna_installment>a:1:{s:18:"_2214159068853_775";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</klarna_installment>
+                <klarna_invoicing>a:1:{s:18:"_2214159068853_875";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</klarna_invoicing>
+                <klarna_direct_debit>a:1:{s:18:"_2214159068853_975";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</klarna_direct_debit>
                 <payolution>a:1:{s:18:"_2172060663488_488";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</payolution>
                 <payolution_invoicing>a:1:{s:18:"_2408863709483_483";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</payolution_invoicing>
                 <payolution_debit>a:1:{s:18:"_2496553448474_474";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</payolution_debit>

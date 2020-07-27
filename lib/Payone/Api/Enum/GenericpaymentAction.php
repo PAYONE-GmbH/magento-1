@@ -61,4 +61,6 @@ class Payone_Api_Enum_GenericpaymentAction
 
     const PAYDIREKT_ECS_SET_EXPRESSCHECKOUT = 'checkout';
     const PAYDIREKT_ECS_GET_EXPRESSCHECKOUTDETAILS = 'getstatus';
+
+    const KLARNA_START_SESSION = 'start_session';
 }

@@ -566,4 +566,269 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment
 
         return $request;
     }
+
+    /**
+     * @param array $data
+     *
+     * @return Payone_Api_Request_Genericpayment
+     */
+    public function requestKlarnaStartSession($data = array())
+    {
+        $request = $this->getRequest();
+
+        /** @var Mage_Sales_Model_Quote $quote */
+        $quote = $data['quote'];
+
+        $this->mapDefaultParameters($request);
+        $request->setApiVersion('3.10');
+        $request->setAid($this->getConfigPayment()->getAid());
+        $request->setCurrency($quote->getQuoteCurrencyCode());
+        $request->setAmount($quote->getGrandTotal());
+
+        if ($data['method'] == Payone_Core_Model_System_Config_PaymentMethodType::KLARNADIRECTDEBIT) {
+            $request->setClearingtype(Payone_Enum_ClearingType::KLARNADIRECTDEBIT);
+            $request->setFinancingType(Payone_Api_Enum_KlarnaDirectDebitType::KDD);
+
+        } elseif ($data['method'] == Payone_Core_Model_System_Config_PaymentMethodType::KLARNAINSTALLMENT) {
+            $request->setClearingtype(Payone_Enum_ClearingType::KLARNAINSTALLMENT);
+            $request->setFinancingType(Payone_Api_Enum_KlarnaInstallmentType::KIS);
+        } else {
+            $request->setClearingtype(Payone_Enum_ClearingType::KLARNAINVOICING);
+            $request->setFinancingType(Payone_Api_Enum_KlarnaInvoicingType::KIV);
+        }
+
+        $paydata = new Payone_Api_Request_Parameter_Paydata_Paydata();
+        if (!empty($data['action'])) {
+            $paydata->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem([
+                'key' => 'action',
+                'data' => $data['action']
+            ]));
+        }
+
+        $billingAddress = $quote->getBillingAddress();
+        $request->setFirstname($billingAddress->getFirstname());
+        $request->setLastname($billingAddress->getLastname());
+        $request->setEmail($billingAddress->getEmail());
+        $request->setStreet($billingAddress->getStreetFull());
+        $request->setZip($billingAddress->getPostcode());
+        $request->setCity($billingAddress->getCity());
+        $request->setCountry($billingAddress->getCountry());
+        $request->setTelephonenumber($billingAddress->getTelephone());
+        if (isset($data['dob'])) {
+            $request->setBirthday($data['dob']);
+        }
+
+        $shippingAddress = $quote->getShippingAddress();
+        if ($shippingAddress) {
+            $deliveryData = new Payone_Api_Request_Parameter_Authorization_DeliveryData();
+
+            $shippingCountry = $shippingAddress->getCountry();
+
+            $deliveryData->setShippingFirstname($shippingAddress->getFirstname());
+            $deliveryData->setShippingLastname($shippingAddress->getLastname());
+            $street = $this->helper()->normalizeStreet($shippingAddress->getStreetFull());
+            $deliveryData->setShippingStreet($street);
+            $deliveryData->setShippingZip($shippingAddress->getPostcode());
+            $deliveryData->setShippingCity($shippingAddress->getCity());
+            $deliveryData->setShippingCountry($shippingCountry);
+            $deliveryData->setShippingState('');
+            $deliveryData->setShippingAddressaddition('');
+            if (empty($shippingAddress->getCompany())) {
+                $deliveryData->setShippingCompany('');
+            } else {
+                $deliveryData->setShippingCompany($shippingAddress->getCompany());
+            }
+
+            // US, CA, CN, JP, MX, BR, AR, ID, TH, IN always need shipping_state paramters
+            if ($shippingCountry == 'US' or $shippingCountry == 'CA' or $shippingCountry == 'CN' or $shippingCountry == 'JP' or $shippingCountry == 'MX' or
+                $shippingCountry == 'BR' or $shippingCountry == 'AR' or $shippingCountry == 'ID' or $shippingCountry == 'TH' or $shippingCountry == 'IN') {
+                $regionCode = $shippingAddress->getRegionCode();
+                if (empty($regionCode)) {
+                    $regionCode = $shippingAddress->getRegion();
+                }
+
+                $deliveryData->setShippingState($regionCode);
+            }
+            $request->setDeliveryData($deliveryData);
+
+            $paydata->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem([
+                'key' => 'shipping_email',
+                'data' => $quote->getCustomerEmail()
+            ]));
+            $paydata->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem([
+                'key' => 'shipping_title',
+                'data' => ''
+            ]));
+            $paydata->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem([
+                'key' => 'shipping_telephonenumber',
+                'data' => !empty($shippingAddress->getTelephone()) ? $shippingAddress->getTelephone() : $billingAddress->getTelephone()
+            ]));
+            $paydata->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem([
+                'key' => 'shipping_title',
+                'data' => !empty($quote->getCustomerGender() == 2) ? $this->getFactory()->helper()->__('Mrs') : $this->getFactory()->helper()->__('Mr')
+            ]));
+        }
+
+        $request->setPaydata($paydata);
+
+
+        $invoicing = new Payone_Api_Request_Parameter_Invoicing_Transaction();
+        $this->_initQuoteItems($invoicing, $quote);
+        $this->_initsetShippingItem($invoicing, $quote);
+        $this->_initDiscountItem($invoicing, $quote);
+        $request->setInvoicing($invoicing);
+
+        return $request;
+    }
+
+    /**
+     * @param Payone_Api_Request_Parameter_Invoicing_Transaction $invoicing
+     * @param Mage_Sales_Model_Quote $quote
+     */
+    protected function _initQuoteItems(
+        Payone_Api_Request_Parameter_Invoicing_Transaction $invoicing,
+        Mage_Sales_Model_Quote $quote
+    ) {
+        foreach ($quote->getItemsCollection() as $key => $itemData) {
+            /** @var $itemData Mage_Sales_Model_Quote_Item */
+            $number = $itemData->getQty();
+            if ($number <= 0 || $itemData->getParentItemId()) {
+                continue; // Do not map items with zero quantity
+            }
+
+            $params['it'] = Payone_Api_Enum_InvoicingItemType::GOODS;
+            $params['id'] = $itemData->getSku();
+            $params['pr'] = round($this->_convertItemPrice($itemData) * 100, 2);
+            $params['no'] = $number;
+            $params['de'] = $itemData->getName();
+            $params['va'] = round($itemData->getTaxPercent() * 100, 2);
+
+            $item = new Payone_Api_Request_Parameter_Invoicing_Item();
+            $item->init($params);
+            $invoicing->addItem($item);
+        }
+    }
+
+    /**
+     * @param Mage_Sales_Model_Quote_Item $itemData
+     * @return float
+     */
+    protected function _convertItemPrice(Mage_Sales_Model_Quote_Item $itemData)
+    {
+        // If tax is applied after discount, the item hold the tax compensation for that discount
+        // we have then to substract it from the item price
+        $dTC = $itemData->getDiscountTaxCompensation();
+        if ($this->configPayment->getCurrencyConvert()) {
+            return $itemData->getBasePriceInclTax() - $dTC;
+        }
+
+        return $itemData->getPriceInclTax() - $dTC;
+    }
+
+    /**
+     * @param Payone_Api_Request_Parameter_Invoicing_Transaction $invoicing
+     * @param Mage_Sales_Model_Quote $quote
+     */
+    protected function _initsetShippingItem(
+        Payone_Api_Request_Parameter_Invoicing_Transaction $invoicing,
+        Mage_Sales_Model_Quote $quote
+    ) {
+        $shippingAmount = $this->_convertShippingAmount($quote->getShippingAddress());
+        if ($shippingAmount != 0) {
+            $configMiscShipping = $this->getHelperConfig()->getConfigMisc($quote->getStoreId())->getShippingCosts();
+            $sku = $configMiscShipping->getSku();
+            if (empty($sku)) {
+                $sku = $this->getFactory()->helper()->__(self::DEFAULT_SHIPPING_SKU);
+            }
+
+            $store = $quote->getStore();
+            $taxCalculation = Mage::getModel('tax/calculation');
+            $request = $taxCalculation->getRateRequest(null, null, null, $store);
+            $taxRateId = Mage::getStoreConfig('tax/classes/shipping_tax_class', $store);
+            $shippingVatRatio = $taxCalculation->getRate($request->setProductClassId($taxRateId));
+            if (is_nan($shippingVatRatio) || !is_numeric($shippingVatRatio)) {
+                $shippingVatRatio = 0;
+            }
+
+            $params['it'] = Payone_Api_Enum_InvoicingItemType::SHIPMENT;
+            $params['id'] = $sku;
+            $params['pr'] = round($this->_convertShippingAmount($quote->getShippingAddress()) * 100, 2);
+            $params['no'] = 1;
+            $params['de'] = $this->getFactory()->helper()->__('Shipping Costs');
+            $params['va'] = round($shippingVatRatio * 100, 2);
+
+            $item = new Payone_Api_Request_Parameter_Invoicing_Item();
+            $item->init($params);
+            $invoicing->addItem($item);
+        }
+    }
+
+    /**
+     * @param Mage_Sales_Model_Quote_Address $shippingAddress
+     * @return float
+     */
+    protected function _convertShippingAmount(Mage_Sales_Model_Quote_Address $shippingAddress)
+    {
+        if ($this->configPayment->getCurrencyConvert()) {
+            return $shippingAddress->getBaseShippingInclTax();
+        }
+
+        return $shippingAddress->getShippingInclTax();
+    }
+
+    /**
+     * @param Payone_Api_Request_Parameter_Invoicing_Transaction $invoicing
+     * @param Mage_Sales_Model_Quote $quote
+     */
+    protected function _initDiscountItem(
+        Payone_Api_Request_Parameter_Invoicing_Transaction $invoicing,
+        Mage_Sales_Model_Quote $quote
+    ) {
+        $discountAmount = $this->_convertDiscountAmount($quote);
+        if ($discountAmount != 0) {
+            $configMiscDiscount = $this->getHelperConfig()->getConfigMisc()->getDiscount();
+            $sku = $configMiscDiscount->getSku();
+            $description = $configMiscDiscount->getDescription();
+            if (empty($sku)) {
+                $sku = $this->getFactory()->helper()->__(self::DEFAULT_DISCOUNT_SKU);
+            }
+
+            if (empty($description)) {
+                $description = $this->getFactory()->helper()->__(self::DEFAULT_DISCOUNT_SKU);
+            }
+
+            $params['it'] = Payone_Api_Enum_InvoicingItemType::VOUCHER;
+            $params['id'] = $sku;
+            $params['pr'] = $discountAmount;
+            $params['no'] = 1;
+            $params['de'] = $description;
+            $params['va'] = 0;
+
+            $item = new Payone_Api_Request_Parameter_Invoicing_Item();
+            $item->init($params);
+
+            $invoicing->addItem($item);
+        }
+    }
+
+    /**
+     * @param Mage_Sales_Model_Quote $quote
+     * @return float
+     */
+    protected function _convertDiscountAmount(Mage_Sales_Model_Quote $quote)
+    {
+        if ($this->configPayment->getCurrencyConvert()) {
+            return $quote->getShippingAddress()->getBaseDiscountAmount();
+        }
+
+        return $quote->getShippingAddress()->getDiscountAmount();
+    }
+
+    /**
+     * @return Payone_Core_Helper_Config
+     */
+    protected function getHelperConfig()
+    {
+        return $this->getFactory()->helperConfig();
+    }
 }
