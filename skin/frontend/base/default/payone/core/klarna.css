@@ -1,0 +1,43 @@
+/**
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the GNU General Public License (GPL 3)
+ * that is bundled with this package in the file LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Payone_Core to newer
+ * versions in the future. If you wish to customize Payone_Core for your
+ * needs please refer to http://www.payone.de for more information.
+ *
+ * @category        Payone
+ * @package         skin_frontend_base_default
+ * @subpackage      payone_core
+ * @copyright       Copyright (c) 2020 <kontakt@fatchip.de> - www.fatchip.com
+ * @author          Vincent Boulanger <vincent.boulanger@fatchip.de>
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.fatchip.de
+ */
+
+#payone_klarna_method_overlay {
+    position: fixed;
+    display: none;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 2;
+    cursor: wait;
+}
+#payone_klarna_method_overlay img {
+    margin-left: 50%;
+    margin-top: 50%;
+}
+
+.payone_klarna_methods {
+    margin-bottom: 5px;
+}

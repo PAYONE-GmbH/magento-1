@@ -63,6 +63,10 @@ class Payone_Core_Model_System_Config_PaymentMethodType extends Payone_Core_Mode
     const WALLETPAYDIREKTEXPRESS = 'wallet_paydirekt_express';
     const WALLETPAYPALEXPRESS = 'wallet_paypal_express';
     const WALLETALIPAY = 'wallet_alipay';
+    const KLARNABASE = 'klarna_base';
+    const KLARNAINVOICING = 'klarna_invoicing';
+    const KLARNAINSTALLMENT = 'klarna_installment';
+    const KLARNADIRECTDEBIT = 'klarna_direct_debit';
 //    const MASTERPASS =  'masterpass'; // MAGE-457 : method removed
 
 
@@ -103,6 +107,10 @@ class Payone_Core_Model_System_Config_PaymentMethodType extends Payone_Core_Mode
             self::ONLINEBANKTRANSFERPFC => 'PostFinance Card',
             self::ONLINEBANKTRANSFERP24 => 'Przelewy24',
             self::ONLINEBANKTRANSFERBCT => 'Bancontact',
+            self::KLARNABASE => 'Klarna',
+            self::KLARNAINVOICING => 'Klarna "Pay Later" (Invoice)',
+            self::KLARNAINSTALLMENT => 'Klarna "Slice It" (Installments)',
+            self::KLARNADIRECTDEBIT => 'Klarna "Pay Now" (Direct Debit)',
 //            self::MASTERPASS => 'Masterpass' // MAGE-457 : method removed
         );
     }

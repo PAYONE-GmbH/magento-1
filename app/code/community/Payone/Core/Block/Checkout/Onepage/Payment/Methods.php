@@ -87,6 +87,8 @@ class Payone_Core_Block_Checkout_Onepage_Payment_Methods
             );
         }
 
+        $this->methods = $this->filterKlarnaMethods($this->methods);
+
         return $this->methods;
     }
 
@@ -224,5 +226,65 @@ class Payone_Core_Block_Checkout_Onepage_Payment_Methods
             }
         }
         return parent::getSelectedMethodCode();
+    }
+
+    /**
+     * @param $methods
+     * @return array
+     */
+    private function filterKlarnaMethods($methods)
+    {
+        $klarnaMethods = array();
+        $filteredMethods = array();
+        /** @var Mage_Payment_Model_Method_Abstract $method */
+        foreach ($methods as $method) {
+            if ($method->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::KLARNAINVOICING
+            || $method->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::KLARNAINSTALLMENT
+            || $method->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::KLARNADIRECTDEBIT) {
+                $klarnaMethods[] = $method;
+            } else {
+                $filteredMethods[] = $method;
+            }
+        }
+
+        if (count($klarnaMethods) > 0) {
+            $klarnaPseudoMethod = Mage::getModel('payone_core/payment_method_klarnaBase');
+            $filteredMethods[] = $klarnaPseudoMethod;
+        }
+
+        return $filteredMethods;
+    }
+
+    /**
+     * @param Mage_Payment_Model_Method_Abstract $method
+     * @return string
+     */
+    public function getMethodTitle(Mage_Payment_Model_Method_Abstract $method)
+    {
+        if ($method->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::KLARNABASE
+            || $method->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::KLARNAINVOICING
+            || $method->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::KLARNAINSTALLMENT
+            || $method->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::KLARNADIRECTDEBIT) {
+            return $this->helper('core')->__("Payone - Klarna");
+        }
+
+        return parent::getMethodTitle($method);
+    }
+
+    /**
+     * Payment method additional label part getter
+     * @param Mage_Payment_Model_Method_Abstract $method
+     * @return string
+     */
+    public function getMethodLabelAfterHtml(Mage_Payment_Model_Method_Abstract $method)
+    {
+        if ($method->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::KLARNABASE
+            || $method->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::KLARNAINVOICING
+            || $method->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::KLARNAINSTALLMENT
+            || $method->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::KLARNADIRECTDEBIT) {
+            return '';
+        }
+
+        return parent::getMethodLabelAfterHtml($method);
     }
 }

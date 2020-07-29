@@ -48,6 +48,10 @@ class Payone_Core_Block_Adminhtml_System_Config_Payment extends Mage_Adminhtml_B
         if ($showButtons) {
             $methodTypes = $this->getFactory()->getModelSystemConfigPaymentMethodType()->toArray();
             foreach ($methodTypes as $key => $name) {
+                /** MAGE-438 : We skip KlarnaBase, a pseudo method used for unified Frontend form purpose */
+                if ($key == Payone_Core_Model_System_Config_PaymentMethodType::KLARNABASE) {
+                    continue;
+                }
                 $this->_addNewMethodButton($key, $name);
             }
         }
@@ -144,6 +148,10 @@ class Payone_Core_Block_Adminhtml_System_Config_Payment extends Mage_Adminhtml_B
         natcasesort($methodTypes);
         echo '<script>var locations = {';
         foreach ($methodTypes as $key => $name) {
+            /** MAGE-438 : We skip KlarnaBase, a pseudo method used for unified Frontend form purpose */
+            if ($key == Payone_Core_Model_System_Config_PaymentMethodType::KLARNABASE) {
+                continue;
+            }
             $dropDownOptions.= '<option value = '.$key.'>'.$name.'</option>';
             $dropDownOptions.= '<br>';
             echo '\''.$name.'\' : \''.$this->getNewUrl(array('type' => $key)).'\',';

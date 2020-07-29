@@ -213,6 +213,25 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
     protected $paymentGuaranteeInvoice = null;
 
     /**
+     * Payment method klarna_invoicing
+     *
+     * @var null
+     */
+    protected $klarnaInvoicing = null;
+    /**
+     * Payment method klarna_installment
+     *
+     * @var null
+     */
+    protected $klarnaInstallment = null;
+    /**
+     * Payment method klarna_direct_debit
+     *
+     * @var null
+     */
+    protected $klarnaDirectDebit = null;
+
+    /**
      * @param array $data
      */
     public function init(array $data)
@@ -876,5 +895,53 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
     public function getPaymentGuaranteeInvoice()
     {
         return $this->paymentGuaranteeInvoice;
+    }
+
+    /**
+     * @return null
+     */
+    public function getKlarnaInvoicing()
+    {
+        return $this->klarnaInvoicing;
+    }
+
+    /**
+     * @param null $klarnaInvoicing
+     */
+    public function setKlarnaInvoicing($klarnaInvoicing)
+    {
+        $this->klarnaInvoicing = $klarnaInvoicing;
+    }
+
+    /**
+     * @return null
+     */
+    public function getKlarnaInstallment()
+    {
+        return $this->klarnaInstallment;
+    }
+
+    /**
+     * @param null $klarnaInstallment
+     */
+    public function setKlarnaInstallment($klarnaInstallment)
+    {
+        $this->klarnaInstallment = $klarnaInstallment;
+    }
+
+    /**
+     * @return null
+     */
+    public function getKlarnaDirectDebit()
+    {
+        return $this->klarnaDirectDebit;
+    }
+
+    /**
+     * @param null $klarnaDirectDebit
+     */
+    public function setKlarnaDirectDebit($klarnaDirectDebit)
+    {
+        $this->klarnaDirectDebit = $klarnaDirectDebit;
     }
 }

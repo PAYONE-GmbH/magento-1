@@ -259,10 +259,13 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
         }
 
         // Safe Invoice "Klarna" specific personal parameters mapping
-        if ($paymentMethod instanceof Payone_Core_Model_Payment_Method_SafeInvoice
-                and $paymentMethod->getInfoInstance()->getPayoneSafeInvoiceType() == Payone_Api_Enum_FinancingType::KLV
+        if (($paymentMethod instanceof Payone_Core_Model_Payment_Method_SafeInvoice
+                and $paymentMethod->getInfoInstance()->getPayoneSafeInvoiceType() == Payone_Api_Enum_FinancingType::KLV)
+         || ($paymentMethod instanceof Payone_Core_Model_Payment_Method_KlarnaInvoicing
+                || $paymentMethod instanceof Payone_Core_Model_Payment_Method_KlarnaInstallment
+                || $paymentMethod instanceof Payone_Core_Model_Payment_Method_KlarnaDirectDebit)
         ) {
-            $personalData = $this->mapPersonalParametersSafeInvoiceKlarna($personalData);
+            $personalData = $this->mapPersonalParametersKlarna($personalData);
         }
 
         return $personalData;
@@ -272,7 +275,7 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
      * @param Payone_Api_Request_Parameter_Authorization_PersonalData $personalData
      * @return \Payone_Api_Request_Parameter_Authorization_PersonalData
      */
-    protected function mapPersonalParametersSafeInvoiceKlarna($personalData)
+    protected function mapPersonalParametersKlarna($personalData)
     {
         $order = $this->getOrder();
         $billingAddress = $order->getBillingAddress();
@@ -315,7 +318,11 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
             // gender
             $genderValue = $info->getPayoneCustomerGender();
             if (empty($genderValue)) {
-                $genderValue = $order->getCustomerGender();
+                if(!empty($order->getCustomerGender())) {
+                    $genderValue = $order->getCustomerGender();
+                } else {
+                    $genderValue = 1;
+                }
             }
 
             $customerResource = $this->getFactory()->getSingletonCustomerResource();
@@ -1015,6 +1022,37 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
 
             $payment->setPaydata($payData);
             $payment->setClearingsubtype();
+        } elseif($paymentMethod instanceof Payone_Core_Model_Payment_Method_KlarnaInvoicing ||
+            $paymentMethod instanceof Payone_Core_Model_Payment_Method_KlarnaInstallment ||
+            $paymentMethod instanceof Payone_Core_Model_Payment_Method_KlarnaDirectDebit)
+        {
+            $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_KlarnaBase();
+            $payment->setFinancingtype($this->getKlarnaType($paymentMethod->getMethodType()));
+
+            $paydata = new Payone_Api_Request_Parameter_Paydata_Paydata();
+            $paydata->addItem(
+                new Payone_Api_Request_Parameter_Paydata_DataItem(
+                    ['key' => 'authorization_token', 'data' => $info->getAdditionalInformation('klarna_authorization_token')]
+                )
+            );
+            $shippingAddress = $this->getOrder()->getShippingAddress();
+            if ($shippingAddress) {
+                $paydata->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem([
+                    'key' => 'shipping_email',
+                    'data' => $this->getOrder()->getCustomerEmail()
+                ]));
+                $paydata->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem([
+                    'key' => 'shipping_title',
+                    'data' => ''
+                ]));
+                $paydata->addItem(new Payone_Api_Request_Parameter_Paydata_DataItem([
+                    'key' => 'shipping_telephonenumber',
+                    'data' => !empty($shippingAddress->getTelephone()) ? $shippingAddress->getTelephone() : $this->getOrder()->getBillingAddress()->getTelephone()
+                ]));
+            }
+            $payment->setPaydata($paydata);
+
+            $isRedirect = true;
         }
 
         if ($isRedirect === true) {
@@ -1139,6 +1177,12 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
             $clearingType = Payone_Enum_ClearingType::AMAZONPAY;
         } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_PaymentGuaranteeInvoice) {
             $clearingType = Payone_Enum_ClearingType::PAYMENTGUARANTEEINVOICE;
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_KlarnaInvoicing) {
+            $clearingType = Payone_Enum_ClearingType::KLARNAINVOICING;
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_KlarnaInstallment) {
+            $clearingType = Payone_Enum_ClearingType::KLARNAINSTALLMENT;
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_KlarnaDirectDebit) {
+            $clearingType = Payone_Enum_ClearingType::KLARNADIRECTDEBIT;
         }
 
         return $clearingType;
@@ -1296,5 +1340,20 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
         }
 
         return $paramDebitType;
+    }
+
+    /**
+     * @param string $methodType
+     * @return string
+     */
+    protected function getKlarnaType($methodType)
+    {
+        if ($methodType == Payone_Core_Model_System_Config_PaymentMethodType::KLARNADIRECTDEBIT) {
+            return Payone_Api_Enum_KlarnaDirectDebitType::KDD;
+        } elseif ($methodType == Payone_Core_Model_System_Config_PaymentMethodType::KLARNAINSTALLMENT) {
+            return Payone_Api_Enum_KlarnaInstallmentType::KIS;
+        }
+
+        return Payone_Api_Enum_KlarnaInvoicingType::KIV;
     }
 }
