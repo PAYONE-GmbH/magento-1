@@ -7,9 +7,4 @@
     foreach ($this->getActiveShortcuts() as $url) {
         echo '<link rel="stylesheet" href="' . $url  . '" />' . PHP_EOL;
     }
-
-    $ratepayExternalStyleUrl = $this->getRatepayExternalStyleUrl();
-    if (!empty($ratepayExternalStyleUrl)) {
-        echo '<link rel="stylesheet" href="' . $ratepayExternalStyleUrl  . '" />' . PHP_EOL;
-    }
 ?>
