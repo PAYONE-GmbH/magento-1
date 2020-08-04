@@ -307,7 +307,6 @@ class Payone_Core_Model_Service_TransactionStatus_Execute extends Payone_Core_Mo
             // if executing succeeds without error.
             $this->serviceProcess->execute($txStatus);
             $txStatus->setStatusOk();
-            $txStatus->save();
 
             $this->logMessage(sprintf(
                 "TX status ID %d: Processing status set to %s.",
@@ -330,7 +329,6 @@ class Payone_Core_Model_Service_TransactionStatus_Execute extends Payone_Core_Mo
                 $txStatus->setStatusError();
                 $txStatus->setProcessingError($e->getMessage());
                 $txStatus->setProcessingErrorStacktrace($e->getTraceAsString());
-                $txStatus->save();
 
                 $this->logMessage(sprintf(
                     "TX status ID %d: Finally failed processing, processing status set to %s.",
@@ -341,7 +339,6 @@ class Payone_Core_Model_Service_TransactionStatus_Execute extends Payone_Core_Mo
             else {
                 $txStatus->setStatusPending();
                 $txStatus->setProcessRetryCount($processRetryCount + 1);
-                $txStatus->save();
 
                 $this->logMessage(sprintf(
                     "TX status ID %d: Retry processing next run, processing status set to %s.",
