@@ -139,6 +139,7 @@ class Payone_Core_Model_Service_TransactionStatus_Execute extends Payone_Core_Mo
      */
     protected function loadNextTxStatus()
     {
+        /** @var Payone_Core_Model_Domain_Resource_Protocol_TransactionStatus_Collection $collection */
         $collection = $this->getFactory()->getModelTransactionStatus()->getCollection();
 
         // Get only pending TX status which were not already processed or excluded.
@@ -161,14 +162,12 @@ class Payone_Core_Model_Service_TransactionStatus_Execute extends Payone_Core_Mo
 
         $this->logMessage(sprintf('Fetching next TX status -- %s', $collection->getSelectSql(true)), null, true);
 
-        $collection->load();
-
         /** @var Payone_Core_Model_Domain_Protocol_TransactionStatus $txStatus */
-        foreach ($collection as $txStatus) {
-            return $txStatus;
-        }
+        $txStatus = $collection->getFirstItem();
 
-        return null;
+        return $txStatus->hasData()
+            ? $txStatus
+            : null;
     }
 
     /**
