@@ -967,6 +967,9 @@ class Payone_Core_Model_Factory
         $service->setMaxExecutionTime($maxExecutionTime);
         $service->setMaxRetryCount($maxRetryCount);
 
+        // Set this to true for verbose debug logs about TX status processing.
+        $service->setLoggingVerbose(false);
+
         if ($processReportEnabled) {
             $service->setProcessReportEmail($processReportEmail);
         }

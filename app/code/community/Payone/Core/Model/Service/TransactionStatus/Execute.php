@@ -44,6 +44,9 @@ class Payone_Core_Model_Service_TransactionStatus_Execute extends Payone_Core_Mo
     /** @var string|null A valid email if process reporting should be enabled or null if disabled. */
     protected $processReportEmail = null;
 
+    /** @var bool True if logging is set to verbose. */
+    protected $loggingVerbose = false;
+
     /** @var Payone_Core_Model_Service_TransactionStatus_Process */
     protected $serviceProcess = null;
 
@@ -89,6 +92,14 @@ class Payone_Core_Model_Service_TransactionStatus_Execute extends Payone_Core_Mo
     }
 
     /**
+     * @param $loggingVerbose
+     */
+    public function setLoggingVerbose($loggingVerbose)
+    {
+        $this->loggingVerbose = $loggingVerbose === true;
+    }
+
+    /**
      * @return bool
      */
     protected function hasExecutionTime()
@@ -103,15 +114,21 @@ class Payone_Core_Model_Service_TransactionStatus_Execute extends Payone_Core_Mo
     /**
      * @param string $message
      * @param null $store
+     * @param bool $verbose True if the log is a verbose information.
      */
-    protected function logMessage($message, $store = null)
+    protected function logMessage($message, $store = null, $verbose = false)
     {
-        if ($store) {
-            Mage::helper('payone_core')->logCronjobMessage($message, $store);
+        // Enable logging if the current log is not verbose or if the
+        // current logs is verbose and verbose logging is enabled.
+        if (!$verbose || ($verbose && $this->loggingVerbose)) {
+            if ($store) {
+                Mage::helper('payone_core')->logCronjobMessage($message, $store);
+            }
+            else {
+                Mage::helper('payone_core')->logCronjobMessage($message);
+            }
         }
-        else {
-            Mage::helper('payone_core')->logCronjobMessage($message);
-        }
+
     }
 
     /**
@@ -142,7 +159,7 @@ class Payone_Core_Model_Service_TransactionStatus_Execute extends Payone_Core_Mo
         // Limit result to one entity
         $collection->getSelect()->limit(1);
 
-        $this->logMessage(sprintf('Fetching next TX status -- %s', $collection->getSelectSql(true)));
+        $this->logMessage(sprintf('Fetching next TX status -- %s', $collection->getSelectSql(true)), null, true);
 
         $collection->load();
 
@@ -171,8 +188,8 @@ class Payone_Core_Model_Service_TransactionStatus_Execute extends Payone_Core_Mo
         $collection->addFieldToFilter('txtime', array('lteq' => (int) $txStatus->getTxtime()));
         $collection->setOrder('txtime', Payone_Core_Model_Domain_Resource_Protocol_TransactionStatus_Collection::SORT_ORDER_ASC);
 
-        $this->logMessage(sprintf("Verify TX status %d (%d) prior TX status are all processed successfully.", $txStatus->getId(), $txStatus->getTxid()));
-        $this->logMessage(sprintf("Fetch prior TX status -- %s", $collection->getSelectSql(true)));
+        $this->logMessage(sprintf("Verify TX status %d (%d) prior TX status are all processed successfully.", $txStatus->getId(), $txStatus->getTxid()), null, true);
+        $this->logMessage(sprintf("Fetch prior TX status -- %s", $collection->getSelectSql(true)), null, true);
 
         $collection->load();
 
@@ -187,7 +204,7 @@ class Payone_Core_Model_Service_TransactionStatus_Execute extends Payone_Core_Mo
                     $priorTxStatus->getProcessingStatus(),
                     $txStatus->getId(),
                     $txStatus->getTxid()
-                ));
+                ), null, true);
 
                 return false;
             }
@@ -205,8 +222,8 @@ class Payone_Core_Model_Service_TransactionStatus_Execute extends Payone_Core_Mo
         $this->startTime = time();
 
         $this->logMessage(sprintf('Starting TX status processing at timestamp %d', $this->startTime));
-        $this->logMessage(sprintf(' -- with configured max execution time of %d seconds', $this->maxExecutionTime));
-        $this->logMessage(sprintf(' -- with configured max retry count of %d', $this->maxRetryCount));
+        $this->logMessage(sprintf(' -- with configured max execution time of %d seconds', $this->maxExecutionTime), null, true);
+        $this->logMessage(sprintf(' -- with configured max retry count of %d', $this->maxRetryCount), null, true);
 
         // Process as long as we have remaining time
         while ($this->hasExecutionTime()) {
