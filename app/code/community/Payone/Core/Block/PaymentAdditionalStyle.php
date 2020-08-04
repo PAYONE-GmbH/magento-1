@@ -59,37 +59,4 @@ class Payone_Core_Block_PaymentAdditionalStyle extends Mage_Core_Block_Template
         }
         return $activeMethods;
     }
-
-    /**
-     * @return string
-     */
-    public function getRatepayExternalStyleUrl()
-    {
-        $ratepayMethods = array(
-            Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAYINVOICING,
-            Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAY,
-            Payone_Core_Model_System_Config_PaymentMethodCode::RATEPAYDIRECTDEBIT,
-        );
-
-        /** @var \Mage_Checkout_Model_Session $session */
-        $session = Mage::getSingleton('checkout/session');
-
-        /** @var \Mage_Payment_Helper_Data $paymentHelper */
-        $paymentHelper = Mage::helper('payment');
-
-        foreach ($ratepayMethods as $methodCode) {
-            $paymentMethod = $paymentHelper->getMethodInstance($methodCode);
-            try {
-                /** @var \Payone_Core_Model_Config_Payment_Method $paymentConfig */
-                $paymentConfig = $paymentMethod->getConfigForQuote($session->getQuote());
-                if (!empty($paymentConfig)) {
-                    return 'https://www.ratepay.com/ratenrechner/resources/ratepay-bootstrap.min.css';
-                }
-            } catch (\Payone_Core_Exception_PaymentMethodConfigNotFound $e) {
-                continue;
-            }
-        }
-
-        return '';
-    }
 }

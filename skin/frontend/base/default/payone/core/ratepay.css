@@ -36,6 +36,7 @@
 #ratepay-main-cont {
     color: black!important;
     vertical-align: middle;
+    box-sizing: border-box;
 }
 
 #ratepay-main-cont input.ratepay-Input-button {
@@ -443,6 +444,352 @@ table#ratepay-InstallmentTerms {
 #ratepay-main-cont .ratepay-Content .ratepay-DueDateSelect option{
     border-right: 0px solid;
 }
+
+/**
+ * MAGE-482 : report from ratepay bootstrap min
+ */
+* {
+    box-sizing: border-box;
+}
+
+#ratepay-main-cont {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333;
+}
+#ratepay-main-cont .form-control {
+    display: block;
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+#ratepay-main-cont .container::before {
+    display: table;
+    content: " ";
+}
+#ratepay-main-cont .container {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+#ratepay-main-cont .row {
+    margin-right: -15px;
+    margin-left: -15px;
+}
+#ratepay-main-cont .row::before {
+    display: table;
+    content: " ";
+}
+#ratepay-main-cont .row::after {
+    display: table;
+    content: " ";
+}
+#ratepay-main-cont .col-md-4 {
+    position: relative;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+#ratepay-main-cont .col-md-8 {
+    position: relative;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+#ratepay-main-cont .panel {
+    margin-bottom: 20px;
+    background-color: #fff;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+#ratepay-main-cont .panel-body::before {
+    display: table;
+    content: " ";
+}
+#ratepay-main-cont .panel-body::after {
+    display: table;
+    content: " ";
+}
+#ratepay-main-cont .panel-default {
+    border-color: #ddd;
+}
+#ratepay-main-cont .panel-body {
+    padding:15px
+}
+#ratepay-main-cont .panel-heading {
+    padding:10px 15px;
+    border-bottom:1px solid transparent;
+    border-top-left-radius:3px;
+    border-top-right-radius:3px
+}
+#ratepay-main-cont .panel-default > .panel-heading {
+    color: #333;
+    background-color: #f5f5f5;
+    border-color: #ddd;
+}
+#ratepay-main-cont .btn-group {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+}
+#ratepay-main-cont .btn-group > .btn-group {
+    float: left;
+}
+#ratepay-main-cont .btn-group-justified {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: separate;
+}
+#ratepay-main-cont .btn-group-justified > .btn, #ratepay-main-cont .btn-group-justified > .btn-group {
+    display: table-cell;
+    float: none;
+    width: 1%;
+}
+#ratepay-main-cont .btn-group-vertical > .btn,
+#ratepay-main-cont .btn-group > .btn {
+    position: relative;
+    float: left;
+}
+#ratepay-main-cont .btn {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+#ratepay-main-cont .btn-sm {
+    padding: 5px 10px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+}
+#ratepay-main-cont .btn-default {
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+}
+#ratepay-main-cont .btn-group > .btn:first-child {
+    margin-left: 0;
+}
+#ratepay-main-cont .btn-group-justified > .btn-group .btn {
+    width: 100%;
+}
+#ratepay-main-cont .btn-group > .btn-group:first-child:not(:last-child) > .btn:last-child,
+#ratepay-main-cont .btn-group > .btn-group:first-child:not(:last-child) > .dropdown-toggle {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+#ratepay-main-cont .btn-group > .btn-group:not(:first-child):not(:last-child) > .btn {
+    border-radius: 0;
+}
+#ratepay-main-cont .btn-group > .btn-group:last-child:not(:first-child) > .btn:first-child {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+#ratepay-main-cont .input-group {
+    position:relative;
+    display:table;
+    border-collapse:separate
+}
+#ratepay-main-cont .input-group-btn {
+    width: 1%;
+    white-space: nowrap;
+    vertical-align: middle;
+    display: table-cell;
+}
+#ratepay-main-cont .input-group-addon {
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1;
+    color: #555;
+    text-align: center;
+    background-color: #eee;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 1%;
+    white-space: nowrap;
+    vertical-align: middle;
+    display: table-cell;
+}
+#ratepay-main-cont .input-group .form-control {
+    display: table-cell;
+}
+#ratepay-main-cont .input-group-addon:first-child {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: 0;
+}
+#ratepay-main-cont .input-group .form-control:last-child,
+#ratepay-main-cont .input-group-addon:last-child,
+#ratepay-main-cont .input-group-btn:first-child > .btn-group:not(:first-child) > .btn,
+#ratepay-main-cont .input-group-btn:first-child > .btn:not(:first-child),
+#ratepay-main-cont .input-group-btn:last-child > .btn,
+#ratepay-main-cont .input-group-btn:last-child > .btn-group > .btn,
+#ratepay-main-cont .input-group-btn:last-child > .dropdown-toggle {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+#ratepay-main-cont .input-group-sm > .form-control,
+#ratepay-main-cont .input-group-sm > .input-group-addon,
+#ratepay-main-cont .input-group-sm > .input-group-btn > .btn {
+    height: 30px;
+    padding: 5px 10px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+}
+#ratepay-main-cont .input-group .form-control {
+    position: relative;
+    z-index: 2;
+    float: left;
+    width: 100%;
+    margin-bottom: 0;
+}
+#ratepay-main-cont .btn-info {
+    color: #fff;
+    background-color: #5bc0de;
+    border-color: #46b8da;
+}
+
+.text-left {
+    text-align: left;
+}
+.text-center {
+    text-align: center;
+}
+.text-right {
+    text-align: right;
+}
+.text-uppercase {
+    text-transform: uppercase;
+}
+
+#payone_ratepay_ResultContainer table{
+    border-spacing: 0;
+    border-collapse: collapse;
+    background-color: transparent;
+}
+#payone_ratepay_ResultContainer .table {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 20px;
+}
+#payone_ratepay_ResultContainer .table-striped > tbody > tr:nth-of-type(2n+1) {
+    background-color: #f9f9f9;
+}
+#payone_ratepay_ResultContainer .table > tbody > tr > td.warning {
+    background-color: #fcf8e3;
+}
+#payone_ratepay_ResultContainer .table>tbody>tr>td,
+#payone_ratepay_ResultContainer .table>tbody>tr>th {
+    padding:8px;
+    line-height:1.42857143;
+    vertical-align:top;
+    border-top:1px solid #ddd
+}
+#payone_ratepay_ResultContainer .table-striped>tbody>tr:nth-of-type(odd) {
+    background-color:#f9f9f9;
+}
+#payone_ratepay_ResultContainer table col[class*=col-] {
+    position:static;
+    display:table-column;
+    float:none
+}
+#payone_ratepay_ResultContainer table td[class*=col-],
+#payone_ratepay_ResultContainer table th[class*=col-] {
+    position:static;
+    display:table-cell;
+    float:none
+}
+#payone_ratepay_ResultContainer .table>tbody>tr.active>td,
+#payone_ratepay_ResultContainer .table>tbody>tr.active>th,
+#payone_ratepay_ResultContainer .table>tbody>tr>td.active,
+#payone_ratepay_ResultContainer .table>tbody>tr>th.active {
+    background-color:#f5f5f5
+}
+#payone_ratepay_ResultContainer .table>tbody>tr.success>td,
+#payone_ratepay_ResultContainer .table>tbody>tr.success>th,
+#payone_ratepay_ResultContainer .table>tbody>tr>td.success,
+#payone_ratepay_ResultContainer .table>tbody>tr>th.success {
+    background-color:#dff0d8
+}
+#payone_ratepay_ResultContainer .table>tbody>tr.info>td,
+#payone_ratepay_ResultContainer .table>tbody>tr.info>th,
+#payone_ratepay_ResultContainer .table>tbody>tr>td.info,
+#payone_ratepay_ResultContainer .table>tbody>tr>th.info {
+    background-color:#d9edf7
+}
+#payone_ratepay_ResultContainer .table>tbody>tr.warning>td,
+#payone_ratepay_ResultContainer .table>tbody>tr.warning>th,
+#payone_ratepay_ResultContainer .table>tbody>tr>td.warning,
+#payone_ratepay_ResultContainer .table>tbody>tr>th.warning {
+    background-color:#fcf8e3;
+}
+#payone_ratepay_ResultContainer .table>tbody>tr.danger>td,
+#payone_ratepay_ResultContainer .table>tbody>tr.danger>th,
+#payone_ratepay_ResultContainer .table>tbody>tr>td.danger,
+#payone_ratepay_ResultContainer .table>tbody>tr>th.danger {
+    background-color:#f2dede
+}
+
+@media (min-width:768px) {
+    #ratepay-main-cont .container {
+        width:750px
+    }
+}
+@media (min-width:992px) {
+    .col-md-8 {
+        width: 66.66666667%
+    }
+
+    .col-md-4 {
+        float: left;
+        width: 33.33333333%
+    }
+
+    #ratepay-main-cont .container {
+        width:970px
+    }
+}
+@media (min-width:1200px) {
+    #ratepay-main-cont .container {
+        width:1170px
+    }
+}
+/**
+ * END MAGE-482
+ */
+
 
 #ajaxLoaderId{
     display: none;
