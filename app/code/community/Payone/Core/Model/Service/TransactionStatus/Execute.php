@@ -201,10 +201,10 @@ class Payone_Core_Model_Service_TransactionStatus_Execute extends Payone_Core_Mo
         // Track current transaction status as processed (no matter what happens next).
         $this->processed[] = $transactionStatus;
 
-        $transactionStatus->setStatusRunning();
-        $transactionStatus->save();
-        $this->helper()->logCronjobMessage("ID: {$transactionStatus->getId()} - Execute - Set status to running", $storeId);
         try {
+            $transactionStatus->setStatusRunning();
+            $transactionStatus->save();
+            $this->helper()->logCronjobMessage("ID: {$transactionStatus->getId()} - Execute - Set status to running", $storeId);
             $this->getServiceProcess()->execute($transactionStatus);
             $transactionStatus->setStatusOk();
             $this->helper()->logCronjobMessage("ID: {$transactionStatus->getId()} - Execute - Finished service execution, set status to complete", $storeId);
