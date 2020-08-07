@@ -26,6 +26,9 @@
  */
 class Payone_Core_Block_Payment_Method_Form_Ratepay extends Payone_Core_Block_Payment_Method_Form_Abstract
 {
+    const RATE_PAYMENT_DEBIT_ONLY_DIRECTDEBIT = 0;
+    const RATE_PAYMENT_DEBIT_ONLY_BANKTRANSFER = 1;
+    const RATE_PAYMENT_DEBIT_BOTH = 2;
 
     /**
      * @var bool
@@ -298,5 +301,23 @@ class Payone_Core_Block_Payment_Method_Form_Ratepay extends Payone_Core_Block_Pa
         }
 
         return $configs;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRateDebitType()
+    {
+        $oMethod = $this->getMethod();
+        $aConfig = $oMethod->getMatchingRatePayConfig();
+
+        $validPaymentFirstDay = $aConfig['valid_payment_firstdays'];
+        if($validPaymentFirstDay === "2") {
+            return self::RATE_PAYMENT_DEBIT_ONLY_DIRECTDEBIT;
+        } elseif($validPaymentFirstDay === "28") {
+            return self::RATE_PAYMENT_DEBIT_ONLY_BANKTRANSFER;
+        }
+
+        return self::RATE_PAYMENT_DEBIT_BOTH;
     }
 }
