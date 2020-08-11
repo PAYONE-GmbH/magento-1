@@ -1042,6 +1042,9 @@
             <payment_amazonpay_checkout>
                 <allow_quote_one_cent_difference>0</allow_quote_one_cent_difference>
             </payment_amazonpay_checkout>
+            <payment_ratepay_checkout>
+                <device_fingerprint_snippet_id>ratepay</device_fingerprint_snippet_id>
+            </payment_ratepay_checkout>
         </payone_general>
         <payone_protect>
             <general>
