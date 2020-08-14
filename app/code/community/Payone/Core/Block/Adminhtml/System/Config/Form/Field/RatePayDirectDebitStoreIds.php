@@ -48,12 +48,6 @@ class Payone_Core_Block_Adminhtml_System_Config_Form_Field_RatePayDirectDebitSto
             'style' => 'width:60px;',
             )
         );
-        $this->addColumn(
-            'ratepay_snippetid', array (
-                'label' => Mage::helper('payone_core')->__('Snippet-ID'),
-                'style' => 'width:60px'
-            )
-        );
         $this->_addAfter = false;
         $this->_addButtonLabel = Mage::helper('payone_core')->__('Add Shop-ID');
         parent::_prepareToRender();

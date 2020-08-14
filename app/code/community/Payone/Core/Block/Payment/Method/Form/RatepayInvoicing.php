@@ -108,54 +108,6 @@ class Payone_Core_Block_Payment_Method_Form_RatepayInvoicing extends Payone_Core
     }
 
     /**
-     * @return mixed
-     */
-    public function getRatePayDeviceFingerprintSnippetId()
-    {
-        $oMethod = $this->getMethod();
-        $aConfig = $oMethod->getMatchingRatePayConfig();
-        $ratepayConfig = $oMethod->getConfig()->getRatepayConfig();
-        foreach ($ratepayConfig as $config) {
-            if ($config['ratepay_shopid'] == $aConfig['shop_id']) {
-                $snippetId = $config['ratepay_snippetid'];
-                if (!empty($snippetId)) {
-                    return $snippetId;
-                }
-            }
-        }
-
-        return !empty($aConfig['device_fingerprint_snippet_id']) ? $aConfig['device_fingerprint_snippet_id'] : 'ratepay';
-    }
-
-    /**
-     * @param $sFingerprint
-     */
-    protected function _setSessionFingerprint($sFingerprint)
-    {
-        $checkoutSession = $this->getFactory()->getSingletonCheckoutSession();
-        $checkoutSession->setRatePayFingerprint($sFingerprint);
-    }
-
-    /**
-     * @return string
-     */
-    public function getRatePayDeviceFingerprint()
-    {
-        $checkoutSession = $this->getFactory()->getSingletonCheckoutSession();
-        if(!$checkoutSession->getRatePayFingerprint()) {
-            $sFingerprint  = $this->getQuote()->getBillingAddress()->getFirstname();
-            $sFingerprint .= $this->getQuote()->getBillingAddress()->getLastname();
-            $sFingerprint .= microtime();
-            $sFingerprint = md5($sFingerprint);
-            $this->_setSessionFingerprint($sFingerprint);
-        } else {
-            $sFingerprint = $checkoutSession->getRatePayFingerprint();
-        }
-
-        return $sFingerprint;
-    }
-
-    /**
      * Retrieve the payment config method id from Quote.
      * If it matches payment method, return it, otherwise 0
      * @return int|mixed
