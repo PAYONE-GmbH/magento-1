@@ -184,8 +184,8 @@ class Payone_Core_Model_Service_TransactionStatus_Execute extends Payone_Core_Mo
         $collection->clear();
         $collection->addFieldToFilter('id', array('neq' => (int) $txStatus->getId()));
         $collection->addFieldToFilter('txid', (int) $txStatus->getTxid());
-        $collection->addFieldToFilter('txtime', array('lteq' => (int) $txStatus->getTxtime()));
-        $collection->setOrder('txtime', Payone_Core_Model_Domain_Resource_Protocol_TransactionStatus_Collection::SORT_ORDER_ASC);
+        $collection->addFieldToFilter('created_at', array('lteq' => $txStatus->getCreatedAt()));
+        $collection->setOrder('created_at', Payone_Core_Model_Domain_Resource_Protocol_TransactionStatus_Collection::SORT_ORDER_ASC);
 
         $this->logMessage(sprintf("Verify TX status %d (%d) prior TX status are all processed successfully.", $txStatus->getId(), $txStatus->getTxid()), null, true);
         $this->logMessage(sprintf("Fetch prior TX status -- %s", $collection->getSelectSql(true)), null, true);
