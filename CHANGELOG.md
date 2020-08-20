@@ -2,14 +2,33 @@
 
 **The changelog is continued on the Github releases page**
 
-## 4.1.6
-**Features**
+## 5.0.0
 
+New Feature(s)
+ 
+* new klarna implementation
 * New database fields for RatePay orders
 * IP address in API log is now anonymized
 
-**Bugfixes**
+Bugfixes
+
 * Amazon Pay is not displayed in backend to avoid template error (fixes #207)
+
+Maintenance
+ 
+* remove DISCOVER
+* Improved RatePay Snipped ID handling
+* Transmit customer ID to Ratepay for returning customers
+* Decoupled Payolution and RatePay JS files
+* Fixed position of Paydirekt logo
+* Fixed broken CSV file (thanks @sprankhub)
+* Fixed incomplete Modman file (thanks @Schrank)
+ 
+Warning(s)
+ 
+* klarna legacy will be shut down in the end of Sep 2020
+* Additionally, there is a known incompatibility with the Klarna Payments Plugin für M1 which will be fixed in a subsequent release
+
 
 ## 4.1.5
 **Features**
