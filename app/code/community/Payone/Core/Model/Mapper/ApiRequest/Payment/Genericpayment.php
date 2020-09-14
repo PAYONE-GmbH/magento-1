@@ -799,7 +799,7 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment
 
             $params['it'] = Payone_Api_Enum_InvoicingItemType::VOUCHER;
             $params['id'] = $sku;
-            $params['pr'] = $discountAmount;
+            $params['pr'] = round($discountAmount * 100, 2);
             $params['no'] = 1;
             $params['de'] = $description;
             $params['va'] = 0;
