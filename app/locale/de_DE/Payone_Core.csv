@@ -1035,6 +1035,7 @@ DIRECT_DEBIT,Lastschrift
 "Password","Passwort"
 "Text","Text"
 The <a target='_blank' href='https://www.ratepay.com/zgb-dse'>additional terms and conditions and the privacy policy</a> of RatePAY GmbH apply.,Es gelten die <a target='_blank' href='https://www.ratepay.com/zgb-dse'>zusätzlichen Allgemeinen Geschäftsbedingungen und der Datenschutzhinweis</a> der RatePAY GmbH.
+RATEPAY_TNC,"Mit Klicken auf 'Zahlungspflichtig bestellen' erklären Sie sich mit den <a target='_blank' href='https://www.ratepay.com/legal-payment-terms'>Zahlungsbedingungen unseres Zahlungspartners</a><br /> sowie mit der Durchführung einer <a target='_blank' href='https://www.ratepay.com/legal-payment-dataprivacy'>Risikoprüfung durch unseren Zahlungspartner</a> einverstanden."
 
 "Standard-style","Standardstil"
 "Input","Eingabe"
