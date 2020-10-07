@@ -133,6 +133,12 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
      */
     protected $wallet = null;
     /**
+     * Payment method barzahlen
+     *
+     * @var null
+     */
+    protected $barzahlen = null;
+    /**
      * Payment method ratepay
      *
      * @var null
