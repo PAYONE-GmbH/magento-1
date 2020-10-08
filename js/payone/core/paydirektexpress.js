@@ -27,7 +27,7 @@ var PayoneCheckout = {
     init: function (baseUrl) {
         this.baseUrl = baseUrl;
 
-        var button = jQuery('#placeOrder');
+        var button = $('[id=placeOrder]');
         button.on('click', function () {
             window.placeOrder(PayoneCheckout.getPlaceOrderUrl());
         });
@@ -35,18 +35,21 @@ var PayoneCheckout = {
         this.reloadReview();
     },
     reloadReview: function () {
-        jQuery.ajax(
+        new Ajax.Request(
+            this.getReloadReviewUrl(),
             {
-                url: this.getReloadReviewUrl(),
-                error: function (result) {
+                onFailure: function (result) {
                     console.log(result);
                 },
-                success: function (result) {
-                    var review = jQuery(result).filter('#checkout-review-table-wrapper');
-                    var container = jQuery('#checkout-review-load');
-                    container.html(review);
+                onSuccess: function (result) {
+                    var wrapper = document.createElement('div');
+                    wrapper.innerHTML = result.responseText;
+                    var review = wrapper.firstChild;
+
+                    var container = $$('[id=checkout-review-load]')[0];
+                    container.innerHTML = review.outerHTML;
                 },
-                complete: function(request, status) {
+                onComplete: function(request, status) {
                     window.unlockActivity();
                 }
             }
@@ -61,7 +64,7 @@ var PayoneCheckout = {
 };
 
 window.placeOrder = function (url) {
-    var agreementCollection = jQuery("[id^=agreement-]");
+    var agreementCollection = $("input[id^=agreement-]");
     var agreement = [];
     agreementCollection.each(function() {
         if (this.checked) {
@@ -73,20 +76,21 @@ window.placeOrder = function (url) {
     });
 
     window.lockActivity();
-    jQuery.ajax(
+
+    new Ajax.Request(
+        url,
         {
-            url: url,
-            data: {
+            parameters: {
                 agreement: agreement
             },
-            error: function(result) {
+            onFailure: function(result) {
                 window.unlockActivity();
                 alert('An error occurred during the Paydirekt Express Checkout.');
             },
-            success: function (result) {
+            onSuccess: function (result) {
                 window.unlockActivity();
 
-                var response = JSON.parse(result);
+                var response = JSON.parse(result.responseText);
                 if (response.code !== 200) {
                     alert(response.data.message);
                     return;
@@ -99,10 +103,10 @@ window.placeOrder = function (url) {
 };
 
 window.lockActivity = function() {
-    var fadeOut = jQuery('.fadeOut');
-    fadeOut.show();
+    var fadeOut = $$('.fadeOut')[0];
+    $(fadeOut).show();
 };
 window.unlockActivity = function() {
-    var fadeOut = jQuery('.fadeOut');
-    fadeOut.hide();
+    var fadeOut = $$('.fadeOut')[0];
+    $(fadeOut).hide();
 };

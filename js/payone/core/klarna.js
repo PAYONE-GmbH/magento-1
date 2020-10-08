@@ -84,7 +84,7 @@ function payoneKlarnaSwitchOverlay(show) {
         show = false;
     }
 
-    var overlay = jQuery('#payone_klarna_method_overlay');
+    var overlay = $('payone_klarna_method_overlay');
 
     if (show) {
         overlay.show();

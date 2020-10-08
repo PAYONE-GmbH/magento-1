@@ -243,12 +243,16 @@ window.onAmazonLoginReady = function () {
 
 window.onAmazonPaymentsError = function (error) {
     if (error.getErrorCode() === 'BuyerSessionExpired') {
-        jQuery('#addressBookWidgetCover, #walletWidgetCover')
-            .css('background', 'lightgrey').addClass('show').delay(15)
-            .promise().done(function () {
-                alert(PayoneCheckout.expiredAlert);
-                window.location.href = PayoneCheckout.cartAction;
+        var selectors = ['#addressBookWidgetCover','#walletWidgetCover'];
+        selectors.forEach(function(e, i) {
+            var elements = $$(e);
+            elements.each(function(element){
+                element.style.background = 'lightgrey';
+                element.addClassName('show');
             });
+        });
+        alert(PayoneCheckout.expiredAlert);
+        window.location.href = PayoneCheckout.cartAction;
     } else {
         console.log(error.getErrorCode() + ': ' + error.getErrorMessage());
     }
