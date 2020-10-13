@@ -230,6 +230,12 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
      * @var null
      */
     protected $klarnaDirectDebit = null;
+    /**
+     * Payment method wallet_wechatpay
+     *
+     * @var null
+     */
+    protected $walletWeChatPay = null;
 
     /**
      * @param array $data
@@ -944,4 +950,21 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
     {
         $this->klarnaDirectDebit = $klarnaDirectDebit;
     }
+
+    /**
+     * @param $walletWeChatPay
+     */
+    public function setWalletWeChatPay($walletWeChatPay)
+    {
+        $this->walletWeChatPay = $walletWeChatPay;
+    }
+
+    /**
+     * @return $walletWeChatPay
+     */
+    public function getWalletWeChatPay()
+    {
+        return $this->walletWeChatPay;
+    }
+
 }

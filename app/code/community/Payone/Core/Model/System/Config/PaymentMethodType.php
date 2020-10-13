@@ -67,6 +67,7 @@ class Payone_Core_Model_System_Config_PaymentMethodType extends Payone_Core_Mode
     const KLARNAINVOICING = 'klarna_invoicing';
     const KLARNAINSTALLMENT = 'klarna_installment';
     const KLARNADIRECTDEBIT = 'klarna_direct_debit';
+    const WALLETWECHATPAY = 'wallet_wechatpay';
 //    const MASTERPASS =  'masterpass'; // MAGE-457 : method removed
 
 
@@ -111,6 +112,7 @@ class Payone_Core_Model_System_Config_PaymentMethodType extends Payone_Core_Mode
             self::KLARNAINVOICING => 'Klarna "Pay Later" (Invoice)',
             self::KLARNAINSTALLMENT => 'Klarna "Slice It" (Installments)',
             self::KLARNADIRECTDEBIT => 'Klarna "Pay Now" (Direct Debit)',
+            self::WALLETWECHATPAY => 'WeChat Pay',
 //            self::MASTERPASS => 'Masterpass' // MAGE-457 : method removed
         );
     }
