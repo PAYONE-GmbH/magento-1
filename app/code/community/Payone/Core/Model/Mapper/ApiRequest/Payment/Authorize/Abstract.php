@@ -524,7 +524,8 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
                   $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferPostFinanceEfinance ||
                   $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferPostFinanceCard ||
                   $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferP24 ||
-                  $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferBct
+                  $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferBct ||
+                  $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferTrustly
         ) {
             $country = $this->getOrder()->getBillingAddress()->getCountry();
             $payoneOnlinebanktransferType = $info->getPayoneOnlinebanktransferType();
@@ -1183,6 +1184,8 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
             $clearingType = Payone_Enum_ClearingType::KLARNAINSTALLMENT;
         } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_KlarnaDirectDebit) {
             $clearingType = Payone_Enum_ClearingType::KLARNADIRECTDEBIT;
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferTrustly) {
+            $clearingType = Payone_Enum_ClearingType::ONLINEBANKTRANSFERTRUSTLY;
         }
 
         return $clearingType;

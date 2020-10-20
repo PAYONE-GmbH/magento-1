@@ -123,6 +123,32 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Debit
                 );
                 $request->setPaydata($payData);
             }
+        } elseif($paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferTrustly) {
+            $paymentRequest = new Payone_Api_Request_Parameter_Debit_PaymentMethod_BankAccount();
+
+            $bankCountry = $payment->getData('payone_bank_country');
+            $iban = $payment->getData('payone_sepa_iban');
+            $bic = $payment->getData('payone_sepa_bic');
+            $bankAccount = $payment->getData('payone_account_number');
+            $bankCode = $payment->getData('payone_bank_code');
+
+            if (!empty($bankCountry)) {
+                $paymentRequest->setBankcountry($bankCountry);
+            }
+            if (!empty($iban)) {
+                $paymentRequest->setIban($iban);
+            }
+            if (!empty($bic)) {
+                $paymentRequest->setBic($bic);
+            }
+            if (!empty($bankAccount)) {
+                $paymentRequest->setBankaccount($bankAccount);
+            }
+            if (!empty($bankCode)) {
+                $paymentRequest->setBankcode($bankCode);
+            }
+
+            $request->setPayment($paymentRequest);
         }
         
         $this->dispatchEvent($this->getEventName(), array('request' => $request, 'creditmemo' => $this->getCreditmemo()));

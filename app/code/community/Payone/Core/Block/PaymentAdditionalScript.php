@@ -49,6 +49,7 @@ class Payone_Core_Block_PaymentAdditionalScript extends Mage_Core_Block_Template
         Payone_Core_Model_System_Config_PaymentMethodType::ONLINEBANKTRANSFERPFC => 'onlinebanktransfer.js',
         Payone_Core_Model_System_Config_PaymentMethodType::ONLINEBANKTRANSFERPFF => 'onlinebanktransfer.js',
         Payone_Core_Model_System_Config_PaymentMethodType::ONLINEBANKTRANSFERSOFORT => 'onlinebanktransfer.js',
+        Payone_Core_Model_System_Config_PaymentMethodType::ONLINEBANKTRANSFERTRUSTLY => 'onlinebanktransfer.js',
         Payone_Core_Model_System_Config_PaymentMethodType::PAYOLUTION => array('payolution.js', 'payolutionfraudprevention.js'),
         Payone_Core_Model_System_Config_PaymentMethodType::PAYOLUTIONDEBIT => array('payolution.js', 'payolutionfraudprevention.js'),
         Payone_Core_Model_System_Config_PaymentMethodType::PAYOLUTIONINSTALLMENT => array('payolution.js', 'payolutionfraudprevention.js'),
