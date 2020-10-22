@@ -93,11 +93,9 @@ $quote = $this->getQuote();
 </div>
 
 <script type="text/javascript">
-    window.onDocumentReady = function () {
+    document.observe("dom:loaded", function() {
         PayoneCheckout.init('<?php echo $this->getBaseUrl(); ?>');
         PayoneCheckout.reloadReview();
-    };
-
-    $(document).on('ready', window.onDocumentReady);
+    });
 </script>
 

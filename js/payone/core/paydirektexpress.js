@@ -27,7 +27,7 @@ var PayoneCheckout = {
     init: function (baseUrl) {
         this.baseUrl = baseUrl;
 
-        var button = $('[id=placeOrder]');
+        var button = $('placeOrder');
         button.on('click', function () {
             window.placeOrder(PayoneCheckout.getPlaceOrderUrl());
         });
@@ -64,7 +64,7 @@ var PayoneCheckout = {
 };
 
 window.placeOrder = function (url) {
-    var agreementCollection = $("input[id^=agreement-]");
+    var agreementCollection = $$("input[id^=agreement-]");
     var agreement = [];
     agreementCollection.each(function() {
         if (this.checked) {
