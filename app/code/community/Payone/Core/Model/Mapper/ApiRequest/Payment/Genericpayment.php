@@ -741,14 +741,7 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment
                 $sku = $this->getFactory()->helper()->__(self::DEFAULT_SHIPPING_SKU);
             }
 
-            $store = $quote->getStore();
-            $taxCalculation = Mage::getModel('tax/calculation');
-            $request = $taxCalculation->getRateRequest(null, null, null, $store);
-            $taxRateId = Mage::getStoreConfig('tax/classes/shipping_tax_class', $store);
-            $shippingVatRatio = $taxCalculation->getRate($request->setProductClassId($taxRateId));
-            if (is_nan($shippingVatRatio) || !is_numeric($shippingVatRatio)) {
-                $shippingVatRatio = 0;
-            }
+            $shippingVatRatio = $this->fetchShippingVatRatio($quote);
 
             $params['it'] = Payone_Api_Enum_InvoicingItemType::SHIPMENT;
             $params['id'] = $sku;
@@ -797,18 +790,39 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment
                 $description = $this->getFactory()->helper()->__(self::DEFAULT_DISCOUNT_SKU);
             }
 
+            $shippingVatRatio = $this->fetchShippingVatRatio($quote);
+
             $params['it'] = Payone_Api_Enum_InvoicingItemType::VOUCHER;
             $params['id'] = $sku;
             $params['pr'] = round($discountAmount * 100, 2);
             $params['no'] = 1;
             $params['de'] = $description;
-            $params['va'] = 0;
+            $params['va'] = round($shippingVatRatio * 100, 2); // (From : app/code/community/Payone/Core/Model/Mapper/ApiRequest/Payment/Abstract.php) "assuming that it has the same tax-rate as shipping - dont know from where to get the tax"
+
 
             $item = new Payone_Api_Request_Parameter_Invoicing_Item();
             $item->init($params);
 
             $invoicing->addItem($item);
         }
+    }
+
+    /**
+     * @param Mage_Sales_Model_Quote $quote
+     * @return float
+     */
+    protected function fetchShippingVatRatio(Mage_Sales_Model_Quote $quote)
+    {
+        $store = $quote->getStore();
+        $taxCalculation = Mage::getModel('tax/calculation');
+        $request = $taxCalculation->getRateRequest(null, null, null, $store);
+        $taxRateId = Mage::getStoreConfig('tax/classes/shipping_tax_class', $store);
+        $shippingVatRatio = $taxCalculation->getRate($request->setProductClassId($taxRateId));
+        if (is_nan($shippingVatRatio) || !is_numeric($shippingVatRatio)) {
+            $shippingVatRatio = 0.00;
+        }
+
+        return $shippingVatRatio;
     }
 
     /**
