@@ -66,9 +66,10 @@ var PayoneCheckout = {
 window.placeOrder = function (url) {
     var agreementCollection = $$("input[id^=agreement-]");
     var agreement = [];
-    agreementCollection.each(function() {
-        if (this.checked) {
-            var index = $(this).attr("name").match(/.*\[(.*)\]/);
+    agreementCollection.each(function(item) {
+        if (item.checked) {
+            var name = item.name;
+            var index = name.match(/.*\[(.*)\]/);
             if (index.length > 1) {
                 agreement.push(index[1]);
             }
@@ -81,7 +82,7 @@ window.placeOrder = function (url) {
         url,
         {
             parameters: {
-                agreement: agreement
+                "agreement[]": agreement
             },
             onFailure: function(result) {
                 window.unlockActivity();
