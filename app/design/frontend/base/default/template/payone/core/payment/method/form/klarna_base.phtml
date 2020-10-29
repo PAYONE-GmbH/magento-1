@@ -37,7 +37,7 @@ $quoteLocale = str_replace('_', '-' , Mage::app()->getLocale()->getLocaleCode())
 ?>
 <fieldset class="form-list">
     <ul id="payment_form_<?php echo $code ?>" style="display:none">
-        <div id="payone_klarna_method_overlay"><img src="<?php echo Mage::getDesign()->getSkinUrl('images/payone/ajaxloader.gif') ?>"></div>
+        <div id="payone_klarna_method_overlay" style="display: none"><img src="<?php echo Mage::getDesign()->getSkinUrl('images/payone/ajaxloader.gif') ?>"></div>
 
         <h2><?php echo $this->__('KLARNA_CHECKOUT_TITLE') ?></h2>
 
@@ -130,7 +130,7 @@ $quoteLocale = str_replace('_', '-' , Mage::app()->getLocale()->getLocaleCode())
         <li class="fields">
             <div class="payone_klarna_methods">
                 <?php foreach ($availableMethods as $methodType => $methodCode) { ?>
-                    <div id="<?php echo $methodCode ?>_payment_selection" class="button">
+                    <div id="<?php echo $methodCode ?>_payment_selection" class="button payone_klarna_button">
                         <input type="hidden" id="<?php echo $methodCode ?>_payment_code" value="<?php echo $methodCode ?>" />
                         <span><?php echo isset($klarnaMethodNames[$methodType]) ? $this->__($klarnaMethodNames[$methodType]) : $methodCode ?></span>
                     </div>
@@ -163,42 +163,41 @@ $quoteLocale = str_replace('_', '-' , Mage::app()->getLocale()->getLocaleCode())
 
     var startSessionUrl = '<?php echo $startSessionUrl ?>';
 
-    jQuery('[id$=_payment_selection]').on(
-        "click",
-        function(event) {
+    var klarnaButtons = [].slice.call(document.getElementsByClassName("payone_klarna_button"));
+    klarnaButtons.forEach(function(element) {
+        element.onclick = function(event) {
             var validator = new Validation(payment.form);
             if (validator.validate()) {
                 payoneKlarnaSwitchOverlay(true);
                 var target = event.currentTarget;
-                var children = jQuery(target).find('input');
-                var methodCode = children.first().val();
+                var children = $(target).select('input');
+
+                var methodCode = children[0].value;
 
                 var response = payoneKlarnaStartSession(startSessionUrl, methodCode);
 
                 var status = response.status;
                 if (status == 'OK') {
-                    var paymentTitle = jQuery('#klarna_payment_title');
-                    paymentTitle.empty();
-                    var paymentTitleContent = '<img style="display: inline" src="' + response.payment_method_category_asset_url_descriptive + '" />'
+                    var paymentTitle = $('klarna_payment_title');
+                    paymentTitle.innerHTML = '<img style="display: inline" src="' + response.payment_method_category_asset_url_descriptive + '" />'
                         + ' <span>' + response.payment_method_category_name + '</span>';
-                    paymentTitle.append(paymentTitleContent);
 
-                    var formKlarnaPaymentMethodField= jQuery('#p_method_payone_klarna_base');
-                    formKlarnaPaymentMethodField.val(methodCode);
+                    var formKlarnaPaymentMethodField= $('p_method_payone_klarna_base');
+                    formKlarnaPaymentMethodField.value = methodCode;
 
-                    var klarnaConfigIdField = jQuery('#klarna_config_id');
+                    var klarnaConfigIdField = $('klarna_config_id');
                     if (methodCode == klarnaDirectDebitCode) {
-                        klarnaConfigIdField.val(klarnaDirectDebitMethodId);
+                        klarnaConfigIdField.value = klarnaDirectDebitMethodId;
                     } else if (methodCode == klarnaInstallmentCode) {
-                        klarnaConfigIdField.val(klarnaInstallmentMethodId);
+                        klarnaConfigIdField.value = klarnaInstallmentMethodId;
                     } else if (methodCode == klarnaInvoicingCode) {
-                        klarnaConfigIdField.val(klarnaInvoicingMethodId);
+                        klarnaConfigIdField.value = klarnaInvoicingMethodId;
                     } else {
-                        klarnaConfigIdField.empty();
-                        formKlarnaPaymentMethodField.val(klarnaBaseCode);
+                        klarnaConfigIdField.value = '';
+                        formKlarnaPaymentMethodField.value = klarnaBaseCode;
                     }
 
-                    jQuery('#klarna_payments_container').empty();
+                    $('klarna_payments_container').empty();
                     window.klarnaAsyncCallback(response);
                 } else {
                     alert(response.customer_message);
@@ -206,7 +205,7 @@ $quoteLocale = str_replace('_', '-' , Mage::app()->getLocale()->getLocaleCode())
                 payoneKlarnaSwitchOverlay(false);
             }
         }
-    );
+    });
 
     window.klarnaAsyncCallback = function (sessionData) {
         Klarna.Payments.init({
@@ -222,19 +221,19 @@ $quoteLocale = str_replace('_', '-' , Mage::app()->getLocale()->getLocaleCode())
             }
         });
 
-        var paymentMethodCategoryIdentifier = jQuery('#payment_method_category_identifier');
-        paymentMethodCategoryIdentifier.val(sessionData.payment_method_category_identifier);
+        var paymentMethodCategoryIdentifier = $('payment_method_category_identifier');
+        paymentMethodCategoryIdentifier.value = sessionData.payment_method_category_identifier;
     };
 
     payment.save = payment.save.wrap(
         function (origMethod) {
-            var paymentMethodCategoryIdentifier = jQuery('#payment_method_category_identifier').val();
-            var formKlarnaPaymentMethod = jQuery('#p_method_payone_klarna_base');
-            var customerDoB = jQuery('#payone_klarna_base_additional_fields_customer_dob_full').val();
-            var customerBillingPhone = jQuery('#payone_klarna_base_additional_fields_customer_billing_telephone').val();
-            var customerShippingPhone = jQuery('#payone_klarna_base_additional_fields_customer_shipping_telephone').val();
+            var paymentMethodCategoryIdentifier = $('payment_method_category_identifier').value;
+            var formKlarnaPaymentMethod = $('p_method_payone_klarna_base');
+            var customerDoB = $('payone_klarna_base_additional_fields_customer_dob_full').value;
+            var customerBillingPhone = $('payone_klarna_base_additional_fields_customer_billing_telephone').value;
+            var customerShippingPhone = $('payone_klarna_base_additional_fields_customer_shipping_telephone').value;
 
-            if (!formKlarnaPaymentMethod.is(':checked') || formKlarnaPaymentMethod.val() == klarnaBaseCode || paymentMethodCategoryIdentifier == '') {
+            if (!formKlarnaPaymentMethod.checked || formKlarnaPaymentMethod.value == klarnaBaseCode || paymentMethodCategoryIdentifier == '') {
                 return payone.exec(origMethod);
             }
 
@@ -280,8 +279,8 @@ $quoteLocale = str_replace('_', '-' , Mage::app()->getLocale()->getLocaleCode())
                     var status = res.approved;
                     if (status) {
                         var token = res.authorization_token;
-                        var tokenField = jQuery('#klarna_authorization_token');
-                        tokenField.val(token);
+                        var tokenField = $('klarna_authorization_token');
+                        tokenField.value = token;
                         payone.exec(origMethod);
                     } else {
                         if (!res.show_form) {
@@ -295,15 +294,15 @@ $quoteLocale = str_replace('_', '-' , Mage::app()->getLocale()->getLocaleCode())
     );
 
     function handlePaymentBan() {
-        var paymentMethodCategoryIdentifier = jQuery('#payment_method_category_identifier');
-        paymentMethodCategoryIdentifier.val('');
+        var paymentMethodCategoryIdentifier = $('payment_method_category_identifier');
+        paymentMethodCategoryIdentifier.value = '';
 
-        var formKlarnaPaymentMethod = jQuery('#p_method_payone_klarna_base');
-        formKlarnaPaymentMethod.val(klarnaBaseCode);
+        var formKlarnaPaymentMethod = $('p_method_payone_klarna_base');
+        formKlarnaPaymentMethod.value = klarnaBaseCode;
         console.debug(formKlarnaPaymentMethod);
 
-        var formKlarnaPaymentMethodSelector = jQuery('#dt_method_payone_klarna_base');
-        var formKlarnaPaymentMethodContainer = jQuery('#dd_method_payone_klarna_base');
+        var formKlarnaPaymentMethodSelector = $('dt_method_payone_klarna_base');
+        var formKlarnaPaymentMethodContainer = $('dd_method_payone_klarna_base');
         formKlarnaPaymentMethodSelector.hide();
         formKlarnaPaymentMethodContainer.hide();
     }
