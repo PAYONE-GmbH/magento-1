@@ -30,7 +30,7 @@
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
  * @link            https://www.fatchip.de
  */
-class Payone_Settings_Data_ConfigFile_PaymentMethod_WalletWeChatPay
+class Payone_Settings_Data_ConfigFile_PaymentMethod_Walletwechatpay
     extends Payone_Settings_Data_ConfigFile_PaymentMethod_Abstract
     implements Payone_Settings_Data_ConfigFile_Interface
 {
