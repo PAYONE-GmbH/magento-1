@@ -28,10 +28,21 @@
 if ($this->isRatepayIsActivated()) {
     $sDeviceIdentToken = $this->getRatePayDeviceFingerprint();
     $sDeviceIdentId = $this->getRatePayDeviceFingerprintSnippetId();
-
-    $dfpJsContent = file_get_contents("https://d.ratepay.com/$sDeviceIdentId/di.js");
-    $dfpCssContent = file_get_contents("https://d.ratepay.com/di.css?t=$sDeviceIdentToken&v=$sDeviceIdentId&l=Checkout");
-
-    echo "var di = {t: '$sDeviceIdentToken', v: '$sDeviceIdentId', l: 'Checkout'};";
-    echo $dfpJsContent;
-} ?>
+?>
+<div style="display: none">
+    <script language="JavaScript">
+        var di = {t: '<?php echo $sDeviceIdentToken; ?>', v: '<?php echo $sDeviceIdentId; ?>', l: 'Checkout'};
+    </script>
+    <script type="text/javascript" src="//d.ratepay.com/<?php echo $sDeviceIdentId; ?>/di.js"></script>
+    <noscript>
+        <link rel="stylesheet" type="text/css"
+              href="//d.ratepay.com/di.css?t=<?php echo $sDeviceIdentToken; ?>&v=<?php echo $sDeviceIdentId; ?>&l=Checkout">
+    </noscript>
+    <object type="application/x-shockwave-flash" data="//d.ratepay.com/<?php echo $sDeviceIdentId; ?>/c.swf" width="0"
+            height="0">
+        <param name="movie" value="//d.ratepay.com/<?php echo $sDeviceIdentId; ?>/c.swf"/>
+        <param name="flashvars" value="t=<?php echo $sDeviceIdentToken; ?>&v=<?php echo $sDeviceIdentId; ?>"/>
+        <param name="AllowScriptAccess" value="always"/>
+    </object>
+</div>
+<?php } ?>

@@ -395,10 +395,11 @@ function switchRateMethodTo(method, code, displaySwitchSection)
     }
 }
 
-function fetchDFP (url)
+function fetchDFP (deviceIdentId)
 {
+    var url = 'https://d.ratepay.com/' + deviceIdentId + '/di.js';
+
     if ('undefined' !== typeof window.dfpInit) {
-        console.log('DFP skipped'); // MAGE-504 : remove after release if bothering
         return;
     }
 
@@ -418,6 +419,5 @@ function fetchDFP (url)
         var code = xmlhttp.responseText;
         window.eval(code);
         window.dfpInit = true;
-        console.debug('DFP Fetched'); // MAGE-504 : remove after release if bothering
     }
 }

@@ -174,19 +174,6 @@ class Payone_Core_RatepayController extends Mage_Core_Controller_Front_Action
         return;
     }
 
-    public function deviceFingerPrintAction()
-    {
-        /** @var Payone_Core_Block_Payment_Method_RatepayDeviceFingerprint $block */
-        $block = Mage::app()->getLayout()->createBlock('payone_core/payment_method_ratepayDeviceFingerprint');
-        $html = $block->toHtml();
-
-        $this->getResponse()
-            ->clearHeaders()
-            ->setHeader('Content-Type', 'text/html', true)
-            ->setBody($html);
-        return;
-    }
-
     /**
      * Payone session instance getter
      *
