@@ -516,14 +516,11 @@ class Payone_Core_Model_Service_Paydirekt_Express_Checkout
      */
     protected function _convertItemPrice(Mage_Sales_Model_Quote_Item $itemData)
     {
-        // If tax is applied after discount, the item hold the tax compensation for that discount
-        // we have then to substract it from the item price
-        $dTC = $itemData->getDiscountTaxCompensation();
         if ($this->configPayment->getCurrencyConvert()) {
-            return $itemData->getBasePriceInclTax() - $dTC;
+            return $itemData->getBasePriceInclTax();
         }
 
-        return $itemData->getPriceInclTax() - $dTC;
+        return $itemData->getPriceInclTax();
     }
 
     /**
