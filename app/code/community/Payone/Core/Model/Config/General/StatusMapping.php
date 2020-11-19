@@ -230,6 +230,12 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
      * @var null
      */
     protected $klarnaDirectDebit = null;
+    /**
+     * Payment method online_bank_transfer_trustly
+     *
+     * @var null
+     */
+    protected $onlineBankTransferTrustly = null;
 
     /**
      * @param array $data
@@ -943,5 +949,21 @@ class Payone_Core_Model_Config_General_StatusMapping extends Payone_Core_Model_C
     public function setKlarnaDirectDebit($klarnaDirectDebit)
     {
         $this->klarnaDirectDebit = $klarnaDirectDebit;
+    }
+
+    /**
+     * @param $onlineBankTransferTrustly
+     */
+    public function setOnlineBankTransferTrustly($onlineBankTransferTrustly)
+    {
+        $this->onlineBankTransferTrustly = $onlineBankTransferTrustly;
+    }
+
+    /**
+     * @return $onlineBankTransferTrustly
+     */
+    public function getOnlineBankTransferTrustly()
+    {
+        return $this->onlineBankTransferTrustly;
     }
 }
