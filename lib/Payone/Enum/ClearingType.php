@@ -66,6 +66,7 @@ class Payone_Enum_ClearingType
     const ONLINEBANKTRANSFERIDL = 'sb';
     const ONLINEBANKTRANSFERGIROPAY = 'sb';
     const ONLINEBANKTRANSFERSOFORT = 'sb';
+    const ONLINEBANKTRANSFERTRUSTLY = 'sb';
     const ONLINEBANKTRANSFER = 'sb';        // Default sb mapping
 
     /** Pre-payments */
