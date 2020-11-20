@@ -630,6 +630,17 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
             $payment->setWallettype(Payone_Api_Enum_WalletType::ALIPAY);
             $isRedirect = true;
         }
+        //Wallet WeChatPay
+        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_WalletWeChatPay) {
+            $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_WalletWeChatPay();
+
+            $payment->setWallettype(Payone_Api_Enum_WalletType::WECHATPAY);
+
+            $businessRelation = !empty($this->getOrder()->getBillingAddress()->getCompany()) ? 'b2b' : 'b2c';
+            $payment->setBusinessrelation($businessRelation);
+
+            $isRedirect = true;
+        }
         //Old Wallet Payment
         elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Wallet) {
             $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_Wallet();
@@ -1186,6 +1197,8 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
             $clearingType = Payone_Enum_ClearingType::KLARNADIRECTDEBIT;
         } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferTrustly) {
             $clearingType = Payone_Enum_ClearingType::ONLINEBANKTRANSFERTRUSTLY;
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_WalletWeChatPay) {
+            $clearingType = Payone_Enum_ClearingType::WALLETWECHATPAY;
         }
 
         return $clearingType;
