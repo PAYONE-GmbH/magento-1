@@ -315,6 +315,10 @@
                     <!-- Ali Pay Type -->
                     <to_order_payment>*</to_order_payment>
                 </payone_wallet_alipay_type>
+                <payone_wallet_wechatpay_type>
+                    <!-- WeChatPay Type -->
+                    <to_order_payment>*</to_order_payment>
+                </payone_wallet_wechatpay_type>
                 <payone_ratepay_type>
                     <!-- Ratepay Type -->
                     <to_order_payment>*</to_order_payment>
@@ -889,6 +893,11 @@
                 <model>payone_core/payment_method_onlineBankTransferTrustly</model>
                 <group>payone</group>
             </payone_online_bank_transfer_trustly>
+            <payone_wallet_wechatpay translate="title" module="payone_core">
+                <title>PAYONE - WeChatPay</title>
+                <model>payone_core/payment_method_walletWeChatPay</model>
+                <group>payone</group>
+            </payone_wallet_wechatpay>
         </payment>
         <payone_payment>
             <template_amazon_pay>
@@ -959,6 +968,9 @@
             <template_wallet_alipay>
                 <use_global>1</use_global>
             </template_wallet_alipay>
+            <template_wallet_wechatpay>
+                <use_global>1</use_global>
+            </template_wallet_wechatpay>
             <template_advance_payment>
                 <use_global>1</use_global>
             </template_advance_payment>
@@ -1044,6 +1056,7 @@
                 <wallet_paydirekt_express>a:1:{s:18:"_1514988840741_742";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</wallet_paydirekt_express>
                 <wallet_paypal_express>a:1:{s:18:"_2177301865940_940";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</wallet_paypal_express>
                 <wallet_alipay>a:1:{s:18:"_2339656494812_812";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</wallet_alipay>
+                <wallet_wechatpay>a:1:{s:18:"_2339656494812_912";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</wallet_wechatpay>
                 <financing>a:1:{s:18:"_1926207461842_842";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</financing>
                 <amazon_pay>a:1:{s:18:"_1917707466274_274";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</amazon_pay>
                 <payment_guarantee_invoice>a:1:{s:18:"_2468232683254_254";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</payment_guarantee_invoice>
