@@ -54,7 +54,11 @@ class Payone_Core_Helper_Data
      */
     public function getMagentoVersion()
     {
-        return Mage::getVersion();
+        if (method_exists('Mage', 'getOpenMageVersion')) {
+            return Mage::getOpenMageVersion();
+        } else {
+            return Mage::getVersion();
+        }
     }
 
     /**

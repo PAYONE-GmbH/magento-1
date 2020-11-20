@@ -28,7 +28,6 @@
 $quote = $this->getQuote();
 
 ?>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <div class="page-title">
     <h1><?php echo $this->__('Checkout with Paydirekt') ?></h1>
 </div>
@@ -94,11 +93,9 @@ $quote = $this->getQuote();
 </div>
 
 <script type="text/javascript">
-    window.onDocumentReady = function () {
+    document.observe("dom:loaded", function() {
         PayoneCheckout.init('<?php echo $this->getBaseUrl(); ?>');
         PayoneCheckout.reloadReview();
-    };
-
-    $(document).on('ready', window.onDocumentReady);
+    });
 </script>
 

@@ -341,6 +341,9 @@ abstract class Payone_Api_Request_Abstract
     public function setIntegratorName($integrator_name)
     {
         $this->integrator_name = $integrator_name;
+        if (method_exists('Mage', 'getOpenMageVersion')) {
+            $this->integrator_name = 'openmage';
+        }
     }
 
     /**
