@@ -502,7 +502,7 @@ class Payone_Core_Model_Service_Paydirekt_Express_Checkout
             $params['pr'] = $this->_convertItemPrice($itemData);
             $params['no'] = $number;
             $params['de'] = $itemData->getName();
-            $params['va'] = $itemData->getTaxPercent();
+            $params['va'] = round($itemData->getTaxPercent() * 100, 0);
 
             $item = new Payone_Api_Request_Parameter_Invoicing_Item();
             $item->init($params);
@@ -516,14 +516,11 @@ class Payone_Core_Model_Service_Paydirekt_Express_Checkout
      */
     protected function _convertItemPrice(Mage_Sales_Model_Quote_Item $itemData)
     {
-        // If tax is applied after discount, the item hold the tax compensation for that discount
-        // we have then to substract it from the item price
-        $dTC = $itemData->getDiscountTaxCompensation();
         if ($this->configPayment->getCurrencyConvert()) {
-            return $itemData->getBasePriceInclTax() - $dTC;
+            return $itemData->getBasePriceInclTax();
         }
 
-        return $itemData->getPriceInclTax() - $dTC;
+        return $itemData->getPriceInclTax();
     }
 
     /**
@@ -537,18 +534,14 @@ class Payone_Core_Model_Service_Paydirekt_Express_Checkout
             $sku = $this->getFactory()->helper()->__(self::DEFAULT_SHIPPING_SKU);
         }
 
-        $shippingVatRatio = $this->quote->getShippingAddress()->getShippingTaxAmount()
-            / $this->quote->getShippingAddress()->getShippingAmount();
-        if (is_nan($shippingVatRatio) || !is_numeric($shippingVatRatio)) {
-            $shippingVatRatio = 0;
-        }
+        $shippingVatRatio = $this->fetchShippingVatRatio($this->quote);
 
         $params['it'] = Payone_Api_Enum_InvoicingItemType::SHIPMENT;
         $params['id'] = $sku;
         $params['pr'] = $this->_convertShippingAmount($this->quote->getShippingAddress());
         $params['no'] = 1;
         $params['de'] = 'Shipping Costs';
-        $params['va'] = round($shippingVatRatio * 100, 2);
+        $params['va'] = round($shippingVatRatio * 100, 0);
 
         $item = new Payone_Api_Request_Parameter_Invoicing_Item();
         $item->init($params);
@@ -610,6 +603,24 @@ class Payone_Core_Model_Service_Paydirekt_Express_Checkout
         }
 
         return $this->quote->getShippingAddress()->getDiscountAmount();
+    }
+
+    /**
+     * @param Mage_Sales_Model_Quote $quote
+     * @return float
+     */
+    protected function fetchShippingVatRatio(Mage_Sales_Model_Quote $quote)
+    {
+        $store = $quote->getStore();
+        $taxCalculation = Mage::getModel('tax/calculation');
+        $request = $taxCalculation->getRateRequest(null, null, null, $store);
+        $taxRateId = Mage::getStoreConfig('tax/classes/shipping_tax_class', $store);
+        $shippingVatRatio = $taxCalculation->getRate($request->setProductClassId($taxRateId));
+        if (is_nan($shippingVatRatio) || !is_numeric($shippingVatRatio)) {
+            $shippingVatRatio = 0.00;
+        }
+
+        return $shippingVatRatio;
     }
 
     /**
