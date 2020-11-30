@@ -2,6 +2,23 @@
 
 **The changelog is continued on the Github releases page**
 
+## 5.1.0
+
+New Feature(s)
+
+* Removed uses of jQuery where not strictly neccessary
+
+Bugfixes
+
+* Corrected voucher VAT for Klarna start_session call
+* Corrected PayDirekt shipping vat
+
+Maintenance
+
+* Updated Ratepay legal texts
+* Recognize OpenMage version and incorporate into request diagnostic data
+* Tested with Magento 1.9.4.4
+
 ## 5.0.0
 
 New Feature(s)
