@@ -180,4 +180,42 @@ class Payone_Core_Block_Payment_Method_Form_RatepayInvoicing extends Payone_Core
 
         return $configs;
     }
+
+    /**
+     * @param $sFingerprint
+     */
+    protected function _setSessionFingerprint($sFingerprint)
+    {
+        $checkoutSession = $this->getFactory()->getSingletonCheckoutSession();
+        $checkoutSession->setRatePayFingerprint($sFingerprint);
+    }
+
+    /**
+     * @return string
+     */
+    public function getRatePayDeviceFingerprint()
+    {
+        $checkoutSession = $this->getFactory()->getSingletonCheckoutSession();
+        $quote = $checkoutSession->getQuote();
+
+        if(!$checkoutSession->getRatePayFingerprint()) {
+            $sFingerprint  = $quote->getBillingAddress()->getFirstname();
+            $sFingerprint .= $quote->getBillingAddress()->getLastname();
+            $sFingerprint .= microtime();
+            $sFingerprint = md5($sFingerprint);
+            $this->_setSessionFingerprint($sFingerprint);
+        }
+
+        return $checkoutSession->getRatePayFingerprint();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRatePayDeviceFingerprintSnippetId()
+    {
+        $deviceFingerprintSnippetId = $this->getFactory()->helperConfig()->getStoreConfig('payone_general/payment_ratepay_checkout/device_fingerprint_snippet_id');
+
+        return !empty($deviceFingerprintSnippetId) ? $deviceFingerprintSnippetId : 'ratepay';
+    }
 }

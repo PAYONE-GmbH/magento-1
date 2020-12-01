@@ -34,6 +34,9 @@ $configShowBankData = $this->getPaymentConfig()->getSepaDeShowBankData();
 $isAllowedDirectDebit = $this->isAllowedDirectDebit();
 $ratePaymentDebitAllowedType = $this->getRateDebitType();
 $initialDebitType = $ratePaymentDebitAllowedType == $this::RATE_PAYMENT_DEBIT_ONLY_BANKTRANSFER ? Payone_Api_Enum_RatepayDebitType::BANK_TRANSFER : Payone_Api_Enum_RatepayDebitType::DIRECT_DEBIT;
+
+$sDeviceIdentToken = $this->getRatePayDeviceFingerprint();
+$sDeviceIdentId = $this->getRatePayDeviceFingerprintSnippetId();
 ?>
 <fieldset class="form-list">
     <ul id="payment_form_<?php echo $code ?>" style="display:none">
@@ -322,4 +325,15 @@ $initialDebitType = $ratePaymentDebitAllowedType == $this::RATE_PAYMENT_DEBIT_ON
         '<?php echo $this->getUrl("payone_core/ratepay/runtime", array('_secure' => true)); ?>',
         '<?php echo $this->getUrl("payone_core/ratepay/rate", array('_secure' => true)); ?>'
     );
+
+    di = {t: '<?= $sDeviceIdentToken ?>', v: '<?= $sDeviceIdentId ?>', l: 'Checkout'};
+
+    var methodSelector = $('p_method_<?php echo $code ?>');
+    if (methodSelector && methodSelector.checked) {
+        fetchDFP('<?= $sDeviceIdentId ?>');
+    }
+
+    $('dt_method_<?php echo $code ?>').onclick = function() {
+        fetchDFP('<?= $sDeviceIdentId ?>');
+    }
 </script>

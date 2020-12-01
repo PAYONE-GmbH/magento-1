@@ -29,6 +29,9 @@ $ratePayShopId = $this->getMatchingRatePayShopId();
 $ratePayCurrency = $this->getRatePayCurrency();
 $types = $this->getTypes();
 
+$sDeviceIdentToken = $this->getRatePayDeviceFingerprint();
+$sDeviceIdentId = $this->getRatePayDeviceFingerprintSnippetId();
+
 ?>
 <fieldset class="form-list">
     <ul id="payment_form_<?php echo $code ?>" style="display:none">
@@ -136,4 +139,15 @@ $types = $this->getTypes();
 <script type="text/javascript">
     //    Add validation messages translation
     Translator.add('You have to be at least 18 years old to use this payment type!', '<?php echo $this->__('You have to be at least 18 years old to use this payment type!'); ?>');
+
+    di = {t: '<?= $sDeviceIdentToken ?>', v: '<?= $sDeviceIdentId ?>', l: 'Checkout'};
+
+    var methodSelector = $('p_method_<?php echo $code ?>');
+    if (methodSelector && methodSelector.checked) {
+        fetchDFP('<?= $sDeviceIdentId ?>');
+    }
+
+    $('dt_method_<?php echo $code ?>').onclick = function() {
+        fetchDFP('<?= $sDeviceIdentId ?>');
+    }
 </script>

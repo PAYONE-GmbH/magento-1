@@ -394,3 +394,30 @@ function switchRateMethodTo(method, code, displaySwitchSection)
         }
     }
 }
+
+function fetchDFP (deviceIdentId)
+{
+    var url = 'https://d.ratepay.com/' + deviceIdentId + '/di.js';
+
+    if ('undefined' !== typeof window.dfpInit) {
+        return;
+    }
+
+    if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    } else {// code for IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.open("GET", url, false);
+    xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+    var parameters = "";
+
+    xmlhttp.send(parameters);
+
+    if (xmlhttp.responseText != null) {
+        var code = xmlhttp.responseText;
+        window.eval(code);
+        window.dfpInit = true;
+    }
+}
