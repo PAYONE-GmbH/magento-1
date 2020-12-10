@@ -515,6 +515,9 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
             }
 
             $payment->setPseudocardpan($info->getPayonePseudocardpan());
+
+            $payment->setCardholder($info->getCcOwner());
+
             $isRedirect = true;
         } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransfer ||
                   $paymentMethod instanceof Payone_Core_Model_Payment_Method_OnlineBankTransferSofortueberweisung ||
