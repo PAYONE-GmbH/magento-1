@@ -411,7 +411,7 @@ PAYONE.Validation.CreditCard = function (config, translatedErrorMessages) {
         }
 
         // MAGE-508: Re-introduce CC owner field
-        if ('' === this.translatedErrorMessages.ccOwnerErrorMessage) {
+        if ('' === this.translatedErrorMessages.ccOwnerErrorMessage || 'undefined' === typeof this.translatedErrorMessages.ccOwnerErrorMessage) {
             this.translatedErrorMessages.ccOwnerErrorMessage = 'Credit card owner name is invalid. [max 50 char. from latin alphabet including dash/space/umlaut | at least 1 letter]';
         }
         Validation.add(
