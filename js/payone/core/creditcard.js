@@ -494,7 +494,7 @@ PAYONE.Validation.CreditCard = function (config, translatedErrorMessages) {
      */
     this.validateOwner = function (v, elm) {
         var ownerName = elm.value;
-        var regex = new RegExp("^[a-zA-Z äëïöüÄËÏÖÜ\-]*[a-zA-ZäëïöüÄËÏÖÜ][a-zA-Z äëïöüÄËÏÖÜ\-]*$");
+        var regex = new RegExp("^[a-zA-Z äëïöüÄËÏÖÜß\-]*[a-zA-ZäëïöüÄËÏÖÜß][a-zA-Z äëïöüÄËÏÖÜß\-]*$");
         return regex.test(ownerName)
             && (ownerName.length > 0)
             && (ownerName.length <= 50);
