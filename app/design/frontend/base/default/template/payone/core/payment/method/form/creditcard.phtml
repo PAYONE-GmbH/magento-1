@@ -186,11 +186,17 @@
                         <?php echo $this->__('Credit Card Owner'); ?>&nbsp;<span class="required">*</span>
                     </label><br class="clear"/>
                     <input type="text" id="<?php echo $code; ?>_cc_owner"
-                           value=""
+                           value="<?php if ($useCustomerSaveData) { echo $this->getCreditCardOwner(); } ?>"
                            name="payment[cc_owner]" title="<?php echo $this->__('Credit Card Owner'); ?>"
                            class="input-text validate-payone-cc-owner no-submit"
+                        <?php if ($useCustomerSaveData && !empty($this->getCreditCardOwner())) { echo 'style="display:none;"'; } ?>
                     />
                 </div>
+
+                <?php if ($useCustomerSaveData && !empty($this->getCreditCardOwner())) { ?>
+                    <span class="savedCustomerDataField"><?php if($payoneCreditCardCheckValidation == '0') echo $this->getCreditCardOwner();?></span>
+                <?php } ?>
+
             </li>
             <li>
                 <div class="input-box">
@@ -281,6 +287,7 @@
             <li>
                 <div id="errorOutput"></div>
                 <input type="hidden" id="<?php echo $code; ?>_cc_number" value=""/>
+                <input type="hidden" id="<?php echo $code; ?>_cc_owner" value="<?php if ($useCustomerSaveData) { echo $this->getCreditCardOwner(); } ?>"/>
                 <input type="hidden" id="payone_pseudocardpan" name="payment[payone_pseudocardpan]" value="<?php if ($useCustomerSaveData) { echo $this->getPayonePseudocardpan(); } ?>"/>
                 <input type="hidden" id="payone_cardexpiredate" name="payment[payone_cardexpiredate]" value="<?php if ($useCustomerSaveData) { echo $this->getCreditCardExpireYear().$this->getCreditCardExpireMonth(); } ?>"/>
                 <input type="hidden" id="payone_truncatedcardpan" name="payment[cc_number_enc]" value="<?php if ($useCustomerSaveData) { echo $this->getCreditCardNumberEnc(); } ?>"/>
@@ -464,6 +471,8 @@
                 updateCcLogo('');
             }
 
+            var elementCcOwner = $('<?php echo $code ?>_cc_owner');
+
             // Toggle fields visibility
             $$('.savedCustomerDataField').forEach(function(element) {
                 element.hide()
@@ -472,6 +481,7 @@
                 element.show()
             });
             elementCcType.show();
+            elementCcOwner.show();
 
             Event.stop(event);
         }

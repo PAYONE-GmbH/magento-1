@@ -486,7 +486,7 @@ PAYONE.Validation.CreditCard = function (config, translatedErrorMessages) {
     };
 
     /**
-     * Creditcard Type Validation
+     * Creditcard Owner Validation
      *
      * @param v
      * @param elm

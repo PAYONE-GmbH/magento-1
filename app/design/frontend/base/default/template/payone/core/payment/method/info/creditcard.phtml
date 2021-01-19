@@ -36,6 +36,8 @@
       }
 endif;?>
 <br/>
+<?php echo $this->__('Name on the Card: %s', $this->escapeHtml($this->getCcOwner())) ?>
+<br/>
 <?php if ($this->getLastTransId() == ''): ?>
 	<?php echo $this->__('Payment has not been processed yet.') ?>
 <?php else: ?>

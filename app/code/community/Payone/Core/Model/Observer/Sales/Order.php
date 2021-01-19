@@ -139,6 +139,7 @@ class Payone_Core_Model_Observer_Sales_Order
                 $customerSavedData['cc_number_enc'] = $payment->getCcNumberEnc();
                 $customerSavedData['payone_pseudocardpan'] = $payment->getPayonePseudocardpan();
                 $customerSavedData['payone_config_payment_method_id'] = $payment->getPayoneConfigPaymentMethodId();
+                $customerSavedData['cc_owner'] = $payment->getCcOwner();
 
                 //Mage::log($customerSavedData, null, 'test.log', true);
             }

@@ -107,6 +107,23 @@ class Payone_Core_Block_Payment_Method_Form_Creditcard
     /**
      * @return string
      */
+    public function getCreditCardOwner()
+    {
+        $creditCardOwner = $this->getSavedCustomerData('cc_owner');
+        if (is_array($creditCardOwner) && isset($creditCardOwner['cc_owner'])) {
+            $creditCardOwner = $creditCardOwner['cc_owner'];
+        }
+
+        if(empty($creditCardOwner) || !is_string($creditCardOwner)) {
+            $creditCardOwner = $this->getInfoData('cc_owner');
+        }
+
+        return $creditCardOwner;
+    }
+
+    /**
+     * @return string
+     */
     public function getPayoneConfigPaymentMethodId()
     {
         $payoneConfigPaymentMethodId = $this->getSavedCustomerData('payone_config_payment_method_id');
@@ -224,7 +241,8 @@ class Payone_Core_Block_Payment_Method_Form_Creditcard
         $sType = $this->getCreditCardType();
         $sYear = $this->getCreditCardExpireYear();
         $sMonth = $this->getCreditCardExpireMonth();
-        if(empty($sEnc) || empty($sType) || empty($sYear) || empty($sMonth)) {
+        $sOwner = $this->getCreditCardOwner();
+        if(empty($sEnc) || empty($sType) || empty($sYear) || empty($sMonth) || empty($sOwner)) {
             return 1;
         }
 
