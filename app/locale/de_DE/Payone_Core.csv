@@ -410,8 +410,10 @@
 "Name on Card","Kreditkarteninhaber"
 "Credit Card Type","Kreditkartentyp"
 "Credit Card Number","Kreditkartennummer"
+"Credit Card Owner","Kreditkarteninhaber"
 "Expiration Date","Verfallsdatum"
 "Please fill in all required fields","Bitte f&uuml;llen Sie alle Pflichtfelder aus"
+CREDITCARD_INVALID_OWNER_ERROR_MESSAGE, "Der Name des Kreditkarteninhabers ist ungültig. [max 50 char. aus dem lateinischen Alphabet einschließlich Bindestrich / Leerzeichen / Umlaut | mindestens 1 Buchstabe]"
 
 "You have to be at least 18 years old to use this payment type!","Sie m&uuml;ssen mindestens 18 Jahre alt sein um diese Zahlart nutzen zu k&ouml;nnen!"
 

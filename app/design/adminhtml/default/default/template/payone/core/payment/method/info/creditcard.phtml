@@ -34,6 +34,8 @@
 <?php echo $this->__('Expiration Date: %s/%s', $this->escapeHtml($this->getCcExpMonth()), $this->escapeHtml($this->getCcExpYear()));
 endif;?>
 <br/>
+<?php echo $this->__('Name on the Card: %s', $this->escapeHtml($this->getCcOwner())) ?>
+<br/>
 <?php if ($this->getLastTransId() == ''): ?>
 	<?php echo $this->__('Payment has not been processed yet.') ?>
 <?php else: ?>

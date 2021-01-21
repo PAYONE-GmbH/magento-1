@@ -33,9 +33,23 @@
     payone.ccTypeAutoRecognition = '<?php echo $this->getCreditCardRecognitionConfig() ?>';
     payone.configActivatedCcTypes = '<?php echo implode(',', $this->getRawCcType()) ?>';
     payone.configCvcLength = JSON.parse('<?php echo json_encode($cvcLength) ?>');
+    payone.translatedErrorMessages.ccOwnerErrorMessage = '<?= $this->__('CREDITCARD_INVALID_OWNER_ERROR_MESSAGE') ?>';
 </script>
 <?php if($this->getCCRequestType() == 'AJAX') { ?>
     <ul id="payment_form_<?php echo $code ?>" style="display:none">
+        <!-- Card owner : -->
+        <li>
+            <div class="input-box">
+                <label for="<?php echo $code; ?>_cc_owner">
+                    <?php echo $this->__('Credit Card Owner'); ?>&nbsp;<span class="required">*</span>
+                </label><br class="clear"/>
+                <input type="text" id="<?php echo $code; ?>_cc_owner"
+                       value=""
+                       name="payment[cc_owner]" title="<?php echo $this->__('Credit Card Owner'); ?>"
+                       class="input-text validate-payone-cc-owner no-submit"
+                />
+            </div>
+        </li>
         <!-- Credit card type : -->
         <li>
             <div class="input-box">
@@ -145,6 +159,19 @@
                     <br />
                     <?php echo $this->__('Please check also CVC length'); ?>.
                 <?php } ?>
+            </div>
+        </li>
+        <!-- Card owner : -->
+        <li>
+            <div class="input-box">
+                <label for="<?php echo $code; ?>_cc_owner">
+                    <?php echo $this->__('Credit Card Owner'); ?>&nbsp;<span class="required">*</span>
+                </label><br class="clear"/>
+                <input type="text" id="<?php echo $code; ?>_cc_owner"
+                       value=""
+                       name="payment[cc_owner]" title="<?php echo $this->__('Credit Card Owner'); ?>"
+                       class="input-text validate-payone-cc-owner no-submit"
+                />
             </div>
         </li>
         <li>

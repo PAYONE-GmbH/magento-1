@@ -36,6 +36,7 @@ PAYONE.Service.CreditCardCheck = function (handler, form, config) {
     this.configActivatedCcTypes = '';
     this.supportedCardTypes = null;
     this.configCvcLength = null;
+    this.translatedErrorMessages = {};
 
     /**
      * Enhances payment.save and runs Validate and CreditCardCheck for CreditCards
@@ -174,7 +175,7 @@ PAYONE.Service.CreditCardCheck = function (handler, form, config) {
         config = this.getConfig();
         configValidation = config.validation;
 
-        validation = new PAYONE.Validation.CreditCard(configValidation);
+        validation = new PAYONE.Validation.CreditCard(configValidation, this.translatedErrorMessages);
         return validation.validate(form);
     };
 
@@ -395,10 +396,11 @@ PAYONE.Handler.CreditCardCheck.Admin = function () {
     };
 };
 
-PAYONE.Validation.CreditCard = function (config) {
+PAYONE.Validation.CreditCard = function (config, translatedErrorMessages) {
     this.config = config;
     this.validationsCc = '';
     this.validationsCcMagento = '';
+    this.translatedErrorMessages = translatedErrorMessages;
 
     this.validate = function (form) {
         this.initValidationType();
@@ -407,6 +409,17 @@ PAYONE.Validation.CreditCard = function (config) {
             Validation.add('validate-payone-cc-type', 'Credit card number does not match credit card type.', this.validateType, this);
             Validation.add('validate-payone-cc-validity-period', 'Credit card validity period is too short.', this.validateValidityPeriod, this);
         }
+
+        // MAGE-508: Re-introduce CC owner field
+        if ('' === this.translatedErrorMessages.ccOwnerErrorMessage || 'undefined' === typeof this.translatedErrorMessages.ccOwnerErrorMessage) {
+            this.translatedErrorMessages.ccOwnerErrorMessage = 'Credit card owner name is invalid. [max 50 char. from latin alphabet including dash/space/umlaut | at least 1 letter]';
+        }
+        Validation.add(
+            'validate-payone-cc-owner',
+            this.translatedErrorMessages.ccOwnerErrorMessage,
+            this.validateOwner,
+            this
+        );
 
         var validator = new Validation(form);
         return validator.validate();
@@ -470,6 +483,21 @@ PAYONE.Validation.CreditCard = function (config) {
         }
 
         return true;
+    };
+
+    /**
+     * Creditcard Owner Validation
+     *
+     * @param v
+     * @param elm
+     * @return {Boolean}
+     */
+    this.validateOwner = function (v, elm) {
+        var ownerName = elm.value;
+        var regex = new RegExp("^[a-zA-Z äëïöüÄËÏÖÜß\-]*[a-zA-ZäëïöüÄËÏÖÜß][a-zA-Z äëïöüÄËÏÖÜß\-]*$");
+        return regex.test(ownerName)
+            && (ownerName.length > 0)
+            && (ownerName.length <= 50);
     };
 
     this.initValidationType = function () {
