@@ -39,7 +39,7 @@
 "FCPO_CC_ROW_CC_Month","Validity-month"
 "FCPO_CC_ROW_CC_Year","Validity-year"
 
-"PAYONE_TOOLTIP_CUSTOMERMESSAGE","Yes - display the error-message given by RatePay<br>No - show a generic error-message"
+"PAYONE_TOOLTIP_CUSTOMERMESSAGE","Yes - display the error-message given by Ratepay<br>No - show a generic error-message"
 "PAYONE_PAYOLUTION_API_ERRORMESSAGE","This transaction could not be performed. This may have different causes, such as invalid user input, an unknown address or a temporary technical problem. Please validate your data or choose an alternative payment method."
 "PAYONE_CREDITCARD_VALIDITY_TOO_LOW","This transaction could not be performed. Please select another payment method."
 
@@ -78,3 +78,5 @@
 RATEPAY_TNC,"With clicking on 'Submit order' you agree to the <a target='_blank' href='https://www.ratepay.com/en/ratepay-terms-of-payment/'>terms of payment of our payment partner</a><br /> as well as to the performance of a <a target='_blank' href='https://www.ratepay.com/en/ratepay-data-privacy-statement/'>risk check by our payment partner</a>."
 
 CREDITCARD_INVALID_OWNER_ERROR_MESSAGE, "Credit card owner name is invalid. [max 50 char. from latin alphabet including dash/space/umlaut | at least 1 letter]"
+
+"RATEPAY_TEXT_LOGO", "ratepay_logo_instalments_whitelabel_en_black.png"

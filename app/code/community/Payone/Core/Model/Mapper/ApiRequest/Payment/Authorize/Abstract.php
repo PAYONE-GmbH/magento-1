@@ -710,7 +710,7 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
             $checkoutSession = $this->getFactory()->getSingletonCheckoutSession();
             $mandateStatus = $checkoutSession->getRatePayFingerprint();
             /**
-             * if RatePay Type is Installment map Installmentplan Data
+             * if Ratepay Type is Installment map Installmentplan Data
              * from payone session
              */
             if ($payment->getFinancingtype() == Payone_Api_Enum_RatepayInvoicingType::RPV) {

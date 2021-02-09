@@ -240,7 +240,7 @@
                     <to_order_payment>*</to_order_payment>
                 </payone_customer_telephone>
                 <payone_ratepay_shop_id>
-                    <!-- RatePay: Shop (config) ID -->
+                    <!-- Ratepay: Shop (config) ID -->
                     <to_order_payment>*</to_order_payment>
                 </payone_ratepay_shop_id>
                 <payone_payolution_type>
@@ -754,12 +754,12 @@
                 <group>payone</group>
             </payone_klarna_direct_debit>
             <payone_ratepay translate="title" module="payone_core">
-                <title>PAYONE - RatePay Installments</title>
+                <title>PAYONE - Ratepay Installments</title>
                 <model>payone_core/payment_method_ratepay</model>
                 <group>payone</group>
             </payone_ratepay>
             <payone_ratepay_invoicing translate="title" module="payone_core">
-                <title>PAYONE - RatePay Invoicing</title>
+                <title>PAYONE - Ratepay Invoicing</title>
                 <model>payone_core/payment_method_ratepayInvoicing</model>
                 <group>payone</group>
             </payone_ratepay_invoicing>

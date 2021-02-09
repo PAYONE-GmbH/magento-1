@@ -61,18 +61,18 @@
 "New Barzahlen","Barzahlen"
 "Add Barzahlen","Barzahlen hinzufügen"
 "Edit Barzahlen","Barzahlen bearbeiten"
-"New RatePay","RatePay Ratenkauf"
-"Add RatePay","RatePay Ratenkauf hinzufügen"
-"Edit RatePay","RatePay Ratenkauf bearbeiten"
-"New RatePay Installments","RatePay Ratenkauf"
-"Add RatePay Installments","RatePay Ratenkauf hinzufügen"
-"Edit RatePay Installments","RatePay Ratenkauf bearbeiten"
-"New RatePay Invoicing","RatePay Rechnungskauf"
-"Add RatePay Invoicing","RatePay Rechnungskauf hinzufügen"
-"Edit RatePay Invoicing","RatePay Rechnungskauf bearbeiten"
-"New Ratepay Direct Debit","RatePay Lastschrift"
-"Add Ratepay Direct Debit","RatePay Lastschrift hinzufügen"
-"Edit Ratepay Direct Debit","RatePay Lastschrift bearbeiten"
+"New Ratepay","Ratepay Ratenkauf"
+"Add Ratepay","Ratepay Ratenkauf hinzufügen"
+"Edit Ratepay","Ratepay Ratenkauf bearbeiten"
+"New Ratepay Installments","Ratepay Ratenkauf"
+"Add Ratepay Installments","Ratepay Ratenkauf hinzufügen"
+"Edit Ratepay Installments","Ratepay Ratenkauf bearbeiten"
+"New Ratepay Invoicing","Ratepay Rechnungskauf"
+"Add Ratepay Invoicing","Ratepay Rechnungskauf hinzufügen"
+"Edit Ratepay Invoicing","Ratepay Rechnungskauf bearbeiten"
+"New Ratepay Direct Debit","Ratepay Lastschrift"
+"Add Ratepay Direct Debit","Ratepay Lastschrift hinzufügen"
+"Edit Ratepay Direct Debit","Ratepay Lastschrift bearbeiten"
 "New Paysafe Pay Later™","Paysafe Pay Later™"
 "Add Paysafe Pay Later™","Paysafe Pay Later™ hinzufügen"
 "Edit Paysafe Pay Later™","Paysafe Pay Later™ bearbeiten"
@@ -1036,7 +1036,7 @@ DIRECT_DEBIT,Lastschrift
 "Numeric","Numerisch"
 "Password","Passwort"
 "Text","Text"
-The <a target='_blank' href='https://www.ratepay.com/zgb-dse'>additional terms and conditions and the privacy policy</a> of RatePAY GmbH apply.,Es gelten die <a target='_blank' href='https://www.ratepay.com/zgb-dse'>zusätzlichen Allgemeinen Geschäftsbedingungen und der Datenschutzhinweis</a> der RatePAY GmbH.
+The <a target='_blank' href='https://www.ratepay.com/zgb-dse'>additional terms and conditions and the privacy policy</a> of Ratepay GmbH apply.,Es gelten die <a target='_blank' href='https://www.ratepay.com/zgb-dse'>zusätzlichen Allgemeinen Geschäftsbedingungen und der Datenschutzhinweis</a> der RatePAY GmbH.
 RATEPAY_TNC,"Mit Klicken auf 'Zahlungspflichtig bestellen' erklären Sie sich mit den <a target='_blank' href='https://www.ratepay.com/legal-payment-terms'>Zahlungsbedingungen unseres Zahlungspartners</a><br /> sowie mit der Durchführung einer <a target='_blank' href='https://www.ratepay.com/legal-payment-dataprivacy'>Risikoprüfung durch unseren Zahlungspartner</a> einverstanden."
 
 "Standard-style","Standardstil"
@@ -1061,7 +1061,7 @@ RATEPAY_TNC,"Mit Klicken auf 'Zahlungspflichtig bestellen' erklären Sie sich mi
 "Always","Immer"
 "Only on first order with this card","Bei erster Bestellung mit der Karte"
 
-"The RatePay Shop-Config for this ID could not be requested.","Die RatePay Shop-Konfiguration f&uuml;r diese ID konnte nicht angefragt werden."
+"The Ratepay Shop-Config for this ID could not be requested.","Die Ratepay Shop-Konfiguration f&uuml;r diese ID konnte nicht angefragt werden."
 
 "RPV","Rechnungskauf"
 "RPS","Ratenzahlung"
@@ -1120,7 +1120,7 @@ RATEPAY_TNC,"Mit Klicken auf 'Zahlungspflichtig bestellen' erklären Sie sich mi
 "lang_duration_time", "Laufzeit"
 "lang_duration_month", " monatliche Raten à"
 "lang_last_rate", "zzgl. einer Abschlussrate à"
-"lang_server_off", "Die RatePAY-Server sind zur Zeit nicht erreichbar. Bitte versuchen Sie es sp&auml;ter noch einmal."
+"lang_server_off", "Die Ratepay-Server sind zur Zeit nicht erreichbar. Bitte versuchen Sie es sp&auml;ter noch einmal."
 "lang_config_error_else", "Ein Fehler ist aufgetreten. Bitte kontaktieren Sie umgehend den Shopbetreiber."
 "lang_request_error_else", "Ein Fehler ist aufgetreten. Bitte kontaktieren Sie den Shopbetreiber."
 "lang_wrong_value", "Falsche Eingabe. Bitte ändern Sie ihre Eingabe."
@@ -1130,7 +1130,7 @@ RATEPAY_TNC,"Mit Klicken auf 'Zahlungspflichtig bestellen' erklären Sie sich mi
 
 
 "Show detailed error-messages","Detaillierte Fehlermeldungen anzeigen"
-"PAYONE_TOOLTIP_CUSTOMERMESSAGE","Ja - die von RatePay gesendete Fehlermeldung anzeigen<br>Nein - eine allgemeine Fehlermeldung anzeigen"
+"PAYONE_TOOLTIP_CUSTOMERMESSAGE","Ja - die von Ratepay gesendete Fehlermeldung anzeigen<br>Nein - eine allgemeine Fehlermeldung anzeigen"
 "Enter currency in ISO 4217 form - i.e. EUR or USD","Waehrung bitte in ISO 4217 Form eingeben - z.B. EUR oder USD"
 
 "PAYONE_AMAZON_SYNC_MODE","– Asynchronous On Failure (recommended, default): If a synchronous transaction fails, the transaction will be retried with an asynchronous request.<br>– Always Synchronous: Always try synchronous transactions. These might have lower acceptance rates with Amazon. However, you will receive an instant confirmation of the transaction and you will be able to continue right away."
@@ -1254,10 +1254,10 @@ RATEPAY_TNC,"Mit Klicken auf 'Zahlungspflichtig bestellen' erklären Sie sich mi
 "Entered IBAN is not from an authorised SEPA country.","Die eingegebene IBAN stammt nicht von einem autorisierten SEPA-Land."
 "Read the consent to the SEPA mandate","Einwilligungserklärung zum SEPA-Mandat lesen"
 "I hereby consent to the forwarding of my data to %s according to %s and authorize them to collect payments related to this purchase contract from my account mentioned above by direct debit.","Ich willige hiermit in die Weiterleitung meiner Daten an %s gemäß %s ein und ermächtige diese, mit diesem Kaufvertrag in Zusammenhang stehende Zahlungen von meinem o.a. Konto mittels Lastschrift einzuziehen."
-"RatePAY Privacy Policy","RatePAY-Datenschutzerklärung"
-"RatePay Debit Type","RatePay Ratenkauf Typ"
+"Ratepay Privacy Policy","RatePAY-Datenschutzerklärung"
+"Ratepay Debit Type","Ratepay Ratenkauf Typ"
 "Note:","Hinweis:"
-"After conclusion of the contract, I will be notified of the mandate reference of RatePAY. I can claim reimbursement of the amount due within eight weeks of the debit date.","Nach Zustandekommen des Vertrags wird mir die Mandatsreferenz von RatePAY mitgeteilt. Ich kann innerhalb von acht Wochen, beginnend mit dem Belastungsdatum, die Erstattung des belasteten Betrages verlangen."
+"After conclusion of the contract, I will be notified of the mandate reference of Ratepay. I can claim reimbursement of the amount due within eight weeks of the debit date.","Nach Zustandekommen des Vertrags wird mir die Mandatsreferenz von RatePAY mitgeteilt. Ich kann innerhalb von acht Wochen, beginnend mit dem Belastungsdatum, die Erstattung des belasteten Betrages verlangen."
 "Applicable in this regard by the contract with my bank conditions.","Es gelten dabei die mit meinem Kreditinstitut vereinbarten Bedingungen."
 "I would like to make the installment payment myself and not pay by direct debit","Ich möchte die Ratenzahlung selbst vornehmen und nicht per Lastschrift begleichen"
 "I would like to settle the installment by direct debit","Ich möchte die Ratenzahlung per Lastschrift begleichen"
@@ -1311,3 +1311,5 @@ RATEPAY_TNC,"Mit Klicken auf 'Zahlungspflichtig bestellen' erklären Sie sich mi
 "An error occurred during the operation.", "Während des Vorgangs ist ein Fehler aufgetreten."
 
 "This is a required field.", "Dies ist ein Pflichtfeld."
+
+"RATEPAY_TEXT_LOGO", "ratepay_logo_instalments_whitelabel_de_black.png"
