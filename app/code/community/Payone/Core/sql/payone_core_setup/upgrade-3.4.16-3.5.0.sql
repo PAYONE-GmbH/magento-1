@@ -3,21 +3,21 @@
 #-----------------------------------------------------------------
 
 ALTER TABLE `{{payone_config_payment_method}}`
-ADD `ratepay_config` TEXT COMMENT 'RatePay Config';
+ADD `ratepay_config` TEXT COMMENT 'Ratepay Config';
 
 #-----------------------------------------------------------------
 #-- Alter Table sales_flat_quote_payment
 #-----------------------------------------------------------------
 
 ALTER TABLE `{{sales_flat_quote_payment}}`
-ADD `payone_ratepay_shop_id` VARCHAR(32) COMMENT 'RatePay ShopId';
+ADD `payone_ratepay_shop_id` VARCHAR(32) COMMENT 'Ratepay ShopId';
 
 #-----------------------------------------------------------------
 #-- Alter Table sales_flat_order_payment
 #-----------------------------------------------------------------
 
 ALTER TABLE `{{sales_flat_order_payment}}`
-ADD `payone_ratepay_shop_id` VARCHAR(32) COMMENT 'RatePay ShopId';
+ADD `payone_ratepay_shop_id` VARCHAR(32) COMMENT 'Ratepay ShopId';
 
 #-----------------------------------------------------------------
 #-- Create Table payone_ratepay_config

@@ -56,7 +56,7 @@ else {
         array(
             'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'NULLABLE' => true,
-            'COMMENT' => 'RatePay Config'
+            'COMMENT' => 'Ratepay Config'
         )
     );
     
@@ -66,7 +66,7 @@ else {
             'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'LENGTH' => 32,
             'NULLABLE' => true,
-            'COMMENT' => 'RatePay ShopId'
+            'COMMENT' => 'Ratepay ShopId'
         )
     );
     $connection->addColumn(
@@ -75,7 +75,7 @@ else {
             'TYPE' => Varien_Db_Ddl_Table::TYPE_TEXT,
             'LENGTH' => 32,
             'NULLABLE' => true,
-            'COMMENT' => 'RatePay ShopId'
+            'COMMENT' => 'Ratepay ShopId'
         )
     );
 

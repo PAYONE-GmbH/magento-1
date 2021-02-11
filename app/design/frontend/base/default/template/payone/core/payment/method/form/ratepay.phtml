@@ -144,11 +144,11 @@ $sDeviceIdentId = $this->getRatePayDeviceFingerprintSnippetId();
                             <a href="#" onclick="toggleRatepayDirectDebitOverlay('<?php echo $code ?>');return false;"
                                style="float:right;font-weight:bold;"><?php echo $this->__('X'); ?></a>
                             <div class="ratepay-FullWidth">
-                                <img class="ratepay-LogoImg" src="<?php echo $this->getSkinUrl('images/payone/ratepay_rate.png'); ?>" width="150" alt="RatePAY"><br>
-                                <h2 class="ratepay-H2"><?php echo $this->__('Direct Debit'); ?></h2>
+                                <img class="ratepay-LogoImg" src="<?php echo $this->getSkinUrl('images/payone/ratepay_logo_brand_web_rgb_red.png'); ?>" width="150" alt="Ratepay"><br>
+                                <img class="ratepay-LogoImg" src="<?php echo $this->getSkinUrl('images/payone/' . $this->__('RATEPAY_TEXT_LOGO')); ?>" width="150" alt="<?php echo $this->__('Direct Debit'); ?>">
                             </div>
                             <br class="ratepay-ClearFix" />
-                            <p><?php echo $this->__('RatePAY GmbH, Franklinstraße 28-29, 10587 Berlin'); ?></p>
+                            <p><?php echo $this->__('Ratepay GmbH, Franklinstraße 28-29, 10587 Berlin'); ?></p>
                             <p><?php echo $this->__('Creditors ID: ') . 'DE39RPY00000568463'; ?></p>
                             <p><?php echo $this->__('Mandate reference: (will be sent after the purchase)'); ?></p><br><br>
                             <?php echo $this->getRatepayDirectDebitAcceptanceText(); ?>
@@ -238,7 +238,6 @@ $sDeviceIdentId = $this->getRatePayDeviceFingerprintSnippetId();
                 <div id="ratepay-Header">
                     <div class="ratepay-FullWidth">
                         <h2 class="ratepay-H2"><?php echo $this->__('Calculate here your own rate'); ?></h2>
-                        <img class="ratepay-LogoImg" src="<?php echo $this->getSkinUrl('images/payone/ratepay_ratenrechner.png'); ?>" width="150" alt="RatePAY Ratenrechner">
                      </div>
                     <br class="ratepay-ClearFix" />
                 </div>

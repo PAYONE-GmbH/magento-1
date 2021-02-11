@@ -22,7 +22,7 @@ class Payone_Core_RatepayController extends Mage_Core_Controller_Front_Action
     /**
      * Calculates the rates by from user defined rate
      * called from an ajax request with ratePay parameters (ratepay.js)
-     * map RatePay API parameters and request the payone API
+     * map Ratepay API parameters and request the payone API
      *
      */
     public function rateAction()
@@ -109,7 +109,7 @@ class Payone_Core_RatepayController extends Mage_Core_Controller_Front_Action
     /**
      * Calculates the rates by from user defined runtime
      * called from an ajax request with ratePay parameters (ratepay.js)
-     * map RatePay API parameters and request the payone API
+     * map Ratepay API parameters and request the payone API
      */
     public function runtimeAction()
     {

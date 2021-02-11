@@ -26,7 +26,7 @@
     line-height: 17px;
 }
 
-/* RatePAY Calculator */
+/* Ratepay Calculator */
 .ratepay-ClearFix {
     clear: both;
     line-height: 1px;
@@ -188,13 +188,13 @@ div#ratepay-ContentSwitch {
     vertical-align: middle;
 }
 
-/* RatePAY Calculator Result */
+/* Ratepay Calculator Result */
 #ratepay-main-cont #ratepay-Result {
     background: none repeat scroll 0 0 #fefefe;
     color: black;
     margin-top: 10px;
 }
-/* RatePAY Calculator Result */
+/* Ratepay Calculator Result */
 #ratepay-main-cont #ratepay-Result2 {
     background: none repeat scroll 0 0 #fefefe;
     color: black;
