@@ -85,6 +85,7 @@ class Payone_Core_Model_Handler_Cancellation extends Payone_Core_Model_Handler_A
                 $oOldQuote = $this->getFactory()->getModelSalesQuote();
                 $oOldQuote->load($quoteId);
                 if ($oOldQuote && $oOldQuote->getId()) {
+                    $oQuote->removeAllItems();
                     $oQuote->merge($oOldQuote);
                     $oQuote->collectTotals();
                     $oQuote->save();
