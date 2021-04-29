@@ -197,7 +197,7 @@ $quoteLocale = str_replace('_', '-' , Mage::app()->getLocale()->getLocaleCode())
                         formKlarnaPaymentMethodField.value = klarnaBaseCode;
                     }
 
-                    $('klarna_payments_container').empty();
+                    $('klarna_payments_container').update();
                     window.klarnaAsyncCallback(response);
                 } else {
                     alert(response.customer_message);
