@@ -2,6 +2,24 @@
 
 **The changelog is continued on the Github releases page**
 
+## 5.2.0
+
+New Features
+ 
+* re-introduced credit card holder field for better acceptance when in scope for 3D Secure 2.0. 
+We had previously disabled it to streamline the amount of fields a customer had to fill by default. With PSD2 and 3D Secure 2.0 in effect, we saw that using the cardholder field can benefit the ratio of frictionless payments vs. leaving it out.
+ 
+Bugfix(es)
+ 
+* call Ratepay DFP endpoint only when selected
+* better checkout performance for checkouts with many addresses
+* fixed item qtys doubled when using multi tabs and redirect payments (thx @igloominusx)
+ 
+Maintenance
+ 
+* rebranded "RatePay" to "Ratepay"
+* tested with Magento 1.9.4.4
+
 ## 5.1.0
 
 New Feature(s)
