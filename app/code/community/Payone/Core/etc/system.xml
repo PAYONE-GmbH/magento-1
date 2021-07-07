@@ -450,7 +450,7 @@
                             <show_in_store>1</show_in_store>
                         </barzahlen>
                         <payolution translate="label">
-                            <label>Paysafe Pay Later™</label>
+                            <label>Unzer</label>
                             <frontend_model>payone_core/adminhtml_system_config_form_field_statusMapping</frontend_model>
                             <backend_model>payone_core/system_config_backend_serialized_array</backend_model>
                             <sort_order>90</sort_order>
@@ -459,7 +459,7 @@
                             <show_in_store>1</show_in_store>
                         </payolution>
                         <payolution_invoicing translate="label">
-                            <label>Paysafe Pay Later™ Invoicing</label>
+                            <label>Unzer Rechnungskauf</label>
                             <frontend_model>payone_core/adminhtml_system_config_form_field_statusMapping</frontend_model>
                             <backend_model>payone_core/system_config_backend_serialized_array</backend_model>
                             <sort_order>90</sort_order>
@@ -468,7 +468,7 @@
                             <show_in_store>1</show_in_store>
                         </payolution_invoicing>
                         <payolution_debit translate="label">
-                            <label>Paysafe Pay Later™ Debit</label>
+                            <label>Unzer Lastschrift</label>
                             <frontend_model>payone_core/adminhtml_system_config_form_field_statusMapping</frontend_model>
                             <backend_model>payone_core/system_config_backend_serialized_array</backend_model>
                             <sort_order>90</sort_order>
@@ -477,7 +477,7 @@
                             <show_in_store>1</show_in_store>
                         </payolution_debit>
                         <payolution_installment translate="label">
-                            <label>Paysafe Pay Later™ Installment</label>
+                            <label>Unzer Ratenkauf</label>
                             <frontend_model>payone_core/adminhtml_system_config_form_field_statusMapping</frontend_model>
                             <backend_model>payone_core/system_config_backend_serialized_array</backend_model>
                             <sort_order>90</sort_order>
@@ -1770,7 +1770,7 @@
                     </fields>
                 </template_ratepay_direct_debit>
                 <template_payolution translate="label" module="payone_core">
-                    <label>Paysafe Pay Later™</label>
+                    <label>Unzer</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>9</sort_order>
                     <show_in_default>1</show_in_default>
@@ -1788,7 +1788,7 @@
                         </company_name>
                         <installment_draft_user translate="label,tooltip">
                             <label>Installment Draft Username</label>
-                            <tooltip>This is needed if you use Paysafe Pay Later™ installment payments, to offer the download of the Installment-Contract-Draft.</tooltip>
+                            <tooltip>This is needed if you use Unzer installment payments, to offer the download of the Installment-Contract-Draft.</tooltip>
                             <frontend_type>text</frontend_type>
                             <sort_order>53</sort_order>
                             <show_in_default>1</show_in_default>
@@ -1797,7 +1797,7 @@
                         </installment_draft_user>
                         <installment_draft_password translate="label,tooltip">
                             <label>Installment Draft Password</label>
-                            <tooltip>This is needed if you use Paysafe Pay Later™ installment payments, to offer the download of the Installment-Contract-Draft.</tooltip>
+                            <tooltip>This is needed if you use Unzer installment payments, to offer the download of the Installment-Contract-Draft.</tooltip>
                             <frontend_type>text</frontend_type>
                             <sort_order>54</sort_order>
                             <show_in_default>1</show_in_default>
@@ -1825,7 +1825,7 @@
                     </fields>
                 </template_payolution>
                 <template_payolution_invoicing translate="label" module="payone_core">
-                    <label>Paysafe Pay Later™ Invoicing</label>
+                    <label>Unzer Rechnungskauf</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>9</sort_order>
                     <show_in_default>1</show_in_default>
@@ -1853,7 +1853,7 @@
                     </fields>
                 </template_payolution_invoicing>
                 <template_payolution_debit translate="label" module="payone_core">
-                    <label>Paysafe Pay Later™ Debit</label>
+                    <label>Unzer Lastschrift</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>9</sort_order>
                     <show_in_default>1</show_in_default>
@@ -1872,7 +1872,7 @@
                     </fields>
                 </template_payolution_debit>
                 <template_payolution_installment translate="label" module="payone_core">
-                    <label>Paysafe Pay Later™ Installment</label>
+                    <label>Unzer Ratenkauf</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>9</sort_order>
                     <show_in_default>1</show_in_default>
@@ -1890,7 +1890,7 @@
                         </company_name>
                         <installment_draft_user translate="label,tooltip">
                             <label>Installment Draft Username</label>
-                            <tooltip>This is needed if you use Paysafe Pay Later™ installment payments, to offer the download of the Installment-Contract-Draft.</tooltip>
+                            <tooltip>This is needed if you use Unzer installment payments, to offer the download of the Installment-Contract-Draft.</tooltip>
                             <frontend_type>text</frontend_type>
                             <sort_order>53</sort_order>
                             <show_in_default>1</show_in_default>
@@ -1899,7 +1899,7 @@
                         </installment_draft_user>
                         <installment_draft_password translate="label,tooltip">
                             <label>Installment Draft Password</label>
-                            <tooltip>This is needed if you use Paysafe Pay Later™ installment payments, to offer the download of the Installment-Contract-Draft.</tooltip>
+                            <tooltip>This is needed if you use Unzer installment payments, to offer the download of the Installment-Contract-Draft.</tooltip>
                             <frontend_type>text</frontend_type>
                             <sort_order>54</sort_order>
                             <show_in_default>1</show_in_default>
