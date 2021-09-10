@@ -29,7 +29,7 @@
 <config>
     <modules>
         <Payone_Core>
-            <version>5.2.0</version>
+            <version>5.2.1</version>
         </Payone_Core>
     </modules>
 
@@ -898,6 +898,11 @@
                 <model>payone_core/payment_method_walletWeChatPay</model>
                 <group>payone</group>
             </payone_wallet_wechatpay>
+            <payone_apple_pay translate="title" module="payone_core">
+                <title>PAYONE - Apple Pay</title>
+                <model>payone_core/payment_method_applePay</model>
+                <group>payone</group>
+            </payone_apple_pay>
         </payment>
         <payone_payment>
             <template_amazon_pay>
@@ -1010,6 +1015,9 @@
             <template_payolution_installment>
                 <use_global>1</use_global>
             </template_payolution_installment>
+            <template_apple_pay>
+                <use_global>1</use_global>
+            </template_apple_pay>
         </payone_payment>
         <payone_general>
             <global>
@@ -1060,6 +1068,7 @@
                 <financing>a:1:{s:18:"_1926207461842_842";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</financing>
                 <amazon_pay>a:1:{s:18:"_1917707466274_274";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</amazon_pay>
                 <payment_guarantee_invoice>a:1:{s:18:"_2468232683254_254";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</payment_guarantee_invoice>
+                <apple_pay>a:1:{s:18:"_2177301865940_941";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</apple_pay>
             </status_mapping>
             <payment_amazonpay_checkout>
                 <allow_quote_one_cent_difference>0</allow_quote_one_cent_difference>

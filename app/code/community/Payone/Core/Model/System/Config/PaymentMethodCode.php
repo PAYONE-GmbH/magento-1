@@ -36,6 +36,7 @@ class Payone_Core_Model_System_Config_PaymentMethodCode extends Payone_Core_Mode
 
     const ADVANCEPAYMENT = 'payone_advance_payment';
     const AMAZONPAY = 'payone_amazon_pay';
+    const APPLEPAY = 'payone_apple_pay';
     const CASHONDELIVERY = 'payone_cash_on_delivery';
     const CREDITCARD = 'payone_creditcard';
     //const CREDITCARD_IFRAME = 'payone_creditcard_iframe'; // MAGE-392: Deprecated, method is removed
@@ -81,6 +82,7 @@ class Payone_Core_Model_System_Config_PaymentMethodCode extends Payone_Core_Mode
         return array(
             self::ADVANCEPAYMENT => 'Advance Payment',
             self::AMAZONPAY => 'Amazon Pay',
+            self::APPLEPAY => 'Apple Pay',
             self::CASHONDELIVERY => 'Cash on Delivery',
             self::CREDITCARD => 'Creditcard',
             //self::CREDITCARD_IFRAME => 'Creditcard Channel Frontend', // MAGE-392: Deprecated, method is removed

@@ -241,6 +241,9 @@
                    name="checkout.onepage.review.payolution.iframe"
                    as="payolution_iframe"
                    template="payone/core/checkout/onepage/review/payolution.phtml"/>
+            <block type="payone_core/checkout_onepage_review_applePayHandling"
+                   template="payone/core/checkout/onepage/review/apple_pay_handling.phtml"
+                   name="payone_core_checkout_onepage_review_applePayHandling" />
         </reference>
     </checkout_onepage_review>
 

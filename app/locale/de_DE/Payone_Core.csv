@@ -1313,3 +1313,6 @@ RATEPAY_TNC,"Mit Klicken auf 'Zahlungspflichtig bestellen' erklären Sie sich mi
 "This is a required field.", "Dies ist ein Pflichtfeld."
 
 "RATEPAY_TEXT_LOGO", "ratepay_logo_instalments_whitelabel_de_black.png"
+
+"APPLEPAY_CREATE_SESSION_ERROR", "Fehler beim Herstellen der Verbindung zum Apple Pay Service."
+"APPLEPAY_MAKE_PAYMENT_ERROR", "Fehler beim Ausführen der Zahlungstransaktion."
