@@ -1991,7 +1991,7 @@
                     <show_in_store>1</show_in_store>
                     <fields></fields>
                 </template_wallet_wechatpay>
-                <template_apple_pay translate="label" module="payone_core">
+                <template_apple_pay translate="label, comment" module="payone_core">
                     <label>Apple Pay</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>15</sort_order>
@@ -2002,7 +2002,7 @@
                         <apl_merchant_id>
                             <label>Merchant ID</label>
                             <frontend_type>text</frontend_type>
-                            <sort_order>190</sort_order>
+                            <sort_order>200</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -2011,7 +2011,7 @@
                             <label>Merchant Identification Certificate file</label>
                             <frontend_model>payone_core/adminhtml_system_config_form_field_applePayCertificate</frontend_model>
                             <backend_model>payone_core/system_config_applePayCertificate</backend_model>
-                            <sort_order>200</sort_order>
+                            <sort_order>210</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -2020,10 +2020,12 @@
                         <apl_certificate_private_key>
                             <label>Certificate private key</label>
                             <frontend_type>text</frontend_type>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_applePayCertificateKey</frontend_model>
                             <sort_order>220</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <comment>Priority order for saving : uploaded file > key text content > key file path.</comment>
                         </apl_certificate_private_key>
                         <apl_certificate_key_password>
                             <label>Certificate key password</label>

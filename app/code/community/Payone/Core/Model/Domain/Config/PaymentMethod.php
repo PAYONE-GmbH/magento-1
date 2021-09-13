@@ -659,6 +659,33 @@ class Payone_Core_Model_Domain_Config_PaymentMethod
                 $this->setData('apl_merchant_identification_certificate', $fileData['name']);
             }
         }
+
+        // prepare apple pay key
+        $fileKey = 'payone_payment_template_apple_pay_apl_certificate_private_key_file';
+        $textKey = 'payone_payment_template_apple_pay_apl_certificate_private_key_textarea';
+        $storagePath = Mage::getBaseDir('var') . '/cert/';
+        if (isset($_FILES[$fileKey]) && !empty($_FILES[$fileKey]['name'] && $_FILES[$fileKey]['size'] > 0)) {
+            $fileData = $_FILES[$fileKey];
+
+            $result = $this->saveFile(
+                $fileData['name'],
+                $fileData['tmp_name'],
+                $storagePath
+            );
+
+            if ($result) {
+                $this->setData('apl_certificate_private_key', $fileData['name']);
+            }
+        } elseif (isset($_POST[$textKey]) && !empty($_FILES[$textKey])) {
+            $content = htmlspecialchars(strip_tags($_POST[$textKey]));
+            $filename = 'merchant_id.key';
+
+            $result = $this->writeFile($filename, $content, $storagePath);
+
+            if ($result) {
+                $this->setData('apl_certificate_private_key', $filename);
+            }
+        }
     }
 
     public function saveFile($filename, $tempFile, $path)
@@ -670,6 +697,26 @@ class Payone_Core_Model_Domain_Config_PaymentMethod
 
             move_uploaded_file($tempFile, $path . $filename);
             chmod($path . $filename, 644);
+
+            return true;
+        } catch(Exception $e) {
+            Mage::logException($e);
+            return false;
+        }
+    }
+
+    public function writeFile($filename, $content, $path)
+    {
+        try {
+            if (!is_dir($path)) {
+                mkdir($path, 700);
+            }
+
+            if (!is_file($path . $filename)) {
+                touch($path . $filename);
+                chmod($path . $filename, 644);
+            }
+            file_put_contents($path . $filename, $content);
 
             return true;
         } catch(Exception $e) {
