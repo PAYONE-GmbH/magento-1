@@ -320,6 +320,11 @@ class Payone_Core_Model_Config_Payment_Method
     /**
      * @var string
      */
+    protected $apl_merchant_id = '';
+
+    /**
+     * @var string
+     */
     protected $apl_merchant_identification_certificate = '';
 
     /**
@@ -330,7 +335,7 @@ class Payone_Core_Model_Config_Payment_Method
     /**
      * @var string
      */
-    protected $apl_certificate_password = '';
+    protected $apl_certificate_key_password = '';
 
     /**
      * Check if Method can be used in Country
@@ -1550,19 +1555,34 @@ class Payone_Core_Model_Config_Payment_Method
     }
 
     /**
-     * @param string $apl_certificate_password
+     * @param string $apl_certificate_key_password
      */
-    public function setAplCertificatePassword($apl_certificate_password)
+    public function setAplCertificateKeyPassword($apl_certificate_key_password)
     {
-        $this->apl_certificate_password = $apl_certificate_password;
+        $this->apl_certificate_key_password = $apl_certificate_key_password;
     }
 
     /**
      * @return string
      */
-    public function getAplCertificatePassword()
+    public function getAplCertificateKeyPassword()
     {
-        return $this->apl_certificate_password;
+        return $this->apl_certificate_key_password;
     }
 
+    /**
+     * @param string $apl_merchant_id
+     */
+    public function setAplMerchantId($apl_merchant_id)
+    {
+        $this->apl_merchant_id = $apl_merchant_id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAplMerchantId()
+    {
+        return $this->apl_merchant_id;
+    }
 }

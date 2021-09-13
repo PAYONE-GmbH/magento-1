@@ -1999,13 +1999,23 @@
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <fields>
+                        <apl_merchant_id>
+                            <label>Merchant ID</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>190</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </apl_merchant_id>
                         <apl_merchant_identification_certificate>
                             <label>Merchant Identification Certificate file</label>
-                            <frontend_type>text</frontend_type>
+                            <frontend_model>payone_core/adminhtml_system_config_form_field_applePayCertificate</frontend_model>
+                            <backend_model>payone_core/system_config_applePayCertificate</backend_model>
                             <sort_order>200</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <comment>Allowed file type: PEM</comment>
                         </apl_merchant_identification_certificate>
                         <apl_certificate_private_key>
                             <label>Certificate private key</label>
@@ -2015,14 +2025,14 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </apl_certificate_private_key>
-                        <apl_certificate_password>
+                        <apl_certificate_key_password>
                             <label>Certificate key password</label>
-                            <frontend_type>obscure</frontend_type>
+                            <frontend_type>password</frontend_type>
                             <sort_order>240</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </apl_certificate_password>
+                        </apl_certificate_key_password>
                         <types>
                             <label>Creditcard-Type</label>
                             <frontend_type>multiselect</frontend_type>

@@ -32,16 +32,9 @@ class Payone_Core_ApplepayController extends Payone_Core_Controller_Abstract
 
     public function createApplePaySessionAction()
     {
-        $basePath = Mage::getBaseDir('var');
+        $certDir = Mage::getBaseDir('var') . '/cert/';
         $shopFQDN = $_SERVER['SERVER_NAME'];
         $validationUrl = $this->getRequest()->get('validationUrl');
-
-        $payload = [
-            'merchantIdentifier' => 'merchant.com.payone.ecom.fatchip',
-            'displayName' => 'PAYONE Apple Pay Fatchip Demo',
-            'initiative' => 'web',
-            'initiativeContext' => $shopFQDN
-        ];
 
         try {
             $quoteId = $this->getRequest()->get('quoteId');
@@ -51,15 +44,26 @@ class Payone_Core_ApplepayController extends Payone_Core_Controller_Abstract
             $paymentHelper = Mage::helper('payment');
             /** @var \Payone_Core_Model_Payment_Method_ApplePay $paymentMethod */
             $paymentMethod = $paymentHelper->getMethodInstance(Payone_Core_Model_System_Config_PaymentMethodCode::APPLEPAY);
+            /** @var Payone_Core_Model_Config_Payment_Method $paymentConfig */
             $paymentConfig = $paymentMethod->getConfigForQuote($quote);
 
+            $merchantId = $paymentConfig->getAplMerchantId();
             $certificateFileName = $paymentConfig->getAplMerchantIdentificationCertificate();
             $keyFileName = $paymentConfig->getAplCertificatePrivateKey();
+            $keyPassword = $paymentConfig->getAplCertificateKeyPassword();
+
+            $payload = [
+                'merchantIdentifier' => $merchantId,
+                'displayName' => 'PAYONE Apple Pay',
+                'initiative' => 'web',
+                'initiativeContext' => $shopFQDN
+            ];
 
             $httpClient = new  Mage_HTTP_Client_Curl();
             $httpClient->setOptions([
-                CURLOPT_SSLCERT => $basePath . '/cert/' . $certificateFileName,
-                CURLOPT_SSLKEY => $basePath . '/cert/' . $keyFileName,
+                CURLOPT_SSLCERT => $certDir . $certificateFileName,
+                CURLOPT_SSLKEY => $certDir . $keyFileName,
+                CURLOPT_SSLKEYPASSWD => $keyPassword,
                 CURLOPT_POSTFIELDS => json_encode($payload)
             ]);
             $httpClient->post($validationUrl, []);

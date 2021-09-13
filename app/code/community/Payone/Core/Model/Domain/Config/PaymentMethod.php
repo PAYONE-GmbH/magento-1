@@ -643,6 +643,39 @@ class Payone_Core_Model_Domain_Config_PaymentMethod
 
         // prepare ratepay_directdebit_specificcountry
         $this->implodeData('ratepay_directdebit_specificcountry');
+
+        // prepare apple pay certificate
+        $key = 'payone_payment_template_apple_pay_apl_merchant_identification_certificate_file';
+        if (isset($_FILES[$key]) && !empty($_FILES[$key]['name'] && $_FILES[$key]['size'] > 0)) {
+            $fileData = $_FILES[$key];
+
+            $result = $this->saveFile(
+                $fileData['name'],
+                $fileData['tmp_name'],
+                Mage::getBaseDir('var') . '/cert/'
+            );
+
+            if ($result) {
+                $this->setData('apl_merchant_identification_certificate', $fileData['name']);
+            }
+        }
+    }
+
+    public function saveFile($filename, $tempFile, $path)
+    {
+        try {
+            if (!is_dir($path)) {
+                mkdir($path, 700);
+            }
+
+            move_uploaded_file($tempFile, $path . $filename);
+            chmod($path . $filename, 644);
+
+            return true;
+        } catch(Exception $e) {
+            Mage::logException($e);
+            return false;
+        }
     }
 
     /**
