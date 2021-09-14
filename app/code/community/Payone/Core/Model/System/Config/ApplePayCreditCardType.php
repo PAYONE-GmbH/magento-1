@@ -15,10 +15,10 @@
  * @category        Payone
  * @package         Payone_Core_Model
  * @subpackage      System
- * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
- * @author          Matthias Walter <info@noovias.com>
+ * @copyright       Copyright (c) 2021 <kontakt@fatchip.de> - www.fatchip.de
+ * @author          Fatchip GmbH <kontakt@fatchip.de>
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
- * @link            http://www.noovias.com
+ * @link            https://www.fatchip.de
  */
 
 /**
@@ -26,9 +26,9 @@
  * @category        Payone
  * @package         Payone_Core_Model
  * @subpackage      System
- * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
+ * @copyright       Copyright (c) 2021 <kontakt@fatchip.de> - www.fatchip.de
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
- * @link            http://www.noovias.com
+ * @link            https://www.fatchip.de
  */
 class Payone_Core_Model_System_Config_ApplePayCreditCardType extends Payone_Core_Model_System_Config_Abstract
 {

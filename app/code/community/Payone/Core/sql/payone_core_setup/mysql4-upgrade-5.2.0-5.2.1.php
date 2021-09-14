@@ -15,10 +15,10 @@
  * @category        Payone
  * @package         Payone_Core
  * @subpackage      sql
- * @copyright       Copyright (c) 2013 <info@noovias.com> - www.noovias.com
- * @author          Alexander Dite <info@noovias.com>
+ * @copyright       Copyright (c) 2021 <kontakt@fatchip.de> - www.fatchip.de
+ * @author          Fatchip GmbH <kontakt@fatchip.de>
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
- * @link            http://www.noovias.com
+ * @link            https://www.fatchip.de
  */
 
 /** @var $this Mage_Core_Model_Resource_Setup */

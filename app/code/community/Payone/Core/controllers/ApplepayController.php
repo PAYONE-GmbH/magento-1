@@ -20,6 +20,16 @@
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
  * @link            http://www.fatchip.de
  */
+
+/**
+ *
+ * @category        Payone
+ * @package         Payone_Core_controllers
+ * @subpackage
+ * @copyright       Copyright (c) 2021 <kontakt@fatchip.de> - www.fatchip.de
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            http://www.fatchip.de
+ */
 class Payone_Core_ApplepayController extends Payone_Core_Controller_Abstract
 {
     /** @var array */

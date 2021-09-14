@@ -16,9 +16,9 @@
  * @package         Payone_Settings
  * @subpackage      Data
  * @copyright       Copyright (c) 2021 <kontakt@fatchip.de> - www.fatchip.de
- * @author          FATCHIP GmbH <kontakt@fatchip.de>
+ * @author          Fatchip GmbH <kontakt@fatchip.de>
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
- * @link            http://www.fatchip.de
+ * @link            https://www.fatchip.de
  */
 
 /**
@@ -27,9 +27,8 @@
  * @package         Payone_Settings
  * @subpackage      Data
  * @copyright       Copyright (c) 2021 <kontakt@fatchip.de> - www.fatchip.de
- * @author          FATCHIP GmbH <kontakt@fatchip.de>
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
- * @link            http://www.fatchip.de
+ * @link            https://www.fatchip.de
  */
 class Payone_Settings_Data_ConfigFile_PaymentMethod_ApplePay
     extends Payone_Settings_Data_ConfigFile_PaymentMethod_Abstract

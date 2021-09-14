@@ -15,10 +15,10 @@
  * @category        Payone
  * @package         Payone_Core_Block
  * @subpackage      Payment
- * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
- * @author          Matthias Walter <info@noovias.com>
+ * @copyright       Copyright (c) 2021 <kontakt@fatchip.de> - www.fatchip.de
+ * @author          Fatchip GmbH <kontakt@fatchip.de>
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
- * @link            http://www.noovias.com
+ * @link            https://www.fatchip.de
  */
 
 /**
@@ -26,9 +26,9 @@
  * @category        Payone
  * @package         Payone_Core_Block
  * @subpackage      Payment
- * @copyright       Copyright (c) 2012 <info@noovias.com> - www.noovias.com
+ * @copyright       Copyright (c) 2021 <kontakt@fatchip.de> - www.fatchip.de
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
- * @link            http://www.noovias.com
+ * @link            https://www.fatchip.de
  */
 class Payone_Core_Block_Checkout_Onepage_Review_ApplePayHandling extends Mage_Core_Block_Template
 {

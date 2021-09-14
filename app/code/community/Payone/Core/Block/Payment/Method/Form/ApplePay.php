@@ -15,10 +15,20 @@
  * @category        Payone
  * @package         Payone_Core_Block
  * @subpackage      Payment
- * @copyright       Copyright (c) 2017 <kontakt@fatchip.de> - www.fatchip.de
- * @author          FATCHIP GmbH <kontakt@fatchip.de>
+ * @copyright       Copyright (c) 2021 <kontakt@fatchip.de> - www.fatchip.de
+ * @author          Fatchip GmbH <kontakt@fatchip.de>
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
- * @link            http://www.fatchip.de
+ * @link            https://www.fatchip.de
+ */
+
+/**
+ *
+ * @category        Payone
+ * @package         Payone_Core_Block
+ * @subpackage      Payment
+ * @copyright       Copyright (c) 2021 <kontakt@fatchip.de> - www.fatchip.de
+ * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
+ * @link            https://www.fatchip.de
  */
 class Payone_Core_Block_Payment_Method_Form_ApplePay
     extends Payone_Core_Block_Payment_Method_Form_Abstract
