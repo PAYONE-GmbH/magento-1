@@ -1314,13 +1314,22 @@ RATEPAY_TNC,"Mit Klicken auf 'Zahlungspflichtig bestellen' erklären Sie sich mi
 
 "RATEPAY_TEXT_LOGO", "ratepay_logo_instalments_whitelabel_de_black.png"
 
+
+"PAYONE_APPLEPAY_CONFIG_MERCHANT_ID_LABEL", "Merchant ID"
+
+"PAYONE_APPLEPAY_CONFIG_CERTIFICATE_LABEL", "Händleridentifikationszertifikat"
+"PAYONE_APPLEPAY_CONFIG_CERTIFICATE_COMMENT", "Erlaubter Dateityp: PEM"
+"PAYONE_APPLEPAY_CONFIG_CERTIFICATE_TOOLTIP", "Der Name des Zertifikats wird dem Textfeld entnommen . Es kann in jeden gewünschten Namen geändert werden. Wenn beim Speichern der hochgeladenen Datei leer ist, wird standardmäßig der ursprüngliche Name der Datei verwendet.<br/>
+Das Textfeld kann auch verwendet werden, um eine vorhandene Zertifikatsdatei auf dem Server zu benennen, ohne eine neue Datei hochzuladen."
+
+"PAYONE_APPLEPAY_CONFIG_CERTIFICATE_KEY_LABEL", "Privater Schlüssel des Zertifikats"
+"PAYONE_APPLEPAY_CONFIG_CERTIFICATE_KEY_TOOLTIP", "Dies ist ein Mehrfachfeld. Sie können eine Datei mit dem Schlüssel hochladen, oder den Inhalt des Schlüssels direkt in das Textfeld unten eingeben. Priorität hat die hochgeladene Datei, wenn beide Optionen verwendet werden!<br/><br/>
+Das kleinere Textfeld wird verwendet, um die Zieldatei oder den Pfad zu einer vorhandenen Schlüsseldatei auf dem Server zu benennen.<br/>
+- Wenn beim Speichern der hochgeladenen Datei leer, wird der ursprüngliche Name der hochgeladenen Datei verwendet.<br/>
+- Wenn beim Speichern der Direkteingabe leer, wird der Standardname 'merchant_id.key' verwendet.<br/>
+- Wenn leer, während keines davon ausgeführt wird, wird ein leerer Wert angenommen."
+
+"PAYONE_APPLEPAY_CONFIG_CERTIFICATE_KEY_PASS_LABEL", "Passwort für Zertifikatsschlüssel"
+
 "APPLEPAY_CREATE_SESSION_ERROR", "Fehler beim Herstellen der Verbindung zum Apple Pay Service."
 "APPLEPAY_MAKE_PAYMENT_ERROR", "Fehler beim Ausführen der Zahlungstransaktion."
-
-"Merchant Identification Certificate file", "Datei mit dem Händleridentifikationszertifikat"
-"Certificate private key", "Privater Schlüssel des Zertifikats"
-"Certificate key password", "Passwort für Zertifikatsschlüssel"
-
-"Allowed file type: PEM", "Erlaubter Dateityp: PEM"
-"Priority order for saving : uploaded file > key text content > key file path.", "Prioritätsreihenfolge für das Speichern: hochgeladene Datei > Schlüsseltextinhalt > Schlüsseldateipfad."
-"The default filename for the direct input is "merchant_id.key. If existing already, it will be overwritten.", "Der voreingestellte Dateiname für die Direkteingabe ist 'merchant_id.key'. Falls bereits vorhanden, wird er überschrieben."

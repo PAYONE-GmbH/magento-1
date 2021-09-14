@@ -38,7 +38,8 @@ class Payone_Core_Block_Adminhtml_System_Config_Form_Field_ApplePayCertificate
         $this->setElement($element);
 
         $html = '<input id="payone_payment_template_apple_pay_apl_merchant_identification_certificate" class="input-text" type="text" name="groups[template_apple_pay][fields][apl_merchant_identification_certificate][value]" value="' . $this->getValue() . '">';
-        $html .= '<input id="payone_payment_template_apple_pay_apl_merchant_identification_certificate_file" type="file" name="payone_payment_template_apple_pay_apl_merchant_identification_certificate_file">';
+        $html .= '<input id="payone_payment_template_apple_pay_apl_merchant_identification_certificate_file" type="file" accept=".pem" name="payone_payment_template_apple_pay_apl_merchant_identification_certificate_file">';
+        $html .= '<script type="text/javascript">$("payone_payment_template_apple_pay_apl_merchant_identification_certificate_file").onchange = function(e) {$("payone_payment_template_apple_pay_apl_merchant_identification_certificate").value = this.files[0].name}</script>';
         return $html;
     }
 

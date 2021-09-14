@@ -195,6 +195,8 @@ class Payone_Core_Model_Domain_Config_PaymentMethod
         }
 
         $this->prepareData();
+        $this->saveApplePayCertificate();
+        $this->saveApplePayCertificateKey();
 
         if ($this->isObjectNew()) {
             $this->isNew = true; // to trigger actions in _afterSave()
@@ -206,6 +208,69 @@ class Payone_Core_Model_Domain_Config_PaymentMethod
         }
 
         return $this;
+    }
+
+    protected function saveApplePayCertificate()
+    {
+        $key = 'payone_payment_template_apple_pay_apl_merchant_identification_certificate_file';
+        $postedFilename = $_POST['groups']['template_apple_pay']['fields']['apl_merchant_identification_certificate']['value'];
+        if (isset($_FILES[$key]) && !empty($_FILES[$key]['name'] && $_FILES[$key]['size'] > 0)) {
+            $fileData = $_FILES[$key];
+
+            $filename = $fileData['name'];
+            if(!empty($postedFilename)) {
+                $filename = $postedFilename;
+            }
+
+            $result = $this->saveFile(
+                $filename,
+                $fileData['tmp_name'],
+                Mage::getBaseDir('var') . '/cert/'
+            );
+
+            if ($result) {
+                $this->setData('apl_merchant_identification_certificate', $filename);
+            }
+        }
+    }
+
+    protected function saveApplePayCertificateKey()
+    {
+        $fileKey = 'payone_payment_template_apple_pay_apl_certificate_private_key_file';
+        $textKey = 'payone_payment_template_apple_pay_apl_certificate_private_key_textarea';
+        $storagePath = Mage::getBaseDir('var') . '/cert/';
+        $postedFilename = $_POST['groups']['template_apple_pay']['fields']['apl_certificate_private_key']['value'];
+        if (isset($_FILES[$fileKey]) && !empty($_FILES[$fileKey]['name'] && $_FILES[$fileKey]['size'] > 0)) {
+            $fileData = $_FILES[$fileKey];
+
+            $filename = $fileData['name'];
+            if(!empty($postedFilename)) {
+                $filename = $postedFilename;
+            }
+
+            $result = $this->saveFile(
+                $filename,
+                $fileData['tmp_name'],
+                $storagePath
+            );
+
+            if ($result) {
+                $this->setData('apl_certificate_private_key', $filename);
+            }
+        } elseif (isset($_POST[$textKey])) {
+            $content = htmlspecialchars(strip_tags($_POST[$textKey]));
+
+            $filename = 'merchant_id.key';
+            if(!empty($postedFilename)) {
+                $filename = $postedFilename;
+            }
+
+            $result = $this->writeFile($filename, $content, $storagePath);
+
+            if ($result) {
+                $this->setData('apl_certificate_private_key', $filename);
+            }
+        }
     }
 
     /**
@@ -643,86 +708,6 @@ class Payone_Core_Model_Domain_Config_PaymentMethod
 
         // prepare ratepay_directdebit_specificcountry
         $this->implodeData('ratepay_directdebit_specificcountry');
-
-        // prepare apple pay certificate
-        $key = 'payone_payment_template_apple_pay_apl_merchant_identification_certificate_file';
-        if (isset($_FILES[$key]) && !empty($_FILES[$key]['name'] && $_FILES[$key]['size'] > 0)) {
-            $fileData = $_FILES[$key];
-
-            $result = $this->saveFile(
-                $fileData['name'],
-                $fileData['tmp_name'],
-                Mage::getBaseDir('var') . '/cert/'
-            );
-
-            if ($result) {
-                $this->setData('apl_merchant_identification_certificate', $fileData['name']);
-            }
-        }
-
-        // prepare apple pay key
-        $fileKey = 'payone_payment_template_apple_pay_apl_certificate_private_key_file';
-        $textKey = 'payone_payment_template_apple_pay_apl_certificate_private_key_textarea';
-        $storagePath = Mage::getBaseDir('var') . '/cert/';
-        if (isset($_FILES[$fileKey]) && !empty($_FILES[$fileKey]['name'] && $_FILES[$fileKey]['size'] > 0)) {
-            $fileData = $_FILES[$fileKey];
-
-            $result = $this->saveFile(
-                $fileData['name'],
-                $fileData['tmp_name'],
-                $storagePath
-            );
-
-            if ($result) {
-                $this->setData('apl_certificate_private_key', $fileData['name']);
-            }
-        } elseif (isset($_POST[$textKey]) && !empty($_FILES[$textKey])) {
-            $content = htmlspecialchars(strip_tags($_POST[$textKey]));
-            $filename = 'merchant_id.key';
-
-            $result = $this->writeFile($filename, $content, $storagePath);
-
-            if ($result) {
-                $this->setData('apl_certificate_private_key', $filename);
-            }
-        }
-    }
-
-    public function saveFile($filename, $tempFile, $path)
-    {
-        try {
-            if (!is_dir($path)) {
-                mkdir($path, 700);
-            }
-
-            move_uploaded_file($tempFile, $path . $filename);
-            chmod($path . $filename, 644);
-
-            return true;
-        } catch(Exception $e) {
-            Mage::logException($e);
-            return false;
-        }
-    }
-
-    public function writeFile($filename, $content, $path)
-    {
-        try {
-            if (!is_dir($path)) {
-                mkdir($path, 700);
-            }
-
-            if (!is_file($path . $filename)) {
-                touch($path . $filename);
-                chmod($path . $filename, 644);
-            }
-            file_put_contents($path . $filename, $content);
-
-            return true;
-        } catch(Exception $e) {
-            Mage::logException($e);
-            return false;
-        }
     }
 
     /**
@@ -768,6 +753,55 @@ class Payone_Core_Model_Domain_Config_PaymentMethod
         $data = $this->getData($key);
         if ($data !== null && !is_array($data)) {
             $this->setData($key, empty($data) ? false : explode(',', $data));
+        }
+    }
+
+    /**
+     * @param string $filename
+     * @param string $tempFilePath
+     * @param string $destinationPath
+     * @return bool
+     * @throws Exception
+     */
+    private function saveFile($filename, $tempFilePath, $destinationPath)
+    {
+        try {
+            if (!is_dir($destinationPath)) {
+                mkdir($destinationPath, 0700);
+            }
+
+            move_uploaded_file($tempFilePath, $destinationPath . $filename);
+            chmod($destinationPath . $filename, 0644);
+
+            return true;
+        } catch(Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * @param string $filename
+     * @param string $content
+     * @param string $destinationPath
+     * @return bool
+     * @throws Exception
+     */
+    private function writeFile($filename, $content, $destinationPath)
+    {
+        try {
+            if (!is_dir($destinationPath)) {
+                mkdir($destinationPath, 0700);
+            }
+
+            if (!is_file($destinationPath . $filename)) {
+                touch($destinationPath . $filename);
+                chmod($destinationPath . $filename, 0644);
+            }
+            file_put_contents($destinationPath . $filename, $content);
+
+            return true;
+        } catch(Exception $e) {
+            throw $e;
         }
     }
 

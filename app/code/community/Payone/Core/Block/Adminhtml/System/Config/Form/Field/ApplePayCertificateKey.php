@@ -41,8 +41,7 @@ class Payone_Core_Block_Adminhtml_System_Config_Form_Field_ApplePayCertificateKe
         $html .= '<input id="payone_payment_template_apple_pay_apl_certificate_private_key_file" type="file" name="payone_payment_template_apple_pay_apl_certificate_private_key_file">';
         $html .= '<br />';
         $html .= '<textarea id="payone_payment_template_apple_pay_apl_certificate_private_key_textarea" name="payone_payment_template_apple_pay_apl_certificate_private_key_textarea"></textarea>';
-        $html .= '<br \>';
-        $html .=  $this->__('The default filename for the direct input is "merchant_id.key. If existing already, it will be overwritten.');
+        $html .= '<script type="text/javascript">$("payone_payment_template_apple_pay_apl_certificate_private_key_file").onchange = function(e) {$("payone_payment_template_apple_pay_apl_certificate_private_key").value = this.files[0].name}</script>';
         return $html;
     }
 
