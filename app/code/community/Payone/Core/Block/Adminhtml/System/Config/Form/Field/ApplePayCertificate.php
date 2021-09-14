@@ -37,7 +37,11 @@ class Payone_Core_Block_Adminhtml_System_Config_Form_Field_ApplePayCertificate
     {
         $this->setElement($element);
 
-        $html = '<input id="payone_payment_template_apple_pay_apl_merchant_identification_certificate" class="input-text" type="text" name="groups[template_apple_pay][fields][apl_merchant_identification_certificate][value]" value="' . $this->getValue() . '">';
+        $html = '';
+        $html .= '<input id="payone_payment_template_apple_pay_apl_merchant_identification_certificate" class="input-text" type="text" name="groups[template_apple_pay][fields][apl_merchant_identification_certificate][value]" value="' . $this->getValue() . '">';
+        if (!is_file(Mage::getBaseDir('var') . '/cert/' . $this->getValue())) {
+            $html .= '<ul class="payone-config-warning"><li class="payone-config-warning-content"><span>' . $this->__('PAYONE_APPLEPAY_CONFIG_CERTIFICATE_MISSING') . '</span></li></ul>';
+        }
         $html .= '<input id="payone_payment_template_apple_pay_apl_merchant_identification_certificate_file" type="file" accept=".pem" name="payone_payment_template_apple_pay_apl_merchant_identification_certificate_file">';
         $html .= '<script type="text/javascript">$("payone_payment_template_apple_pay_apl_merchant_identification_certificate_file").onchange = function(e) {$("payone_payment_template_apple_pay_apl_merchant_identification_certificate").value = this.files[0].name}</script>';
         return $html;

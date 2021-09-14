@@ -88,6 +88,7 @@ CREDITCARD_INVALID_OWNER_ERROR_MESSAGE, "Credit card owner name is invalid. [max
 "PAYONE_APPLEPAY_CONFIG_CERTIFICATE_COMMENT", "Allowed file type: PEM"
 "PAYONE_APPLEPAY_CONFIG_CERTIFICATE_TOOLTIP", "The name of the certificate is taken from the text field. It can be changed to any wished name. If empty when saving uploaded file, it will by default take the file's initial name.<br/>
 The text field can also be used to name an existing certificate file on the server, without uploading a new file."
+"PAYONE_APPLEPAY_CONFIG_CERTIFICATE_MISSING", "The current configured certificate file doesn't exist.<br/>Apple Pay cannot be used as payment method."
 
 "PAYONE_APPLEPAY_CONFIG_CERTIFICATE_KEY_LABEL", "Certificate private key"
 "PAYONE_APPLEPAY_CONFIG_CERTIFICATE_KEY_TOOLTIP", "This is a multiple field. You can upload a file containing the key, or type the content of the key directly into the text area below. Priority goes to uploaded file if both options are used !<br/><br/>

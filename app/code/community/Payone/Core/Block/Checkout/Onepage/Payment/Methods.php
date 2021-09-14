@@ -272,6 +272,13 @@ class Payone_Core_Block_Checkout_Onepage_Payment_Methods
                 if ($method->getCode() != Payone_Core_Model_System_Config_PaymentMethodCode::APPLEPAY ) {
                     return true;
                 } else {
+                    $certificateName = $method->getConfig()->getAplMerchantIdentificationCertificate();
+                    $certificateFullPath = Mage::getBaseDir('var') . '/cert/' . $certificateName;
+
+                    if (!is_file($certificateFullPath)) {
+                        return false;
+                    }
+
                     return $applePayAllowed;
                 }
             }

@@ -1321,6 +1321,7 @@ RATEPAY_TNC,"Mit Klicken auf 'Zahlungspflichtig bestellen' erklären Sie sich mi
 "PAYONE_APPLEPAY_CONFIG_CERTIFICATE_COMMENT", "Erlaubter Dateityp: PEM"
 "PAYONE_APPLEPAY_CONFIG_CERTIFICATE_TOOLTIP", "Der Name des Zertifikats wird dem Textfeld entnommen . Es kann in jeden gewünschten Namen geändert werden. Wenn beim Speichern der hochgeladenen Datei leer ist, wird standardmäßig der ursprüngliche Name der Datei verwendet.<br/>
 Das Textfeld kann auch verwendet werden, um eine vorhandene Zertifikatsdatei auf dem Server zu benennen, ohne eine neue Datei hochzuladen."
+"PAYONE_APPLEPAY_CONFIG_CERTIFICATE_MISSING", "Die aktuell konfigurierte Zertifikatsdatei existiert nicht.<br/>Apple Pay kann nicht als Zahlungsmethode verwendet werden."
 
 "PAYONE_APPLEPAY_CONFIG_CERTIFICATE_KEY_LABEL", "Privater Schlüssel des Zertifikats"
 "PAYONE_APPLEPAY_CONFIG_CERTIFICATE_KEY_TOOLTIP", "Dies ist ein Mehrfachfeld. Sie können eine Datei mit dem Schlüssel hochladen, oder den Inhalt des Schlüssels direkt in das Textfeld unten eingeben. Priorität hat die hochgeladene Datei, wenn beide Optionen verwendet werden!<br/><br/>
