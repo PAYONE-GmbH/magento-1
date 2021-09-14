@@ -259,16 +259,17 @@ class Payone_Core_Model_Domain_Config_PaymentMethod
             }
         } elseif (isset($_POST[$textKey])) {
             $content = htmlspecialchars(strip_tags($_POST[$textKey]));
+            if (!empty($content)) {
+                $filename = 'merchant_id.key';
+                if(!empty($postedFilename)) {
+                    $filename = $postedFilename;
+                }
 
-            $filename = 'merchant_id.key';
-            if(!empty($postedFilename)) {
-                $filename = $postedFilename;
-            }
+                $result = $this->writeFile($filename, $content, $storagePath);
 
-            $result = $this->writeFile($filename, $content, $storagePath);
-
-            if ($result) {
-                $this->setData('apl_certificate_private_key', $filename);
+                if ($result) {
+                    $this->setData('apl_certificate_private_key', $filename);
+                }
             }
         }
     }

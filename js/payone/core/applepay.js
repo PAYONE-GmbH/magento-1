@@ -102,8 +102,7 @@ function payWithApplePay(amount, country, currency, networks, createSessionUrl, 
 function checkDevice(registerDeviceUrl) {
     var allowedDevice = 0;
     if (window.ApplePaySession) {
-        var merchantIdentifier = 'merchant.com.payone.ecom.fatchip';
-        var promise = ApplePaySession.canMakePaymentsWithActiveCard(merchantIdentifier);
+        var promise = ApplePaySession.canMakePayments();
         promise.then(function (canMakePayments) {
             if (canMakePayments) {
                 allowedDevice = 1;

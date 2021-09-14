@@ -100,3 +100,4 @@ The smaller text field is used to name the destination file, or path to an exist
 
 "APPLEPAY_CREATE_SESSION_ERROR", "Error while establishing connection to Apple Pay service."
 "APPLEPAY_MAKE_PAYMENT_ERROR", "Error while operating the payment transaction."
+"APPLEPAY_CREATE_SESSION_ERROR_CARDS", "No valid credit cards type is allowed in the configuration. Apple Pay session cannot be initialized."

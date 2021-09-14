@@ -31,6 +31,11 @@
         var supportedNetworks = JSON.parse('<?= json_encode($this->getSupportedNetworks()) ?>');
         button.onclick = button.onclick.wrap(
             function() {
+                if (supportedNetworks.length === 0) {
+                    alert('<?= $this->__('APPLEPAY_CREATE_SESSION_ERROR_CARDS') ?>');
+                    return
+                }
+
                 payWithApplePay(
                     '<?= $this->getAmount() ?>',
                     '<?= $this->getCountryCode() ?>',

@@ -1333,3 +1333,4 @@ Das kleinere Textfeld wird verwendet, um die Zieldatei oder den Pfad zu einer vo
 
 "APPLEPAY_CREATE_SESSION_ERROR", "Fehler beim Herstellen der Verbindung zum Apple Pay Service."
 "APPLEPAY_MAKE_PAYMENT_ERROR", "Fehler beim Ausführen der Zahlungstransaktion."
+"APPLEPAY_CREATE_SESSION_ERROR_CARDS", "In der Konfiguration ist kein gültiger Kreditkartentyp zulässig. Die Apple Pay-Sitzung kann nicht initialisiert werden."
