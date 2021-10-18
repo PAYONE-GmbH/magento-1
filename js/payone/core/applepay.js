@@ -102,31 +102,20 @@ function payWithApplePay(amount, country, currency, networks, createSessionUrl, 
 function checkDevice(registerDeviceUrl) {
     var allowedDevice = 0;
     if (window.ApplePaySession) {
-        var promise = ApplePaySession.canMakePayments();
-        promise.then(function (canMakePayments) {
-            if (canMakePayments) {
-                allowedDevice = 1;
-            }
-
-            new Ajax.Request(registerDeviceUrl,
-                {
-                    method: 'post',
-                    parameters: {allowed: allowedDevice},
-                    onSuccess: checkDeviceSuccess,
-                    onFailure: checkDeviceFailure
-                }
-            );
-        });
-    } else {
-        new Ajax.Request(registerDeviceUrl,
-            {
-                method: 'post',
-                parameters: {allowed: 0},
-                onSuccess: checkDeviceSuccess,
-                onFailure: checkDeviceFailure
-            }
-        );
+        var canMakePayments = ApplePaySession.canMakePayments();
+        if (canMakePayments) {
+            allowedDevice = 1;
+        }
     }
+
+    new Ajax.Request(registerDeviceUrl,
+        {
+            method: 'post',
+            parameters: {allowed: allowedDevice},
+            onSuccess: checkDeviceSuccess,
+            onFailure: checkDeviceFailure
+        }
+    );
 }
 function checkDeviceSuccess (response) {
     var responseData = JSON.parse(response.responseText);
