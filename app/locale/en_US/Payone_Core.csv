@@ -80,3 +80,25 @@ RATEPAY_TNC,"With clicking on 'Submit order' you agree to the <a target='_blank'
 CREDITCARD_INVALID_OWNER_ERROR_MESSAGE, "Credit card owner name is invalid. [max 50 char. from latin alphabet including dash/space/umlaut | at least 1 letter]"
 
 "RATEPAY_TEXT_LOGO", "ratepay_logo_instalments_whitelabel_en_black.png"
+
+
+"PAYONE_APPLEPAY_CONFIG_MERCHANT_ID_LABEL", "Merchant ID"
+
+"PAYONE_APPLEPAY_CONFIG_CERTIFICATE_LABEL", "Merchant Identification Certificate file"
+"PAYONE_APPLEPAY_CONFIG_CERTIFICATE_COMMENT", "Allowed file type: PEM"
+"PAYONE_APPLEPAY_CONFIG_CERTIFICATE_TOOLTIP", "The name of the certificate is taken from the text field. It can be changed to any wished name. If empty when saving uploaded file, it will by default take the file's initial name.<br/>
+The text field can also be used to name an existing certificate file on the server, without uploading a new file."
+"PAYONE_APPLEPAY_CONFIG_CERTIFICATE_MISSING", "The current configured certificate file doesn't exist.<br/>Apple Pay cannot be used as payment method."
+
+"PAYONE_APPLEPAY_CONFIG_CERTIFICATE_KEY_LABEL", "Certificate private key"
+"PAYONE_APPLEPAY_CONFIG_CERTIFICATE_KEY_TOOLTIP", "This is a multiple field. You can upload a file containing the key, or type the content of the key directly into the text area below. Priority goes to uploaded file if both options are used !<br/><br/>
+The smaller text field is used to name the destination file, or path to an existing key file on server.<br/>
+- If empty while saving uploaded file, it will take the uploaded file's initial name.<br/>
+- If empty while saving direct input, it will take the default name 'merchant_id.key'.<br/>
+- If empty while not doing any of those, it will take an empty value."
+
+"PAYONE_APPLEPAY_CONFIG_CERTIFICATE_KEY_PASS_LABEL", "Certificate key password"
+
+"APPLEPAY_CREATE_SESSION_ERROR", "Error while establishing connection to Apple Pay service."
+"APPLEPAY_MAKE_PAYMENT_ERROR", "Error while operating the payment transaction."
+"APPLEPAY_CREATE_SESSION_ERROR_CARDS", "No valid credit cards type is allowed in the configuration. Apple Pay session cannot be initialized."

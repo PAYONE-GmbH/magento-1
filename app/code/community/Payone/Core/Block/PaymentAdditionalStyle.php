@@ -29,6 +29,7 @@ class Payone_Core_Block_PaymentAdditionalStyle extends Mage_Core_Block_Template
         Payone_Core_Model_System_Config_PaymentMethodCode::KLARNAINVOICING => 'payone/core/klarna.css',
         Payone_Core_Model_System_Config_PaymentMethodCode::KLARNAINSTALLMENT => 'payone/core/klarna.css',
         Payone_Core_Model_System_Config_PaymentMethodCode::KLARNADIRECTDEBIT => 'payone/core/klarna.css',
+        Payone_Core_Model_System_Config_PaymentMethodCode::APPLEPAY => 'payone/core/applepay.css',
     );
 
     /**

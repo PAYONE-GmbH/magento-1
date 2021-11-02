@@ -318,6 +318,26 @@ class Payone_Core_Model_Config_Payment_Method
     protected $associated_shipping_method = '';
 
     /**
+     * @var string
+     */
+    protected $apl_merchant_id = '';
+
+    /**
+     * @var string
+     */
+    protected $apl_merchant_identification_certificate = '';
+
+    /**
+     * @var string
+     */
+    protected $apl_certificate_private_key = '';
+
+    /**
+     * @var string
+     */
+    protected $apl_certificate_key_password = '';
+
+    /**
      * Check if Method can be used in Country
      *
      * @param string $country
@@ -1500,5 +1520,69 @@ class Payone_Core_Model_Config_Payment_Method
     public function setAssociatedShippingMethod($associated_shipping_method)
     {
         $this->associated_shipping_method = $associated_shipping_method;
+    }
+
+    /**
+     * @param string $apl_merchant_identification_certificate
+     */
+    public function setAplMerchantIdentificationCertificate($apl_merchant_identification_certificate)
+    {
+        $this->apl_merchant_identification_certificate = $apl_merchant_identification_certificate;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAplMerchantIdentificationCertificate()
+    {
+        return $this->apl_merchant_identification_certificate;
+    }
+
+    /**
+     * @param string $apl_certificate_private_key
+     */
+    public function setAplCertificatePrivateKey($apl_certificate_private_key)
+    {
+        $this->apl_certificate_private_key = $apl_certificate_private_key;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAplCertificatePrivateKey()
+    {
+        return $this->apl_certificate_private_key;
+    }
+
+    /**
+     * @param string $apl_certificate_key_password
+     */
+    public function setAplCertificateKeyPassword($apl_certificate_key_password)
+    {
+        $this->apl_certificate_key_password = $apl_certificate_key_password;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAplCertificateKeyPassword()
+    {
+        return $this->apl_certificate_key_password;
+    }
+
+    /**
+     * @param string $apl_merchant_id
+     */
+    public function setAplMerchantId($apl_merchant_id)
+    {
+        $this->apl_merchant_id = $apl_merchant_id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAplMerchantId()
+    {
+        return $this->apl_merchant_id;
     }
 }

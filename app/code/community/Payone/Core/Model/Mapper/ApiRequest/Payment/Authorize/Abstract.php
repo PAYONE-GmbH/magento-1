@@ -644,6 +644,13 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
 
             $isRedirect = true;
         }
+        elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_ApplePay) {
+            $checkoutSession = $this->getFactory()->getSingletonCheckoutSession();
+            $tokenSessionData = $checkoutSession->getData('applePayTokenData');
+
+            $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_ApplePay([], $tokenSessionData['paydata']);
+            $payment->setCardType($tokenSessionData['creditCardType']);
+        }
         //Old Wallet Payment
         elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_Wallet) {
             $payment = new Payone_Api_Request_Parameter_Authorization_PaymentMethod_Wallet();
@@ -1202,6 +1209,8 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
             $clearingType = Payone_Enum_ClearingType::ONLINEBANKTRANSFERTRUSTLY;
         } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_WalletWeChatPay) {
             $clearingType = Payone_Enum_ClearingType::WALLETWECHATPAY;
+        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_ApplePay) {
+            $clearingType = Payone_Enum_ClearingType::APPLEPAY;
         }
 
         return $clearingType;

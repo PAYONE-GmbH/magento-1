@@ -89,6 +89,8 @@ class Payone_Core_Block_Checkout_Onepage_Payment_Methods
 
         $this->methods = $this->filterKlarnaMethods($this->methods);
 
+        $this->methods = $this->filterApplePay($this->methods);
+
         return $this->methods;
     }
 
@@ -254,6 +256,37 @@ class Payone_Core_Block_Checkout_Onepage_Payment_Methods
 
         return $filteredMethods;
     }
+
+    /**
+     * @param $methods
+     * @return array
+     */
+    private function filterApplePay($methods)
+    {
+        $session = Mage::getSingleton('payone_core/session');
+        $applePayAllowed = (bool) $session->getData('applePayAllowedDevice');
+
+        $filteredMethods = array_filter(
+            $methods,
+            function ($method) use ($applePayAllowed) {
+                if ($method->getCode() != Payone_Core_Model_System_Config_PaymentMethodCode::APPLEPAY ) {
+                    return true;
+                } else {
+                    $certificateName = $method->getConfig()->getAplMerchantIdentificationCertificate();
+                    $certificateFullPath = Mage::getBaseDir('var') . '/cert/' . $certificateName;
+
+                    if (!is_file($certificateFullPath)) {
+                        return false;
+                    }
+
+                    return $applePayAllowed;
+                }
+            }
+        );
+
+        return $filteredMethods;
+    }
+
 
     /**
      * @param Mage_Payment_Model_Method_Abstract $method
