@@ -29,7 +29,7 @@ Related projects can provide additional features and perks that can't be include
 * [Pragmatic-Apps/magento1-payone-restrictproducts](https://github.com/Pragmatic-Apps/magento1-payone-restrictproducts): Extension that allows to automatically disable selected methods when certain products are in the shopping cart. This is necessary to comply with requirements of some payment provides (e.g. when it is not allowed to sell coupons).
 
 ## Contact
-BS PAYONE GmbH<br>
+PAYONE GmbH<br>
 Office Kiel<br>
 Fraunhoferstraße 2–4<br>
 24118 Kiel, Germany<br>
