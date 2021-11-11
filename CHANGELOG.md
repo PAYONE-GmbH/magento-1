@@ -2,6 +2,15 @@
 
 **The changelog is continued on the Github releases page**
 
+## 5.3.0
+
+New Features
+
+Add Apple Pay
+Maintenance
+
+Rename Payolution to Unzer
+
 ## 5.2.0
 
 New Features
