@@ -110,8 +110,8 @@ $sDeviceIdentId = $this->getRatePayDeviceFingerprintSnippetId();
                        class="validate-sepa-bic input-text"
                        value="<?php echo $this->getSavedCustomerData('payone_sepa_bic');?>"
                        autocomplete="off" maxlength="11"
-                       onchange="inputToUppaerCaseAndNumbers(this); blockPaymentMethodInputs('<?php echo $code ?>', <?php echo $configShowBankData; ?>);"
-                       oninput="inputToUppaerCaseAndNumbers(this); blockPaymentMethodInputs('<?php echo $code ?>', <?php echo $configShowBankData; ?>);"/>
+                       onchange="inputToUppaerCaseAndNumbers(this)"
+                       oninput="inputToUppaerCaseAndNumbers(this)"/>
             </div>
         </li>
 
@@ -149,7 +149,7 @@ $sDeviceIdentId = $this->getRatePayDeviceFingerprintSnippetId();
                             </option>
                         <?php endfor; ?>
                     </select>
-                    
+
                     <input type="hidden" id="<?php echo $code ?>_additional_fields_customer_dob_full"
                             name="payment[payone_customer_dob]" class="validate-18-years">
                 </div>
