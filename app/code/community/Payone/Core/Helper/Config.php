@@ -230,9 +230,12 @@ class Payone_Core_Helper_Config
             $counter = 0;
         }
 
-        $counter += 1;
+        $creditRating = $this->getConfigProtect($storeId)->getCreditrating();
+        if($creditRating->isEnabled()) {
+            $counter += 1;
 
-        $this->setCreditratingSampleCounter($counter, $storeId);
+            $this->setCreditratingSampleCounter($counter, $storeId);
+        }
 
         return $counter;
     }
