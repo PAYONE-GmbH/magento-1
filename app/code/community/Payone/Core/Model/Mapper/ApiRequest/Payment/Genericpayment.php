@@ -614,8 +614,12 @@ class Payone_Core_Model_Mapper_ApiRequest_Payment_Genericpayment
         $request->setCity($billingAddress->getCity());
         $request->setCountry($billingAddress->getCountry());
         $request->setTelephonenumber($billingAddress->getTelephone());
-        if (isset($data['dob'])) {
-            $request->setBirthday($data['dob']);
+        if (!empty($billingAddress->getCompany())) {
+            $request->setCompany($billingAddress->getCompany());
+        } else {
+            if (isset($data['dob'])) {
+                $request->setBirthday($data['dob']);
+            }
         }
 
         $shippingAddress = $quote->getShippingAddress();

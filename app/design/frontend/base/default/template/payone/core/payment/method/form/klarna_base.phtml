@@ -232,6 +232,7 @@ $quoteLocale = str_replace('_', '-' , Mage::app()->getLocale()->getLocaleCode())
             var customerDoB = $('payone_klarna_base_additional_fields_customer_dob_full').value;
             var customerBillingPhone = $('payone_klarna_base_additional_fields_customer_billing_telephone').value;
             var customerShippingPhone = $('payone_klarna_base_additional_fields_customer_shipping_telephone').value;
+            var shippingEmail = "<?php echo !empty($this->getQuote()->getShippingAddress()->getEmail()) ? $this->getQuote()->getShippingAddress()->getEmail() : $this->getQuote()->getBillingAddress()->getEmail() ?>";
 
             if (!formKlarnaPaymentMethod.checked || formKlarnaPaymentMethod.value == klarnaBaseCode || paymentMethodCategoryIdentifier == '') {
                 return payone.exec(origMethod);
@@ -261,7 +262,7 @@ $quoteLocale = str_replace('_', '-' , Mage::app()->getLocale()->getLocaleCode())
                     shipping_address: {
                         given_name: "<?php echo $this->getQuote()->getShippingAddress()->getFirstname() ?>",
                         family_name: "<?php echo $this->getQuote()->getShippingAddress()->getLastname() ?>",
-                        email: "<?php echo $this->getQuote()->getShippingAddress()->getEmail() ?>",
+                        email: shippingEmail,
                         street_address: "<?php echo $this->getQuote()->getShippingAddress()->getStreet1() ?>",
                         street_address2: "<?php echo $this->getQuote()->getShippingAddress()->getStreet2() ?>",
                         postal_code: "<?php echo $this->getQuote()->getShippingAddress()->getPostcode() ?>",
