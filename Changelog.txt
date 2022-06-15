@@ -1,0 +1,8 @@
+Bugfix(es)
+ 
+* Fix issue with creating an backofficeorder with secure invoice
+ 
+Maintenance
+
+* update the banklist in iDeal 
+* tested with Magento 1.9.4.4
