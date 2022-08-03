@@ -209,7 +209,6 @@ abstract class Payone_Core_Model_Handler_Payment_Abstract
             $order->setData('payone_payment_method_type', $this->getPayment()->getData('payone_payolution_type'));
         } elseif ($this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_Wallet ||
             $this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_WalletPaydirekt ||
-            $this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_WalletPaydirektExpress ||
             $this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_WalletPaypalExpress ||
             $this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_WalletAliPay ||
             $this->getPaymentMethod() instanceof Payone_Core_Model_Payment_Method_WalletWeChatPay

@@ -131,8 +131,6 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
     {
         $sRefNr = $oOrder->getIncrementId();
         if (
-            $oPayment instanceof Payone_Core_Model_Payment_Method_WalletPaydirektExpress
-            ||
             (
                 ($oPayment instanceof Payone_Core_Model_Payment_Method_Wallet || $oPayment instanceof Payone_Core_Model_Payment_Method_WalletPaydirekt)
                 && ($this->_getWalletType() == 'PDT')
@@ -1165,8 +1163,6 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
             $clearingType = Payone_Enum_ClearingType::WALLET;
         } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_WalletPaydirekt) {
             $clearingType = Payone_Enum_ClearingType::WALLETPAYDIREKT;
-        } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_WalletPaydirektExpress) {
-            $clearingType = Payone_Enum_ClearingType::WALLETPAYDIREKTEXPRESS;
         } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_WalletPaypalExpress) {
             $clearingType = Payone_Enum_ClearingType::WALLETPAYPALEXPRESS;
         } elseif ($paymentMethod instanceof Payone_Core_Model_Payment_Method_WalletAliPay) {

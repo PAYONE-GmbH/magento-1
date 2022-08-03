@@ -25,7 +25,6 @@ class Payone_Core_Block_PaymentAdditionalStyle extends Mage_Core_Block_Template
 {
     private $stylesheetUrls = array(
         Payone_Core_Model_System_Config_PaymentMethodCode::AMAZONPAY => 'payone/core/amazonpay_button.css',
-        Payone_Core_Model_System_Config_PaymentMethodCode::WALLETPAYDIREKTEXPRESS => 'payone/core/paydirektexpress.css',
         Payone_Core_Model_System_Config_PaymentMethodCode::KLARNAINVOICING => 'payone/core/klarna.css',
         Payone_Core_Model_System_Config_PaymentMethodCode::KLARNAINSTALLMENT => 'payone/core/klarna.css',
         Payone_Core_Model_System_Config_PaymentMethodCode::KLARNADIRECTDEBIT => 'payone/core/klarna.css',

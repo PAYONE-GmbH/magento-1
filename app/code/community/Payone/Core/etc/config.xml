@@ -303,10 +303,6 @@
                     <!-- Paydirekt Type -->
                     <to_order_payment>*</to_order_payment>
                 </payone_wallet_paydirekt_type>
-                <payone_wallet_paydirekt_express_type>
-                    <!-- Paydirekt Express Type -->
-                    <to_order_payment>*</to_order_payment>
-                </payone_wallet_paydirekt_express_type>
                 <payone_wallet_paypal_express_type>
                     <!-- Paypal Express Type -->
                     <to_order_payment>*</to_order_payment>
@@ -873,11 +869,6 @@
                 <model>payone_core/payment_method_walletPaydirekt</model>
                 <group>payone</group>
             </payone_wallet_paydirekt>
-            <payone_wallet_paydirekt_express translate="title" module="payone_core">
-                <title>PAYONE - Paydirekt Express</title>
-                <model>payone_core/payment_method_walletPaydirektExpress</model>
-                <group>payone</group>
-            </payone_wallet_paydirekt_express>
             <payone_wallet_paypal_express translate="title" module="payone_core">
                 <title>PAYONE - Paypal Express</title>
                 <model>payone_core/payment_method_walletPaypalExpress</model>
@@ -964,9 +955,6 @@
             <template_wallet_paydirekt>
                 <use_global>1</use_global>
             </template_wallet_paydirekt>
-            <template_wallet_paydirekt_express>
-                <use_global>1</use_global>
-            </template_wallet_paydirekt_express>
             <template_wallet_paypal_express>
                 <use_global>1</use_global>
             </template_wallet_paypal_express>
@@ -1061,7 +1049,6 @@
                 <payolution_debit>a:1:{s:18:"_2496553448474_474";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</payolution_debit>
                 <payolution_installment>a:1:{s:18:"_1910987005853_853";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</payolution_installment>
                 <wallet_paydirekt>a:1:{s:18:"_1514988840741_741";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</wallet_paydirekt>
-                <wallet_paydirekt_express>a:1:{s:18:"_1514988840741_742";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</wallet_paydirekt_express>
                 <wallet_paypal_express>a:1:{s:18:"_2177301865940_940";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</wallet_paypal_express>
                 <wallet_alipay>a:1:{s:18:"_2339656494812_812";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</wallet_alipay>
                 <wallet_wechatpay>a:1:{s:18:"_2339656494812_912";a:2:{s:8:"txaction";a:1:{i:0;s:9:"appointed";}s:12:"state_status";a:1:{i:0;s:21:"processing|processing";}}}</wallet_wechatpay>
