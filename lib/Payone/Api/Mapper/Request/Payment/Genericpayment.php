@@ -25,21 +25,13 @@ class Payone_Api_Mapper_Request_Payment_Genericpayment
     /**
      * Convert amount for payone service request
      * @param Payone_Api_Request_Interface $request
-     * @return type
+     * @return array
      */
     public function map(Payone_Api_Request_Interface $request)
     {
         /** @var $request Payone_Api_Request_Authorization */
         if($request->getAmount()) {
             $this->mapAmount($request);
-        }
-
-        if ($request instanceof Payone_Api_Request_PaydirektExpressSetCheckout && $request->getInvoicing())  {
-            foreach ($request->getInvoicing()->getItems() as $invoicingItem) {
-                $invoicingItem->setPr(
-                    round($invoicingItem->getPr(), 2) * 100
-                );
-            }
         }
 
         return $request->toArray();

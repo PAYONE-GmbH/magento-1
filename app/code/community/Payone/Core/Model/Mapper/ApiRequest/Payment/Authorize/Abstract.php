@@ -87,10 +87,6 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
         if($workOrderId = $payment->getAdditionalInformation(Payone_Core_Model_Service_Paypal_Express_Checkout::PAYONE_EXPRESS_CHECKOUT_WORKORDERID)) {
             $request->setWorkorderId($workOrderId);
         }
-        //Add workorderid when paydirekt express checkout is used
-        if($workOrderId = $payment->getAdditionalInformation(Payone_Core_Model_Service_Paydirekt_Express_Checkout::PAYONE_PAYDIREKT_CHECKOUT_WORKORDERID)) {
-            $request->setWorkorderId($workOrderId);
-        }
 
         $payment = $this->mapPaymentParameters();
 
