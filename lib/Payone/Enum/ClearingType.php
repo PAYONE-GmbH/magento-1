@@ -77,7 +77,6 @@ class Payone_Enum_ClearingType
     const APPLEPAY = 'wlt';
     const WALLETALIPAY = 'wlt';
     const WALLETPAYDIREKT = 'wlt';
-    const WALLETPAYDIREKTEXPRESS = 'wlt';
     const WALLETPAYPALEXPRESS = 'wlt';
     const WALLETWECHATPAY = 'wlt';
     const WALLET = 'wlt';                   // Default wlt mapping

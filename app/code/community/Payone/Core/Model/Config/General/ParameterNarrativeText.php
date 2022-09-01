@@ -104,22 +104,6 @@ class Payone_Core_Model_Config_General_ParameterNarrativeText
     }
 
     /**
-     * @param string $paydirekt_express
-     */
-    public function setPaydirektExpress($paydirekt_express)
-    {
-        $this->paydirekt_express = $paydirekt_express;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPaydirektExpress()
-    {
-        return $this->paydirekt_express;
-    }
-
-    /**
      * @param string $paypal_express
      */
     public function setPaypalExpress($paypal_express)

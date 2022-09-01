@@ -37,13 +37,15 @@ class Payone_Core_Helper_Payment_Data extends Mage_Payment_Helper_Data
      */
     protected $deletedMethodTitles = array(
         'payone_masterpass' => 'Masterpass',
+        'payone_wallet_paydirekt_express' => 'Paydirekt Express'
     );
 
     /**
      * @var array
      */
     protected $deletedMethodClearingTypes = array(
-        'masterpass' => 'wlt'
+        'masterpass' => 'wlt',
+        'wallet_paydirekt_express' => 'Paydirekt Express'
     );
 
     public function getMethodInstance($code)

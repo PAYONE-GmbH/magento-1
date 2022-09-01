@@ -61,7 +61,7 @@ class Payone_Core_Model_System_Config_PaymentMethodType extends Payone_Core_Mode
     const PAYOLUTIONINSTALLMENT = 'payolution_installment';
     const PAYMENTGUARANTEEINVOICE = 'payment_guarantee_invoice';
     const WALLETPAYDIREKT = 'wallet_paydirekt';
-    const WALLETPAYDIREKTEXPRESS = 'wallet_paydirekt_express';
+//    const WALLETPAYDIREKTEXPRESS = 'wallet_paydirekt_express'; // MAGE-529 : method removed
     const WALLETPAYPALEXPRESS = 'wallet_paypal_express';
     const WALLETALIPAY = 'wallet_alipay';
     const KLARNABASE = 'klarna_base';
@@ -100,7 +100,7 @@ class Payone_Core_Model_System_Config_PaymentMethodType extends Payone_Core_Mode
             self::PAYOLUTIONINSTALLMENT => 'Unzer Ratenkauf',
             self::PAYMENTGUARANTEEINVOICE => 'Invoice with Payment Guarantee',
             self::WALLETPAYDIREKT => 'Paydirekt',
-            self::WALLETPAYDIREKTEXPRESS => 'Paydirekt Express',
+//            self::WALLETPAYDIREKTEXPRESS => 'Paydirekt Express', // MAGE-529 : method removed
             self::WALLETPAYPALEXPRESS => 'Paypal Express',
             self::WALLETALIPAY => 'AliPay',
             self::ONLINEBANKTRANSFERSOFORT => 'Sofortueberweisung',

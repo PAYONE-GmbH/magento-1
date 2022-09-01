@@ -48,7 +48,6 @@ class Payone_Core_Block_Payment_Method_Form_Wallet
     {
         return $walletPayment = array(
             Payone_Core_Model_System_Config_PaymentMethodCode::WALLETPAYDIREKT => Payone_Api_Enum_WalletType::PAYDIREKT,
-            Payone_Core_Model_System_Config_PaymentMethodCode::WALLETPAYDIREKTEXPRESS => Payone_Api_Enum_WalletType::PAYDIREKTEXPRESS,
             Payone_Core_Model_System_Config_PaymentMethodCode::WALLETPAYPALEXPRESS => Payone_Api_Enum_WalletType::PAYPAL_EXPRESS,
             Payone_Core_Model_System_Config_PaymentMethodCode::WALLETALIPAY => Payone_Api_Enum_WalletType::ALIPAY,
             Payone_Core_Model_System_Config_PaymentMethodCode::WALLETWECHATPAY => Payone_Api_Enum_WalletType::WECHATPAY

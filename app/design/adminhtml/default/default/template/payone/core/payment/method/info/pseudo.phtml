@@ -15,17 +15,14 @@
  * @category        Payone
  * @package         design_frontend_base_default
  * @subpackage      template
- * @copyright       Copyright (c) 2019 <kontakt@fatchip.de> - www.fatchip.de
- * @author          FATCHIP GmbH <kontakt@fatchip.de>
+ * @copyright       Copyright (c) 2019 <kontakt@fatchip.de> - www.fatchip.com
+ * @author          Vincent Boulanger <vincent.boulanger@fatchip.de>
  * @license         <http://www.gnu.org/licenses/> GNU General Public License (GPL 3)
- * @link            http://www.fatchip.de
+ * @link            http://www.fatchip.com
  */
+
+/** @var $this Payone_Core_Block_Payment_Method_Info_Pseudo */
 ?>
 <?php
-/** @var \Payone_Core_Block_Paydirekt_Express_Review_Items $this */
+    echo $this->escapeHtml($this->getMethodTitle())
 ?>
-<div class="order-review" id="checkout-review-load">
-    <!-- Content loaded dynamically -->
-</div>
-
-
