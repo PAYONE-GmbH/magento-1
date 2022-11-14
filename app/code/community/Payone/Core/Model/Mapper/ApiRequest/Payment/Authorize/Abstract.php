@@ -85,7 +85,9 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
 
         //Add workorderid when wollet and checkout express
         if($workOrderId = $payment->getAdditionalInformation(Payone_Core_Model_Service_Paypal_Express_Checkout::PAYONE_EXPRESS_CHECKOUT_WORKORDERID)) {
-            $request->setWorkorderId($workOrderId);
+            if ($payment->getMethodInstance()->getCode() == Payone_Core_Model_System_Config_PaymentMethodCode::WALLETPAYPALEXPRESS) {
+                $request->setWorkorderId($workOrderId);
+            }
         }
 
         $payment = $this->mapPaymentParameters();
