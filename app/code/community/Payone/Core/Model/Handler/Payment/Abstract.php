@@ -104,6 +104,15 @@ abstract class Payone_Core_Model_Handler_Payment_Abstract
         $paymentMethod = $this->getPaymentMethod();
         $request = $this->getRequest();
 
+        if ($response->isRedirect()) {
+            if ($paymentMethod->getMethodType() == Payone_Core_Model_System_Config_PaymentMethodType::WALLETPAYPALEXPRESS) {
+                $sRedirectUrl = $response->getRedirecturl();
+                $oEx = new Payone_Core_Exception_PaypalExpressRedirect();
+                $oEx->setRedirectUrl($sRedirectUrl);
+                throw $oEx;
+            }
+        }
+
         if ($response->isError()) {
             return $this;
         } elseif ($response->isPending()) {
