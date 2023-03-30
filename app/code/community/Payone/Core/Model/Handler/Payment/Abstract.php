@@ -123,10 +123,13 @@ abstract class Payone_Core_Model_Handler_Payment_Abstract
             }
 
             if ($paymentMethod->getMethodType() == Payone_Core_Model_System_Config_PaymentMethodType::WALLETPAYPALEXPRESS) {
-                $sRedirectUrl = $response->getRedirecturl();
-                $oEx = new Payone_Core_Exception_PaypalExpressRedirect();
-                $oEx->setRedirectUrl($sRedirectUrl);
-                throw $oEx;
+                $aUrlDetails = parse_url($sRedirectUrl);
+                parse_str($aUrlDetails['query'], $aURLParameters);
+                if ($aURLParameters['useraction'] == 'continue') {
+                    $oEx = new Payone_Core_Exception_PaypalExpressRedirect();
+                    $oEx->setRedirectUrl($sRedirectUrl);
+                    throw $oEx;
+                }
             }
 
             $paymentMethod->setRedirectUrl($sRedirectUrl);
