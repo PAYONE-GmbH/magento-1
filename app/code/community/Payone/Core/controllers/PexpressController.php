@@ -252,6 +252,13 @@ class Payone_Core_PexpressController extends Payone_Core_Controller_Abstract
         catch (Mage_Core_Exception $e) {
             $this->_getSession()->addError($e->getMessage());
         }
+        catch (Payone_Core_Exception_PaypalExpressRedirect $e) {
+            // MAGE-533: Renew OrderId after response redirect from PPal Express checkout
+            $this->_quote->setReservedOrderId('');
+            $this->_quote->reserveOrderId()->save();
+            $this->_redirectUrl($e->getRedirectUrl());
+            return;
+        }
         catch (Exception $e) {
             $this->_getSession()->addError($this->__('Unable to place the order.'));
             Mage::logException($e);
