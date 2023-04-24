@@ -1,8 +1,10 @@
-Bugfix(es)
+New Features
  
-* Fix issue with creating an backofficeorder with secure invoice
+* New Banklist for iDeal
  
-Maintenance
-
-* update the banklist in iDeal 
-* tested with Magento 1.9.4.4
+Bugfixes
+ 
+* Change error Handling for PayPal Express
+* Ratepay address update
+* Fix for workorderID in PayPal
+* Remove Paydirekt Express
