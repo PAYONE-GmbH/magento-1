@@ -365,4 +365,22 @@ class Payone_Core_Checkout_OnepageController extends Mage_Checkout_OnepageContro
         $this->startCancellationHandler();
         return parent::indexAction();
     }
+
+    /**
+     * Prevents success action for non-paid orders
+     * @return void
+     */
+    public function successAction()
+    {
+        /** @var Mage_Checkout_Model_Session $oSession */
+        $oSession = Mage::getSingleton('checkout/session');
+
+        // this should be unset by Payone_Core_Checkout_Onepage_PaymentController
+        if ($oSession->getPayoneExternalCheckoutActive() === true) {
+            $this->_redirect('checkout/cart');
+            return;
+        }
+
+        parent::successAction();
+    }
 }
