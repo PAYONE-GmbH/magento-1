@@ -46,7 +46,7 @@ class Payone_Core_Model_Cronjob_TransactionStatus_Worker
 
         $service = $this->getFactory()->getServiceTransactionStatusExecute();
 
-        $count = $service->executePending();
+        $count = $service->run();
 
         $schedule->setMessages($count . ' Transaction-Status processed');
 
