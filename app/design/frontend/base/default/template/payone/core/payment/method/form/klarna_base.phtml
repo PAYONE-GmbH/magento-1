@@ -49,6 +49,10 @@ $quoteLocale = str_replace('_', '-' , Mage::app()->getLocale()->getLocaleCode())
                     <?php echo $this->__('KLARNA_CHECKOUT_DISCLAIMER') ?>
                     <em style="float:none; position:relative;">*</em>
                 </label>
+                <input type="text" name="payment[payone_customer_poid]"
+                       id="payone_klarna_base_additional_fields_customer_nid"
+                       placeholder="<?php echo $this->__('Person ID') ?>"
+                       class="input-text required-entry"/>
             </div>
         </li>
 
@@ -232,6 +236,7 @@ $quoteLocale = str_replace('_', '-' , Mage::app()->getLocale()->getLocaleCode())
             var customerDoB = $('payone_klarna_base_additional_fields_customer_dob_full').value;
             var customerBillingPhone = $('payone_klarna_base_additional_fields_customer_billing_telephone').value;
             var customerShippingPhone = $('payone_klarna_base_additional_fields_customer_shipping_telephone').value;
+            var customerNID = $('payone_klarna_base_additional_fields_customer_nid').value;
 
             if (!formKlarnaPaymentMethod.checked || formKlarnaPaymentMethod.value == klarnaBaseCode || paymentMethodCategoryIdentifier == '') {
                 return payone.exec(origMethod);
@@ -273,6 +278,7 @@ $quoteLocale = str_replace('_', '-' , Mage::app()->getLocale()->getLocaleCode())
                     customer: {
                         date_of_birth: customerDoB,
                         gender: "<?php echo $customerGender ?>",
+                        national_identification_number: customerNID
                     }
                 },
                 function(res) {
