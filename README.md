@@ -27,10 +27,9 @@ It is highly recommended to install the latest release from Github (either using
 - Supports the multi-shipping extension
 - Supports simplified PCI DSS conformity in accordance with SAQ A
 - Payment methods can be automatically hidden depending on the amount of the order and the credit rating of the customer
-- Find all currently supported payment methods on [the dedicated docs' page on our site](https://docs.payone.com/display/public/INT/Magento+1+Extension)
 
 ## Documentation
-You can check [the documentation on our website here](https://docs.payone.com/display/public/INT/Magento+1+Extension).
+You can our documentation here: https://docs.payone.com/integration/plugins/integration-guide-magento-1.
 
 ## Notes
 
