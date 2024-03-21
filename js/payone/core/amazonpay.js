@@ -199,7 +199,11 @@ window.onDocumentReady = function () {
 
     $('confirmSelection').onclick = function (event) {
         event.preventDefault();
-        window.onCheckoutProgress(event.currentTarget);
+        if (event.currentTarget != null) {
+            window.onCheckoutProgress(event.currentTarget);
+        } else {
+            window.onCheckoutProgress(event.target);
+        }
     };
     $('placeOrder').onclick = function (event) {
         event.preventDefault();
@@ -207,7 +211,12 @@ window.onDocumentReady = function () {
             PayoneCheckout.amazonSellerId,
             PayoneCheckout.amazonOrderReferenceId,
             function(confirmationFlow) {
-                placeOrder(event.currentTarget, confirmationFlow);
+                if (event.currentTarget != null) {
+                    placeOrder(event.currentTarget, confirmationFlow);
+                } else {
+                    placeOrder(event.target, confirmationFlow);
+                }
+
             }
         );
     };
