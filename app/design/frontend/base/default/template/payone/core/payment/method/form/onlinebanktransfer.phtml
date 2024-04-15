@@ -52,8 +52,8 @@ $getOnlineBankTransferType = $this->onlineBankTransferTypeMapping();
 
             <input type="hidden" id="<?php echo $code ?>_obt_type" name="payment[payone_onlinebanktransfer_type]"
                    value="<?php echo $getOnlineBankTransferType[$code]; ?>" class=""/>
-            <input type="hidden" name="payment[payone_config_payment_method_id]"
-                   id="<?php echo $code ?>_config_id" value="<?php echo $paymentConfigId; ?>"/>
+            <input type="hidden" id="<?php echo $code ?>_config_id" name="payment[payone_config_payment_method_id]"
+                   value="<?php echo $paymentConfigId; ?>"/>
             <input type="hidden" id="<?php echo $code ?>_pnt_show_iban"
                    value="<?php echo $this->showSofortUeberweisungBankDataFields(); ?>"/>
         </li>
