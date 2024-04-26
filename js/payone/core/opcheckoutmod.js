@@ -12,3 +12,15 @@ if (Review) {
         return superMethod(transport);
     });
 }
+
+if (Payment) {
+    Payment.prototype.addAfterInitFunction('fcpoVisibleSelectedMethod', function() {
+        let methodsSelectors = document.getElementsByName('payment[method]');
+
+        methodsSelectors.forEach(function(input){
+            if (input.checked) {
+                input.click();
+            }
+        });
+    });
+}

@@ -131,3 +131,15 @@ function changeSubmitButtonStatus(checkboxEl)
         $$('.btn-checkout')[0].hide();
     }
 }
+
+/**
+ * @param elem
+ */
+function enableElement(elem) {
+    if (elem == undefined) {
+        return;
+    }
+
+    elem.disabled = false;
+    elem.removeClassName('disabled');
+}
