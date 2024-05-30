@@ -575,5 +575,25 @@ interface Payone_Core_Model_Config_Payment_Method_Interface
      * @return bool
      */
     public function getCurrencyConvert();
+
+    /**
+     * @param int $wallet_paydirekt_enable_secured_preorder
+     */
+    public function setWalletPaydirektEnableSecuredPreorder($wallet_paydirekt_enable_secured_preorder);
+
+    /**
+     * @return int
+     */
+    public function getWalletPaydirektEnableSecuredPreorder();
+
+    /**
+     * @param int $wallet_paydirekt_secured_preorder_guarantee_period
+     */
+    public function setWalletPaydirektSecuredPreorderGuaranteePeriod($wallet_paydirekt_secured_preorder_guarantee_period);
+
+    /**
+     * @return int
+     */
+    public function getWalletPaydirektEnableSecuredPreorderGuaranteePeriod();
     
 }

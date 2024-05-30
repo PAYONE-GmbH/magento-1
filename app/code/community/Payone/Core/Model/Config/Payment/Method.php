@@ -298,6 +298,17 @@ class Payone_Core_Model_Config_Payment_Method
     protected $wallet_paydirekt_enable_overcapture = 0;
 
     /**
+     * @var int
+     *
+     */
+    protected $wallet_paydirekt_enable_secured_preorder = 0;
+
+    /**
+     * @var int
+     */
+    protected $wallet_paydirekt_secured_preorder_guarantee_period = 0;
+
+    /**
      * @var string
      */
     protected $ratepay_debit_type = '';
@@ -1456,6 +1467,38 @@ class Payone_Core_Model_Config_Payment_Method
     public function getWalletPaydirektEnableOvercapture()
     {
         return $this->wallet_paydirekt_enable_overcapture;
+    }
+
+    /**
+     * @param int $wallet_paydirekt_enable_secured_preorder
+     */
+    public function setWalletPaydirektEnableSecuredPreorder($wallet_paydirekt_enable_secured_preorder)
+    {
+        $this->wallet_paydirekt_enable_secured_preorder = $wallet_paydirekt_enable_secured_preorder;
+    }
+
+    /**
+     * @return int
+     */
+    public function getWalletPaydirektEnableSecuredPreorder()
+    {
+        return $this->wallet_paydirekt_enable_secured_preorder;
+    }
+
+    /**
+     * @param int $wallet_paydirekt_secured_preorder_guarantee_period
+     */
+    public function setWalletPaydirektSecuredPreorderGuaranteePeriod($wallet_paydirekt_secured_preorder_guarantee_period)
+    {
+        $this->wallet_paydirekt_secured_preorder_guarantee_period = $wallet_paydirekt_secured_preorder_guarantee_period;
+    }
+
+    /**
+     * @return int
+     */
+    public function getWalletPaydirektEnableSecuredPreorderGuaranteePeriod()
+    {
+        return $this->wallet_paydirekt_secured_preorder_guarantee_period;
     }
 
     /**

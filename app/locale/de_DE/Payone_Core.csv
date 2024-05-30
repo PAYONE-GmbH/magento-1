@@ -123,11 +123,11 @@
 "New Wallet","Wallet"
 "Add Wallet","Wallet hinzufügen"
 "Edit Wallet","Wallet bearbeiten"
-"New Paydirekt","Wallet Paydirekt"
+"New Wallet Paydirekt","Giropay"
 "New Paydirekt Express","Wallet Paydirekt Express"
-"Add Paydirekt","Wallet Paydirekt hinzufügen"
+"Add Wallet Paydirekt","Giropay hinzufügen"
 "Add Paydirekt Express","Wallet Paydirekt Express hinzufügen"
-"Edit Paydirekt","Wallet Paydirekt bearbeiten"
+"Edit Wallet Paydirekt","Giropay bearbeiten"
 "Edit Paydirekt Express","Wallet Paydirekt Express bearbeiten"
 "New Paypal Express","Wallet Paypal Express"
 "Add Paypal Express","Wallet Paypal Express hinzufügen"
@@ -435,7 +435,7 @@ CREDITCARD_INVALID_OWNER_ERROR_MESSAGE, "Der Name des Kreditkarteninhabers ist u
 
 ">>>SDK TRANSLATIONS<<<",">>>SDK TRANSLATIONS<<<"
 "PAYPAL_EXPRESS","Paypal Express"
-"PAYDIREKT","Paydirekt"
+"PAYDIREKT","Giropay"
 "PAYDIREKT_EXPRESS","Paydirekt Express"
 
 "YES","Ja"
@@ -551,7 +551,7 @@ DIRECT_DEBIT,Lastschrift
 "ONLINEBANKTRANSFERGIROPAY","Giropay"
 "CASHONDELIVERY","Nachnahme"
 "WALLET","Wallet"
-"WALLETPAYDIREKT", "Paydirekt"
+"WALLETPAYDIREKT", "Giropay"
 "WALLETPAYDIREKTEXPRESS","Paydirekt Express"
 "WALLETPAYPALEXPRESS", "Paypal Express"
 "WALLETALIPAY", "AliPay"
@@ -860,8 +860,8 @@ DIRECT_DEBIT,Lastschrift
 
 "Activate Overcapture","Overcapture zulassen"
 "When set to <b>yes</b>, this option allows the overcapture mechanism.","Wenn sie auf <b>Ja</b> gesetzt ist, erlaubt diese Option den Overcapture Mechanismus."
-"This option can only be used after consulting Paydirekt.","Diese Option kann nur nach Rücksprache mit Paydirekt verwendet werden."
-"<b>Warning:</b> This option can only be used after consulting Paydirekt.","<b>Warning:</b> Diese Option kann nur nach Rücksprache mit Paydirekt verwendet werden."
+"This option can only be used after consulting Giropay.","Diese Option kann nur nach Rücksprache mit Giropay verwendet werden."
+"<b>Warning:</b> This option can only be used after consulting Giropay.","<b>Warning:</b> Diese Option kann nur nach Rücksprache mit Giropay verwendet werden."
 
 "TEMPLATE","/app/design/adminhtml/default/default/template/payone/core/system/config/tooltip/protect/addresscheck.phtml"
 "Here you can activate address validation with the following configuration options.","Hier aktivieren Sie die Prüfung der Adresse mit allen folgenden Konfigurationsmöglichkeiten."
@@ -1335,3 +1335,8 @@ Das kleinere Textfeld wird verwendet, um die Zieldatei oder den Pfad zu einer vo
 "APPLEPAY_CREATE_SESSION_ERROR", "Fehler beim Herstellen der Verbindung zum Apple Pay Service."
 "APPLEPAY_MAKE_PAYMENT_ERROR", "Fehler beim Ausführen der Zahlungstransaktion."
 "APPLEPAY_CREATE_SESSION_ERROR_CARDS", "In der Konfiguration ist kein gültiger Kreditkartentyp zulässig. Die Apple Pay-Sitzung kann nicht initialisiert werden."
+
+"FCPO_PAYDIREKT_SECURED_PREORDER", "Gesicherte Vorbestellung"
+"FCPO_HELP_PAYDIREKT_SECURED_PREORDER", "Bei einer gesicherten Vorbestellung wird dem Händler eine Zahlungsgarantie für den gewählten Zeitraum (maximal 15 Kalendertage) gewährt. Captures (Teilzahlungen) müssen immer innerhalb des Garantiezeitraums ausgeführt werden."
+"FCPO_PAYDIREKT_SECURED_PREORDER_GUARANTEE_PERIOD", "Garantiezeitraum"
+"FCPO_HELP_PAYDIREKT_SECURED_PREORDER_GUARANTEE_PERIOD", "Gewünschter Garantiezeitraum (maximal 15 Kalendertage) für eine gesicherte Vorbestellung"

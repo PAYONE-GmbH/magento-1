@@ -37,7 +37,8 @@ class Payone_Core_Helper_Payment_Data extends Mage_Payment_Helper_Data
      */
     protected $deletedMethodTitles = array(
         'payone_masterpass' => 'Masterpass',
-        'payone_wallet_paydirekt_express' => 'Paydirekt Express'
+        'payone_wallet_paydirekt_express' => 'Paydirekt Express',
+        'payone_online_bank_transfer_giropay' => 'Giropay (old)'
     );
 
     /**
@@ -45,7 +46,8 @@ class Payone_Core_Helper_Payment_Data extends Mage_Payment_Helper_Data
      */
     protected $deletedMethodClearingTypes = array(
         'masterpass' => 'wlt',
-        'wallet_paydirekt_express' => 'Paydirekt Express'
+        'wallet_paydirekt_express' => 'Paydirekt Express',
+        'online_bank_transfer_giropay' => 'Giropay (old)'
     );
 
     public function getMethodInstance($code)

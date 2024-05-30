@@ -99,12 +99,12 @@ class Payone_Core_Model_System_Config_PaymentMethodType extends Payone_Core_Mode
             self::PAYOLUTIONDEBIT => 'Unzer Lastschrift',
             self::PAYOLUTIONINSTALLMENT => 'Unzer Ratenkauf',
             self::PAYMENTGUARANTEEINVOICE => 'Invoice with Payment Guarantee',
-            self::WALLETPAYDIREKT => 'Paydirekt',
+            self::WALLETPAYDIREKT => 'Giropay',
 //            self::WALLETPAYDIREKTEXPRESS => 'Paydirekt Express', // MAGE-529 : method removed
             self::WALLETPAYPALEXPRESS => 'Paypal Express',
             self::WALLETALIPAY => 'AliPay',
             self::ONLINEBANKTRANSFERSOFORT => 'Sofortueberweisung',
-            self::ONLINEBANKTRANSFERGIROPAY => 'Giropay',
+//            self::ONLINEBANKTRANSFERGIROPAY => 'Giropay', // MAGE-539 : method removed
             self::ONLINEBANKTRANSFEREPS => 'eps Online Ueberweisung',
             self::ONLINEBANKTRANSFERIDL => 'Ideal',
             self::ONLINEBANKTRANSFERPFF => 'PostFinance E-Finance',
