@@ -90,7 +90,7 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
             }
         }
 
-        $payment = $this->mapPaymentParameters();
+        $payment = $this->mapPaymentParameters($request->getRequest());
 
         // Not every Paymentmethod has an extra Parameter Set
         if ($payment !== null) {
@@ -490,9 +490,10 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
     }
 
     /**
+     * @param string $requestType
      * @return Payone_Api_Request_Parameter_Authorization_PaymentMethod_Abstract
      */
-    protected function mapPaymentParameters()
+    protected function mapPaymentParameters($requestType)
     {
         $payment = null;
         $paymentMethod = $this->getPaymentMethod();
@@ -592,6 +593,23 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
                         array('key' => 'over_capture', 'data' => 'yes')
                     )
                 );
+            }
+
+            if ($requestType == Payone_Api_Enum_RequestType::PREAUTHORIZATION) {
+                if ($paymentMethod->getConfig()->getWalletPaydirektEnableSecuredPreorder()) {
+                    $payData->addItem(
+                        new Payone_Api_Request_Parameter_Paydata_DataItem(
+                            array('key' => 'order_secured', 'data' => 'yes')
+                        )
+                    );
+
+                    $guaranteePeriod = $paymentMethod->getConfig()->getWalletPaydirektEnableSecuredPreorderGuaranteePeriod();
+                    $payData->addItem(
+                        new Payone_Api_Request_Parameter_Paydata_DataItem(
+                            array('key' => 'preauthorization_validity', 'data' => $guaranteePeriod)
+                        )
+                    );
+                }
             }
 
             $payment->setWallettype(Payone_Api_Enum_WalletType::PAYDIREKT);

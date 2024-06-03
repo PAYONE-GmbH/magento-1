@@ -102,3 +102,14 @@ The smaller text field is used to name the destination file, or path to an exist
 "APPLEPAY_CREATE_SESSION_ERROR", "Error while establishing connection to Apple Pay service."
 "APPLEPAY_MAKE_PAYMENT_ERROR", "Error while operating the payment transaction."
 "APPLEPAY_CREATE_SESSION_ERROR_CARDS", "No valid credit cards type is allowed in the configuration. Apple Pay session cannot be initialized."
+
+"FCPO_PAYDIREKT_SECURED_PREORDER", "Secured pre-order"
+"FCPO_HELP_PAYDIREKT_SECURED_PREORDER", "In the case of a secured pre-order, the retailer is granted a payment guarantee for the selected period (maximum 15 calendar days). Captures (partial payments) must always be executed within the guarantee period."
+"FCPO_PAYDIREKT_SECURED_PREORDER_GUARANTEE_PERIOD", "Guarantee period"
+"FCPO_HELP_PAYDIREKT_SECURED_PREORDER_GUARANTEE_PERIOD", "Desired guarantee period (maximum 15 calendar days) for a secured pre-order"
+
+"PAYDIREKT", "Giropay"
+"WALLETPAYDIREKT", "Giropay"
+"New Wallet Paydirekt","Giropay"
+"Add Wallet Paydirekt","Add Giropay"
+"Edit Wallet Paydirekt","Edit Giropay"
