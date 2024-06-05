@@ -409,7 +409,7 @@ abstract class Payone_Api_Request_Authorization_Abstract
             $sHashString .= $sValue;
         }
 
-        return md5($sHashString);
+        return hash_hmac('sha384', $sHashString, $aHashParams['key']);
     }
     
 }
