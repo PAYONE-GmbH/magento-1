@@ -49,7 +49,9 @@ function payoneSwitchOnlineBankTransfer(typeCode, methodCode, element, country, 
     var giropayPaymentMethodContainer =  $("dt_method_payone_online_bank_transfer_giropay") || $('p_method_payone_online_bank_transfer_giropay');
     var pffPaymentMethodContainer =  $("dt_method_payone_online_bank_transfer_pff") || $('p_method_payone_online_bank_transfer_pff');
     var sofortPaymentMethodContainer =  $("dt_method_payone_online_bank_transfer_sofortueberweisung") || $('p_method_payone_online_bank_transfer_sofortueberweisung');
-
+    var p24PaymentMethodContainer =  $("dt_method_payone_online_bank_transfer_p24") || $('p_method_payone_online_bank_transfer_p24');
+    var pfcPaymentMethodContainer =  $("dt_method_payone_online_bank_transfer_pfc") || $('p_method_payone_online_bank_transfer_pfc');
+    var bctPaymentMethodContainer =  $("dt_method_payone_online_bank_transfer_bct") || $('p_method_payone_online_bank_transfer_bct');
 
 
     function enableBankGroupNl() {
@@ -100,6 +102,7 @@ function payoneSwitchOnlineBankTransfer(typeCode, methodCode, element, country, 
         if(epsPaymentMethodContainer) {
             epsPaymentMethodContainer.on("click", function (event) {
                 disableAll();
+                onlineBankTransferTypeSwitch(methodCode);
                 enableBankGroupAt();
             });
         }
@@ -108,6 +111,7 @@ function payoneSwitchOnlineBankTransfer(typeCode, methodCode, element, country, 
         if (idlPaymentMethodContainer) {
             idlPaymentMethodContainer.on("click", function (event) {
                 disableAll();
+                onlineBankTransferTypeSwitch(methodCode);
                 enableBankGroupNl();
             });
         }
@@ -116,6 +120,7 @@ function payoneSwitchOnlineBankTransfer(typeCode, methodCode, element, country, 
         if (giropayPaymentMethodContainer) {
             giropayPaymentMethodContainer.on("click", function (event) {
                 disableAll();
+                onlineBankTransferTypeSwitch(methodCode);
                 enableSepaIban();
                 enableSepaBic();
             });
@@ -127,6 +132,7 @@ function payoneSwitchOnlineBankTransfer(typeCode, methodCode, element, country, 
         if(pffPaymentMethodContainer){
             pffPaymentMethodContainer.on("click", function (event) {
                 disableAll();
+                onlineBankTransferTypeSwitch(methodCode);
             });
         }
     }
@@ -135,6 +141,7 @@ function payoneSwitchOnlineBankTransfer(typeCode, methodCode, element, country, 
         if(sofortPaymentMethodContainer){
             sofortPaymentMethodContainer.on("click", function (event) {
                 disableAll();
+                onlineBankTransferTypeSwitch(methodCode);
                 if (sofortueberweisungShowIban.value == 1) {
                     enableSepaIban();
                     enableSepaBic();
@@ -148,8 +155,31 @@ function payoneSwitchOnlineBankTransfer(typeCode, methodCode, element, country, 
         }
     }
 
-    if (typeCode === 'PFC' || typeCode === 'P24' || typeCode === 'BCT') {
+    if (typeCode == 'P24') {
         disableAll();
+        if(p24PaymentMethodContainer) {
+            p24PaymentMethodContainer.on("click", function (event) {
+                onlineBankTransferTypeSwitch(methodCode);
+            });
+        }
+    }
+
+    if (typeCode == 'PFC') {
+        disableAll();
+        if(pfcPaymentMethodContainer) {
+            pfcPaymentMethodContainer.on("click", function (event) {
+                onlineBankTransferTypeSwitch(methodCode);
+            });
+        }
+    }
+
+    if (typeCode == 'BCT') {
+        disableAll();
+        if(bctPaymentMethodContainer) {
+            bctPaymentMethodContainer.on("click", function (event) {
+                onlineBankTransferTypeSwitch(methodCode);
+            });
+        }
     }
 
     function disableAll() {
@@ -179,6 +209,27 @@ function payoneSwitchOnlineBankTransfer(typeCode, methodCode, element, country, 
         }
     }
 
+}
+
+function onlineBankTransferTypeSwitch(methodCode) {
+    let btTypeInputs = document.getElementsByName('payment[payone_onlinebanktransfer_type]');
+    let btMethodInputs = document.getElementsByName('payment[payone_config_payment_method_id]');
+
+    btTypeInputs.forEach(function (element) {
+        if (element.id === methodCode + '_obt_type') {
+            element.removeAttribute("disabled");
+        } else {
+            element.setAttribute("disabled", "disabled");
+        }
+    });
+
+    btMethodInputs.forEach(function (element) {
+        if (element.id === methodCode + '_config_id') {
+            element.removeAttribute("disabled");
+        } else {
+            element.setAttribute("disabled", "disabled");
+        }
+    });
 }
 
 function copyOnlineBankTransferSepaIban(code) {

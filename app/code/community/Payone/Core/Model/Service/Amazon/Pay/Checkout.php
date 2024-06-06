@@ -136,7 +136,7 @@ class Payone_Core_Model_Service_Amazon_Pay_Checkout
         $this->quote->getPayment()->importData([
             'method'                          => $paymentMethodCode,
             'payone_config_payment_method_id' => $this->config->getId(),
-            'checks'                          => [],
+            'checks'                          => 0,
         ]);
 
         $this->quote->setTotalsCollectedFlag(false);

@@ -257,7 +257,7 @@ class Payone_Core_Model_Config_Protect_Creditrating
      */
     public function getResultLifetimeInSeconds()
     {
-        return $this->result_lifetime * 24 * 3600;
+        return (is_int($this->result_lifetime) ? $this->result_lifetime : 0) * 24 * 3600;
     }
 
     /**

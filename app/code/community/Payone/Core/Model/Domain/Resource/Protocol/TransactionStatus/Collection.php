@@ -49,6 +49,9 @@ class Payone_Core_Model_Domain_Resource_Protocol_TransactionStatus_Collection
     public function getByOrder(Mage_Sales_Model_Order $order)
     {
         $this->addFieldToFilter('order_id', $order->getId());
+        if ($order->getData('increment_id') != 0) {
+            $this->addFilter('reference', $order->getData('increment_id'), 'or');
+        }
     }
 
     /**

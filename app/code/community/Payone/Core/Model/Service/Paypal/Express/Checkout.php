@@ -160,7 +160,7 @@ class Payone_Core_Model_Service_Paypal_Express_Checkout
 //            | Mage_Payment_Model_Method_Abstract::CHECK_ORDER_TOTAL_MIN_MAX
 //            | Mage_Payment_Model_Method_Abstract::CHECK_ZERO_TOTAL;
 
-        $data['checks'] = array();
+        $data['checks'] = 0;
 
         $payment = $this->_quote->getPayment();
 
