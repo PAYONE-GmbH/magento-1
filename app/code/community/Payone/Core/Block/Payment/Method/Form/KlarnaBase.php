@@ -43,6 +43,10 @@ class Payone_Core_Block_Payment_Method_Form_KlarnaBase extends Payone_Core_Block
      */
     public function isDobRequired()
     {
+        if ($this->isB2B()) {
+            return false;
+        }
+
         // required for all countries
         // required only if customer didn't enter Dob in previous checkout step
         $customerDob = $this->getQuote()->getCustomerDob();
@@ -51,6 +55,15 @@ class Payone_Core_Block_Payment_Method_Form_KlarnaBase extends Payone_Core_Block
         }
 
         return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isB2B()
+    {
+        $billingCompany = $this->getQuote()->getBillingAddress()->getCompany();
+        return !empty($billingCompany);
     }
 
     /**
