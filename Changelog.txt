@@ -1,10 +1,7 @@
-New Features
+Maintenance
  
-* New Banklist for iDeal
- 
-Bugfixes
- 
-* Change error Handling for PayPal Express
-* Ratepay address update
-* Fix for workorderID in PayPal
-* Remove Paydirekt Express
+* Update iDEAL bank list
+* Rename paydirekt to Giropay
+* Fixed problems Amazon Pay and PayPal Express
+
+* tested with Magento 1.9.4.4
