@@ -549,9 +549,6 @@ abstract class Payone_Core_Model_Mapper_ApiRequest_Payment_Authorize_Abstract
                         $payment->setBankcode($bankcode);
                     }
                     break;
-                case Payone_Api_Enum_OnlinebanktransferType::IDEAL:
-                    $payment->setBankgrouptype($info->getPayoneBankGroup());
-                    break;
                 case Payone_Api_Enum_OnlinebanktransferType::EPS_ONLINE_BANK_TRANSFER:
                     $payment->setBankgrouptype($info->getPayoneBankGroup());
                     break;
