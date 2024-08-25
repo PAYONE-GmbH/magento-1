@@ -82,11 +82,11 @@ class Payone_Core_TransactionStatusController extends Payone_Core_Controller_Abs
             /**
              * MAGE-536 : Fix missing OrderId and StoreId in TxStatus when reference exists
              */
-            if ($response->getStatus() == 'TSOK') {
+            if ($response->getStatus() == 'TSOK' && ! empty($reference)) {
                 /** @var $transactionStatusCollection Payone_Core_Model_Domain_Resource_Protocol_TransactionStatus_Collection */
                 $transactionStatusCollection = Mage::getModel('payone_core/domain_protocol_transactionStatus')
-                    ->getCollection();
-                $transactionStatusCollection->getItemsByColumnValue('reference', $reference);
+                    ->getCollection()
+                    ->addFieldToFilter('reference', $reference);
 
                 /** @var Payone_Core_Model_Domain_Protocol_TransactionStatus $transactionStatus */
                 foreach ($transactionStatusCollection as $transactionStatus) {
