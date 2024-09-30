@@ -172,8 +172,8 @@ abstract class Payone_Core_Model_Payment_Method_Abstract
     {
         $status = $payment->getOrder()->getPayoneTransactionStatus();
         $session = Mage::getModel('payone_core/session');
-
-        if (empty($status) or $status == 'REDIRECT') {
+	
+	if (empty($status) or in_array($status,['REDIRECT','failed'])) {
             return $this; // Don´t send cancel to PAYONE on orders without TxStatus
         }
 
