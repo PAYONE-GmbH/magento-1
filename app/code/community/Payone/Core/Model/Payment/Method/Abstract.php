@@ -172,8 +172,8 @@ abstract class Payone_Core_Model_Payment_Method_Abstract
     {
         $status = $payment->getOrder()->getPayoneTransactionStatus();
         $session = Mage::getModel('payone_core/session');
-
-        if (empty($status) or $status == 'REDIRECT') {
+	
+	if (empty($status) or in_array($status,['REDIRECT','failed'])) {
             return $this; // Don´t send cancel to PAYONE on orders without TxStatus
         }
 
@@ -238,7 +238,7 @@ abstract class Payone_Core_Model_Payment_Method_Abstract
         /** @var Mage_Adminhtml_Model_Sales_Order_Create $adminOrderCreate */
         $adminOrderCreate = Mage::getSingleton('adminhtml/sales_order_create');
         // Check wether this order was created by an admin in the backend
-        if (!empty($adminOrderCreate) && $mailAddress === $adminOrderCreate->getData('account')['email']) {
+        if (!empty($adminOrderCreate->getData()) && $mailAddress === $adminOrderCreate->getData('account')['email']) {
             $preventConfirmation = (false === (bool) $adminOrderCreate->getData('send_confirmation'));
             // Store a flag to prevent mail delivery if the admin unchecked the corresponding option
             $order->setData('payone_prevent_confirmation', $preventConfirmation);
