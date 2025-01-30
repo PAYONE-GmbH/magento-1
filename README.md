@@ -47,9 +47,7 @@ Related projects can provide additional features and perks that can't be include
 
 ## Contact
 PAYONE GmbH<br>
-Office Kiel<br>
-Fraunhoferstraße 2-4<br>
-24118 Kiel, Germany<br>
+Lyoner Straße 9<br>
+60528 Frankfurt am Main, Germany<br>
 Phone +49 431 25968-400<br>
-sales@payone.com<br>
 tech.support@payone.com<br>
