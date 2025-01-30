@@ -47,7 +47,7 @@ Related projects can provide additional features and perks that can't be include
 
 ## Contact
 PAYONE GmbH<br>
-Lyoner Straße 9<br>
+Lyoner Straße 15<br>
 60528 Frankfurt am Main, Germany<br>
 Phone +49 431 25968-400<br>
 tech.support@payone.com<br>
