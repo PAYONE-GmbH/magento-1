@@ -412,7 +412,7 @@ PAYONE.Validation.CreditCard = function (config, translatedErrorMessages) {
 
         // MAGE-508: Re-introduce CC owner field
         if ('' === this.translatedErrorMessages.ccOwnerErrorMessage || 'undefined' === typeof this.translatedErrorMessages.ccOwnerErrorMessage) {
-            this.translatedErrorMessages.ccOwnerErrorMessage = 'Credit card owner name is invalid. [max 50 char. from latin alphabet including dash/space/umlaut | at least 1 letter]';
+            this.translatedErrorMessages.ccOwnerErrorMessage = 'Credit card owner name is invalid. [max 50 char. from latin/cyrillic alphabet including dash/space/umlaut/dot | at least 1 letter]';
         }
         Validation.add(
             'validate-payone-cc-owner',
@@ -494,7 +494,7 @@ PAYONE.Validation.CreditCard = function (config, translatedErrorMessages) {
      */
     this.validateOwner = function (v, elm) {
         var ownerName = elm.value;
-        var regex = new RegExp("^[a-zA-Z äëïöüÄËÏÖÜß\-]*[a-zA-ZäëïöüÄËÏÖÜß][a-zA-Z äëïöüÄËÏÖÜß\-]*$");
+        var regex = new RegExp("^[a-zA-Z äëïöüÄËÏÖÜß\u0400-\u052f\-.]*[a-zA-ZäëïöüÄËÏÖÜß\u0400-\u052f][a-zA-Z äëïöüÄËÏÖÜß\u0400-\u052f\-.]*$");
         return regex.test(ownerName)
             && (ownerName.length > 0)
             && (ownerName.length <= 50);

@@ -77,7 +77,7 @@
 
 RATEPAY_TNC,"With clicking on 'Submit order' you agree to the <a target='_blank' href='https://www.ratepay.com/en/ratepay-terms-of-payment/'>terms of payment of our payment partner</a><br /> as well as to the performance of a <a target='_blank' href='https://www.ratepay.com/en/ratepay-data-privacy-statement/'>risk check by our payment partner</a>."
 
-CREDITCARD_INVALID_OWNER_ERROR_MESSAGE, "Credit card owner name is invalid. [max 50 char. from latin alphabet including dash/space/umlaut | at least 1 letter]"
+CREDITCARD_INVALID_OWNER_ERROR_MESSAGE, "Credit card owner name is invalid. [max 50 char. from latin/cyrillic alphabet including dash/space/umlaut/dot | at least 1 letter]"
 
 "RATEPAY_TEXT_LOGO", "ratepay_logo_instalments_whitelabel_en_black.png"
 
