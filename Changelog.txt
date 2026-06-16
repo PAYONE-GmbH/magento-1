@@ -1,6 +1,7 @@
 Maintenance
+ 
+* Update iDEAL bank list
+* Rename paydirekt to Giropay
+* Fixed problems Amazon Pay and PayPal Express
 
-* removed Ideal bankqrouptypes
-* extended regex and error messages
-* code adjustments
-* tested with 19.5.2
+* tested with Magento 1.9.4.4
