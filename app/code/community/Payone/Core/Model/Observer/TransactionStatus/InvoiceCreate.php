@@ -238,7 +238,7 @@ class Payone_Core_Model_Observer_TransactionStatus_InvoiceCreate
      */
     protected function getInvoiceForOrder()
     {
-        /** @var $invoiceCollection Mage_Sales_Model_Mysql4_Order_Invoice_Collection */
+        /** @var $invoiceCollection Mage_Sales_Model_Resource_Order_Invoice_Collection */
         $invoiceCollection = $this->order->getInvoiceCollection();
         $invoiceCollection->addFieldToFilter('payone_sequencenumber', $this->transactionStatus->getSequencenumber());
         $invoice = $invoiceCollection->getFirstItem();

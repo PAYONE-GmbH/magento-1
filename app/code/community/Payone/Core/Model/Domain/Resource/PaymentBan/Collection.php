@@ -31,7 +31,7 @@
  * @link            http://www.votum.de
  */
 
-class Payone_Core_Model_Domain_Resource_PaymentBan_Collection extends Mage_Core_Model_Mysql4_Collection_Abstract
+class Payone_Core_Model_Domain_Resource_PaymentBan_Collection extends Mage_Core_Model_Resource_Db_Collection_Abstract
 {
     public function _construct()
     {

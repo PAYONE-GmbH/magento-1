@@ -41,7 +41,7 @@ class Payone_Core_Model_Observer_Sales_Order
     public function updateOrderGrid(Varien_Event_Observer $observer)
     {
         /**
-         * @var $resource Mage_Sales_Model_Mysql4_Order
+         * @var $resource Mage_Sales_Model_Resource_Order
          */
         $resource = $observer->getEvent()->getResource();
 

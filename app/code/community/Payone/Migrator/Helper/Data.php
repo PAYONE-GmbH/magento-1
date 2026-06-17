@@ -111,11 +111,11 @@ class Payone_Migrator_Helper_Data
     }
 
     /**
-     * @return Mage_Core_Model_Mysql4_Config_Data_Collection
+     * @return Mage_Core_Model_Resource_Db_Collection_Abstract
      */
     public function getOldProtectConfig()
     {
-        /** @var $oldCollection Mage_Core_Model_Mysql4_Config_Data_Collection */
+        /** @var $oldCollection Mage_Core_Model_Resource_Db_Collection_Abstract */
         $oldCollection = Mage::getModel('core/config_data')->getCollection();
 
         $oldCollection->addFieldToFilter(

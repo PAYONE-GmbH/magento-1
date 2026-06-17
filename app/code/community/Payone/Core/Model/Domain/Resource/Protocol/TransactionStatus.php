@@ -31,7 +31,7 @@
  * @link            http://www.noovias.com
  */
 class Payone_Core_Model_Domain_Resource_Protocol_TransactionStatus
-    extends Mage_Core_Model_Mysql4_Abstract
+    extends Mage_Core_Model_Resource_Db_Abstract
 {
         /**
          *

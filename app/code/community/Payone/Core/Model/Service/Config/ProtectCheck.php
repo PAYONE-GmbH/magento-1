@@ -90,7 +90,7 @@ class Payone_Core_Model_Service_Config_ProtectCheck
      */
     protected function checkConfigUnique(Mage_Core_Model_Config_Data $object)
     {
-        /** @var $collection Mage_Core_Model_Mysql4_Config_Data_Collection | Mage_Core_Model_Resource_Config_Data_Collection */
+        /** @var $collection Mage_Core_Model_Resource_Config_Data_Collection */
         $collection = $this->getFactory()->getModelCoreConfigData()->getCollection();
         $collection->addFieldToFilter('scope', $object->getScope());
         $collection->addFieldToFilter('scope_id', $object->getScopeId());
@@ -109,11 +109,11 @@ class Payone_Core_Model_Service_Config_ProtectCheck
     /**
      * Add default filter to collection
      *
-     * @return Mage_Core_Model_Mysql4_Config_Data_Collection
+     * @return Mage_Core_Model_Resource_Config_Data_Collection
      */
     protected function getFilteredModelConfigCollection()
     {
-        /** @var $configCollection Mage_Core_Model_Mysql4_Config_Data_Collection */
+        /** @var $configCollection Mage_Core_Model_Resource_Config_Data_Collection */
         $configCollection = $this->getFactory()->getModelCoreConfigData()->getCollection();
         $configCollection->addFieldToFilter(
             'path',

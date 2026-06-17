@@ -72,16 +72,16 @@ class Payone_Core_Helper_Data
             // getEdition is only available after Magento CE Version 1.7.0.0
             $edition = Mage::getEdition();
             switch ($edition) {
-                case Mage::EDITION_COMMUNITY :
+                case 'Community':
                     $edition = 'CE';
                     break;
-                case Mage::EDITION_ENTERPRISE :
+                case 'Enterprise':
                     $edition = 'EE';
                     break;
-                case Mage::EDITION_PROFESSIONAL :
+                case 'Professional':
                     $edition = 'PE';
                     break;
-                case Mage::EDITION_GO :
+                case 'Go':
                     $edition = 'GO';
                     break;
             }
@@ -179,7 +179,7 @@ class Payone_Core_Helper_Data
     public function isCronEnabled()
     {
         $model = $this->getFactory()->getModelCronSchedule();
-        /** @var $collection Mage_Cron_Model_Mysql4_Schedule_Collection */
+        /** @var $collection Mage_Cron_Model_Resource_Schedule_Collection */
         $collection = $model->getCollection();
 
         if ($collection->count() < 1) {

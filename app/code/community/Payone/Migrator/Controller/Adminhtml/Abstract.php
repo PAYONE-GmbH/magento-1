@@ -75,7 +75,7 @@ class Payone_Migrator_Controller_Adminhtml_Abstract extends Mage_Adminhtml_Contr
      *
      * @return bool
      */
-    protected function _isAllowed()
+    protected function _isAllowed(): bool
     {
         return Mage::getSingleton('admin/session')->isAllowed($this->acl_resource);
     }

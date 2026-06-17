@@ -295,7 +295,7 @@ class Payone_Core_Model_Domain_Config_PaymentMethod
                 }
             }
             elseif ($myScope == 'websites') {
-                /** @var $stores Mage_Core_Model_Mysql4_Store_Collection */
+                /** @var $stores Mage_Core_Model_Resource_Db_Collection_Abstract */
                 $stores = $this->getFactory()->getModelCoreStore()->getCollection();
                 $stores->addFieldToFilter('website_id', $this->getScopeId());
 

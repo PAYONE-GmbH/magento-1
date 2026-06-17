@@ -84,7 +84,7 @@ class Payone_Migrator_Model_Service_Configuration_ProtectMigrate
     }
 
     /**
-     * @return Mage_Core_Model_Mysql4_Config_Data_Collection
+     * @return Mage_Core_Model_Resource_Db_Collection_Abstract
      */
     public function getOldProtectConfig()
     {

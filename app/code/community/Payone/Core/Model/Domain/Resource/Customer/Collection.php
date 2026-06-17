@@ -32,7 +32,7 @@
  */
 
 class Payone_Core_Model_Domain_Resource_Customer_Collection
-    extends Mage_Core_Model_Mysql4_Collection_Abstract
+    extends Mage_Core_Model_Resource_Db_Collection_Abstract
 {
     /**
      *

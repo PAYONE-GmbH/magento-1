@@ -83,7 +83,7 @@ class Payone_Core_Controller_Adminhtml_Abstract extends Mage_Adminhtml_Controlle
      *
      * @return bool
      */
-    protected function _isAllowed()
+    protected function _isAllowed(): bool
     {
         return Mage::getSingleton('admin/session')->isAllowed($this->acl_resource);
     }
