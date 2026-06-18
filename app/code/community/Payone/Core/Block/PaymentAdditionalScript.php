@@ -109,7 +109,7 @@ class Payone_Core_Block_PaymentAdditionalScript extends Mage_Core_Block_Template
                 }
 
                 if ($method->getCode() == Payone_Core_Model_System_Config_PaymentMethodType::APPLEPAY) {
-                    $loadedScripts[] = "https://applepay.cdn-apple.com/jsapi/v1/apple-pay-sdk.js";
+                    $loadedScripts[] = "https://applepay.cdn-apple.com/jsapi/1.latest/apple-pay-sdk.js";
                 }
             }
         }
